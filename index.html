@@ -67,19 +67,19 @@
         </div>
 
         <div class="container">
-            <div class="row row-fluid no-margin controll-box">
+            <div class="row row-fluid no-margin controll-box" data-filter="simpleKlaster">
                 <form class="bs-docs-example form-inline mleft10">
 
                     <div class="span3">
                         <label>Anzahl</label>
-                        <select class="span3">
+                        <select class="span3" data-name="number" data-on="change">
                             <option>10</option>
                             <option>20</option>
                             <option>30</option>
                             <option>40</option>
                             <option>50</option>
                         </select>   
-                        <a data-name="filterbutton" data-on="mouseenter,click,blur->hoover" data-connected-fields=".config" class="btn" href="#" ><i class="icon-cog"></i> Filter</a>
+                        <a data-name="filterbutton" data-on="mouseenter,click,blur->hoover" data-connected=".config" class="btn" href="#" ><i class="icon-cog"></i> Filter</a>
                     </div>
 
                     <div class="span5 hide config">
@@ -135,7 +135,7 @@
             <footer>
                 <p>&copy; Company 2012</p>
             </footer>
-
+            
         </div> <!-- /container -->
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
@@ -143,8 +143,8 @@
 
         <script src="js/vendor/bootstrap.min.js"></script>
 
-        <script src="js/klaster.js"></script>
-        <script src="js/myKlasters/simpleKlaster.js"></script>
+        <script src="js/jquery.klaster.js"></script>
+ 
         <script src="js/main.js"></script>
 
         <script>
