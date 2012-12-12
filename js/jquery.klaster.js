@@ -87,12 +87,12 @@
                 return val
             }));
         
-            if(result != cls.values[$(this).attr('data-name')]){
+            if(result != cls.values[$(this).attr('name')]){
                 cls.recognizeChange.setup($(this));
-                cls.values[$(this).attr('data-name')] = result;
+                cls.values[$(this).attr('name')] = result;
             }
         
-            if(typeof child.post_trigger !== "undefined") 
+            if(typeof child.post_trigger !== "undefined")
                 return child.post_trigger.call(this, e);
         
             return true;
@@ -154,7 +154,7 @@
             /* variable injection via lambda function factory used in iteration */
             var factory = function (me, event) {
                 return function(e){
-                    name = $(me).attr('data-name');
+                    name = $(me).attr('name');
                     method = events[name][event];
                     var result = true;
                     if(false !== cls.pre_trigger.call(me, e)) {
@@ -173,11 +173,11 @@
             for(fi in cls.filter){
                 var filter = cls.filter[fi];
             
-                filter.fields = filter.$el.find('[data-name]'),
+                filter.fields = filter.$el.find('[name]'),
                 filter.events = filter.$el.find('[data-on]');
         
                 $(filter.events).each(function (ke, el){
-                    name = $(this).attr('data-name');
+                    name = $(this).attr('name');
                     events[name] = cls.dispatchEvents.call(this);
                     for(event in events[name]) {
                         $(this).on(event, factory(this, event));
