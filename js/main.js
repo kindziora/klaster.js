@@ -1,0 +1,1 @@
+var simple = new klaster(new simpleKlaster({}));
