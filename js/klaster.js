@@ -21,8 +21,17 @@ var klaster = function(child) {
     /*
      * gets executed after an event is triggered
      */
-    self.post_trigger = function(e) {
-        self.values[$(this).attr('data-name')] = $(this).attr('data-value');
+    self.post_trigger = function(e, result) {
+        var seen = [];
+        $(this).attr('data-value', JSON.stringify(result, function(key, val) {
+            if (typeof val == "object") {
+                if (seen.indexOf(val) >= 0)
+                    return undefined
+                seen.push(val)
+            }
+            return val
+        }));
+        self.values[$(this).attr('data-name')] = result;
         
         if(typeof child.post_trigger !== "undefined") 
             return child.post_trigger.call(this, e);
@@ -31,7 +40,7 @@ var klaster = function(child) {
     };
     
     self.dispatchEvents = function() {
-        var events = $(this).attr('data-event').split(','), i = 0, event = "", FinalEvents = {};
+        var events = $(this).attr('data-on').split(','), i = 0, event = "", FinalEvents = {};
         var method = "", parts = "";
         
         for(i in events) {
@@ -55,19 +64,20 @@ var klaster = function(child) {
     self.bind = function() {
         var events = {}, event = {}, name = "", method ="";
         self.fields = $(self.area).find('[data-name]'),
-        self.events = $(self.area).find('[data-event]');
+        self.events = $(self.area).find('[data-on]');
         
         /* variable injection via lambda function factory used in iteration */
         var factory = function (me, event) {
             return function(e){
                 name = $(me).attr('data-name');
                 method = events[name][event];
+                var result = true;
                 if(false !== self.pre_trigger.call(me, e)) {
                     if(typeof self.names[name][method] !== 'undefined'){
-                        self.names[name][method].call(me, e);
+                        result = self.names[name][method].call(me, e);
                         console.log(name, method);
                     }
-                    self.post_trigger.call(me, e);
+                    self.post_trigger.call(me, e, result);
                 }else{
                     console.log('event ' + event + ' for element:', $(me));
                     console.log('Method "' + method + '" was prevented from executing');

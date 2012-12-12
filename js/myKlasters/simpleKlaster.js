@@ -3,11 +3,12 @@ var simpleKlaster = function(self) {
         'filterbutton' : {
             'click' : function(e) {
                 var fields = $($(this).attr('data-connected-fields'));
-                fields.toggle();
                 
+                return fields.toggle();
             },
             'hoover' : function(e) {
                 
+                return 'ok';
             }
         }
     };
