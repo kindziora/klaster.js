@@ -7,6 +7,15 @@
     $.fn.klaster = function( child ) {
         var self = this;
         
+        self.info = {
+            'name' : 'klaster.js',
+            'version' : '0.3',
+            'tag' : 'alpha',
+            'author' : 'Alexander Kindziora',
+            'date'  : '2012',
+            'copyright' : 'author'
+        };
+        
         self.values = {};
     
         self.get = function(name, value) {
@@ -84,7 +93,10 @@
         
             return true;
         };
-    
+        
+        /**
+         *dispatch events for dom element
+         */
         self.dispatchEvents = function() {
             var events = $(this).attr('data-on').split(','), i = 0, event = "", FinalEvents = {};
             var method = "", parts = "";
@@ -130,6 +142,8 @@
      */
         self.bind = function(element) {
             var events = {}, event = {}, name = "", method ="", fi = "", filterObj = {};
+        
+            child = child(self);
         
             self.filter = self.dispatchFilter(element);
         
