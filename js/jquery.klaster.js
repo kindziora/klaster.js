@@ -21,7 +21,16 @@
         cls.get = function(name, value) {
             return ((typeof cls[name] !== 'undefined') ? cls[name] : value);
         };
-    
+        
+        $.fn.getName = function() { 
+            if(this.attr('data-name')){
+                return this.attr('data-name');
+            }else if(this.attr('name')){
+                return this.attr('name');
+            }
+            return 'no name defined';
+        };
+        
         /*
      * gets executed before an event is triggered
      */
@@ -87,9 +96,9 @@
                 return val
             }));
         
-            if(result != cls.values[$(this).attr('name')]){
+            if(result != cls.values[$(this).getName()]){
                 cls.recognizeChange.setup($(this));
-                cls.values[$(this).attr('name')] = result;
+                cls.values[$(this).getName()] = result;
             }
         
             if(typeof child.post_trigger !== "undefined")
@@ -154,7 +163,7 @@
             /* variable injection via lambda function factory used in iteration */
             var factory = function (me, event) {
                 return function(e){
-                    name = $(me).attr('name');
+                    name = $(me).getName();
                     method = events[name][event];
                     var result = true;
                     if(false !== cls.pre_trigger.call(me, e)) {
@@ -173,11 +182,11 @@
             for(fi in cls.filter){
                 var filter = cls.filter[fi];
             
-                filter.fields = filter.$el.find('[name]'),
+                //filter.fields = filter.$el.find('[name],[data-name]'),
                 filter.events = filter.$el.find('[data-on]');
-        
+                
                 $(filter.events).each(function (ke, el){
-                    name = $(this).attr('name');
+                    name = $(this).getName();
                     events[name] = cls.dispatchEvents.call(this);
                     for(event in events[name]) {
                         $(this).on(event, factory(this, event));
