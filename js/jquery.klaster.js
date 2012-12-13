@@ -4,8 +4,14 @@
  * 
  */
 (function( $ ){
+    $.fn.getName = function() {
+        return this.attr('data-name') ? this.attr('data-name') : this.attr('name');
+    };
+})( jQuery );
+
+(function( $ ){
     $.fn.klaster = function( child ) {
-        var self = this, cls = {};
+        var cls = {};
         
         cls.info = {
             'name' : 'klaster.js',
@@ -22,14 +28,7 @@
             return ((typeof cls[name] !== 'undefined') ? cls[name] : value);
         };
         
-        $.fn.getName = function() { 
-            if(this.attr('data-name')){
-                return this.attr('data-name');
-            }else if(this.attr('name')){
-                return this.attr('name');
-            }
-            return 'no name defined';
-        };
+        
         
         /*
      * gets executed before an event is triggered
