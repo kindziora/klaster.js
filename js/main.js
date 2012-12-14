@@ -4,7 +4,7 @@
 //variante a
 var jobfilter = function (self){
     return {
-        'delay': 1000,                    //1000 ms is default
+        //'delay': 1000,                    //1000 ms is default
         'filterbutton' : {                //$('[data-name="filterbutton"]')
             'click' : function(e) {
                 var fields = $($(this).attr('data-connected'));
@@ -14,6 +14,15 @@ var jobfilter = function (self){
             'hoover' : function(e) {
                 
                 return 'ok';
+            }
+        },
+        'art':{
+            'click' : function() {
+               var values = [];
+               $('[name="' + $(this).getName() + '"]:checked').each(function() {
+                  values.push($(this).val());
+               });
+               return values;
             }
         },
         'number' : {                     //$('[data-name="number"]')
@@ -31,6 +40,7 @@ var jobfilter = function (self){
 };
 
 //variante b
+/*
 var jobfilter = function (self){
     this.delay = 1000;
     
@@ -53,15 +63,14 @@ var jobfilter = function (self){
     };
     
     this.filter_changed = function(el){ // executed with a delay after the last filter change
-        /**
-             * @todo ajax call
-             */
+        /*  @todo ajax call
+              
         console.log('commiting changes', self.values);
     };
     
     return this;
 };
-
+*/
 
 $('.controll-box').klaster( jobfilter );
 

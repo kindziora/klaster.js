@@ -4,12 +4,39 @@
  * 
  */
 (function( $ ){
+    
     $.fn.getName = function() {
         return this.attr('data-name') ? this.attr('data-name') : this.attr('name');
     };
+    
+    $.fn.getValue = function() {
+        var value = "";
+        try{
+            value = (this.attr('data-value') && this.attr('data-value') !=='') ? 
+            JSON.parse(this.attr('data-value')) : this.val();
+        }catch(e){
+            value = this.attr('data-value');
+        }
+        
+        return (value == "") ? this.text() : value;
+    }
+    
+    $.fn.setValue = function(value) {
+        var seen = false;
+        this.attr('data-value', JSON.stringify(value, function(key, val) {
+            if (typeof val == "object") {
+                if (seen.indexOf(val) >= 0)
+                    return undefined
+                seen.push(val)
+            }
+            return val;
+        }));
+    }
+    
 })( jQuery );
 
 (function( $ ){
+ 
     $.fn.klaster = function( child ) {
         var cls = {};
         
@@ -23,16 +50,17 @@
         };
         
         cls.values = {};
-    
+        
+        /**
+         *get class property with default value
+         */
         cls.get = function(name, value) {
             return ((typeof cls[name] !== 'undefined') ? cls[name] : value);
         };
         
-        
-        
         /*
-     * gets executed before an event is triggered
-     */
+             * gets executed before an event is triggered
+             */
         cls.pre_trigger = function(e) {
         
             if(typeof child.pre_trigger !== "undefined") 
@@ -41,9 +69,9 @@
         };
     
         /*
-     * gets executed after a change on dom objects
-     * "this" is the dom element responsible for the change
-     */
+             * gets executed after a change on dom objects
+             * "this" is the dom element responsible for the change
+             */
         cls.changed = function() {
         
             if(typeof child.filter_changed !== "undefined") 
@@ -51,14 +79,24 @@
             return true;
         };
     
+        cls.updateValues = function() {
+            var name, event, events;
+            $(cls.filter.events).each(function (ke, el){
+                name = $(this).getName();
+                events[name] = cls.dispatchEvents.call(this);
+                for(event in events[name]) {
+                    $(this).setValue( $(this).getValue() );
+                }
+            });
+        };
     
         /**
-     *recognize if filter values have changed and call someone
-     *@description one common callback for changed is an ajax call with all values to a REST backend to update data
-     * 
-     */
+             *recognize if filter values have changed and call someone
+             *@description one common callback for changed is an ajax call with all values to a REST backend to update data
+             * 
+             */
         cls.recognizeChange = function(){
-            var mio = this;
+            var mio = {};
             
             mio.changed = function(el) {
                 cls.changed.call(el);
@@ -82,8 +120,8 @@
         }();
     
         /*
-     * gets executed after an event is triggered
-     */
+             * gets executed after an event is triggered
+             */
         cls.post_trigger = function(e, result) {
             var seen = [];
             $(this).attr('data-value', JSON.stringify(result, function(key, val) {
@@ -92,7 +130,7 @@
                         return undefined
                     seen.push(val)
                 }
-                return val
+                return val;
             }));
         
             if(result != cls.values[$(this).getName()]){
@@ -107,8 +145,8 @@
         };
         
         /**
-         *dispatch events for dom element
-         */
+             *dispatch events for dom element
+             */
         cls.dispatchEvents = function() {
             var events = $(this).attr('data-on').split(','), i = 0, event = "", FinalEvents = {};
             var method = "", parts = "";
@@ -129,29 +167,18 @@
         };
     
         /**
-     * find all filters and init there configs
-     */
+             * find all filters and init there configs
+             */
         cls.dispatchFilter = function(byElement) {
-        
-            if(typeof byElement === 'undefined')
-                byElement = $('[data-filter]');
-        
-            var filtersFinal = {};
-        
-            byElement.each(function(){
-                var name = $(this).attr('data-filter');
-                filtersFinal[name] = {
-                    'object' : child,
-                    '$el' : $(this)
-                };
-            });
-        
-            return filtersFinal;
+            return {
+                'object' : child,
+                '$el' : byElement
+            };
         };
     
         /**
-     * bind dom to matching methods
-     */
+             * bind dom to matching methods
+             */
         cls.bind = function(element) {
             var events = {}, event = {}, name = "", method ="", fi = "", filterObj = {};
         
@@ -175,23 +202,23 @@
                         console.log('event ' + event + ' for element:', $(me));
                         console.log('Method "' + method + '" was prevented from executing');
                     }
+                   
                 }
-            };
-        
-            for(fi in cls.filter){
-                var filter = cls.filter[fi];
-            
-                //filter.fields = filter.$el.find('[name],[data-name]'),
-                filter.events = filter.$el.find('[data-on]');
+            }; 
+     
+            //filter.fields = filter.$el.find('[name],[data-name]'),
+            cls.filter.events = cls.filter.$el.find('[data-on]');
                 
-                $(filter.events).each(function (ke, el){
-                    name = $(this).getName();
-                    events[name] = cls.dispatchEvents.call(this);
-                    for(event in events[name]) {
-                        $(this).on(event, factory(this, event));
-                    }
-                });
-            }
+            $(cls.filter.events).each(function (ke, el){
+                name = $(this).getName();
+                events[name] = cls.dispatchEvents.call(this);
+                for(event in events[name]) {
+                    $(this).on(event, factory(this, event));
+                    $(this).setValue( $(this).getValue() ); //init values
+                    console.log('Bind ', event, $(this));
+                }
+            });
+     
             
         };
         
