@@ -37,7 +37,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
-                    <a class="brand" href="#">Project name</a>
+                    <a class="brand" href="#">klaster.js</a>
                     <div class="nav-collapse collapse">
                         <ul class="nav">
                             <li class="active"><a href="#">Home</a></li>
@@ -67,23 +67,40 @@
         </div>
 
         <div class="container">
-            <div class="row row-fluid no-margin controll-box" data-filter="simpleKlaster">
-                <form class="bs-docs-example form-inline mleft10">
 
-                    <div class="span3">
-                        <label>Anzahl</label>
-                        <select class="span3" name="number" data-on="change">
-                            <option>10</option>
-                            <option>20</option>
-                            <option>30</option>
-                            <option>40</option>
-                            <option>50</option>
-                        </select>   
-                        <a name="filterbutton" data-on="mouseenter,click,blur->hoover" data-connected=".config" class="btn" href="#" ><i class="icon-cog"></i> Filter</a>
-                    </div>
+            <!-- Main hero unit for a primary marketing message or call to action -->
+            <div class="hero-unit">
+                <h1>klaster.js + HTML5 = Future UI</h1>
+                <p>Keep it lean and stay clean. realy</p>
 
-                    <div class="span5 hide config">
+                <p><a class="btn btn-primary btn-large">Demo &raquo;</a></p>
+            </div>
 
+            <!-- Example row of columns -->
+            <div class="row">
+                <div class="span4">
+                    <h2>html</h2>
+
+                    <p><a class="btn" href="#">View details &raquo;</a></p>
+                </div>
+                <div class="span4">
+                    <h2>js</h2>
+                    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+                    <p><a class="btn" href="#">View details &raquo;</a></p>
+                </div>
+                <div class="span4 controll-box">
+                    <h2>Result</h2>
+
+                    Amount <select class="span1" name="number" data-on="change">
+                        <option>10</option>
+                        <option>20</option>
+                        <option>30</option> 
+                    </select>
+                    <a name="filterbutton" data-on="click" data-connected=".config" class="btn" href="#" ><i class="icon-cog"></i> more</a>
+
+                    <input type="text" class="span2" name="search" placeholder="feed me ..." data-on="keyup"/>
+
+                    <div class="hide config span2">
                         <label class="checkbox">
                             <input type="checkbox" name="art" value="Überprüfung" data-on="click"> Überprüfung
                         </label>
@@ -96,62 +113,40 @@
                         <label class="checkbox">
                             <input type="checkbox" value="Texte" name="art" data-on="click"> Texte
                         </label>
-
-                    </div>
-                    <div class="dataTables_paginate right paging_bootstrap pagination">
-                        <ul><li class="prev disabled"><a href="#">← Zurück</a></li><li class="active"><a href="#">1</a></li><li><a href="#">2</a></li><li><a href="#">3</a></li><li class="next"><a href="#">Weiter → </a></li></ul>
                     </div>
 
-                </form>
-            </div>
-            <!-- Main hero unit for a primary marketing message or call to action -->
-            <div class="hero-unit">
-                <h1> </h1>
-                <p>This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-                <p><a class="btn btn-primary btn-large">Learn more &raquo;</a></p>
-            </div>
 
-            <!-- Example row of columns -->
-            <div class="row">
-                <div class="span4">
-                    <h2>Heading</h2>
-                    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-                    <p><a class="btn" href="#">View details &raquo;</a></p>
-                </div>
-                <div class="span4">
-                    <h2>Heading</h2>
-                    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-                    <p><a class="btn" href="#">View details &raquo;</a></p>
-               </div>
-                <div class="span4">
-                    <h2>Heading</h2>
-                    <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
                     <p><a class="btn" href="#">View details &raquo;</a></p>
                 </div>
             </div>
 
             <hr>
+            <div class="row row-fluid no-margin "> 
 
+                <div class="dataTables_paginate right paging_bootstrap pagination">
+                    <ul><li class="prev disabled"><a href="#">← Zurück</a></li><li class="active"><a href="#">1</a></li><li><a href="#">2</a></li><li><a href="#">3</a></li><li class="next"><a href="#">Weiter → </a></li></ul>
+                </div> 
+            </div>
             <footer>
                 <p>&copy; Company 2012</p>
             </footer>
-            
+
         </div> <!-- /container -->
 
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.8.2.min.js"><\/script>')</script>
+
+        <script src="js/vendor/jquery-1.8.3.min.js"> </script>
 
         <script src="js/vendor/bootstrap.min.js"></script>
 
         <script src="js/jquery.klaster.js"></script>
- 
+
         <script src="js/main.js"></script>
 
         <script>
-            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+            /*    var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
             (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
             g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
-            s.parentNode.insertBefore(g,s)}(document,'script'));
+            s.parentNode.insertBefore(g,s)}(document,'script'));*/
         </script>
     </body>
 </html>

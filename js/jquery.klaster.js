@@ -10,7 +10,9 @@
     };
     
     $.fn.getValue = function() {
-        var value = "";
+        var value = this.val();
+        if(value !='') return value;
+        
         try{
             value = (this.attr('data-value') && this.attr('data-value') !=='') ? 
             JSON.parse(this.attr('data-value')) : this.val();
@@ -74,8 +76,8 @@
              */
         cls.changed = function() {
         
-            if(typeof child.filter_changed !== "undefined") 
-                return child.filter_changed.call(this);
+            if(typeof child.klaster_updated !== "undefined") 
+                return child.klaster.call(cls, this);
             return true;
         };
     
@@ -180,9 +182,7 @@
              * bind dom to matching methods
              */
         cls.bind = function(element) {
-            var events = {}, event = {}, name = "", method ="", fi = "", filterObj = {};
-        
-            child = child(cls);
+            var events = {}, event = {}, name = "", method ="";
         
             cls.filter = cls.dispatchFilter(element);
         
@@ -193,10 +193,12 @@
                     method = events[name][event];
                     var result = true;
                     if(false !== cls.pre_trigger.call(me, e)) {
-                        if(typeof child[name][method] !== 'undefined'){
-                            result = child[name][method].call(me, e);
-                            console.log(name, method);
+                        if(typeof child[name] !== 'undefined' && typeof child[name][method] !== 'undefined'){
+                            result = child[name][method].call(me, e, cls);
+                        }else{
+                            result = $(me).getValue();
                         }
+                        console.log(name, method);
                         cls.post_trigger.call(me, e, result);
                     }else{
                         console.log('event ' + event + ' for element:', $(me));
@@ -209,7 +211,7 @@
             //filter.fields = filter.$el.find('[name],[data-name]'),
             cls.filter.events = cls.filter.$el.find('[data-on]');
                 
-            $(cls.filter.events).each(function (ke, el){
+            $(cls.filter.events).each(function (){
                 name = $(this).getName();
                 events[name] = cls.dispatchEvents.call(this);
                 for(event in events[name]) {

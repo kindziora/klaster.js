@@ -5,7 +5,13 @@
    ========================================================================== */
 
 
-
+.controll-box label, .controll-box select{
+    font-size:80%;
+}
+.controll-box select{
+    padding:3px;  
+    margin:0;
+}
 
 
 
