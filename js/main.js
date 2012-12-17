@@ -4,7 +4,7 @@ function bool(value) {
 }
 
 $('.controll-box').klaster( {
-    'delay': 10,
+    'delay': 1000,
     'filterbutton' : {                //$('[data-name="filterbutton"]')
         'click' : function(e) {
             e.preventDefault();
@@ -13,6 +13,7 @@ $('.controll-box').klaster( {
             $fields.attr('data-omit', !bool($fields.attr('data-omit')));
             
             $fields.toggle(200);
+            
             return $fields.attr('data-omit');
         }
     },

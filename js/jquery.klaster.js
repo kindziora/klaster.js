@@ -29,8 +29,8 @@
             
             if(!$('[data-omit="true"] ' + select).get(0)){
                 $(select).each(function() {
-                    var omit = $(this).attr("data-omit");
-                    if(omit == "true") {
+                    
+                    if($(this).attr("data-omit") == "true") {
                         throw 'data omitted';
                     } 
                     
@@ -126,6 +126,7 @@
     
         cls.updateValues = function() {
             var name, event, events = {}, context, value;
+            
             $(cls.filter.events).each(function (ke, el){
                 context = $(this).ext();
                 name = context._get.name();
@@ -249,7 +250,6 @@
                     
                     if(false !== cls.pre_trigger.call(me, e)) {
                         try{
-                            
                             if(typeof child[name] !== 'undefined' && typeof child[name][method] !== 'undefined'){
                                 result = child[name][method].call(me, e, cls);
                                 
