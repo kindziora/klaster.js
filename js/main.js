@@ -1,5 +1,5 @@
 function bool(value) {
-   return value ? (value.toLowerCase() == "true") : false;
+    return value ? (value.toLowerCase() == "true") : false;
 }
 $('.controll-box').klaster( {
     'filterbutton' : {                //$('[data-name="filterbutton"]')
