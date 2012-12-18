@@ -104,7 +104,7 @@
              * "this" is the dom element responsible for the change
              */
         cls.changed = function() {
-        
+            cls.updateValues();
             if(typeof child.klaster !== "undefined") 
                 return child.klaster.call(cls, this);
             return true;
