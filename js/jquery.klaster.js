@@ -9,22 +9,51 @@
         return this.attr('data-name') ? this.attr('data-name') : this.attr('name');
     };
     
+    $.fn.nameAttr = function() {
+        return this.attr('data-name') ? 'data-name' : 'name';
+    }; 
+    
     $.fn.getValue = function() {
-        var value = this.val();
-        if(value !='') return value;
-        
-        try{
-            value = (this.attr('data-value') && this.attr('data-value') !=='') ? 
-            JSON.parse(this.attr('data-value')) : this.val();
-        }catch(e){
-            value = this.attr('data-value');
+        var values = [], value, subselect = "", select = "", omitted = false;
+            
+        if(this.attr('type') === "checkbox" || this.attr('type') === "radio" ){
+            subselect= ":checked";
         }
         
-        return (value == "") ? this.text() : value;
+        select = ['[', this.nameAttr(), '="', this.getName(), '"]', subselect].join('');
+        
+        if(!$('[data-omit="true"] ' + select).get(0)){
+            $(select).each(function() {  
+                if($(this).attr("data-omit") == "true") {
+                    omitted = true;
+                } 
+                value = $(this).val();   
+                if(value !=''){
+                    values.push(value);
+                    return;
+                }
+                value = (value == "") ? $(this).text() : value;
+                if(value == ''){
+                    try{
+                        value = ($(this).attr('data-value') && $(this).attr('data-value') !=='') ? 
+                        JSON.parse($(this).attr('data-value')) : $(this).val();
+                    }catch(e){
+                        value = $(this).attr('data-value');
+                    }
+                }
+                values.push(value);         
+            });
+        }else{
+            omitted = true;
+        }
+        
+        if(omitted)return undefined;
+        
+        return (values.length == 1) ? values[0] : values;
     }
     
     $.fn.setValue = function(value) {
-        var seen = false;
+        var seen = [];
         this.attr('data-value', JSON.stringify(value, function(key, val) {
             if (typeof val == "object") {
                 if (seen.indexOf(val) >= 0)
@@ -44,7 +73,7 @@
         
         cls.info = {
             'name' : 'klaster.js',
-            'version' : '0.3',
+            'version' : '0.5',
             'tag' : 'alpha',
             'author' : 'Alexander Kindziora',
             'date'  : '2012',
@@ -75,20 +104,24 @@
              * "this" is the dom element responsible for the change
              */
         cls.changed = function() {
-        
-            if(typeof child.klaster_updated !== "undefined") 
+            cls.updateValues();
+            if(typeof child.klaster !== "undefined") 
                 return child.klaster.call(cls, this);
             return true;
         };
     
+        cls.updateValue = function(value) {
+            if(typeof value !== 'undefined'){
+                $(this).setValue(value);
+                cls.values[$(this).getName()] = value;
+            }else{
+                delete cls.values[$(this).getName()];
+            }
+        };
+        
         cls.updateValues = function() {
-            var name, event, events;
-            $(cls.filter.events).each(function (ke, el){
-                name = $(this).getName();
-                events[name] = cls.dispatchEvents.call(this);
-                for(event in events[name]) {
-                    $(this).setValue( $(this).getValue() );
-                }
+            $(cls.filter.events).each(function (){
+                cls.updateValue.call(this, $(this).getValue());
             });
         };
     
@@ -137,7 +170,7 @@
         
             if(result != cls.values[$(this).getName()]){
                 cls.recognizeChange.setup($(this));
-                cls.values[$(this).getName()] = result;
+                cls.updateValue.call(this, result);
             }
         
             if(typeof child.post_trigger !== "undefined")
@@ -193,13 +226,21 @@
                     method = events[name][event];
                     var result = true;
                     if(false !== cls.pre_trigger.call(me, e)) {
-                        if(typeof child[name] !== 'undefined' && typeof child[name][method] !== 'undefined'){
+                        if(typeof child[name] !== 'undefined' &&
+                            typeof child[name][method] !== 'undefined'){
+                            
                             result = child[name][method].call(me, e, cls);
+                            
+                            if($(me).attr('data-omit') == "true"){
+                                result = $(me).getValue();
+                            }
+                            
                         }else{
                             result = $(me).getValue();
                         }
                         console.log(name, method);
                         cls.post_trigger.call(me, e, result);
+                        
                     }else{
                         console.log('event ' + event + ' for element:', $(me));
                         console.log('Method "' + method + '" was prevented from executing');
@@ -216,7 +257,9 @@
                 events[name] = cls.dispatchEvents.call(this);
                 for(event in events[name]) {
                     $(this).on(event, factory(this, event));
-                    $(this).setValue( $(this).getValue() ); //init values
+                    
+                    cls.updateValue.call(this, $(this).getValue());
+                    
                     console.log('Bind ', event, $(this));
                 }
             });
