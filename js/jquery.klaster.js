@@ -13,6 +13,11 @@
         return this.attr('data-name') ? 'data-name' : 'name';
     }; 
     
+    $.fn.toggleOmit = function() {
+        this.attr('data-omit', !(this.attr("data-omit") ? (this.attr("data-omit").toLowerCase() == "true") : false));
+        return this;
+    }; 
+ 
     $.fn.getValue = function() {
         var values = [], value, subselect = "", select = "", omitted = false;
             

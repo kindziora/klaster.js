@@ -1,24 +1,14 @@
-function bool(value) {
-    return value ? (value.toLowerCase() == "true") : false;
-}
 $('.controll-box').klaster( {
-    'filterbutton' : {                //$('[data-name="filterbutton"]')
+    'filterbutton' : {
         'click' : function(e) {
-            e.preventDefault();
-            var $fields = $($(this).attr('data-connected'));
-            
-            $fields.attr('data-omit', !bool($fields.attr('data-omit')));
-            
-            $fields.toggle(200);
-            
-            return $fields.attr('data-omit');
+            var $checks = $($(this).attr('data-connected'));
+            $checks.toggleOmit().toggle(200);
+            return $checks.attr('data-omit');
         }
     }, 
-    'klaster' : function(el){ // executed with a delay after the last filter change
-        /**
-        * @todo ajax call
-        */ 
-        console.log('commiting changes', this.values);
+    'klaster' : function(el){
+        $('#json-preview').html(JSON.stringify(this.values));
+       //prettyPrint();
     }
-} );
+});
 

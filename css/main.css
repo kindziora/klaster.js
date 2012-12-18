@@ -13,7 +13,17 @@
     margin:0;
 }
 
+.controll-box.form-horizontal .control-group {
+    margin-bottom: 10px;
+}
 
+.controll-box.form-horizontal .controls {
+    margin-left: 70px;
+}
+
+.controll-box.form-horizontal .control-label{
+    width: auto;
+}
 
 
 
