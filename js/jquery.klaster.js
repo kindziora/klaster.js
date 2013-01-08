@@ -18,16 +18,23 @@
         return this;
     }; 
  
-    $.fn.getValue = function() {
-        var values = [], value, subselect = "", select = "", omitted = false;
+    $.fn.getValue = function(multiple) {
+        var values = [], value, subselect = "", select = "", omitted = false, exists = false;
             
         if(this.attr('type') === "checkbox" || this.attr('type') === "radio" ){
             subselect= ":checked";
+            multiple = true;
         }
         
-        select = ['[', this.nameAttr(), '="', this.getName(), '"]', subselect].join('');
+        if(multiple) {
+            select = ['[', this.nameAttr(), '="', this.getName(), '"]', subselect].join('');
+            exists = !$('[data-omit="true"] ' + select).get(0);
+        }else{
+            select = this;    
+            exists = !this.parents('[data-omit="true"]').get(0);
+        }
         
-        if(!$('[data-omit="true"] ' + select).get(0)){
+        if(exists){
             $(select).each(function() {  
                 if($(this).attr("data-omit") == "true") {
                     omitted = true;
