@@ -47,11 +47,11 @@
                 value = (value == "") ? $(this).text() : value;
                 if(value == ''){
                     try{
-                        value = ($(this).attr('data-value') && $(this).attr('data-value') !=='') ? 
-                        JSON.parse($(this).attr('data-value')) : $(this).val();
+                        value = ($(this).data('value') && $(this).data('value') !=='') ?
+                        $(this).data('value') : $(this).val();
                     }catch(e){
                         console.log('error parsing json from data-value');
-                        value = $(this).attr('data-value');
+                        value = $(this).data('value');
                     }
                 }
                 values.push(value);         
@@ -66,21 +66,13 @@
     }
     
     $.fn.setValue = function(value) {
-        var seen = [];
-        this.attr('data-value', JSON.stringify(value, function(key, val) {
-            if (typeof val == "object") {
-                if (seen.indexOf(val) >= 0)
-                    return undefined
-                seen.push(val)
-            }
-            return val;
-        }));
+        this.data('value', value);
     }
     
 })( jQuery );
 
 (function( $ ){
- 
+
     $.fn.klaster = function( child ) {
         var cls = $.extend({}, child);
         
@@ -171,15 +163,7 @@
              * gets executed after an event is triggered
              */
         cls.post_trigger = function(e, result) {
-            var seen = [];
-            $(this).attr('data-value', JSON.stringify(result, function(key, val) {
-                if (typeof val == "object") {
-                    if (seen.indexOf(val) >= 0)
-                        return undefined
-                    seen.push(val)
-                }
-                return val;
-            }));
+            $(this).setValue(result);
         
             if(result != cls.values[$(this).getName()]){
                 cls.recognizeChange.setup($(this));
