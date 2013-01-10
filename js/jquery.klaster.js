@@ -81,7 +81,7 @@
 (function( $ ){
  
     $.fn.klaster = function( child ) {
-        var cls = {};
+        var cls = $.extend({}, child);
         
         cls.info = {
             'name' : 'klaster.js',
