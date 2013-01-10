@@ -50,6 +50,7 @@
                         value = ($(this).attr('data-value') && $(this).attr('data-value') !=='') ? 
                         JSON.parse($(this).attr('data-value')) : $(this).val();
                     }catch(e){
+                        console.log('error parsing json from data-value');
                         value = $(this).attr('data-value');
                     }
                 }
