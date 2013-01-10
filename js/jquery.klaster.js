@@ -231,7 +231,7 @@
             var events = {}, event = {}, name = "", method ="";
         
             cls.filter = cls.dispatchFilter(element);
-        
+            cls.$el = element;
             /* variable injection via lambda function factory used in iteration */
             var factory = function (me, event) {
                 return function(e){
