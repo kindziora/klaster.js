@@ -35,7 +35,10 @@
         }
         
         if(exists){
-            $(select).each(function() {  
+            $(select).each(function() {
+                /**
+                 * @todo rethink rewrite
+                 */
                 if($(this).attr("data-omit") == "true") {
                     omitted = true;
                 } 
@@ -44,16 +47,13 @@
                     values.push(value);
                     return;
                 }
-                value = (value == "") ? $(this).text() : value;
-                if(value == ''){
-                    try{
-                        value = ($(this).data('value') && $(this).data('value') !=='') ?
-                        $(this).data('value') : $(this).val();
-                    }catch(e){
-                        console.log('error parsing json from data-value');
+                value = (typeof value == 'undefined') ? $(this).text() : value;
+                if(typeof value == 'undefined' && $(this).data('value')){
                         value = $(this).data('value');
-                    }
+                }else if(typeof $(this).data('value') == '' && $(this).attr('data-value') != ""){
+                    value = $(this).attr('data-value');
                 }
+                
                 values.push(value);         
             });
         }else{
@@ -110,8 +110,8 @@
              */
         cls.changed = function() {
             //cls.updateValues();
-            if(typeof child.klaster !== "undefined") 
-                return child.klaster.call(cls, this);
+            if(typeof child.sync !== "undefined") 
+                return child.sync.call(cls, this);
             return true;
         };
     
@@ -129,7 +129,7 @@
                 cls.updateValue.call(this, $(this).getValue());
             });
         };
-    
+        
         /**
              *recognize if filter values have changed and call someone
              *@description one common callback for changed is an ajax call with all values to a REST backend to update data
@@ -163,13 +163,14 @@
              * gets executed after an event is triggered
              */
         cls.post_trigger = function(e, result) {
-            $(this).setValue(result);
-        
+            
             if(result != cls.values[$(this).getName()]){
                 cls.recognizeChange.setup($(this));
                 cls.updateValue.call(this, result);
             }
-        
+            
+            $(this).setValue(result);
+            
             if(typeof child.post_trigger !== "undefined")
                 return child.post_trigger.call(this, e);
         
@@ -216,6 +217,7 @@
         
             cls.filter = cls.dispatchFilter(element);
             cls.$el = element;
+            
             /* variable injection via lambda function factory used in iteration */
             var factory = function (me, event) {
                 return function(e){
@@ -248,22 +250,25 @@
      
             //filter.fields = filter.$el.find('[name],[data-name]'),
             cls.filter.events = cls.filter.$el.find('[data-on]');
-                
+            
             $(cls.filter.events).each(function (){
                 name = $(this).getName();
                 events[name] = cls.dispatchEvents.call(this);
                 for(event in events[name]) {
                     $(this).on(event, factory(this, event));
-                    
                     cls.updateValue.call(this, $(this).getValue());
-                    
                     console.log('Bind ', event, $(this));
                 }
             });
-     
-            
         };
         
         cls.bind(this);
+        
+        if(typeof child._methods !== "undefined" && child._methods.init !== "undefined"){
+            if(child._methods.init(cls)) {
+                cls.recognizeChange.setup();
+            }
+        }
+        
     };
 })( jQuery );

@@ -6,7 +6,7 @@ $('.controll-box').klaster( {
             return $checks.attr('data-omit');
         }
     }, 
-    'klaster' : function(el){
+    'sync' : function(el){
         $('#json-preview').html(JSON.stringify(this.values));
        //prettyPrint();
     }
