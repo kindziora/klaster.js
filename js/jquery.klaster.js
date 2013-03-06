@@ -237,12 +237,12 @@
                         }else{
                             result = $(me).getValue();
                         }
-                        console.log(name, method);
+                        //console.log(name, method);
                         cls.post_trigger.call(me, e, result);
                         
                     }else{
-                        console.log('event ' + event + ' for element:', $(me));
-                        console.log('Method "' + method + '" was prevented from executing');
+                        //console.log('event ' + event + ' for element:', $(me));
+                       // console.log('Method "' + method + '" was prevented from executing');
                     }
                    
                 }
