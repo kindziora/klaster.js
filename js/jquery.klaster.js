@@ -257,7 +257,7 @@
                 for(event in events[name]) {
                     $(this).on(event, factory(this, event));
                     cls.updateValue.call(this, $(this).getValue());
-                    console.log('Bind ', event, $(this));
+                    //console.log('Bind ', event, $(this));
                 }
             });
         };
