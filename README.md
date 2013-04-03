@@ -59,6 +59,8 @@ This example shows how to sync data with a backend.
 As you cann see by the dom "number" is gets his values by change and "hello" on a click.
 The "sync" function gets executed if data has changed, all values are accessible via this.values
 
+##Work in progress
+
 
 
 
