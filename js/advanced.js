@@ -11,15 +11,20 @@ var element = {
 
 var person = $.extend(true, element, {
     views: {
-        renderName: function() {
-            return '<p>' + values.name + '</p>';
+        renderName: function(name) {
+            return view.render('templates/exampleTemplatefile.html', {'name' : name});
+            // OR
+            return '<p>' + name + '</p>';
         }
     },
     actions: {
         'filterbutton': {
-            'click': function(e) {
+            'click': function(e, self) {
                 var $checks = $($(this).attr('data-connected'));
                 $checks.toggleOmit().toggle(200);
+                
+                $('h1').html( person.views.renderName('testi') );
+                
                 return $checks.attr('data-omit');
             }
         }
@@ -27,7 +32,7 @@ var person = $.extend(true, element, {
 });
 
 $('.controll-box').klaster(person);
- 
+
 
 
 

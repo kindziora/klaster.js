@@ -9,7 +9,7 @@
     $.fn.getName = function() {
         return this.attr('data-name') ? this.attr('data-name') : this.attr('name');
     };
-
+    
     $.fn.nameAttr = function() {
         return this.attr('data-name') ? 'data-name' : 'name';
     };
@@ -230,6 +230,7 @@
         };
 
         /**
+         * @todo rethink is this the best way to bind the methods?
          * bind dom to matching methods
          */
         cls.bind = function(element) {
