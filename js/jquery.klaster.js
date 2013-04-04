@@ -9,7 +9,7 @@
     $.fn.getName = function() {
         return this.attr('data-name') ? this.attr('data-name') : this.attr('name');
     };
-    
+
     $.fn.nameAttr = function() {
         return this.attr('data-name') ? 'data-name' : 'name';
     };
@@ -83,7 +83,7 @@
             /* if multiple is active return values */
             return this.getValues(this.attr('type'));
         }
-        
+
     };
 
     $.fn.setValue = function(value) {
@@ -100,11 +100,12 @@
         cls.info = {
             'name': 'klaster.js',
             'version': '0.9',
+            'debug': 1,
             'tag': 'beta',
             'author': 'Alexander Kindziora',
             'date': '2013',
             'copyright': 'author',
-            'license' : 'none, feel free'
+            'license': 'none, feel free'
         };
 
         cls.values = {};
@@ -114,6 +115,19 @@
          */
         cls.get = function(name, value) {
             return ((typeof cls[name] !== 'undefined') ? cls[name] : value);
+        };
+
+        /**
+         * log debug messages
+         */
+        cls.debug = function() {
+            if (cls.info.debug === 1) {
+                if (typeof arguments !== 'undefined') {
+                    for (var msg in arguments) {
+                        console.log(arguments[msg]);
+                    }
+                }
+            }
         };
 
         /*
@@ -170,12 +184,13 @@
                 }
             };
 
-            mio.setup = function(el) {
+            mio.setup = function() {
                 mio.cancel();
                 cls.timeoutID = window.setTimeout(function(msg) {
                     mio.changed(msg);
-                }, cls.get('delay', 1000), el);
-            }
+                }, this.attr('data-delay') | cls.get('delay', 1000));
+            };
+
             return mio;
         }();
 
@@ -185,7 +200,7 @@
         cls.post_trigger = function(e, result) {
 
             if (result !== cls.values[$(this).getName()]) {
-                cls.recognizeChange.setup($(this));
+                cls.recognizeChange.setup.call($(this));
                 cls.updateValue.call(this, result);
             }
 
@@ -243,9 +258,9 @@
             var factory = function(me, event) {
                 return function(e) {
                     name = $(me).getName();
-                    method = events.actions[name][event];
+                    method = events[name][event];
                     var result = true;
-                    
+
                     if (false !== cls.pre_trigger.call(me, e)) {
                         if (typeof child.actions[name] !== 'undefined' &&
                                 typeof child.actions[name][method] !== 'undefined') {
@@ -258,16 +273,18 @@
                         }
                         cls.post_trigger.call(me, e, result);
                     }
+
                 }
             };
 
             //filter.fields = filter.$el.find('[name],[data-name]'),
             cls.filter.events = cls.filter.$el.find('[data-on]');
-            
+
             $(cls.filter.events).each(function() {
                 name = $(this).getName();
                 events[name] = cls.dispatchEvents.call(this);
                 for (event in events[name]) {
+                    cls.debug('name:' + name + ', event:' + event);
                     $(this).on(event, factory(this, event));
                     cls.updateValue.call(this, $(this).getValue());
                 }

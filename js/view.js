@@ -1,6 +1,6 @@
 
 var view = function() {
-    var self = {}, cache = {}, priv = {};
+    var self = {}, cache = {};
     
     // Simple JavaScript Templating
     // based on code by John Resig - http://ejohn.org/ - MIT Licensed
@@ -60,7 +60,7 @@ var view = function() {
         });
     };
     
-    priv.bindModal = function($modal, ok, cancel) {
+    self.bindModal = function($modal, ok, cancel) {
         $modal.modal()
         .find('.okbtn').click(function() {
             if(typeof ok !== 'undefined')
@@ -79,8 +79,8 @@ var view = function() {
     };
     
     self.modal = function(params, ok, cancel, ready) {
-        self.render("modal", params, function(data) {
-            var $modal = priv.bindModal($(data), ok, cancel);
+        self.render("partials/modal.html", params, function(data) {
+            var $modal = self.bindModal($(data), ok, cancel);
             if(typeof ready !== 'undefined') ready($modal);
         });
     };

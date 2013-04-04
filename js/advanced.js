@@ -1,5 +1,5 @@
 var element = {
-    views: {
+    html: {
         renderName: function() {
             return '<p>' + values.name + '</p>';
         }
@@ -10,9 +10,9 @@ var element = {
 };
 
 var person = $.extend(true, element, {
-    views: {
+    html: {
         renderName: function(name) {
-            return view.render('templates/exampleTemplatefile.html', {'name' : name});
+            return view.render('views/exampleTemplatefile.html', {'name' : name});
             // OR
             return '<p>' + name + '</p>';
         }
@@ -23,7 +23,7 @@ var person = $.extend(true, element, {
                 var $checks = $($(this).attr('data-connected'));
                 $checks.toggleOmit().toggle(200);
                 
-                $('h1').html( person.views.renderName('testi') );
+                $('h1').html( person.html.renderName('testi') );
                 
                 return $checks.attr('data-omit');
             }
