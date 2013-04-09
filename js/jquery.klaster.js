@@ -285,6 +285,7 @@
                 events[name] = cls.dispatchEvents.call(this);
                 for (event in events[name]) {
                     cls.debug('name:' + name + ', event:' + event);
+                    $(this).off(event);
                     $(this).on(event, factory(this, event));
                     cls.updateValue.call(this, $(this).getValue());
                 }
