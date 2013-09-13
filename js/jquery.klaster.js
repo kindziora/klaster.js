@@ -57,7 +57,7 @@
         if (this.attr(api.omit.attr) === "true") {
             return undefined;
         }
-        var value = $(this).val() | $(this).text() | $(this).html();
+        var value = $(this).val() || $(this).text() || $(this).html();
 
         if (typeof value === 'undefined' && $(this).data('value')) {
             value = $(this).data('value');
@@ -221,7 +221,7 @@
                 mio.cancel();
                 cls.timeoutID = window.setTimeout(function(msg) {
                     mio.changed(msg);
-                }, this.attr(api.delay.attr) | cls.get('delay', 1000));
+                }, this.attr(api.delay.attr) || cls.get('delay', 1000));
             };
 
             return mio;
