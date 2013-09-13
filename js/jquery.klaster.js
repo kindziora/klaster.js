@@ -72,8 +72,8 @@
             var values = [],
                     value = undefined;
             $elements.each(function() {
-                value = me.value.call(this);
-                if (value === 'undefined') {
+                value = me.value.call($(this));
+                if (typeof value !== 'undefined') {
                     values.push(value);
                 }
             });

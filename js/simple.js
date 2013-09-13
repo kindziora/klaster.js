@@ -1,13 +1,5 @@
 $('.controll-box').klaster({
-    info: {
-        'name': 'my simple klaster.js implementation',
-        'version': '0.9',
-        'debug': 0,
-        'tag': 'beta',
-        'author': 'yep Alexander tester',
-        'date': '2013',
-        'description' : 'no debug, this is silent'
-    },
+    delay: 0,
     actions: {
         'filterbutton': {
             'click': function(e) {
