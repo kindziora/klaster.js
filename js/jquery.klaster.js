@@ -4,31 +4,65 @@
  * 
  */
 (function($) {
-    var me = {};
+    var me = {}, prefix = 'data';
+
+    api = {
+        'name': {
+            'attr': prefix + '-name',
+            'value': 'String containing name of element, not unique'
+        },
+        'omit': {
+            'attr': prefix + '-omit',
+            'value': 'String/that evaluates to boolean, whether ignoring the area for model representation data or not'
+        },
+        'value': {
+            'attr': prefix + '-value',
+            'value': 'String, containing the value of an element, can be plain or json'
+        },
+        'multiple': {
+            'attr': prefix + '-multiple',
+            'value': 'String/that evaluates to boolean, whether this element is part of multiple elements like checkbox',
+            'children': {
+                'checked': {
+                    'attr': prefix + '-checked',
+                    'value': 'String/that evaluates to boolean, whether this element is will apear inside a list of multiple elements with similar data-name, like checkbox',
+                }
+            }
+        },
+        'delay': {
+            'attr': prefix + '-delay',
+            'value': 'number of miliseconds until sync'
+        },
+        'on': {
+            'attr': prefix + '-on',
+            'value': 'event that triggers matching action method, also alias is possible. eg. hover->klasterhover'
+        }
+    };
+
 
     $.fn.getName = function() {
-        return this.attr('data-name') ? this.attr('data-name') : this.attr('name');
+        return this.attr(api.name.attr) ? this.attr(api.name.attr) : this.attr('name');
     };
 
     $.fn.nameAttr = function() {
-        return this.attr('data-name') ? 'data-name' : 'name';
+        return this.attr(api.name.attr) ? api.name.attr : 'name';
     };
 
     $.fn.toggleOmit = function() {
-        this.attr('data-omit', !(this.attr("data-omit") ? (this.attr("data-omit").toLowerCase() === "true") : false));
+        this.attr(api.omit.attr, !(this.attr(api.omit.attr) ? (this.attr(api.omit.attr).toLowerCase() === "true") : false));
         return this;
     };
 
     me.value = function() {
-        if (this.attr("data-omit") === "true") {
+        if (this.attr(api.omit.attr) === "true") {
             return undefined;
         }
         var value = $(this).val() | $(this).text() | $(this).html();
 
         if (typeof value === 'undefined' && $(this).data('value')) {
             value = $(this).data('value');
-        } else if (typeof $(this).data('value') === '' && $(this).attr('data-value') !== "") {
-            value = $(this).attr('data-value');
+        } else if (typeof $(this).data('value') === '' && $(this).attr(api.value.attr) !== "") {
+            value = $(this).attr(api.value.attr);
         }
         return value;
     };
@@ -56,8 +90,8 @@
 
     $.fn.getValues = function(type) {
         if (typeof me.multipleValues[type] === 'undefined'
-                && this.attr('data-multiple')) {
-            type = 'data-multiple';
+                && this.attr(api.multiple.attr)) {
+            type = api.multiple.attr;
         }
         return me.multipleValues[type].call(this);
     };
@@ -71,13 +105,13 @@
         /**
          * return undefined if this element will be omitted
          */
-        if (this.parents('[data-omit="true"]').get(0)) {
+        if (this.parents('[' + api.omit.attr + '="true"]').get(0)) {
             return undefined;
         }
 
         if (!multiple
                 && typeof me.multipleValues[this.attr('type')] !== 'function'
-                && !this.attr('data-multiple')) {
+                && !this.attr(api.multiple.attr)) {
             return me.value.call(this);
         } else {
             /* if multiple is active return values */
@@ -90,26 +124,25 @@
         this.data('value', value);
     };
 
-})(jQuery);
-
-(function($) {
 
     $.fn.klaster = function(child) {
-        var cls = $.extend({}, child);
-
-        cls.info = {
-            'name': 'klaster.js',
-            'version': '0.9',
-            'debug': 1,
-            'tag': 'beta',
-            'author': 'Alexander Kindziora',
-            'date': '2013',
-            'copyright': 'author',
-            'license': 'none, feel free'
-        };
-
-        cls.values = {};
-
+        var cls = $.extend({
+            'info': {
+                'name': 'klaster.js',
+                'version': '0.9',
+                'debug': 1,
+                'tag': 'beta',
+                'author': 'Alexander Kindziora',
+                'date': '2013',
+                'copyright': 'author',
+                'license': 'none, feel free'
+            },
+            getAPI: function() {
+                return api;
+            },
+            'values': {}
+        }, child);
+        
         /**
          *get class property with default value
          */
@@ -188,7 +221,7 @@
                 mio.cancel();
                 cls.timeoutID = window.setTimeout(function(msg) {
                     mio.changed(msg);
-                }, this.attr('data-delay') | cls.get('delay', 1000));
+                }, this.attr(api.delay.attr) | cls.get('delay', 1000));
             };
 
             return mio;
@@ -216,20 +249,16 @@
          *dispatch events for dom element
          */
         cls.dispatchEvents = function() {
-            var events = $(this).attr('data-on').split(','), i = 0, event = "", FinalEvents = {};
-            var method = "", parts = "";
+            var events = $(this).attr(api.on.attr).split(','), i = 0, event = "", FinalEvents = {}, parts = "";
 
             for (i in events) {
                 event = $.trim(events[i]);
                 parts = event.split('->');
                 if (parts.length > 1) {
-                    method = parts[1];
-                    event = parts[0];
+                    FinalEvents[parts[0]] = parts[1];
                 } else {
-                    method = parts[0];
-                    event = parts[0];
+                    FinalEvents[parts[0]] = parts[0];
                 }
-                FinalEvents[event] = method;
             }
             return FinalEvents;
         };
@@ -265,7 +294,7 @@
                         if (typeof child.actions[name] !== 'undefined' &&
                                 typeof child.actions[name][method] !== 'undefined') {
                             result = child.actions[name][method].call(me, e, cls);
-                            if ($(me).attr('data-omit') === "true") {
+                            if ($(me).attr(api.omit.attr) === "true") {
                                 result = $(me).getValue();
                             }
                         } else {
@@ -278,7 +307,7 @@
             };
 
             //filter.fields = filter.$el.find('[name],[data-name]'),
-            cls.filter.events = cls.filter.$el.find('[data-on]');
+            cls.filter.events = cls.filter.$el.find('[' + api.on.attr + ']');
 
             $(cls.filter.events).each(function() {
                 name = $(this).getName();
@@ -290,6 +319,7 @@
                     cls.updateValue.call(this, $(this).getValue());
                 }
             });
+
         };
 
         cls.bind(this);

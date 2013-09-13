@@ -60,8 +60,8 @@ var view = function() {
         });
     };
     
-    self.bindModal = function($modal, ok, cancel) {
-        $modal.modal()
+    self.bindModal = function($modal, ok, cancel, params) {
+        $modal.modal(params)
         .find('.okbtn').click(function() {
             if(typeof ok !== 'undefined')
                 ok.call(this);
