@@ -1,4 +1,4 @@
-$('body').klaster({
+$('.controll-box').klaster({
     delay: 0,
     actions: {
         'filterbutton': {
@@ -11,7 +11,6 @@ $('body').klaster({
     },
     'sync': function(el) {
         $('#json-preview').html(JSON.stringify(this.values));
-        //two way data binding
-        this.values.words = this.values.search.split(' ').length;
+        //prettyPrint();
     }
 });

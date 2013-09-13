@@ -40,6 +40,7 @@
                         <span class="icon-bar"></span>
                     </a>
                     <a class="brand" href="#">klaster.js</a>
+
                     <div class="nav-collapse collapse">
                         <ul class="nav">
                             <li class="active"><a href="#">Home</a></li>
@@ -125,9 +126,9 @@
 
     &lt;/pre&gt;
 &lt;/div&gt;
-                     </pre>
+                    </pre>
 
-                   
+
                 </div>
             </div>
             <div class="row-fluid">
@@ -149,10 +150,10 @@
         //prettyPrint();
     }
 });</pre>
-                    
+
                 </div>
             </div>
-             <h1>Result</h1>
+            <h1>Result</h1>
             <div class="row-fluid">
                 <div class="span12">
                     <h2>view</h2>
@@ -160,7 +161,7 @@
                         <div class="control-group">
                             <label class="control-label" for="inputSearch">Search</label>
                             <div class="controls">
-                                <input type="text" class="input-block-level" id="inputSearch" name="search" placeholder="feed me ..." data-on="keyup" data-value="&quot;&quot;">
+                                <input type="text" class="input-block-level" id="inputSearch" name="search" placeholder="feed me ..." data-on="keyup"/>
                             </div>
                         </div>
 
@@ -205,6 +206,18 @@
                     </pre>
                 </div>
             </div>
+            <div class="row-fluid">
+                <div class="span12">
+                    <h2>Two way databinding</h2>
+                    words:<div data-name="words"></div>
+                    searchstring:<div data-name="search"></div>
+                    <input type="text"name="search" placeholder="feed me ..." data-on="keyup"/>
+                </div>
+            </div>
+
+
+
+
         </div>
         <hr>
         <div class="row row-fluid no-margin "> 

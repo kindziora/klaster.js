@@ -126,6 +126,7 @@
 
 
     $.fn.klaster = function(child) {
+
         var cls = $.extend({
             'info': {
                 'name': 'klaster.js',
@@ -137,12 +138,10 @@
                 'copyright': 'author',
                 'license': 'none, feel free'
             },
-            getAPI: function() {
-                return api;
-            },
+            'api': api,
             'values': {}
         }, child);
-        
+
         /**
          *get class property with default value
          */
@@ -177,8 +176,22 @@
          * "this" is the dom element responsible for the change
          */
         cls.changed = function() {
-            if (typeof child.sync !== "undefined")
-                return child.sync.call(cls, this);
+            if (typeof child.sync !== "undefined") {
+                child.sync.call(cls, this);
+
+                var fieldname;
+
+                for (fieldname in cls.values) {
+                    $('[data-name="' + fieldname + '"],[name="'+ fieldname +'"]').each(function() {
+                        if ($(this).is("input") || $(this).is("select")) {
+                            $(this).val(cls.values[fieldname]);
+                        }else {
+                            $(this).html(cls.values[fieldname]);
+                        }
+                    });
+                }
+            }
+
             return true;
         };
 
