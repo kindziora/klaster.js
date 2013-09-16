@@ -171,6 +171,26 @@
             return true;
         };
 
+        /**
+         * two way databinding
+         * @returns {undefined}
+         */
+        me.model2view = function() {
+            var fieldname, $this = this;
+
+            for (fieldname in cls.values) {
+                $('[data-name="' + fieldname + '"],[name="' + fieldname + '"]').each(function() {
+                    if ($this[0] === $(this)[0])
+                        return;
+                    if ($(this).is("input") || $(this).is("select")) {
+                        $(this).val(cls.values[fieldname]);
+                    } else {
+                        $(this).html(cls.values[fieldname]);
+                    }
+                });
+            }
+        };
+
         /*
          * gets executed after a change on dom objects
          * "this" is the dom element responsible for the change
@@ -178,18 +198,7 @@
         cls.changed = function() {
             if (typeof child.sync !== "undefined") {
                 child.sync.call(cls, this);
-
-                var fieldname;
-
-                for (fieldname in cls.values) {
-                    $('[data-name="' + fieldname + '"],[name="'+ fieldname +'"]').each(function() {
-                        if ($(this).is("input") || $(this).is("select")) {
-                            $(this).val(cls.values[fieldname]);
-                        }else {
-                            $(this).html(cls.values[fieldname]);
-                        }
-                    });
-                }
+                me.model2view($(this));
             }
 
             return true;
@@ -246,6 +255,8 @@
         cls.post_trigger = function(e, result) {
 
             if (result !== cls.values[$(this).getName()]) {
+                me.model2view.call($(this));
+
                 cls.recognizeChange.setup.call($(this));
                 cls.updateValue.call(this, result);
             }
