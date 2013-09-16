@@ -6,38 +6,61 @@
 (function($) {
     var me = {}, prefix = 'data';
 
-    api = {
-        'name': {
-            'attr': prefix + '-name',
-            'value': 'String containing name of element, not unique'
+    docapi = {
+        'info': {
+            'name': 'klaster.js',
+            'version': '0.9',
+            'debug': 1,
+            'tag': 'beta',
+            'author': 'Alexander Kindziora',
+            'date': '2013',
+            'copyright': 'author',
+            'license': 'none, feel free'
         },
-        'omit': {
-            'attr': prefix + '-omit',
-            'value': 'String/that evaluates to boolean, whether ignoring the area for model representation data or not'
-        },
-        'value': {
-            'attr': prefix + '-value',
-            'value': 'String, containing the value of an element, can be plain or json'
-        },
-        'multiple': {
-            'attr': prefix + '-multiple',
-            'value': 'String/that evaluates to boolean, whether this element is part of multiple elements like checkbox',
-            'children': {
-                'checked': {
-                    'attr': prefix + '-checked',
-                    'value': 'String/that evaluates to boolean, whether this element is will apear inside a list of multiple elements with similar data-name, like checkbox',
+        'Controller': {
+            'this.actions': {
+                'dom-attribute name': {
+                    'on-name': 'event callback handler, params(e, controller) context(this) is jQuery dom element'
                 }
+            },
+            'this.delay': 'integer delay in milliseconds used for changes on model call to sync function timeout',
+            'change': 'callback that executes after change of model data(this.model.values) with a delay of milliseconds declared with this.delay default 0'
+
+        },
+        'dom-attributes': {
+            'name': {
+                'attr': prefix + '-name',
+                'value': 'String containing name of element, not unique'
+            },
+            'omit': {
+                'attr': prefix + '-omit',
+                'value': 'String/that evaluates to boolean, whether ignoring the area for model representation data or not'
+            },
+            'value': {
+                'attr': prefix + '-value',
+                'value': 'String, containing the value of an element, can be plain or json'
+            },
+            'multiple': {
+                'attr': prefix + '-multiple',
+                'value': 'String/that evaluates to boolean, whether this element is part of multiple elements like checkbox',
+                'children': {
+                    'checked': {
+                        'attr': prefix + '-checked',
+                        'value': 'String/that evaluates to boolean, whether this element is will apear inside a list of multiple elements with similar data-name, like checkbox',
+                    }
+                }
+            },
+            'delay': {
+                'attr': prefix + '-delay',
+                'value': 'number of miliseconds until sync'
+            },
+            'on': {
+                'attr': prefix + '-on',
+                'value': 'event that triggers matching action method, also alias is possible. eg. hover->klasterhover'
             }
-        },
-        'delay': {
-            'attr': prefix + '-delay',
-            'value': 'number of miliseconds until sync'
-        },
-        'on': {
-            'attr': prefix + '-on',
-            'value': 'event that triggers matching action method, also alias is possible. eg. hover->klasterhover'
         }
-    };
+
+    }, api = docapi['dom-attributes'];
 
 
     $.fn.getName = function() {
@@ -128,18 +151,12 @@
     $.fn.klaster = function(child) {
 
         var cls = $.extend({
-            'info': {
-                'name': 'klaster.js',
-                'version': '0.9',
-                'debug': 1,
-                'tag': 'beta',
-                'author': 'Alexander Kindziora',
-                'date': '2013',
-                'copyright': 'author',
-                'license': 'none, feel free'
-            },
-            'api': api,
-            'values': {}
+            'api': docapi,
+            'model': {
+                'values': {},
+                'change': {}
+            }, 'config': {
+            }
         }, child);
 
         /**
@@ -153,7 +170,7 @@
          * log debug messages
          */
         cls.debug = function() {
-            if (cls.info.debug === 1) {
+            if (cls.config.debug === 1) {
                 if (typeof arguments !== 'undefined') {
                     for (var msg in arguments) {
                         console.log(arguments[msg]);
@@ -178,14 +195,14 @@
         me.model2view = function() {
             var fieldname, $this = this;
 
-            for (fieldname in cls.values) {
+            for (fieldname in cls.model.values) {
                 $('[data-name="' + fieldname + '"],[name="' + fieldname + '"]').each(function() {
                     if ($this[0] === $(this)[0])
                         return;
                     if ($(this).is("input") || $(this).is("select")) {
-                        $(this).val(cls.values[fieldname]);
+                        $(this).val(cls.model.values[fieldname]);
                     } else {
-                        $(this).html(cls.values[fieldname]);
+                        $(this).html(cls.model.values[fieldname]);
                     }
                 });
             }
@@ -196,8 +213,8 @@
          * "this" is the dom element responsible for the change
          */
         cls.changed = function() {
-            if (typeof child.sync !== "undefined") {
-                child.sync.call(cls, this);
+            if (typeof child.change !== "undefined") {
+                child.change.call(cls, this);
                 me.model2view($(this));
             }
 
@@ -207,9 +224,9 @@
         cls.updateValue = function(value) {
             if (typeof value !== 'undefined') {
                 $(this).setValue(value);
-                cls.values[$(this).getName()] = value;
+                cls.model.values[$(this).getName()] = value;
             } else {
-                delete cls.values[$(this).getName()];
+                delete cls.model.values[$(this).getName()];
             }
         };
 
@@ -254,7 +271,7 @@
          */
         cls.post_trigger = function(e, result) {
 
-            if (result !== cls.values[$(this).getName()]) {
+            if (result !== cls.model.values[$(this).getName()]) {
                 me.model2view.call($(this));
 
                 cls.recognizeChange.setup.call($(this));

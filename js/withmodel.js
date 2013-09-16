@@ -19,7 +19,17 @@ var bodyController = function() {
         this.model.values.words = this.model.values.search.split(' ').length;
     };
 
-};
+}.bind(new function() { // bind model to our controller
+    this.model = {
+        'change': {
+            search: function() {
+            }
+        },
+        'values': {// here we could declare model side default values
+            'search': 'hallo welt'
+        }
+    };
+});
 
 
 $('body').klaster(new bodyController());
