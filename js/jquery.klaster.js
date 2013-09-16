@@ -151,10 +151,11 @@
     $.fn.klaster = function(child) {
 
         var cls = $.extend({
+            'delay': 0,
             'api': docapi,
             'model': {
                 'values': {},
-                'change': {}
+                'onchange': {}
             }, 'config': {
             }
         }, child);
@@ -197,13 +198,22 @@
 
             for (fieldname in cls.model.values) {
                 $('[data-name="' + fieldname + '"],[name="' + fieldname + '"]').each(function() {
-                    if ($this[0] === $(this)[0])
+
+                    if ($this[0] === $(this)[0] || (($(this).val() || $(this).html()) == cls.model.values[fieldname]))
                         return;
+
+                    if (typeof cls.model.onchange[$(this).getName()] === 'function') {
+                        cls.model.onchange[$(this).getName()].call(cls.model, $(this), cls.model.values[fieldname], $(this).val() || $(this).html(), 'controller');
+                    }
+
                     if ($(this).is("input") || $(this).is("select")) {
                         $(this).val(cls.model.values[fieldname]);
                     } else {
                         $(this).html(cls.model.values[fieldname]);
                     }
+
+
+
                 });
             }
         };
@@ -214,6 +224,7 @@
          */
         cls.changed = function() {
             if (typeof child.change !== "undefined") {
+                me.model2view.call($(this));
                 child.change.call(cls, this);
                 me.model2view($(this));
             }
@@ -221,7 +232,13 @@
             return true;
         };
 
-        cls.updateValue = function(value) {
+        cls.updateValue = function(value, old) {
+
+            if (typeof cls.model.onchange[$(this).getName()] === 'function') {
+
+                cls.model.onchange[$(this).getName()].call(cls.model, $(this), value, old, 'view');
+            }
+
             if (typeof value !== 'undefined') {
                 $(this).setValue(value);
                 cls.model.values[$(this).getName()] = value;
@@ -260,7 +277,7 @@
                 mio.cancel();
                 cls.timeoutID = window.setTimeout(function(msg) {
                     mio.changed(msg);
-                }, this.attr(api.delay.attr) || cls.get('delay', 1000));
+                }, this.attr(api.delay.attr) || cls.delay);
             };
 
             return mio;
@@ -271,11 +288,9 @@
          */
         cls.post_trigger = function(e, result) {
 
-            if (result !== cls.model.values[$(this).getName()]) {
-                me.model2view.call($(this));
-
+            if (result != cls.model.values[$(this).getName()]) {
                 cls.recognizeChange.setup.call($(this));
-                cls.updateValue.call(this, result);
+                cls.updateValue.call(this, result, cls.model.values[$(this).getName()]);
             }
 
             $(this).setValue(result);
@@ -357,6 +372,7 @@
                     cls.debug('name:' + name + ', event:' + event);
                     $(this).off(event);
                     $(this).on(event, factory(this, event));
+
                     cls.updateValue.call(this, $(this).getValue());
                 }
             });
