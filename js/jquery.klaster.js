@@ -28,6 +28,10 @@
 
         },
         'dom-attributes': {
+            'defaultvalues' : {
+                 'attr': prefix + '-defaultvalues',
+                 'value': 'String value:"client" or "server" that means our app uses the field.values from dom or model/javascript'
+            },
             'name': {
                 'attr': prefix + '-name',
                 'value': 'String containing name of element, not unique'
@@ -157,6 +161,7 @@
                 'values': {},
                 'onchange': {}
             }, 'config': {
+                debug: 1
             }
         }, child);
 
@@ -196,23 +201,21 @@
         me.model2view = function() {
             var fieldname, $this = this;
 
-            for (fieldname in cls.model.values) {
+            for (fieldname in cls.model.fields) {
                 $('[data-name="' + fieldname + '"],[name="' + fieldname + '"]').each(function() {
 
-                    if ($this[0] === $(this)[0] || (($(this).val() || $(this).html()) == cls.model.values[fieldname]))
+                    if ($this[0] === $(this)[0] || (($(this).val() || $(this).html()) == cls.model.fields[fieldname]))
                         return;
 
                     if (typeof cls.model.onchange[$(this).getName()] === 'function') {
-                        cls.model.onchange[$(this).getName()].call(cls.model, $(this), cls.model.values[fieldname], $(this).val() || $(this).html(), 'controller');
+                        cls.model.onchange[$(this).getName()].call(cls.model, $(this), cls.model.fields[fieldname], $(this).val() || $(this).html(), 'controller');
                     }
 
                     if ($(this).is("input") || $(this).is("select")) {
-                        $(this).val(cls.model.values[fieldname]);
+                        $(this).val(cls.model.fields[fieldname]);
                     } else {
-                        $(this).html(cls.model.values[fieldname]);
+                        $(this).html(cls.model.fields[fieldname]);
                     }
-
-
 
                 });
             }
@@ -241,9 +244,9 @@
 
             if (typeof value !== 'undefined') {
                 $(this).setValue(value);
-                cls.model.values[$(this).getName()] = value;
+                cls.model.fields[$(this).getName()] = value;
             } else {
-                delete cls.model.values[$(this).getName()];
+                delete cls.model.fields[$(this).getName()];
             }
         };
 
@@ -288,9 +291,9 @@
          */
         cls.post_trigger = function(e, result) {
 
-            if (result != cls.model.values[$(this).getName()]) {
+            if (result != cls.model.fields[$(this).getName()]) {
                 cls.recognizeChange.setup.call($(this));
-                cls.updateValue.call(this, result, cls.model.values[$(this).getName()]);
+                cls.updateValue.call(this, result, cls.model.fields[$(this).getName()]);
             }
 
             $(this).setValue(result);
@@ -364,7 +367,7 @@
 
             //filter.fields = filter.$el.find('[name],[data-name]'),
             cls.filter.events = cls.filter.$el.find('[' + api.on.attr + ']');
-
+            var InitValue = '';
             $(cls.filter.events).each(function() {
                 name = $(this).getName();
                 events[name] = cls.dispatchEvents.call(this);
@@ -373,7 +376,15 @@
                     $(this).off(event);
                     $(this).on(event, factory(this, event));
 
-                    cls.updateValue.call(this, $(this).getValue());
+
+                    if (cls.$el.attr('data-defaultvalues') !== 'client') {
+                        InitValue = $(this).getValue();
+                    } else {
+                        InitValue = cls.model.fields[$(this).getName()];
+                        me.model2view($(this));
+                    }
+
+                    cls.updateValue.call(this, InitValue);
                 }
             });
 
