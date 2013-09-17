@@ -28,9 +28,9 @@
 
         },
         'dom-attributes': {
-            'defaultvalues' : {
-                 'attr': prefix + '-defaultvalues',
-                 'value': 'String value:"client" or "server" that means our app uses the field.values from dom or model/javascript'
+            'defaultvalues': {
+                'attr': prefix + '-defaultvalues',
+                'value': 'String value:"client" or "server" that means our app uses the field.values from dom or model/javascript'
             },
             'name': {
                 'attr': prefix + '-name',
@@ -157,9 +157,19 @@
         var cls = $.extend({
             'delay': 0,
             'api': docapi,
+            'actions': {
+            },
             'model': {
                 'values': {},
                 'onchange': {}
+            },
+            'view': {
+                field: {
+                },
+                list: {
+                },
+                template: {
+                }
             }, 'config': {
                 debug: 1
             }
@@ -199,24 +209,33 @@
          * @returns {undefined}
          */
         me.model2view = function() {
-            var fieldname, $this = this;
+            var fieldname, $this = this, decorated = '';
 
             for (fieldname in cls.model.fields) {
                 $('[data-name="' + fieldname + '"],[name="' + fieldname + '"]').each(function() {
 
-                    if ($this[0] === $(this)[0] || (($(this).val() || $(this).html()) == cls.model.fields[fieldname]))
+                    if ($this[0] === $(this)[0] || ($(this).data('value') == cls.model.fields[fieldname]))
                         return;
 
                     if (typeof cls.model.onchange[$(this).getName()] === 'function') {
                         cls.model.onchange[$(this).getName()].call(cls.model, $(this), cls.model.fields[fieldname], $(this).val() || $(this).html(), 'controller');
                     }
 
+                    decorated = cls.model.fields[fieldname];
                     if ($(this).is("input") || $(this).is("select")) {
-                        $(this).val(cls.model.fields[fieldname]);
+                        $(this).val(decorated);
                     } else {
-                        $(this).html(cls.model.fields[fieldname]);
+                        decorated = (typeof cls.view.field[fieldname] === 'function') ? cls.view.field[fieldname](cls.model.fields[fieldname]) : cls.model.fields[fieldname];
+
+                        if (typeof decorated === 'function') {
+                            decorated.bind(undefined, $(this));
+                        } else {
+                            $(this).html(decorated);
+                        }
+
                     }
 
+                    $(this).data('value', cls.model.fields[fieldname]);
                 });
             }
         };
