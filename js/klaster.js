@@ -61,6 +61,10 @@
             'on': {
                 'attr': prefix + '-on',
                 'value': 'event that triggers matching action method, also alias is possible. eg. hover->klasterhover'
+            },
+            'view': {
+                'attr': prefix + '-view',
+                'value': 'defines which view function callback is executed for rendering output'
             }
         }
 
@@ -211,21 +215,33 @@
         me.model2view = function() {
             var fieldname, $this = this, decorated = '';
 
-            for (fieldname in cls.model.fields) {
+            for (fieldname in cls.model.field) {
                 $('[data-name="' + fieldname + '"],[name="' + fieldname + '"]').each(function() {
 
-                    if ($this[0] === $(this)[0] || ($(this).data('value') == cls.model.fields[fieldname]))
+                    if ($this[0] === $(this)[0] || ($(this).data('value') == cls.model.field[fieldname]))
                         return;
 
                     if (typeof cls.model.onchange[$(this).getName()] === 'function') {
-                        cls.model.onchange[$(this).getName()].call(cls.model, $(this), cls.model.fields[fieldname], $(this).val() || $(this).html(), 'controller');
+                        cls.model.onchange[$(this).getName()].call(cls.model, $(this), cls.model.field[fieldname], $(this).val() || $(this).html(), 'controller');
                     }
 
-                    decorated = cls.model.fields[fieldname];
+                    decorated = cls.model.field[fieldname];
                     if ($(this).is("input") || $(this).is("select")) {
                         $(this).val(decorated);
                     } else {
-                        decorated = (typeof cls.view.field[fieldname] === 'function') ? cls.view.field[fieldname](cls.model.fields[fieldname]) : cls.model.fields[fieldname];
+                        var viewCb = $(this).attr(api.view.attr);
+
+                        if (viewCb) {
+                            if (typeof cls.view.field[fieldname] !== 'function') {
+                                if (typeof cls.view.field[fieldname][viewCb] === 'function') {
+                                    decorated = cls.view.field[fieldname][viewCb](cls.model.field[fieldname]);
+                                }
+                            }
+                        }
+
+                        if (cls.view.field[fieldname] === 'function') {
+                            decorated = cls.view.field[fieldname](cls.model.field[fieldname]);
+                        }
 
                         if (typeof decorated === 'function') {
                             decorated.bind(undefined, $(this));
@@ -235,7 +251,7 @@
 
                     }
 
-                    $(this).data('value', cls.model.fields[fieldname]);
+                    $(this).data('value', cls.model.field[fieldname]);
                 });
             }
         };
@@ -245,9 +261,9 @@
          * "this" is the dom element responsible for the change
          */
         cls.changed = function() {
-            if (typeof child.change !== "undefined") {
+            if (typeof cls.model.changed !== "undefined") {
                 me.model2view.call($(this));
-                child.change.call(cls, this);
+                cls.model.changed.call(cls, this);
                 me.model2view($(this));
             }
 
@@ -263,9 +279,9 @@
 
             if (typeof value !== 'undefined') {
                 $(this).setValue(value);
-                cls.model.fields[$(this).getName()] = value;
+                cls.model.field[$(this).getName()] = value;
             } else {
-                delete cls.model.fields[$(this).getName()];
+                delete cls.model.field[$(this).getName()];
             }
         };
 
@@ -310,9 +326,9 @@
          */
         cls.post_trigger = function(e, result) {
 
-            if (result != cls.model.fields[$(this).getName()]) {
+            if (result != cls.model.field[$(this).getName()]) {
                 cls.recognizeChange.setup.call($(this));
-                cls.updateValue.call(this, result, cls.model.fields[$(this).getName()]);
+                cls.updateValue.call(this, result, cls.model.field[$(this).getName()]);
             }
 
             $(this).setValue(result);
@@ -399,7 +415,7 @@
                     if (cls.$el.attr('data-defaultvalues') !== 'client') {
                         InitValue = $(this).getValue();
                     } else {
-                        InitValue = cls.model.fields[$(this).getName()];
+                        InitValue = cls.model.field[$(this).getName()];
                         me.model2view($(this));
                     }
 
