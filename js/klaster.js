@@ -164,8 +164,8 @@
             'actions': {
             },
             'model': {
-                'values': {},
-                'onchange': {}
+                'field': {},
+                'change': {}
             },
             'view': {
                 field: {
@@ -221,8 +221,8 @@
                     if ($this[0] === $(this)[0] || ($(this).data('value') == cls.model.field[fieldname]))
                         return;
 
-                    if (typeof cls.model.onchange[$(this).getName()] === 'function') {
-                        cls.model.onchange[$(this).getName()].call(cls.model, $(this), cls.model.field[fieldname], $(this).val() || $(this).html(), 'controller');
+                    if (typeof  cls.model.change[$(this).getName()] === 'function') {
+                        cls.model.change[$(this).getName()].call(cls.model, $(this), cls.model.field[fieldname], $(this).val() || $(this).html(), 'controller');
                     }
 
                     decorated = cls.model.field[fieldname];
@@ -272,9 +272,9 @@
 
         cls.updateValue = function(value, old) {
 
-            if (typeof cls.model.onchange[$(this).getName()] === 'function') {
+            if (typeof cls.model.change[$(this).getName()] === 'function') {
 
-                cls.model.onchange[$(this).getName()].call(cls.model, $(this), value, old, 'view');
+                cls.model.change[$(this).getName()].call(cls.model, $(this), value, old, 'view');
             }
 
             if (typeof value !== 'undefined') {
