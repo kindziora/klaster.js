@@ -1,19 +1,17 @@
 var interface = function() {
-   
+
     this.actions = {
-        'filterbutton': {
-            'click': function(e, interface) {
-                var $checks = $($(this).attr('data-connected'));
-                $checks.toggleOmit().toggle(200);
-                //interface.model.values.words = 'none';
-                return $checks.attr('data-omit');
+        'toggleall': {
+            'change': function(e, interface) {
+                var checkBoxes = $('#todo-list input[name="toggle"]');
+                checkBoxes.attr("checked", !checkBoxes.attr("checked"));
             }
         }
     };
 
     this.model = {
         'field': {// here we declare model fields, with default values this is not strict default values are only used if we use directive: data-defaultvalues="client" on default we use server side default values because of the first page load
-            'search': 'hallo welt'
+            'todo.status': ''
         },
         'change': {
             'search': function(newVal) {
@@ -28,7 +26,7 @@ var interface = function() {
 
     this.view = {
         field: {
-            search: function(value, $field) { 
+            search: function(value, $field) {
                 return "<strong>" + value + "</strong>";
             }
         },
@@ -42,7 +40,7 @@ var interface = function() {
             }
         }
     };
-    
+
 };
 
 $('body').klaster(new interface());
