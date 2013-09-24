@@ -9,12 +9,12 @@ var interface = function() {
                 return $checks.attr('data-omit');
             }
         },
-        'todos': {
+        'todo': {
             'keyup': function(e) {
                 if (e.which == 13) {
                    interface.model.field.todos.push($(this).val());
                 } 
-              return interface.model.field.todos;
+              return $(this).val() + (new Date());
             }
         }
     };

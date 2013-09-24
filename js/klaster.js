@@ -222,7 +222,7 @@
             for (fieldname in cls.model.field) {
                 $('[data-name="' + fieldname + '"],[name="' + fieldname + '"]').each(function() {
                     var val = $(this).data('value');
-                    if ($this[0] === $(this)[0] || (val == cls.model.field[fieldname]))
+                    if ($this[0] === $(this)[0] ) //|| (val == cls.model.field[fieldname])
                         return;
 
                     if (typeof  cls.model.change[$(this).getName()] === 'function') {
