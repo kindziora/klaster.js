@@ -24,7 +24,7 @@
         <link rel="stylesheet" href="css/pretty.css">
         <script src="js/vendor/modernizr-2.6.1-respond-1.1.0.min.js"></script>
     </head>
-    <body data-defaultvalues="server">
+    <body data-defaultvalues="client">
         <!--[if lt IE 7]>
             <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
         <![endif]-->
@@ -209,18 +209,16 @@
             <div class="row-fluid">
                 <div class="span12">
                     <h2>Two way databinding</h2>
-                    words:<div data-name="words"></div><br>
-                    words:<input type="text" placeholder="chnage from view ..." data-on="keyup" name="words"/><br>
-                    searchstring:<div data-name="search"></div><br>
-                    <input type="text"name="search" placeholder="feed me ..." data-on="keyup"/><br>
-                    art: <div data-name="art"></div><br>
+                    todos<div data-name="todos" data-view="length"></div><br>
+                    todo <input type="text" name="todos" placeholder="feed me ..." data-on="keyup"/><br>
+                    
                 </div>
             </div>
             <div class="row-fluid">
                 <div class="span12">
                     <h2>list</h2>
-                     <ul data-name="search" data-view="suchliste">
-                         <li data-li>model</li>
+                     <ul data-name="todos" data-view="todoliste">
+                         <li data-name="todos.all[0].name"></li>
                      </ul>
                 </div>
             </div> 

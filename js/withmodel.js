@@ -1,5 +1,5 @@
 var interface = function() {
-   
+    var interface = this;
     this.actions = {
         'filterbutton': {
             'click': function(e, interface) {
@@ -8,18 +8,26 @@ var interface = function() {
                 //interface.model.values.words = 'none';
                 return $checks.attr('data-omit');
             }
+        },
+        'todos': {
+            'keyup': function(e) {
+                if (e.which == 13) {
+                   interface.model.field.todos.push($(this).val());
+                } 
+              return interface.model.field.todos;
+            }
         }
     };
 
     this.model = {
         'field': {// here we declare model fields, with default values this is not strict default values are only used if we use directive: data-defaultvalues="client" on default we use server side default values because of the first page load
-            'search': 'hallo welt'
+            'search': 'hallo welt',
+            'todos': []
         },
         'change': {
-            'search': function(newVal) {
-
-                this.field.words = newVal.split(' ').length;
-            }
+            'todos': function(value) {
+                console.log(value);
+            },
         },
         'changed': function() { //after model fields have changed
             $('#json-preview').html(JSON.stringify(this.field));
@@ -28,21 +36,24 @@ var interface = function() {
 
     this.view = {
         field: {
-            search: function(value, $field) { 
+            todo: function(value, $field) {
                 return "<strong>" + value + "</strong>";
             }
         },
         views: {
-            suchliste: function(value, $field) {
+            length: function(todos) {
+                return todos.length;
+            },
+            todoliste: function(todos, $field) {
                 var list = [];
-                value.split(',').forEach(function(val) {
-                    list.push("<li>" + val + "</li>")
+                todos.forEach(function(val, index) {
+                    list.push("<li data-name='todos[" + index + "]'>" + val + "</li>")
                 });
                 return list.join('');
             }
         }
     };
-    
+
 };
 
 $('body').klaster(new interface());

@@ -157,8 +157,8 @@
 
     $.fn.setValue = function(value) {
         this.data('value', value);
-    }; 
-    
+    };
+
     $.fn.klaster = function(child) {
 
         var cls = $.extend({
@@ -168,7 +168,8 @@
             },
             'model': {
                 'field': {},
-                'change': {}
+                'change': {},
+                'changed': {}
             },
             'view': {
                 field: {
@@ -220,8 +221,8 @@
 
             for (fieldname in cls.model.field) {
                 $('[data-name="' + fieldname + '"],[name="' + fieldname + '"]').each(function() {
-
-                    if ($this[0] === $(this)[0] || ($(this).data('value') == cls.model.field[fieldname]))
+                    var val = $(this).data('value');
+                    if ($this[0] === $(this)[0] || (val == cls.model.field[fieldname]))
                         return;
 
                     if (typeof  cls.model.change[$(this).getName()] === 'function') {
@@ -243,9 +244,13 @@
                         }
 
                         if (typeof decorated === 'function') {
-                            decorated.bind(undefined, $(this));
+                            var cb = function(data) {
+                                cls.set.call(this, data);
+                            };
+                            cb.bind(this);
+                            decorated.bind(undefined, cb);
                         } else {
-                            $(this).html(decorated);
+                            cls.set.call(this, decorated);
                         }
 
                     }
@@ -261,7 +266,7 @@
          */
         cls.changed = function() {
             if (typeof cls.model.changed !== "undefined") {
-                me.model2view.call($(this));
+                 //me.model2view.call($(this));
                 cls.model.changed.call(cls.model, this);
                 me.model2view.call($(this));
             }
@@ -277,7 +282,7 @@
             }
 
             if (typeof value !== 'undefined') {
-                $(this).setValue(value);
+                //$(this).setValue(value);
                 cls.model.field[$(this).getName()] = value;
             } else {
                 delete cls.model.field[$(this).getName()];
@@ -311,10 +316,11 @@
             };
 
             mio.setup = function() {
+                var mes = this;
                 mio.cancel();
                 cls.timeoutID = window.setTimeout(function(msg) {
-                    mio.changed(msg);
-                }, this.attr(api.delay.attr) || cls.delay);
+                    mio.changed(mes);
+                }, $(mes).attr(api.delay.attr) || cls.delay);
             };
 
             return mio;
@@ -326,11 +332,11 @@
         cls.post_trigger = function(e, result) {
 
             if (result != cls.model.field[$(this).getName()]) {
-                cls.recognizeChange.setup.call($(this));
+                cls.recognizeChange.setup.call(this);
                 cls.updateValue.call(this, result, cls.model.field[$(this).getName()]);
             }
 
-            $(this).setValue(result);
+           // $(this).setValue(result);
 
             if (typeof child.post_trigger !== "undefined")
                 return child.post_trigger.call(this, e);
@@ -366,7 +372,7 @@
             };
         };
 
-/**
+        /**
          * this updates a partial area
          * @param {type} $html
          */
