@@ -366,15 +366,25 @@
             };
         };
 
+/**
+         * this updates a partial area
+         * @param {type} $html
+         */
+        cls.set = function($html) {
+            $(this).html($html);
+            cls.bind($(this));
+        };
+
         /**
          * @todo rethink is this the best way to bind the methods?
          * bind dom to matching methods
          */
         cls.bind = function(element) {
             var events = {}, event = {}, name = "", method = "";
+            var filter, $el;
 
-            cls.filter = cls.dispatchFilter(element);
-            cls.$el = element;
+            filter = cls.dispatchFilter(element);
+            $el = element;
 
             /* variable injection via lambda function factory used in iteration */
             var factory = function(me, event) {
@@ -396,13 +406,13 @@
                         cls.post_trigger.call(me, e, result);
                     }
 
-                }
+                };
             };
 
             //filter.fields = filter.$el.find('[name],[data-name]'),
-            cls.filter.events = cls.filter.$el.find('[' + api.on.attr + ']');
+            filter.events = filter.$el.find('[' + api.on.attr + ']');
             var InitValue = '';
-            $(cls.filter.events).each(function() {
+            $(filter.events).each(function() {
                 name = $(this).getName();
                 events[name] = cls.dispatchEvents.call(this);
                 for (event in events[name]) {
@@ -411,7 +421,7 @@
                     $(this).on(event, factory(this, event));
 
 
-                    if (cls.$el.attr('data-defaultvalues') !== 'client') {
+                    if ($el.attr('data-defaultvalues') !== 'client') {
                         InitValue = $(this).getValue();
                     } else {
                         InitValue = cls.model.field[$(this).getName()];
@@ -421,10 +431,11 @@
                     cls.updateValue.call(this, InitValue);
                 }
             });
-
+            return filter;
         };
 
-        cls.bind(this);
+        cls.filter = cls.bind(this);
+
 
         if (typeof child._methods !== "undefined" && child._methods.init !== "undefined") {
             if (child._methods.init(cls)) {
