@@ -228,16 +228,21 @@
          * @returns {undefined}
          */
         me.model2view = function() {
-            var fieldname, $this = this, decorated = '';
+            var fieldname, $this = this, decorated = '', calllist = {};
 
             for (fieldname in cls.model.field) {
                 $('[data-name="' + fieldname + '"],[name="' + fieldname + '"]').each(function() {
-                    var val = $(this).data('value');
-                    if ($this[0] === $(this)[0]) //|| (val == cls.model.field[fieldname])
+
+                    if ($this[0] === $(this)[0]
+                            || (typeof cls._modelprechange !== 'undefined'
+                            && typeof cls._modelprechange[fieldname] !== 'undefined'
+                            && cls._modelprechange[fieldname] == cls.model.field[fieldname]))
                         return;
 
                     if (typeof  cls.model.change[$(this).getName()] === 'function') {
-                        cls.model.change[$(this).getName()].call(cls.model, cls.model.field[fieldname], $(this).val() || $(this).html(), $(this), 'controller');
+                        if (typeof calllist[$(this).getName()] === 'undefined')
+                            cls.model.change[$(this).getName()].call(cls.model, cls.model.field[fieldname], $(this).val() || $(this).html(), $(this), 'controller');
+                        calllist[$(this).getName()] = true;
                     }
 
                     decorated = cls.model.field[fieldname];
@@ -287,10 +292,7 @@
 
         cls.updateValue = function(value, old) {
 
-            if (typeof cls.model.change[$(this).getName()] === 'function') {
 
-                cls.model.change[$(this).getName()].call(cls.model, value, old, $(this), 'view');
-            }
 
             if (typeof value !== 'undefined') {
                 //$(this).setValue(value);
