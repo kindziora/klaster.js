@@ -63,7 +63,6 @@ var interface = function() {
             }
         }
     };
-
 };
 
 $('body').klaster(new interface());
