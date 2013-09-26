@@ -11,9 +11,9 @@ var interface = function() {
         },
         'todo': {
             'keyup': function(e) {
-                if (e.which === 13) {
+                if (e.which === 13)
                     interface.model.field.todos.push($(this).val());
-                }
+
             }
         },
         'todo.delete': {
@@ -57,7 +57,7 @@ var interface = function() {
             todoliste: function(todos, $field) {
                 var list = [];
                 todos.forEach(function(val, index) {
-                    list.push("<li data-omit='true' data-name='todos[" + index + "]'>" + val + "<a data-name='todo.delete' data-on='click' data-value='" + val + "'>delete</a></li>")
+                    list.push("<li data-omit='true' data-name='todos[" + index + "]'>" + val + " <a data-name='todo.delete' data-on='click' data-value='" + val + "'>delete</a></li>")
                 });
                 return list.join('');
             }
