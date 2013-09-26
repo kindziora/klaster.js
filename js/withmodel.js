@@ -15,6 +15,17 @@ var interface = function() {
                     interface.model.field.todos.push($(this).val());
                 }
             }
+        },
+        'todo.delete': {
+            'click': function(e) {
+                var todos = interface.model.field.todos;
+                var index = todos.indexOf($(this).attr('data-value'));
+                if (index > -1) {
+                    todos = todos.splice(index, 1);
+                    $(this).closest('.li').remove();
+                }
+            }
+
         }
     };
 
@@ -26,7 +37,7 @@ var interface = function() {
         'change': {
             'todos': function(value) {
                 console.log('todos:' + value);
-            },
+            }
         },
         'changed': function() { //after model fields have changed
             $('#json-preview').html(JSON.stringify(this.field));
@@ -46,7 +57,7 @@ var interface = function() {
             todoliste: function(todos, $field) {
                 var list = [];
                 todos.forEach(function(val, index) {
-                    list.push("<li data-name='todos[" + index + "]'>" + val + "</li>")
+                    list.push("<li data-omit='true' data-name='todos[" + index + "]'>" + val + "<a data-name='todo.delete' data-on='click' data-value='" + val + "'>delete</a></li>")
                 });
                 return list.join('');
             }

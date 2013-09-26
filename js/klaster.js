@@ -228,24 +228,26 @@
          * @returns {undefined}
          */
         me.model2view = function() {
-            var fieldname, $this = this, decorated = '', calllist = {};
+            var fieldname, $this = this, decorated = '', calllist = {}, field, changeCb;
 
             for (fieldname in cls.model.field) {
                 $('[data-name="' + fieldname + '"],[name="' + fieldname + '"]').each(function() {
-
+                    field = cls.model.field[fieldname];
+                    changeCb = cls.model.change[$(this).getName()];
+                    
                     if ($this[0] === $(this)[0]
                             || (typeof cls._modelprechange !== 'undefined'
                             && typeof cls._modelprechange[fieldname] !== 'undefined'
-                            && cls._modelprechange[fieldname] == cls.model.field[fieldname]))
+                            && cls._modelprechange[fieldname] == field))
                         return;
 
-                    if (typeof  cls.model.change[$(this).getName()] === 'function') {
+                    if (typeof changeCb === 'function') {
                         if (typeof calllist[$(this).getName()] === 'undefined')
-                            cls.model.change[$(this).getName()].call(cls.model, cls.model.field[fieldname], $(this).val() || $(this).html(), $(this), 'controller');
+                            changeCb.call(cls.model, field, $(this).val() || $(this).html(), $(this), 'controller');
                         calllist[$(this).getName()] = true;
                     }
 
-                    decorated = cls.model.field[fieldname];
+                    decorated = field;
                     if ($(this).is("input") || $(this).is("select")) {
                         $(this).val(decorated);
                     } else {
@@ -253,10 +255,10 @@
 
                         if (viewCb) {
                             if (typeof cls.view.views[viewCb] === 'function') {
-                                decorated = cls.view.views[viewCb].call(cls.view, cls.model.field[fieldname]);
+                                decorated = cls.view.views[viewCb].call(cls.view, field);
                             }
                         } else if (typeof cls.view.field[fieldname] === 'function') {
-                            decorated = cls.view.field[fieldname].call(cls.view, cls.model.field[fieldname]);
+                            decorated = cls.view.field[fieldname].call(cls.view, field);
                         }
 
                         if (typeof decorated === 'function') {
@@ -271,7 +273,7 @@
 
                     }
 
-                    $(this).data('value', cls.model.field[fieldname]);
+                    $(this).data('value', field);
                 });
             }
         };
