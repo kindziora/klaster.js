@@ -11,10 +11,9 @@ var interface = function() {
         },
         'todo': {
             'keyup': function(e) {
-                if (e.which == 13) {
-                   interface.model.field.todos.push($(this).val());
-                } 
-              return $(this).val() + (new Date());
+                if (e.which === 13) {
+                    interface.model.field.todos.push($(this).val());
+                }
             }
         }
     };
@@ -26,7 +25,7 @@ var interface = function() {
         },
         'change': {
             'todos': function(value) {
-                console.log(value);
+                console.log('todos:' + value);
             },
         },
         'changed': function() { //after model fields have changed

@@ -203,10 +203,21 @@
             }
         };
 
+
         /*
          * gets executed before an event is triggered
          */
         cls.pre_trigger = function(e) {
+            cls._modelprechange = {};
+            cls._modelpresize = 0;
+
+            for (var key in cls.model.field) {
+                if (cls.has(cls.model.field, key)) {
+                    cls._modelprechange[key] = cls.model.field[key].toString();
+                    cls._modelpresize++;
+                }
+            }
+
             if (typeof child.pre_trigger !== "undefined")
                 return child.pre_trigger.call(this, e);
             return true;
@@ -222,7 +233,7 @@
             for (fieldname in cls.model.field) {
                 $('[data-name="' + fieldname + '"],[name="' + fieldname + '"]').each(function() {
                     var val = $(this).data('value');
-                    if ($this[0] === $(this)[0] ) //|| (val == cls.model.field[fieldname])
+                    if ($this[0] === $(this)[0]) //|| (val == cls.model.field[fieldname])
                         return;
 
                     if (typeof  cls.model.change[$(this).getName()] === 'function') {
@@ -266,7 +277,7 @@
          */
         cls.changed = function() {
             if (typeof cls.model.changed !== "undefined") {
-                 //me.model2view.call($(this));
+                //me.model2view.call($(this));
                 cls.model.changed.call(cls.model, this);
                 me.model2view.call($(this));
             }
@@ -326,17 +337,43 @@
             return mio;
         }();
 
+        cls.has = function(obj, key) {
+            return hasOwnProperty.call(obj, key);
+        };
+
+        cls.modelchanged = function() {
+            var modelsize = 0;
+
+            for (var key in cls.model.field) {
+                if (cls.has(cls.model.field, key)) {
+                    modelsize++;
+                    if (typeof cls._modelprechange[key] === 'undefined') {
+                        return true;
+                    } else {
+                        if (cls._modelprechange[key] != cls.model.field[key])
+                            return true;
+                    }
+                }
+            }
+
+            if (cls._modelpresize !== modelsize)
+                return true;
+
+            return false;
+        };
+
         /*
          * gets executed after an event is triggered
          */
         cls.post_trigger = function(e, result) {
 
-            if (result != cls.model.field[$(this).getName()]) {
+            if ((result != cls.model.field[$(this).getName()]) || cls.modelchanged()) {
+                console.log('changed');
                 cls.recognizeChange.setup.call(this);
                 cls.updateValue.call(this, result, cls.model.field[$(this).getName()]);
             }
 
-           // $(this).setValue(result);
+            // $(this).setValue(result);
 
             if (typeof child.post_trigger !== "undefined")
                 return child.post_trigger.call(this, e);
