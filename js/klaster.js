@@ -231,6 +231,17 @@
             var fieldname, $this = this, decorated = '', calllist = {}, field, changeCb;
 
             for (fieldname in cls.model.field) {
+                
+                
+                 /*  if ($.type(cls.model.field[fieldname]) === 'object' || $.type(cls.model.field[fieldname]) === 'array') {
+
+                    var fields = ($.type(cls.model.field[fieldname]) === 'array') ? cls.model.field[fieldname] : cls.model.field[fieldname].keys();
+                    var arrayNotation = '', Fieldindex = 0;
+                    for (Fieldindex in fields) {
+                        arrayNotation = fieldname + '[' + Fieldindex + ']'; 
+                    }
+                }*/
+                
                 $('[data-name="' + fieldname + '"],[name="' + fieldname + '"]').each(function() {
                     field = cls.model.field[fieldname];
                     changeCb = cls.model.change[$(this).getName()];
@@ -293,9 +304,7 @@
         };
 
         cls.updateValue = function(value, old) {
-
-
-
+ 
             if (typeof value !== 'undefined') {
                 //$(this).setValue(value);
                 cls.model.field[$(this).getName()] = value;
