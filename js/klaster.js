@@ -9,68 +9,58 @@
 
     var me = {}, prefix = 'data',
             docapi = {
-        'info': {
-            'name': 'klaster.js',
-            'version': '0.9',
-            'debug': 1,
-            'tag': 'beta',
-            'author': 'Alexander Kindziora',
-            'date': '2013',
-            'copyright': 'author',
-            'license': 'none, feel free'
-        },
-        'Controller': {
-            'this.actions': {
-                'dom-attribute name': {
-                    'on-name': 'event callback handler, params(e, controller) context(this) is jQuery dom element'
-                }
-            },
-            'this.delay': 'integer delay in milliseconds used for changes on model call to sync function timeout',
-            'change': 'callback that executes after change of model data(this.model.values) with a delay of milliseconds declared with this.delay default 0'
+                'Controller': {
+                    'this.actions': {
+                        'dom-attribute name': {
+                            'on-name': 'event callback handler, params(e, controller) context(this) is jQuery dom element'
+                        }
+                    },
+                    'this.delay': 'integer delay in milliseconds used for changes on model call to sync function timeout',
+                    'change': 'callback that executes after change of model data(this.model.values) with a delay of milliseconds declared with this.delay default 0'
 
-        },
-        'dom-attributes': {
-            'defaultvalues': {
-                'attr': prefix + '-defaultvalues',
-                'value': 'String value:"client" or "server" that means our app uses the field.values from dom or model/javascript'
-            },
-            'name': {
-                'attr': prefix + '-name',
-                'value': 'String containing name of element, not unique'
-            },
-            'omit': {
-                'attr': prefix + '-omit',
-                'value': 'String/that evaluates to boolean, whether ignoring the area for model representation data or not'
-            },
-            'value': {
-                'attr': prefix + '-value',
-                'value': 'String, containing the value of an element, can be plain or json'
-            },
-            'multiple': {
-                'attr': prefix + '-multiple',
-                'value': 'String/that evaluates to boolean, whether this element is part of multiple elements like checkbox',
-                'children': {
-                    'checked': {
-                        'attr': prefix + '-checked',
-                        'value': 'String/that evaluates to boolean, whether this element is will apear inside a list of multiple elements with similar data-name, like checkbox',
+                },
+                'dom-attributes': {
+                    'defaultvalues': {
+                        'attr': prefix + '-defaultvalues',
+                        'value': 'String value:"client" or "server" that means our app uses the field.values from dom or model/javascript'
+                    },
+                    'name': {
+                        'attr': prefix + '-name',
+                        'value': 'String containing name of element, not unique'
+                    },
+                    'omit': {
+                        'attr': prefix + '-omit',
+                        'value': 'String/that evaluates to boolean, whether ignoring the area for model representation data or not'
+                    },
+                    'value': {
+                        'attr': prefix + '-value',
+                        'value': 'String, containing the value of an element, can be plain or json'
+                    },
+                    'multiple': {
+                        'attr': prefix + '-multiple',
+                        'value': 'String/that evaluates to boolean, whether this element is part of multiple elements like checkbox',
+                        'children': {
+                            'checked': {
+                                'attr': prefix + '-checked',
+                                'value': 'String/that evaluates to boolean, whether this element is will apear inside a list of multiple elements with similar data-name, like checkbox',
+                            }
+                        }
+                    },
+                    'delay': {
+                        'attr': prefix + '-delay',
+                        'value': 'number of miliseconds until sync'
+                    },
+                    'on': {
+                        'attr': prefix + '-on',
+                        'value': 'event that triggers matching action method, also alias is possible. eg. hover->klasterhover'
+                    },
+                    'view': {
+                        'attr': prefix + '-view',
+                        'value': 'defines which view function callback is executed for rendering output'
                     }
                 }
-            },
-            'delay': {
-                'attr': prefix + '-delay',
-                'value': 'number of miliseconds until sync'
-            },
-            'on': {
-                'attr': prefix + '-on',
-                'value': 'event that triggers matching action method, also alias is possible. eg. hover->klasterhover'
-            },
-            'view': {
-                'attr': prefix + '-view',
-                'value': 'defines which view function callback is executed for rendering output'
-            }
-        }
 
-    }, api = docapi['dom-attributes'];
+            }, api = docapi['dom-attributes'];
 
 
     $.fn.getName = function() {
@@ -274,8 +264,8 @@
 
                     if ($this[0] === $(this)[0]
                             || (typeof cls._modelprechange !== 'undefined'
-                            && typeof cls._modelprechange[fieldN] !== 'undefined'
-                            && cls._modelprechange[fieldN] == field))
+                                    && typeof cls._modelprechange[fieldN] !== 'undefined'
+                                    && cls._modelprechange[fieldN] == field))
                         return;
 
                     if (typeof changeCb === 'function') {

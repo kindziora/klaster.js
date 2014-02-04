@@ -1,0 +1,26 @@
+{
+    "name": "klaster.js",
+    "version": "0.0.1",
+    "homepage": "https://github.com/kindziora/klaster.js",
+    "authors": [
+        "Alexander Kindziora",
+        "kindziora@live.de"
+    ],
+    "description": "javascript UI framework, using mvc pattern, scopes and two way databinding",
+    "main": "klaster.js",
+    "keywords": [
+        "javascript",
+        "mvc",
+        "pattern",
+        "scopes",
+        "two way databinding"
+    ],
+    "license": "MIT",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ]
+}
