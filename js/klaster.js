@@ -5,7 +5,7 @@
  */
 
 (function($) {
-    "use strict";
+    //"use strict";
 
     var me = {}, prefix = 'data',
             docapi = {
@@ -224,32 +224,58 @@
         };
 
         /**
+         * eval is better for this, js supports no byref arguments
+         * @param {type} variable
+         * @param {type} level
+         * @param {type} index
+         * @returns {@exp;cls@pro;model@call;getValue}
+         */
+        cls.model.get = function(notation) {
+            if (typeof cls.model.field[notation] === 'undefined' && notation.indexOf('[') !== -1) {
+                return eval("(typeof cls.model.field." + notation + "!== 'undefined' ) ? cls.model.field." + notation + ": undefined;");
+            } else {
+                return cls.model.field[notation];
+            }
+        };
+
+        cls.model.set = function(notation, value) {
+            if (typeof cls.model.field[notation] === 'undefined' && notation.indexOf('[') !== -1) {
+                eval("cls.model.field." + notation + "=" + value + ";");
+            } else {
+                cls.model.field[notation] = value;
+            }
+        };
+
+        cls.model._delete = function(notation) {
+            if (typeof cls.model.field[notation] === 'undefined' && notation.indexOf('[') !== -1) {
+                eval("delete cls.model.field." + notation + ";");
+            } else {
+                delete cls.model.field[notation];
+            }
+        };
+
+        /**
          * two way databinding
          * @returns {undefined}
          */
         me.model2view = function() {
             var fieldname, $this = this, decorated = '', calllist = {}, field, changeCb;
 
-            for (fieldname in cls.model.field) {
-                
-                
-                 /*  if ($.type(cls.model.field[fieldname]) === 'object' || $.type(cls.model.field[fieldname]) === 'array') {
+            this.parseDom = function(selector) {
+                var fieldN = "", viewfield;
+                $(selector).each(function() {
+                    fieldN = $(this).attr('data-name') || $(this).attr('name');
 
-                    var fields = ($.type(cls.model.field[fieldname]) === 'array') ? cls.model.field[fieldname] : cls.model.field[fieldname].keys();
-                    var arrayNotation = '', Fieldindex = 0;
-                    for (Fieldindex in fields) {
-                        arrayNotation = fieldname + '[' + Fieldindex + ']'; 
-                    }
-                }*/
-                
-                $('[data-name="' + fieldname + '"],[name="' + fieldname + '"]').each(function() {
-                    field = cls.model.field[fieldname];
+                    field = cls.model.get(fieldN);
+
+                    viewfield = cls.view.field[fieldN];
+
                     changeCb = cls.model.change[$(this).getName()];
-                    
+
                     if ($this[0] === $(this)[0]
                             || (typeof cls._modelprechange !== 'undefined'
-                            && typeof cls._modelprechange[fieldname] !== 'undefined'
-                            && cls._modelprechange[fieldname] == field))
+                            && typeof cls._modelprechange[fieldN] !== 'undefined'
+                            && cls._modelprechange[fieldN] == field))
                         return;
 
                     if (typeof changeCb === 'function') {
@@ -268,8 +294,8 @@
                             if (typeof cls.view.views[viewCb] === 'function') {
                                 decorated = cls.view.views[viewCb].call(cls.view, field);
                             }
-                        } else if (typeof cls.view.field[fieldname] === 'function') {
-                            decorated = cls.view.field[fieldname].call(cls.view, field);
+                        } else if (typeof viewfield === 'function') {
+                            decorated = viewfield.call(cls.view, field);
                         }
 
                         if (typeof decorated === 'function') {
@@ -286,6 +312,15 @@
 
                     $(this).data('value', field);
                 });
+            };
+
+            for (fieldname in cls.model.field) {
+
+                this.parseDom('[data-name="' + fieldname + '"],[name="' + fieldname + '"]');
+
+                if ($.type(cls.model.field[fieldname]) === 'object' || $.type(cls.model.field[fieldname]) === 'array') {
+                    this.parseDom('[data-name^="' + fieldname + '\["],[name^="' + fieldname + '\["]');
+                }
             }
         };
 
@@ -304,12 +339,15 @@
         };
 
         cls.updateValue = function(value, old) {
- 
+
             if (typeof value !== 'undefined') {
                 //$(this).setValue(value);
-                cls.model.field[$(this).getName()] = value;
+                //cls.model.field[$(this).getName()] = value;
+                cls.model.set($(this).getName(), value);
+
             } else {
-                delete cls.model.field[$(this).getName()];
+                cls.model._delete($(this).getName());
+                //delete cls.model.field[$(this).getName()];
             }
         };
 

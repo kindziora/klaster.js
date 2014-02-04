@@ -17,6 +17,13 @@ var interface = function() {
                     $(this).closest('.li').remove();
                 }
             }
+        },
+        'todos[2]': {
+            'click': function(e) {
+
+                $(this).closest('.li').remove();
+
+            }
         }
     };
 
@@ -31,7 +38,11 @@ var interface = function() {
     };
 
     this.view = {
-        field: {},
+        field: {
+            todo: function(value, $field) {
+                return "<strong>" + value + "</strong>";
+            }
+        },
         views: {
             length: function(todos) {
                 return todos.length;
@@ -39,10 +50,7 @@ var interface = function() {
             todoliste: function(todos, $field) {
                 var list = [], $delete, $editto;
                 todos.forEach(function(val, index) {
-                    $delete = "<a data-name='todo.delete' data-omit='true' data-on='click' data-value='" + val + "'>delete</a>";
-                    $editto = "<span data-name='todo.edit' data-omit='true' data-on='click''>" + val + "</span>";
-
-                    list.push("<li>" + $editto + ' ' + $delete + "</li>")
+                    list.push("<li data-omit='true' data-name='todos[" + index + "]'>" + val + " <a data-name='todo.delete' data-on='click' data-value='" + val + "'>delete</a></li>")
                 });
                 return list.join('');
             }
