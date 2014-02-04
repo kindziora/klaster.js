@@ -149,7 +149,7 @@
         this.data('value', value);
     };
 
-    $.fn.klaster = function(child) {
+    $.fn.klaster_ = function(child) {
 
         var cls = $.extend({
             'delay': 0,
