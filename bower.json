@@ -22,8 +22,5 @@
         "bower_components",
         "test",
         "tests"
-    ],
-    "dependencies": {
-        "jquery": "bower_components/jquery/jquery.js"
-    }
+    ]
 }
