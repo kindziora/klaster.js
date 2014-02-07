@@ -41,6 +41,9 @@ var interface = function() {
         field: {
             todo: function(value, $field) {
                 return "<strong>" + value + "</strong>";
+            },
+            'todos[*]' :  function(value, $field) {
+                "<a data-name='todo.delete' data-on='click' data-value='" + val + "'>delete</a>"
             }
         },
         views: {
@@ -50,7 +53,7 @@ var interface = function() {
             todoliste: function(todos, $field) {
                 var list = [], $delete, $editto;
                 todos.forEach(function(val, index) {
-                    list.push("<li data-omit='true' data-name='todos[" + index + "]'>" + val + " <a data-name='todo.delete' data-on='click' data-value='" + val + "'>delete</a></li>")
+                    list.push("<li data-omit='true' data-name='todos[" + index + "]'>" + val + " </li>");
                 });
                 return list.join('');
             }
