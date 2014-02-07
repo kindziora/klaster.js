@@ -472,7 +472,7 @@
 
             /* variable injection via lambda function factory used in iteration */
             var factory = function(me, event) {
-                return function(e) {
+                return function(e, args) {
                     name = $(me).getName();
                     method = events[name][event];
                     var result = true;
@@ -480,7 +480,7 @@
                     if (false !== cls.pre_trigger.call(me, e)) {
                         if (typeof child.actions[name] !== 'undefined' &&
                                 typeof child.actions[name][method] !== 'undefined') {
-                            result = child.actions[name][method].call(me, e, cls);
+                            result = child.actions[name][method].call(me, e, cls, args);
                             if ($(me).attr(api.omit.attr) === "true") {
                                 result = $(me).getValue();
                             }

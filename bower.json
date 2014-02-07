@@ -13,7 +13,8 @@
         "mvc",
         "pattern",
         "scopes",
-        "two way databinding"
+        "two way databinding",
+        "experimental"
     ],
     "license": "MIT",
     "ignore": [
