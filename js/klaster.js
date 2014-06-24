@@ -95,7 +95,7 @@
             var values = [],
                     value = undefined;
             $elements.each(function() {
-                value = me.value.call($(this));
+                value = me.value.call($el);
                 if (typeof value !== 'undefined') {
                     values.push(value);
                 }
@@ -134,7 +134,7 @@
             return undefined;
         }
 
-        if (!multiple
+        if (multiple === false || !multiple
                 && typeof me.multipleValues[this.attr('type')] !== 'function'
                 && !this.attr(api.multiple.attr)) {
             return me.value.call(this);
@@ -244,6 +244,18 @@
             }
         };
 
+        me.getFieldView = function(fieldN) {
+            var viewMethod;
+            if (typeof cls.view.field[fieldN] === 'undefined') {
+                if (fieldN.indexOf('[') !== -1) {
+                    viewMethod = typeof cls.view.field[fieldN.split('[')[0] + '[*]'] !== 'undefined' ? cls.view.field[fieldN.split('[')[0] + '[*]'] : undefined;
+                }
+            } else {
+                viewMethod = cls.view.field[fieldN];
+            }
+            return viewMethod;
+        };
+
         /**
          * two way databinding
          * @returns {undefined}
@@ -258,7 +270,7 @@
 
                     field = cls.model.get(fieldN);
 
-                    viewfield = cls.view.field[fieldN];
+                    viewfield = me.getFieldView(fieldN);
 
                     changeCb = cls.model.change[$(this).getName()];
 
@@ -285,7 +297,7 @@
                                 decorated = cls.view.views[viewCb].call(cls.view, field);
                             }
                         } else if (typeof viewfield === 'function') {
-                            decorated = viewfield.call(cls.view, field);
+                            decorated = viewfield.call(cls.view, field, fieldN);
                         }
 
                         if (typeof decorated === 'function') {
@@ -382,23 +394,37 @@
             return hasOwnProperty.call(obj, key);
         };
 
-        cls.modelchanged = function() {
-            var modelsize = 0;
+        cls.modelchanged = function(field) {
 
-            for (var key in cls.model.field) {
-                if (cls.has(cls.model.field, key)) {
-                    modelsize++;
-                    if (typeof cls._modelprechange[key] === 'undefined') {
+            var compare = function(fieldName) {
+                if (typeof cls._modelprechange[fieldName] === 'undefined') {
+                    return true;
+                } else {
+                    if (cls._modelprechange[fieldName] != cls.model.field[fieldName])
                         return true;
-                    } else {
-                        if (cls._modelprechange[key] != cls.model.field[key])
+                }
+                return false;
+            };
+
+            if (typeof field !== 'undefined') {
+
+                return compare(field);
+
+            } else {
+                var modelsize = 0;
+
+                for (var key in cls.model.field) {
+                    if (cls.has(cls.model.field, key)) {
+                        modelsize++;
+                        if (compare(key))
                             return true;
                     }
                 }
+
+                if (cls._modelpresize !== modelsize)
+                    return true;
             }
 
-            if (cls._modelpresize !== modelsize)
-                return true;
 
             return false;
         };
@@ -408,8 +434,8 @@
          */
         cls.post_trigger = function(e, result) {
 
-            if ((result != cls.model.field[$(this).getName()]) || cls.modelchanged()) {
-                console.log('changed');
+            if ((result != cls.model.field[$(this).getName()]) || cls.modelchanged($(this).getName())) {
+                console.log('changed', result, cls.model.field[$(this).getName()], $(this).getName());
                 cls.recognizeChange.setup.call(this);
                 cls.updateValue.call(this, result, cls.model.field[$(this).getName()]);
             }
@@ -505,11 +531,11 @@
                     $(this).on(event, factory(this, event));
 
 
-                    if ($el.attr('data-defaultvalues') !== 'client') {
-                        InitValue = $(this).getValue();
-                    } else {
+                    if ($el.attr('data-defaultvalues') === 'model') {
                         InitValue = cls.model.field[$(this).getName()];
                         me.model2view.call($(this));
+                    } else {
+                        InitValue = $(this).getValue();
                     }
 
                     cls.updateValue.call(this, InitValue);
