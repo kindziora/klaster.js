@@ -1,6 +1,6 @@
 /**
  * klaster is a jquery filter plugin for extended filters by dom rules and javascript based on filter classes
- * @author Alexander Kindziora 2013
+ * @author Alexander Kindziora 2014
  * 
  */
 
@@ -10,7 +10,7 @@
     var me = {}, prefix = 'data',
             docapi = {
                 'Controller': {
-                    'this.actions': {
+                    'this.interactions': {
                         'dom-attribute name': {
                             'on-name': 'event callback handler, params(e, controller) context(this) is jQuery dom element'
                         }
@@ -154,7 +154,7 @@
         var cls = $.extend({
             'delay': 0,
             'api': docapi,
-            'actions': {
+            'interactions': {
             },
             'model': {
                 'field': {},
@@ -199,11 +199,26 @@
          */
         cls.pre_trigger = function(e) {
             cls._modelprechange = {};
+            cls._modelprechangeReal = {};
             cls._modelpresize = 0;
 
             for (var key in cls.model.field) {
                 if (cls.has(cls.model.field, key)) {
                     cls._modelprechange[key] = cls.model.field[key].toString();
+
+                    var base = [];
+
+                    if (Object.prototype.toString.call(cls.model.field[key]) === "[object Object]") {
+                        base = {};
+                    }
+
+                    if (typeof cls.model.field[key] !== 'string') {
+                        cls._modelprechangeReal[key] = $.extend(base, cls.model.field[key]);
+                    } else {
+                        cls._modelprechangeReal[key] = cls.model.field[key];
+                    }
+
+
                     cls._modelpresize++;
                 }
             }
@@ -316,13 +331,23 @@
                 });
             };
 
-            for (fieldname in cls.model.field) {
+            var changes = cls.getChangedModelFields(), addrN, fieldname, fieldnameRaw;
 
-                this.parseDom('[data-name="' + fieldname + '"],[name="' + fieldname + '"]');
+            for (addrN in changes) {
+                fieldnameRaw = changes[addrN][0];
+                fieldname = fieldnameRaw.replace(changes[addrN][0].split(']')[0] + ']', changes[addrN][0].split(']')[0].split('[')[1]);
+                fieldname = fieldname.replace('[', '\\[').replace(']', '\\]');
 
-                if ($.type(cls.model.field[fieldname]) === 'object' || $.type(cls.model.field[fieldname]) === 'array') {
-                    this.parseDom('[data-name^="' + fieldname + '\["],[name^="' + fieldname + '\["]');
+                if (fieldname !== '') {
+                    var selector = '[data-name="' + fieldname + '"],[name="' + fieldname + '"]';
+                    if (selector)
+                        this.parseDom(selector);
                 }
+
+
+                /* if ($.type(cls.model.field[fieldname]) === 'object' || $.type(cls.model.field[fieldname]) === 'array') {
+                 this.parseDom('[data-name^="' + fieldname + '\["],[name^="' + fieldname + '\["]');
+                 }*/
             }
         };
 
@@ -331,12 +356,11 @@
          * "this" is the dom element responsible for the change
          */
         cls.changed = function() {
-            if (typeof cls.model.changed !== "undefined") {
-                //me.model2view.call($(this));
+            if (typeof cls.model.changed === "function") {
                 cls.model.changed.call(cls.model, this);
-                me.model2view.call($(this));
             }
 
+            me.model2view.call($(this));
             return true;
         };
 
@@ -429,14 +453,134 @@
             return false;
         };
 
+        /**
+         * http://stackoverflow.com/questions/27030/comparing-arrays-of-objects-in-javascript
+         * @param {type} o1
+         * @param {type} o2
+         * @returns {Array|$@call;extend.diffObjects.diff|undefined}
+         */
+        cls.diffObjects = function(o1, o2) {
+            // choose a map() impl.
+            // you may use $.map from jQuery if you wish
+            var map = Array.prototype.map ?
+                    function(a) {
+                        return Array.prototype.map.apply(a, Array.prototype.slice.call(arguments, 1));
+                    } :
+                    function(a, f) {
+                        var ret = new Array(a.length), value;
+                        for (var i = 0, length = a.length; i < length; i++)
+                            ret[i] = f(a[i], i);
+                        return ret.concat();
+                    };
+
+            // shorthand for push impl.
+            var push = Array.prototype.push;
+
+            // check for null/undefined values
+            if ((o1 == null) || (o2 == null)) {
+                if (o1 != o2)
+                    return [["", "null", o1 != null, o2 != null]];
+
+                return undefined; // both null
+            }
+            // compare types
+            /* if ((o1.constructor != o2.constructor) ||
+             (typeof o1 != typeof o2)) {
+             return [["", "type", Object.prototype.toString.call(o1), Object.prototype.toString.call(o2)]]; // different type
+             
+             }*/
+
+            // compare arrays
+            if (Object.prototype.toString.call(o1) == "[object Array]") {
+                if (o1.length != o2.length) {
+                    return [["", "length", o1.length, o2.length]]; // different length
+                }
+                var diff = [];
+                for (var i = 0; i < o1.length; i++) {
+                    // per element nested diff
+                    var innerDiff = cls.diffObjects(o1[i], o2[i]);
+                    if (innerDiff) { // o1[i] != o2[i]
+                        // merge diff array into parent's while including parent object name ([i])
+                        push.apply(diff, map(innerDiff, function(o, j) {
+                            o[0] = "[" + i + "]" + o[0];
+                            return o;
+                        }));
+                    }
+                }
+                // if any differences were found, return them
+                if (diff.length)
+                    return diff;
+                // return nothing if arrays equal
+                return undefined;
+            }
+
+            // compare object trees
+            if (Object.prototype.toString.call(o1) == "[object Object]") {
+                var diff = [];
+                // check all props in o1
+                for (var prop in o1) {
+                    // the double check in o1 is because in V8 objects remember keys set to undefined 
+                    if ((typeof o2[prop] == "undefined") && (typeof o1[prop] != "undefined")) {
+                        // prop exists in o1 but not in o2
+                        diff.push(["[" + prop + "]", "undefined", o1[prop], undefined]); // prop exists in o1 but not in o2
+
+                    }
+                    else {
+                        // per element nested diff
+                        var innerDiff = cls.diffObjects(o1[prop], o2[prop]);
+                        if (innerDiff) { // o1[prop] != o2[prop]
+                            // merge diff array into parent's while including parent object name ([prop])
+                            push.apply(diff, map(innerDiff, function(o, j) {
+                                o[0] = "[" + prop + "]" + o[0];
+                                return o;
+                            }));
+                        }
+
+                    }
+                }
+                for (var prop in o2) {
+                    // the double check in o2 is because in V8 objects remember keys set to undefined 
+                    if ((typeof o1[prop] == "undefined") && (typeof o2[prop] != "undefined")) {
+                        // prop exists in o2 but not in o1
+                        diff.push(["[" + prop + "]", "undefined", undefined, o2[prop]]); // prop exists in o2 but not in o1
+
+                    }
+                }
+                // if any differences were found, return them
+                if (diff.length)
+                    return diff;
+                // return nothing if objects equal
+                return undefined;
+            }
+            // if same type and not null or objects or arrays
+            // perform primitive value comparison
+            if (o1 != o2)
+                return [["", "value", o1, o2]];
+
+            // return nothing if values are equal
+            return undefined;
+        };
+
+
+        /**
+         * 
+         * @returns {Array}
+         */
+        cls.getChangedModelFields = function() {
+
+            return cls.diffObjects(cls._modelprechangeReal, cls.model.field);
+        };
+
         /*
          * gets executed after an event is triggered
          */
         cls.post_trigger = function(e, result) {
-
             if ((result != cls.model.field[$(this).getName()]) || cls.modelchanged($(this).getName())) {
+
                 console.log('changed', result, cls.model.field[$(this).getName()], $(this).getName());
+
                 cls.recognizeChange.setup.call(this);
+
                 cls.updateValue.call(this, result, cls.model.field[$(this).getName()]);
             }
 
@@ -504,9 +648,9 @@
                     var result = true;
 
                     if (false !== cls.pre_trigger.call(me, e)) {
-                        if (typeof child.actions[name] !== 'undefined' &&
-                                typeof child.actions[name][method] !== 'undefined') {
-                            result = child.actions[name][method].call(me, e, cls, args);
+                        if (typeof child.interactions[name] !== 'undefined' &&
+                                typeof child.interactions[name][method] !== 'undefined') {
+                            result = child.interactions[name][method].call(me, e, cls, args);
                             if ($(me).attr(api.omit.attr) === "true") {
                                 result = $(me).getValue();
                             }
