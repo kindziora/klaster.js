@@ -78,7 +78,7 @@ var interface = function() {
     this.view = {
         field: {
             'todos[*]': function(value, $field, name) {
-                return  '<input type="checkbox" data-name="todosCompleted" value="' + value + '" data-on="click" />'
+                return  '<input type="checkbox" name="todosCompleted" data-name="todosCompleted" value="' + value + '" data-on="click" />'
                         + value + " <a data-name='todo.delete' data-on='click' data-omit='true' data-value='" + value + "'>delete</a>  <a data-name='todo.edit'  data-omit='true' data-on='click' data-value='" + value + "'>edit</a> ";
             }
         },
@@ -92,6 +92,9 @@ var interface = function() {
                     list.push("<li data-name=\"todos[" + index + "]\"> " + intfc.view.field['todos[*]'](val) + "</li>");
                 });
                 return list.join('');
+            },
+            todoliste2: function(todos, index, $field) {
+                return "<li data-name=\"todos[" + index + "]\"> " + intfc.view.field['todos[*]'](todos[index]) + "</li>";
             }
 
         }
@@ -99,4 +102,4 @@ var interface = function() {
 
 };
 
-$('body').klaster_(new interface()); 
+$('body').klaster_(new interface());

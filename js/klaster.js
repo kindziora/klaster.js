@@ -5,7 +5,7 @@
  */
 
 (function($) {
-    //"use strict";
+//"use strict";
 
     var me = {}, prefix = 'data',
             docapi = {
@@ -56,32 +56,38 @@
                     },
                     'view': {
                         'attr': prefix + '-view',
-                        'value': 'defines which view function callback is executed for rendering output'
+                        'value': {
+                            'desc': 'defines which view function callback is executed for rendering output',
+                            'params': {
+                                '[viewname]': 'name of view render function (calls it) and uses return string to fill html of this element',
+                                'for->[viewname]': 'name of view render function and calls it for every array item and uses return string to fill html of this elements'
+                            },
+                            definition: {
+                                'iterate': 'foreach->'
+                            }
+                        }
                     }
+
                 }
 
-            }, api = docapi['dom-attributes'];
-
+            },
+    api = docapi['dom-attributes'];
 
     $.fn.getName = function() {
         return this.attr(api.name.attr) ? this.attr(api.name.attr) : this.attr('name');
     };
-
     $.fn.nameAttr = function() {
         return this.attr(api.name.attr) ? api.name.attr : 'name';
     };
-
     $.fn.toggleOmit = function() {
         this.attr(api.omit.attr, !(this.attr(api.omit.attr) ? (this.attr(api.omit.attr).toLowerCase() === "true") : false));
         return this;
     };
-
     me.value = function() {
         if (this.attr(api.omit.attr) === "true") {
             return undefined;
         }
         var value = $(this).val() || $(this).text() || $(this).html();
-
         if (typeof value === 'undefined' && $(this).data('value')) {
             value = $(this).data('value');
         } else if (typeof $(this).data('value') === '' && $(this).attr(api.value.attr) !== "") {
@@ -89,7 +95,6 @@
         }
         return value;
     };
-
     me.multipleValues = {
         "checked": function($el, $elements) {
             var values = [],
@@ -112,7 +117,6 @@
             return me.multipleValues.checked(this, $('[' + this.nameAttr() + '="' + this.getName() + '"][data-checked="true"]'));
         }
     };
-
     $.fn.getValues = function(type) {
         if (typeof me.multipleValues[type] === 'undefined'
                 && this.attr(api.multiple.attr)) {
@@ -120,7 +124,6 @@
         }
         return me.multipleValues[type].call(this);
     };
-
     /**
      * get value(s) from dom element
      * @param {type} multiple
@@ -144,11 +147,9 @@
         }
 
     };
-
     $.fn.setValue = function(value) {
         this.data('value', value);
     };
-
     $.fn.klaster_ = function(child) {
 
         var cls = $.extend({
@@ -172,14 +173,12 @@
                 debug: 1
             }
         }, child);
-
         /**
          *get class property with default value
          */
         cls.get = function(name, value) {
             return ((typeof cls[name] !== 'undefined') ? cls[name] : value);
         };
-
         /**
          * log debug messages
          */
@@ -192,8 +191,6 @@
                 }
             }
         };
-
-
         /*
          * gets executed before an event is triggered
          */
@@ -201,13 +198,10 @@
             cls._modelprechange = {};
             cls._modelprechangeReal = {};
             cls._modelpresize = 0;
-
             for (var key in cls.model.field) {
                 if (cls.has(cls.model.field, key)) {
                     cls._modelprechange[key] = cls.model.field[key].toString();
-
                     var base = [];
-
                     if (Object.prototype.toString.call(cls.model.field[key]) === "[object Object]") {
                         base = {};
                     }
@@ -227,7 +221,6 @@
                 return child.pre_trigger.call(this, e);
             return true;
         };
-
         /**
          * eval is better for this, js supports no byref arguments
          * @param {type} variable
@@ -242,7 +235,6 @@
                 return cls.model.field[notation];
             }
         };
-
         cls.model.set = function(notation, value) {
             if (typeof cls.model.field[notation] === 'undefined' && notation.indexOf('[') !== -1) {
                 eval("cls.model.field." + notation + "=" + value + ";");
@@ -250,7 +242,6 @@
                 cls.model.field[notation] = value;
             }
         };
-
         cls.model._delete = function(notation) {
             if (typeof cls.model.field[notation] === 'undefined' && notation.indexOf('[') !== -1) {
                 eval("delete cls.model.field." + notation + ";");
@@ -258,7 +249,6 @@
                 delete cls.model.field[notation];
             }
         };
-
         me.getFieldView = function(fieldN) {
             var viewMethod;
             if (typeof cls.view.field[fieldN] === 'undefined') {
@@ -270,7 +260,6 @@
             }
             return viewMethod;
         };
-
         /**
          * two way databinding
          * @returns {undefined}
@@ -278,39 +267,86 @@
         me.model2view = function() {
             var fieldname, $this = this, decorated = '', calllist = {}, field, changeCb;
 
-            this.parseDom = function(selector) {
+            var changes = cls.getChangedModelFields(), addrN, fieldname, fieldnameRaw;
+
+            this.parseDom = function(selector, changeIndex) {
                 var fieldN = "", viewfield;
                 $(selector).each(function() {
-                    fieldN = $(this).attr('data-name') || $(this).attr('name');
-
+                    var $scope = $(this);
+                    var UpdateAllHTML = true;
+                    fieldN = $scope.attr('data-name') || $scope.attr('name');
                     field = cls.model.get(fieldN);
-
                     viewfield = me.getFieldView(fieldN);
-
-                    changeCb = cls.model.change[$(this).getName()];
-
-                    if ($this[0] === $(this)[0]
+                    changeCb = cls.model.change[$scope.getName()];
+                    if ($this[0] === $scope[0]
                             || (typeof cls._modelprechange !== 'undefined'
                                     && typeof cls._modelprechange[fieldN] !== 'undefined'
                                     && cls._modelprechange[fieldN] == field))
                         return;
-
                     if (typeof changeCb === 'function') {
-                        if (typeof calllist[$(this).getName()] === 'undefined')
-                            changeCb.call(cls.model, field, $(this).val() || $(this).html(), $(this), 'controller');
-                        calllist[$(this).getName()] = true;
+                        if (typeof calllist[$scope.getName()] === 'undefined')
+                            changeCb.call(cls.model, field, $scope.val() || $scope.html(), $scope, 'controller');
+                        calllist[$scope.getName()] = true;
                     }
 
                     decorated = field;
-                    if ($(this).is("input") || $(this).is("select")) {
-                        $(this).val(decorated);
+                    if ($scope.is("input") || $scope.is("select")) {
+                        $scope.val(decorated);
                     } else {
-                        var viewCb = $(this).attr(api.view.attr);
-
+                        var viewCb = $scope.attr(api.view.attr);
                         if (viewCb) {
-                            if (typeof cls.view.views[viewCb] === 'function') {
-                                decorated = cls.view.views[viewCb].call(cls.view, field);
+
+                            if (viewCb.indexOf(api.view.value.definition.iterate) !== -1) {
+
+                                // iterate function for native partial lists
+                                viewCb = viewCb.split(api.view.value.definition.iterate)[1];
+                                UpdateAllHTML = false;
+                                
+
+                                if (typeof cls.view.views[viewCb] === 'function') {
+                                    var $child, index, $html, m_index = 0;
+
+                                    if (changes[changeIndex][1] === "length") {
+                                         
+                                        if (changes[changeIndex][2] < changes[changeIndex][3]) { // array increased
+                                            for (index in field) {
+                                                $child = $scope.find('[data-name="' + fieldN + '\[' + index + '\]"]');
+                                                if (!$child.get(0)) {
+                                                    $html = $(cls.view.views[viewCb].call(cls.view, field, index, $scope));
+                                                    $html.data('value', field[index]);
+                                                    cls.bind($html);
+                                                    $html.insertAfter($scope.find('[data-name="' + fieldN + '\[' + m_index + '\]"]'));
+                                                }
+                                                m_index = index;
+                                            }
+                                        } else { // array decreased
+                                            $scope.children().each(function() {
+
+                                                if (Object.prototype.toString.call(field) === "[object Object]") {
+                                                    var name = $(this).attr('data-name').split('[')[1].split(']')[0];
+                                                    if (typeof field[name] === 'undefined') {
+                                                        $(this).remove();
+                                                    }
+                                                } else {
+                                                    if (field.indexOf($(this).data('value')) === -1) {
+                                                        $(this).remove();
+                                                    }
+                                                }
+
+                                            });
+                                        }
+                                    }
+                                }
+
+
+                            } else {
+                                if (typeof cls.view.views[viewCb] === 'function') {
+                                    decorated = cls.view.views[viewCb].call(cls.view, field, $scope);
+                                }
                             }
+
+
+
                         } else if (typeof viewfield === 'function') {
                             decorated = viewfield.call(cls.view, field, fieldN);
                         }
@@ -322,26 +358,25 @@
                             cb.bind(this);
                             decorated.bind(undefined, cb);
                         } else {
-                            cls.set.call(this, decorated);
+                            if (UpdateAllHTML) {
+                                cls.set.call(this, decorated);
+                            }
                         }
 
                     }
 
-                    $(this).data('value', field);
+                    $scope.data('value', field);
                 });
             };
-
-            var changes = cls.getChangedModelFields(), addrN, fieldname, fieldnameRaw;
 
             for (addrN in changes) {
                 fieldnameRaw = changes[addrN][0];
                 fieldname = fieldnameRaw.replace(changes[addrN][0].split(']')[0] + ']', changes[addrN][0].split(']')[0].split('[')[1]);
                 fieldname = fieldname.replace('[', '\\[').replace(']', '\\]');
-
                 if (fieldname !== '') {
                     var selector = '[data-name="' + fieldname + '"],[name="' + fieldname + '"]';
                     if (selector)
-                        this.parseDom(selector);
+                        this.parseDom(selector, addrN);
                 }
 
 
@@ -350,7 +385,6 @@
                  }*/
             }
         };
-
         /*
          * gets executed after a change on dom objects
          * "this" is the dom element responsible for the change
@@ -363,26 +397,22 @@
             me.model2view.call($(this));
             return true;
         };
-
         cls.updateValue = function(value, old) {
 
             if (typeof value !== 'undefined') {
                 //$(this).setValue(value);
                 //cls.model.field[$(this).getName()] = value;
                 cls.model.set($(this).getName(), value);
-
             } else {
                 cls.model._delete($(this).getName());
                 //delete cls.model.field[$(this).getName()];
             }
         };
-
         cls.updateValues = function() {
             $(cls.filter.events).each(function() {
                 cls.updateValue.call(this, $(this).getValue());
             });
         };
-
         /**
          *recognize if filter values have changed and call someone
          *@description one common callback for changed is an ajax call with all values to a REST backend to update data
@@ -390,19 +420,16 @@
          */
         cls.recognizeChange = function() {
             var mio = {};
-
             mio.changed = function(el) {
                 cls.changed.call(el);
                 delete cls.timeoutID;
             };
-
             mio.cancel = function() {
                 if (typeof cls.timeoutID === "number") {
                     window.clearTimeout(cls.timeoutID);
                     delete cls.timeoutID;
                 }
             };
-
             mio.setup = function() {
                 var mes = this;
                 mio.cancel();
@@ -410,14 +437,11 @@
                     mio.changed(mes);
                 }, $(mes).attr(api.delay.attr) || cls.delay);
             };
-
             return mio;
         }();
-
         cls.has = function(obj, key) {
             return hasOwnProperty.call(obj, key);
         };
-
         cls.modelchanged = function(field) {
 
             var compare = function(fieldName) {
@@ -429,14 +453,11 @@
                 }
                 return false;
             };
-
             if (typeof field !== 'undefined') {
 
                 return compare(field);
-
             } else {
                 var modelsize = 0;
-
                 for (var key in cls.model.field) {
                     if (cls.has(cls.model.field, key)) {
                         modelsize++;
@@ -452,7 +473,6 @@
 
             return false;
         };
-
         /**
          * http://stackoverflow.com/questions/27030/comparing-arrays-of-objects-in-javascript
          * @param {type} o1
@@ -472,15 +492,12 @@
                             ret[i] = f(a[i], i);
                         return ret.concat();
                     };
-
             // shorthand for push impl.
             var push = Array.prototype.push;
-
             // check for null/undefined values
             if ((o1 == null) || (o2 == null)) {
                 if (o1 != o2)
                     return [["", "null", o1 != null, o2 != null]];
-
                 return undefined; // both null
             }
             // compare types
@@ -556,12 +573,9 @@
             // perform primitive value comparison
             if (o1 != o2)
                 return [["", "value", o1, o2]];
-
             // return nothing if values are equal
             return undefined;
         };
-
-
         /**
          * 
          * @returns {Array}
@@ -570,7 +584,6 @@
 
             return cls.diffObjects(cls._modelprechangeReal, cls.model.field);
         };
-
         /*
          * gets executed after an event is triggered
          */
@@ -578,9 +591,7 @@
             if ((result != cls.model.field[$(this).getName()]) || cls.modelchanged($(this).getName())) {
 
                 console.log('changed', result, cls.model.field[$(this).getName()], $(this).getName());
-
                 cls.recognizeChange.setup.call(this);
-
                 cls.updateValue.call(this, result, cls.model.field[$(this).getName()]);
             }
 
@@ -588,16 +599,13 @@
 
             if (typeof child.post_trigger !== "undefined")
                 return child.post_trigger.call(this, e);
-
             return true;
         };
-
         /**
          *dispatch events for dom element
          */
         cls.dispatchEvents = function() {
             var events = $(this).attr(api.on.attr).split(','), i = 0, event = "", FinalEvents = {}, parts = "";
-
             for (i in events) {
                 event = $.trim(events[i]);
                 parts = event.split('->');
@@ -609,7 +617,6 @@
             }
             return FinalEvents;
         };
-
         /**
          * find all filters and init there configs
          */
@@ -619,7 +626,6 @@
                 '$el': byElement
             };
         };
-
         /**
          * this updates a partial area
          * @param {type} $html
@@ -628,7 +634,6 @@
             $(this).html($html);
             cls.bind($(this));
         };
-
         /**
          * @todo rethink is this the best way to bind the methods?
          * bind dom to matching methods
@@ -636,17 +641,14 @@
         cls.bind = function(element) {
             var events = {}, event = {}, name = "", method = "";
             var filter, $el;
-
             filter = cls.dispatchFilter(element);
             $el = element;
-
             /* variable injection via lambda function factory used in iteration */
             var factory = function(me, event) {
                 return function(e, args) {
                     name = $(me).getName();
                     method = events[name][event];
                     var result = true;
-
                     if (false !== cls.pre_trigger.call(me, e)) {
                         if (typeof child.interactions[name] !== 'undefined' &&
                                 typeof child.interactions[name][method] !== 'undefined') {
@@ -662,7 +664,6 @@
 
                 };
             };
-
             //filter.fields = filter.$el.find('[name],[data-name]'),
             filter.events = filter.$el.find('[' + api.on.attr + ']');
             var InitValue = '';
@@ -673,8 +674,6 @@
                     cls.debug('name:' + name + ', event:' + event);
                     $(this).off(event);
                     $(this).on(event, factory(this, event));
-
-
                     if ($el.attr('data-defaultvalues') === 'model') {
                         InitValue = cls.model.field[$(this).getName()];
                         me.model2view.call($(this));
@@ -687,10 +686,7 @@
             });
             return filter;
         };
-
         cls.filter = cls.bind(this);
-
-
         if (typeof child._methods !== "undefined" && child._methods.init !== "undefined") {
             if (child._methods.init(cls)) {
                 cls.recognizeChange.setup();
