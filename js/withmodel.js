@@ -10,7 +10,7 @@ var interface = function() {
         'todo': {
             'keyup': function(e) {
                 if (e.which === 13) {
-                    intfc.model.field.todos.push($(this).val());
+                    intfc.model.field.todos.push({name: $(this).val(), completed: false});
                     $(this).val('');
                 }
             }
@@ -52,18 +52,21 @@ var interface = function() {
                     intfc.model.field.todos[index] = 'bearbeitet';
                 }
             }
-        },
-        'todos[2]': {
-            'click': function(e) {
-                alert(e);
-            }
         }
     };
 
     this.model = {
         'field': {// here we declare model fields, with default values this is not strict default values are only used if we use directive: data-defaultvalues="client" on default we use server side default values because of the first page load
-            'todos': ['todo1', 'tofsdf '],
-            'todosCompleted': ['todo1', 'tofsdf ']
+            'todos': [
+                {name: 'todo1', completed: false},
+                {name: 'tofsdf ', completed: true}
+            ],
+            'search': 'go for it...',
+            user: {
+                'name': "sdsd0",
+                'age': 23,
+                'email': "sdffsdf@sd.de"
+            }
         },
         'change': {
             'todosCompleted': function() {
@@ -78,8 +81,8 @@ var interface = function() {
     this.view = {
         field: {
             'todos[*]': function(value, $field, name) {
-                return  '<input type="checkbox" name="todosCompleted" data-name="todosCompleted" value="' + value + '" data-on="click" />'
-                        + value + " <a data-name='todo.delete' data-on='click' data-omit='true' data-value='" + value + "'>delete</a>  <a data-name='todo.edit'  data-omit='true' data-on='click' data-value='" + value + "'>edit</a> ";
+                return  '<input type="checkbox" name="todosCompleted" data-name="todosCompleted" value="' + value.name + '" data-on="click" />'
+                        + value.name + " <a data-name='todo.delete' data-on='click' data-omit='true' data-value='" + value.name + "'>delete</a>  <a data-name='todo.edit'  data-omit='true' data-on='click' data-value='" + value.name + "'>edit</a> ";
             }
         },
         views: {
@@ -93,10 +96,9 @@ var interface = function() {
                 });
                 return list.join('');
             },
-            todoliste2: function(todos, index, $field) {
+            "foreach->todoliste2": function(todos, index, $field) {
                 return "<li data-name=\"todos[" + index + "]\"> " + intfc.view.field['todos[*]'](todos[index]) + "</li>";
             }
-
         }
     };
 

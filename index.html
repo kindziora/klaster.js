@@ -166,6 +166,21 @@
                         </div>
 
                         <div class="control-group">
+                            <label class="control-label" for="inputSearch">Email</label>
+                            <div class="controls">
+                                <input class="span2" type="text" data-name="user['email']" placeholder="Email" data-on="keyup"/>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" for="inputSearch">Password</label>
+                            <div class="controls">
+                                <input class="span2" type="password" placeholder="Password" data-name="user['age']" data-on="keyup"/>
+                            </div>
+                        </div>
+
+
+                        <div class="control-group">
                             <label class="control-label" for="inputResults">commit delay</label>
                             <div class="controls">
                                 <select class="span1" id="inputResults" name="number" data-on="change" data-value="&quot;20&quot;">
@@ -211,24 +226,22 @@
                     <h2>Two way databinding</h2>
                     todos<div data-name="todos" data-view="length"></div><br>
                     todo <input type="text" name="todo" data-omit="true" placeholder="feed me ..." data-on="keyup"/><br>
-                    
+
                 </div>
             </div>
             <div class="row-fluid">
                 <div class="span12">
                     <h2>list</h2>
                     <ul data-name="todos" data-view="todoliste">
-                         <li data-name="todos[0]"></li>
-                     </ul>
+                    </ul>
                 </div>
             </div> 
-            
-             <div class="row-fluid">
+
+            <div class="row-fluid">
                 <div class="span12">
                     <h2>list</h2>
                     <ul data-name="todos" data-view="foreach->todoliste2">
-                         <li data-name="todos[0]"></li>
-                     </ul>
+                    </ul>
                 </div>
             </div> 
 

@@ -237,6 +237,11 @@
         };
         cls.model.set = function(notation, value) {
             if (typeof cls.model.field[notation] === 'undefined' && notation.indexOf('[') !== -1) {
+
+                if (typeof value === 'string') {
+                    value = "'" + value + "'";
+                }
+
                 eval("cls.model.field." + notation + "=" + value + ";");
             } else {
                 cls.model.field[notation] = value;
@@ -299,15 +304,14 @@
                             if (viewCb.indexOf(api.view.value.definition.iterate) !== -1) {
 
                                 // iterate function for native partial lists
-                                viewCb = viewCb.split(api.view.value.definition.iterate)[1];
+
                                 UpdateAllHTML = false;
-                                
 
                                 if (typeof cls.view.views[viewCb] === 'function') {
                                     var $child, index, $html, m_index = 0;
 
                                     if (changes[changeIndex][1] === "length") {
-                                         
+
                                         if (changes[changeIndex][2] < changes[changeIndex][3]) { // array increased
                                             for (index in field) {
                                                 $child = $scope.find('[data-name="' + fieldN + '\[' + index + '\]"]');
@@ -315,7 +319,14 @@
                                                     $html = $(cls.view.views[viewCb].call(cls.view, field, index, $scope));
                                                     $html.data('value', field[index]);
                                                     cls.bind($html);
-                                                    $html.insertAfter($scope.find('[data-name="' + fieldN + '\[' + m_index + '\]"]'));
+                                                    var $close = $scope.find('[data-name="' + fieldN + '\[' + m_index + '\]"]');
+
+                                                    if ($close.get(0)) {
+                                                        $html.insertAfter($close);
+                                                    } else {
+                                                        $scope.append($html);
+                                                    }
+
                                                 }
                                                 m_index = index;
                                             }
@@ -371,14 +382,32 @@
 
             for (addrN in changes) {
                 fieldnameRaw = changes[addrN][0];
-                fieldname = fieldnameRaw.replace(changes[addrN][0].split(']')[0] + ']', changes[addrN][0].split(']')[0].split('[')[1]);
-                fieldname = fieldname.replace('[', '\\[').replace(']', '\\]');
-                if (fieldname !== '') {
-                    var selector = '[data-name="' + fieldname + '"],[name="' + fieldname + '"]';
-                    if (selector)
-                        this.parseDom(selector, addrN);
-                }
+                function findExistingElement(fieldnameRaw_) {
+                    var fieldnamei = fieldnameRaw_.replace(fieldnameRaw_.split(']')[0] + ']', fieldnameRaw_.split(']')[0].split('[')[1]);
+                    fieldnamei = fieldnamei.replace('[', '\\[').replace(']', '\\]');
 
+                    if (fieldnamei !== '') {
+                        var selector = '[data-name="' + fieldnamei + '"],[name="' + fieldnamei + '"]';
+
+
+                        if ($(selector).get(0)) {
+                            $this.parseDom(selector, addrN);
+                        } else { // get parent
+
+                            var parentMatch = fieldnameRaw_
+                                    .match(/\[(.*?)\]/gi);
+
+                            parentMatch.pop();
+
+                            return findExistingElement(parentMatch.join(''));
+
+                        }
+                    }
+                }
+                ;
+
+
+                findExistingElement(fieldnameRaw);
 
                 /* if ($.type(cls.model.field[fieldname]) === 'object' || $.type(cls.model.field[fieldname]) === 'array') {
                  this.parseDom('[data-name^="' + fieldname + '\["],[name^="' + fieldname + '\["]');
@@ -480,6 +509,14 @@
          * @returns {Array|$@call;extend.diffObjects.diff|undefined}
          */
         cls.diffObjects = function(o1, o2) {
+
+            if ((o1 == null)) {
+                o1 = [];
+            }
+            if ((o2 == null)) {
+                o2 = [];
+            }
+
             // choose a map() impl.
             // you may use $.map from jQuery if you wish
             var map = Array.prototype.map ?
@@ -500,6 +537,7 @@
                     return [["", "null", o1 != null, o2 != null]];
                 return undefined; // both null
             }
+
             // compare types
             /* if ((o1.constructor != o2.constructor) ||
              (typeof o1 != typeof o2)) {
