@@ -1,0 +1,38 @@
+
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+
+.controll-box label, .controll-box select{
+    font-size:80%;
+}
+.controll-box select{
+    padding:3px;  
+    margin:0;
+}
+
+.controll-box.form-horizontal .control-group {
+    margin-bottom: 10px;
+}
+
+.controll-box.form-horizontal .controls {
+    margin-left: 70px;
+}
+
+.controll-box.form-horizontal .control-label{
+    width: auto;
+}
+
+
+
+
+
+
+
+
+
+
+
+

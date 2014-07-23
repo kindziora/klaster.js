@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <style>
+            body {
+                padding-top: 60px;
+                padding-bottom: 40px;
+            } 
+        </style>
+        <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+        <link rel="stylesheet" href="http://bootswatch.com/spacelab/bootstrap.min.css">
+
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/pretty.css">
+        <script src="js/vendor/modernizr-2.6.1-respond-1.1.0.min.js"></script>
+    </head>
+    <body data-defaultvalues="model">
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+        <![endif]-->
+
+        <!-- This code is taken from http://twitter.github.com/bootstrap/examples/hero.html -->
+
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="#">klaster.js</a>
+
+                    <div class="nav-collapse collapse">
+                        <ul class="nav">
+                            <li class="active"><a href="#">Home</a></li>
+                            <li><a href="#about">About</a></li>
+                            <li><a href="#contact">Contact</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Action</a></li>
+                                    <li><a href="#">Another action</a></li>
+                                    <li><a href="#">Something else here</a></li>
+                                    <li class="divider"></li>
+                                    <li class="nav-header">Nav header</li>
+                                    <li><a href="#">Separated link</a></li>
+                                    <li><a href="#">One more separated link</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <form class="navbar-form pull-right">
+                            <input class="span2" type="text" placeholder="Email">
+                            <input class="span2" type="password" placeholder="Password">
+                            <button type="submit" class="btn">Sign in</button>
+                        </form>
+                    </div><!--/.nav-collapse -->
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <!-- Main hero unit for a primary marketing message or call to action -->
+            <div class="hero-unit">
+                <h1>klaster.js rocks</h1>
+                <p>Keep it lean and stay clean. realy</p>
+
+                <p><a class="btn btn-primary btn-large">Demo &raquo;</a></p>
+            </div>
+            <h1>Setup</h1>
+            <!-- Example row of columns -->
+            <div class="row-fluid">
+                <div class="span12">
+                    <h2>view</h2>
+                    <pre class="prettyprint linenums lang-html">
+&lt;div class=&quot;controll-box form-horizontal well&quot;&gt;
+    &lt;div class=&quot;control-group&quot;&gt;
+        &lt;label class=&quot;control-label&quot; for=&quot;inputSearch&quot;&gt;Search&lt;/label&gt;
+        &lt;div class=&quot;controls&quot;&gt;
+            &lt;input type=&quot;text&quot; class=&quot;input-block-level&quot; id=&quot;inputSearch&quot; name=&quot;search&quot; placeholder=&quot;feed me ...&quot; data-on=&quot;keyup&quot; data-value=&quot;&amp;quot;&amp;quot;&quot;&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;control-group&quot;&gt;
+        &lt;label class=&quot;control-label&quot; for=&quot;inputResults&quot;&gt;commit delay&lt;/label&gt;
+        &lt;div class=&quot;controls&quot;&gt;
+            &lt;select class=&quot;span1&quot; id=&quot;inputResults&quot; name=&quot;number&quot; data-on=&quot;change&quot; data-value=&quot;&amp;quot;20&amp;quot;&quot;&gt;
+                &lt;option&gt;none&lt;/option&gt;
+                &lt;option&gt;200 ms&lt;/option&gt;
+                &lt;option&gt;800 ms&lt;/option&gt; 
+                &lt;option&gt;1600 ms&lt;/option&gt; 
+            &lt;/select&gt;
+            &lt;a name=&quot;filterbutton&quot; data-omit=&quot;true&quot; data-on=&quot;click&quot; data-connected=&quot;.config&quot; class=&quot;btn&quot;&gt;&lt;i class=&quot;icon-cog&quot;&gt;&lt;/i&gt; more&lt;/a&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;control-group config&quot; data-omit=&quot;true&quot; style=&quot;display: none;&quot;&gt;
+        &lt;label class=&quot;control-label&quot;&gt;Filter&lt;/label&gt;
+        &lt;div class=&quot;controls&quot;&gt;
+            &lt;label class=&quot;checkbox&quot;&gt;
+                &lt;input type=&quot;checkbox&quot; name=&quot;art&quot; value=&quot;&#220;berpr&#252;fung&quot; data-on=&quot;click&quot;/&gt; &#220;berpr&#252;fung
+            &lt;/label&gt;
+            &lt;label class=&quot;checkbox&quot;&gt;
+                &lt;input type=&quot;checkbox&quot; value=&quot;Favoriten&quot; name=&quot;art&quot; data-on=&quot;click&quot;/&gt; Favoriten
+            &lt;/label&gt;
+            &lt;label class=&quot;checkbox&quot;&gt;
+                &lt;input type=&quot;checkbox&quot; value=&quot;Anreicherung&quot; name=&quot;art&quot; data-on=&quot;click&quot;/&gt; Anreicherung
+            &lt;/label&gt;
+            &lt;label class=&quot;checkbox&quot;&gt;
+                &lt;input type=&quot;checkbox&quot; value=&quot;Texte&quot; name=&quot;art&quot; data-on=&quot;click&quot;/&gt; Texte
+            &lt;/label&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;  
+    &lt;pre class=&quot;prettyprint&quot; id=&quot;json-preview&quot;&gt;
+
+    &lt;/pre&gt;
+&lt;/div&gt;
+                    </pre>
+
+
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span12">
+                    <h2>controller</h2>
+                    <pre class="prettyprint linenums">$('.controll-box').klaster({
+    delay: 0,
+    actions: {
+        'filterbutton': {
+            'click': function(e) {
+                var $checks = $($(this).attr('data-connected'));
+                $checks.toggleOmit().toggle(200);
+                return $checks.attr('data-omit');
+            }
+        }
+    },
+    'sync': function(el) {
+        $('#json-preview').html(JSON.stringify(this.values));
+        //prettyPrint();
+    }
+});</pre>
+
+                </div>
+            </div>
+            <h1>Result</h1>
+            <div class="row-fluid">
+                <div class="span12">
+                    <h2>view</h2>
+                    <div class="controll-box form-horizontal well">
+                        <div class="control-group">
+                            <label class="control-label" for="inputSearch">Search</label>
+                            <div class="controls">
+                                <input type="text" class="input-block-level" name="search" placeholder="feed me ..." data-on="keyup"/>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" for="inputSearch">Email</label>
+                            <div class="controls">
+                                <input class="span2" type="text" data-name="user['email']" placeholder="Email" data-on="keyup"/>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" for="inputSearch">Password</label>
+                            <div class="controls">
+                                <input class="span2" type="password" placeholder="Password" data-name="user['age']" data-on="keyup"/>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" for="inputResults">commit delay</label>
+                            <div class="controls">
+                                <select class="span1" id="inputResults" name="number" data-on="change" data-value="&quot;20&quot;">
+                                    <option>none</option>
+                                    <option>200 ms</option>
+                                    <option>800 ms</option> 
+                                    <option>1600 ms</option> 
+                                </select>
+                                <a name="filterbutton" data-omit="true" data-on="click" data-connected=".config" class="btn"><i class="icon-cog"></i> more</a>
+                            </div>
+                        </div>
+
+                        <div class="control-group config" data-omit="true" style="display: none;">
+                            <label class="control-label">Filter</label>
+                            <div class="controls">
+                                <label class="checkbox">
+                                    <input type="checkbox" name="art" value="Überprüfung" data-on="click"/> Überprüfung
+                                </label>
+                                <label class="checkbox">
+                                    <input type="checkbox" value="Favoriten" name="art" data-on="click"/> Favoriten
+                                </label>
+                                <label class="checkbox">
+                                    <input type="checkbox" value="Anreicherung" name="art" data-on="click"/> Anreicherung
+                                </label>
+                                <label class="checkbox">
+                                    <input type="checkbox" value="Texte" name="art" data-on="click"/> Texte
+                                </label>
+                            </div>
+                        </div>  
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span12">
+                    <h2>model</h2>
+                    <pre class="prettyprint" id="json-preview">
+                        
+                    </pre>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span12">
+                    <h2>Two way databinding</h2>
+                    todos<div data-name="todos" data-view="length"></div><br>
+                    todo <input type="text" name="todo" data-omit="true" placeholder="feed me ..." data-on="keyup"/><br>
+
+                </div>
+            </div>
+             <div class="row-fluid">
+                <div class="span12">
+                    <h2>todos</h2>
+                    <ul data-name="todos" data-view="foreach->todoliste2">
+                    </ul>
+                </div>
+            </div> 
+            <div class="row-fluid">
+                <div class="span12">
+                    <h2>list completed</h2>
+                    <ul data-name="todos" data-view="foreach->todoliste2" data-filter="!item.completed">
+                    </ul>
+                </div>
+            </div> 
+
+            <div class="row-fluid">
+                <div class="span12">
+                    <h2>list incompleted</h2>
+                    <ul data-name="todos" data-view="foreach:todoliste2->item" data-filter="item.completed">
+                    </ul>
+                </div>
+            </div> 
+
+        </div>
+        <hr>
+        <div class="row row-fluid no-margin "> 
+
+            <div class="dataTables_paginate right paging_bootstrap pagination">
+                <ul><li class="prev disabled"><a href="#">← Zurück</a></li><li class="active"><a href="#">1</a></li><li><a href="#">2</a></li><li><a href="#">3</a></li><li class="next"><a href="#">Weiter → </a></li></ul>
+            </div> 
+        </div>
+        <footer>
+            <p>&copy; Company 2012</p>
+        </footer>
+
+    </div> <!-- /container -->
+
+
+    <script src="js/vendor/jquery-1.8.3.min.js"></script>
+
+    <script src="js/vendor/bootstrap.min.js"></script>
+
+    <script src="/klaster.js/klaster.js"></script>
+
+    <script src="js/withmodel.js"></script>
+
+    <script type="text/javascript" src="js/vendor/prettify.js"></script>
+
+    <script>
+        $(document).ready(prettyPrint);
+
+        /*    var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+         (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+         g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+         s.parentNode.insertBefore(g,s)}(document,'script'));*/
+    </script>
+</body>
+</html>
