@@ -10,27 +10,28 @@ var interface = function() {
         'todo': {
             'keyup': function(e) {
                 if (e.which === 13) {
-
                     intfc.model.field.todos.push({name: $(this).val(), completed: false});
-
                     $(this).val('');
                 }
             }
         },
         'todo.delete': {
             'click': function(e) {
-                $(this).closest('.li').remove();
+                var todoname = $(this).parent().getName();
+                intfc.model._delete(todoname);
             }
         },
         'todos[*].name': {
-            'click': function(e) {
-                $(this).prop('contenteditable', function(idx, oldProp) {
-                    return !oldProp;
-                });
+            'dblclick': function(e) {
+                if ($(this).attr('contenteditable') == "true") {
+                    $(this).attr('contenteditable', "false");
+                }
+                else {
+                    $(this).attr('contenteditable', "true");
+                }
             }
         }
     };
-
     this.model = {
         'field': {// here we declare model fields, with default values this is not strict default values are only used if we use directive: data-defaultvalues="client" on default we use server side default values because of the first page load
             'todos': [
@@ -69,7 +70,7 @@ var interface = function() {
         views: {
             'todos[*]': function(value, index) {
                 return  '<input type="checkbox" name="todosCompleted" data-name="todos[' + index + '].completed" data-multiple="false" data-on="click" />'
-                        + '<label data-on="click->todos[*].name" data-name="todos[' + index + '].name">' + value.name + "</label> <a data-name='todo.delete' data-on='click' data-omit='true' data-value='" + value.name + "'>delete</a>";
+                        + '<label data-on="dblclick->todos[*].name" data-name="todos[' + index + '].name">' + value.name + "</label> <a data-name='todo.delete' data-on='click' data-omit='true' data-value='" + value.name + "'>delete</a>";
             },
             'todos2[*]': function(value, index) {
 

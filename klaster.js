@@ -76,7 +76,6 @@
 
             },
     api = docapi['dom-attributes'];
-
     $.fn.getName = function() {
         return this.attr(api.name.attr) ? this.attr(api.name.attr) : this.attr('name');
     };
@@ -101,15 +100,13 @@
     };
     me.multipleValues = {
         "checked": function($el, $elements) {
-            
-            if ($el.attr(api.multiple.attr) === 'false') {
-                return $el.is(':checked');
-            }
 
+            if ($el.attr(api.multiple.attr) === 'false' || $('[' + $el.nameAttr() + '="' + $el.getName() + '"]').length === 1)
+                return $el.is(':checked');
             var values = [],
                     value = undefined;
             $elements.each(function() {
-                value = me.value.call($el);
+                value = me.value.call($(this));
                 if (typeof value !== 'undefined') {
                     values.push(value);
                 }
@@ -254,6 +251,28 @@
         cls.model._delete = function(notation) {
             if (typeof cls.model.field[notation] === 'undefined' && notation.indexOf('[') !== -1) {
                 eval("delete cls.model.field." + notation + ";");
+                //CLEANUP EMPTY ARRAY ELEMENTS//////////////////////////////////
+                var parent;
+                if (notation.indexOf(']') > notation.indexOf('.')) {
+                    parent = 'cls.model.field.' + notation.replace(notation.match(/\[(.*?)\]/gi).pop(), '');
+                } else {
+                    var p = notation.split('.');
+                    p.pop();
+                    parent = 'cls.model.field.' + p.join('.');
+                }
+
+                //shadow model
+
+                cls.__shadowmodel = $.extend(true, {}, cls.model.field); //Function.apply(null, ['cls', 'return $.extend({}, ' + parent + ');'])(cls);
+
+                var v1 = 'if (Object.prototype.toString.call(' + parent + ') === "[object Array]")'
+                        + 'cls.__shadowmodel.' + parent.replace('cls.model.field.', '') + ' = ' + parent + ';';
+
+                eval(v1);
+
+                eval('if (Object.prototype.toString.call(' + parent + ') === "[object Array]")'
+                        + parent + ' = ' + parent + '.filter(function() {return true;});');
+                ////////////////////////////////////////////////////////////////
             } else {
                 delete cls.model.field[notation];
             }
@@ -270,23 +289,18 @@
             }
             return viewMethod;
         };
-
         me.preRenderView = function($field, item) {
             if (!$field.attr('data-filter'))
                 return true;
-
             return eval("(" + $field.attr('data-filter').replace('this', 'cls') + ")");
         };
-
         /**
          * two way databinding
          * @returns {undefined}
          */
         me.model2view = function() {
             var fieldname, $this = this, decorated = '', calllist = {}, field, changeCb;
-
             var changes = cls.getChangedModelFields(), addrN, fieldname, fieldnameRaw;
-
             this.parseDom = function(selector, changeIndex) {
                 var fieldN = "", viewfield;
                 $(selector).each(function() {
@@ -319,10 +333,8 @@
                                 // iterate function for native partial lists
 
                                 UpdateAllHTML = false;
-
                                 if (typeof cls.view.views[viewCb] === 'function') {
                                     var $child, index, $html, m_index = 0;
-
                                     if (changes[changeIndex][1] === "length") {
 
                                         if (changes[changeIndex][2] < changes[changeIndex][3]) { // array increased
@@ -335,7 +347,6 @@
                                                         $html.data('value', field[index]);
                                                         cls.bind($html);
                                                         var $close = $scope.find('[data-name="' + fieldN + '\[' + m_index + '\]"]');
-
                                                         if ($close.get(0)) {
                                                             $html.insertAfter($close);
                                                         } else {
@@ -348,17 +359,14 @@
                                             }
                                         } else { // array decreased
                                             $scope.children().each(function() {
-                                                var name = $(this).attr('data-name').split('[')[1].split(']')[0];
-
-                                                if (me.preRenderView($scope, field[field[name]])) {
-                                                    if (Object.prototype.toString.call(field) === "[object Object]") {
-                                                        if (typeof field[name] === 'undefined') {
-                                                            $(this).remove();
-                                                        }
-                                                    } else {
-                                                        if (field.indexOf($(this).data('value')) === -1) {
-                                                            $(this).remove();
-                                                        }
+                                                var name = $(this).getName().split('[')[1].split(']')[0];
+                                                if (Object.prototype.toString.call(field) === "[object Object]") {
+                                                    if (typeof field[name] === 'undefined') {
+                                                        $(this).remove();
+                                                    }
+                                                } else {
+                                                    if (eval('(typeof cls.__shadowmodel.' + $(this).getName() + ' === "undefined")')) {
+                                                        $(this).remove();
                                                     }
                                                 }
 
@@ -397,36 +405,26 @@
                     $scope.data('value', field);
                 });
             };
-
             for (addrN in changes) {
                 fieldnameRaw = changes[addrN][0];
                 function findExistingElement(fieldnameRaw_) {
                     var fieldnamei = fieldnameRaw_.replace(fieldnameRaw_.split(']')[0] + ']', fieldnameRaw_.split(']')[0].split('[')[1]);
                     fieldnamei = fieldnamei.replace('[', '\\[').replace(']', '\\]');
-
                     if (fieldnamei !== '') {
                         var selector = '[data-name="' + fieldnamei + '"],[name="' + fieldnamei + '"]';
-
-
                         if ($(selector).get(0)) {
                             $this.parseDom(selector, addrN);
                         } else { // get parent
 
                             var parentMatch = fieldnameRaw_
                                     .match(/\[(.*?)\]/gi);
-
                             parentMatch.pop();
-
                             return findExistingElement(parentMatch.join(''));
-
                         }
                     }
                 }
                 ;
-
-
                 findExistingElement(fieldnameRaw);
-
                 /* if ($.type(cls.model.field[fieldname]) === 'object' || $.type(cls.model.field[fieldname]) === 'array') {
                  this.parseDom('[data-name^="' + fieldname + '\["],[name^="' + fieldname + '\["]');
                  }*/
@@ -712,6 +710,13 @@
                             if ($(me).attr(api.omit.attr) === "true") {
                                 result = $(me).getValue();
                             }
+                        } else if (typeof child.interactions[method] !== 'undefined' &&
+                                typeof child.interactions[method][event] !== 'undefined') {
+                            result = child.interactions[method][event].call(me, e, cls, args);
+                            if ($(me).attr(api.omit.attr) === "true") {
+                                result = $(me).getValue();
+                            }
+
                         } else {
                             result = $(me).getValue();
                         }
