@@ -5,15 +5,13 @@
 
 var interface = function() {
     var intfc = this;
-
     //this.delay = 1000; //try it, to commit x milliseconds after last change
 
     this.interactions = {
         'filterbutton': {
-            'click': function(e, parent) {
-                var $aim = $($(this).attr('data-connected'));
-                $aim.toggleOmit().toggle();
-                parent.updateValues($aim);
+            'click': function(e, ui) {
+                var $area = $($(this).attr('data-connected'));
+                ui.toggle($area).slideToggle(200);
             }
         },
         'todo': {
@@ -50,7 +48,7 @@ var interface = function() {
             'search': 'go for it...',
             user: {
                 'name': "sdsd0",
-                'age': 23,
+                'age': 23567567,
                 'email': "sdffsdf@sd.de"
             }
         },
@@ -66,7 +64,6 @@ var interface = function() {
         }
 
     };
-
     this.view = {
         templates: $.get('app/cache/templates.json'),
         render: function(tplVars, tplName) {
@@ -74,7 +71,6 @@ var interface = function() {
             return twig({
                 data: intfc.view.templates[tplName || arguments.callee.caller.name]
             }).render(tplVars);
-
         },
         views: {
             'todos[*]': function(value, index) {
@@ -100,7 +96,5 @@ var interface = function() {
             }
         }
     };
-
 };
-
 $('body').klaster_(new interface());
