@@ -22,7 +22,7 @@
                 'dom-attributes': {
                     'defaultvalues': {
                         'attr': prefix + '-defaultvalues',
-                        'value': 'String value:"client" or "server" that means our app uses the field.values from dom or model/javascript'
+                        'value': 'String value:"client" or "server" that means our app uses the field.values frtom dom or model/javascript'
                     },
                     'name': {
                         'attr': prefix + '-name',
@@ -77,7 +77,7 @@
             },
     api = docapi['dom-attributes'];
     $.fn.getName = function() {
-        return this.attr(api.name.attr) ? this.attr(api.name.attr) : this.attr('name');
+        return this.attr(this.nameAttr());
     };
     $.fn.nameAttr = function() {
         return this.attr(api.name.attr) ? api.name.attr : 'name';
@@ -103,6 +103,7 @@
 
             if ($el.attr(api.multiple.attr) === 'false' || $('[' + $el.nameAttr() + '="' + $el.getName() + '"]').length === 1)
                 return $el.is(':checked');
+            
             var values = [],
                     value = undefined;
             $elements.each(function() {
@@ -164,9 +165,12 @@
             'interactions': {
             },
             'model': {
-                'field': {},
-                'change': {},
-                'changed': {}
+                field: {},
+                event: {
+                    'onChange': {},
+                    'sync': function() {
+                    }
+                }
             },
             'view': {
                 field: {
@@ -303,8 +307,14 @@
             var changes = cls.getChangedModelFields(), addrN, fieldname, fieldnameRaw;
             this.parseDom = function(selector, changeIndex) {
                 var fieldN = "", viewfield;
+                 
                 $(selector).each(function() {
                     var $scope = $(this);
+                    
+                    if ($scope.parents('[' + api.omit.attr + '="true"]').get(0)) {
+                        return;
+                    }
+                    
                     var UpdateAllHTML = true;
                     fieldN = $scope.attr('data-name') || $scope.attr('name');
                     field = cls.model.get(fieldN);
@@ -453,8 +463,8 @@
                 //delete cls.model.field[$(this).getName()];
             }
         };
-        cls.updateValues = function() {
-            $(cls.filter.events).each(function() {
+        cls.updateValues = function($where) {
+            ($where.find(cls.filter.events) || $(cls.filter.events)).each(function() {
                 cls.updateValue.call(this, $(this).getValue());
             });
         };
@@ -735,6 +745,7 @@
                     cls.debug('name:' + name + ', event:' + event);
                     $(this).off(event);
                     $(this).on(event, factory(this, event));
+
                     if ($el.attr('data-defaultvalues') === 'model') {
                         InitValue = cls.model.field[$(this).getName()];
                         me.model2view.call($(this));

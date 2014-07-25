@@ -6,7 +6,16 @@
 var interface = function() {
     var intfc = this;
 
+    //this.delay = 1000; //try it, to commit x milliseconds after last change
+
     this.interactions = {
+        'filterbutton': {
+            'click': function(e, parent) {
+                var $aim = $($(this).attr('data-connected'));
+                $aim.toggleOmit().toggle();
+                parent.updateValues($aim);
+            }
+        },
         'todo': {
             'keyup': function(e) {
                 if (e.which === 13) {
