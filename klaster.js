@@ -9,72 +9,72 @@
 
     var me = {}, prefix = 'data',
             docapi = {
-                'Controller': {
-                    'this.interactions': {
-                        'dom-attribute name': {
-                            'on-name': 'event callback handler, params(e, controller) context(this) is jQuery dom element'
-                        }
-                    },
-                    'this.delay': 'integer delay in milliseconds used for changes on model call to sync function timeout',
-                    'change': 'callback that executes after change of model data(this.model.values) with a delay of milliseconds declared with this.delay default 0'
-
-                },
-                'dom-attributes': {
-                    'defaultvalues': {
-                        'attr': prefix + '-defaultvalues',
-                        'value': 'String value:"client" or "server" that means our app uses the field.values frtom dom or model/javascript'
-                    },
-                    'name': {
-                        'attr': prefix + '-name',
-                        'value': 'String containing name of element, not unique'
-                    },
-                    'omit': {
-                        'attr': prefix + '-omit',
-                        'value': 'String/that evaluates to boolean, whether ignoring the area for model representation data or not'
-                    },
-                    'filter': {
-                        'attr': prefix + '-filter',
-                        'value': 'filter expression javascript is valid'
-                    },
-                    'value': {
-                        'attr': prefix + '-value',
-                        'value': 'String, containing the value of an element, can be plain or json'
-                    },
-                    'multiple': {
-                        'attr': prefix + '-multiple',
-                        'value': 'String/that evaluates to boolean, whether this element is part of multiple elements like checkbox',
-                        'children': {
-                            'checked': {
-                                'attr': prefix + '-checked',
-                                'value': 'String/that evaluates to boolean, whether this element is will apear inside a list of multiple elements with similar data-name, like checkbox',
-                            }
-                        }
-                    },
-                    'delay': {
-                        'attr': prefix + '-delay',
-                        'value': 'number of miliseconds until sync'
-                    },
-                    'on': {
-                        'attr': prefix + '-on',
-                        'value': 'event that triggers matching action method, also alias is possible. eg. hover->klasterhover'
-                    },
-                    'view': {
-                        'attr': prefix + '-view',
-                        'value': {
-                            'desc': 'defines which view function callback is executed for rendering output',
-                            'params': {
-                                '[viewname]': 'name of view render function (calls it) and uses return string to fill html of this element',
-                                'for->[viewname]': 'name of view render function and calls it for every array item and uses return string to fill html of this elements'
-                            },
-                            definition: {
-                                'iterate': 'foreach->'
-                            }
-                        }
-                    }
-
+        'Controller': {
+            'this.interactions': {
+                'dom-attribute name': {
+                    'on-name': 'event callback handler, params(e, controller) context(this) is jQuery dom element'
                 }
-
             },
+            'this.delay': 'integer delay in milliseconds used for changes on model call to sync function timeout',
+            'change': 'callback that executes after change of model data(this.model.values) with a delay of milliseconds declared with this.delay default 0'
+
+        },
+        'dom-attributes': {
+            'defaultvalues': {
+                'attr': prefix + '-defaultvalues',
+                'value': 'String value:"client" or "server" that means our app uses the field.values frtom dom or model/javascript'
+            },
+            'name': {
+                'attr': prefix + '-name',
+                'value': 'String containing name of element, not unique'
+            },
+            'omit': {
+                'attr': prefix + '-omit',
+                'value': 'String/that evaluates to boolean, whether ignoring the area for model representation data or not'
+            },
+            'filter': {
+                'attr': prefix + '-filter',
+                'value': 'filter expression javascript is valid'
+            },
+            'value': {
+                'attr': prefix + '-value',
+                'value': 'String, containing the value of an element, can be plain or json'
+            },
+            'multiple': {
+                'attr': prefix + '-multiple',
+                'value': 'String/that evaluates to boolean, whether this element is part of multiple elements like checkbox',
+                'children': {
+                    'checked': {
+                        'attr': prefix + '-checked',
+                        'value': 'String/that evaluates to boolean, whether this element is will apear inside a list of multiple elements with similar data-name, like checkbox',
+                    }
+                }
+            },
+            'delay': {
+                'attr': prefix + '-delay',
+                'value': 'number of miliseconds until sync'
+            },
+            'on': {
+                'attr': prefix + '-on',
+                'value': 'event that triggers matching action method, also alias is possible. eg. hover->klasterhover'
+            },
+            'view': {
+                'attr': prefix + '-view',
+                'value': {
+                    'desc': 'defines which view function callback is executed for rendering output',
+                    'params': {
+                        '[viewname]': 'name of view render function (calls it) and uses return string to fill html of this element',
+                        'for->[viewname]': 'name of view render function and calls it for every array item and uses return string to fill html of this elements'
+                    },
+                    definition: {
+                        'iterate': 'foreach->'
+                    }
+                }
+            }
+
+        }
+
+    },
     api = docapi['dom-attributes'];
     $.fn.getName = function() {
         return this.attr(this.nameAttr());
@@ -255,7 +255,7 @@
             if (typeof cls.model.field[notation] === 'undefined' && notation.indexOf('[') !== -1) {
                 eval("delete cls.model.field." + notation + ";");
                 //CLEANUP EMPTY ARRAY ELEMENTS//////////////////////////////////
-                var parent;
+               /*  var parent;
                 if (notation.indexOf(']') > notation.indexOf('.')) {
                     parent = 'cls.model.field.' + notation.replace(notation.match(/\[(.*?)\]/gi).pop(), '');
                 } else {
@@ -266,14 +266,15 @@
 
                 //shadow model
 
-                cls.__shadowmodel = $.extend(true, {}, cls.model.field); //Function.apply(null, ['cls', 'return $.extend({}, ' + parent + ');'])(cls);
-
-                var v1 = 'if (Object.prototype.toString.call(' + parent + ') === "[object Array]")'
-                        + 'cls.__shadowmodel.' + parent.replace('cls.model.field.', '') + ' = ' + parent + ';';
-                eval(v1);
-                eval('if (Object.prototype.toString.call(' + parent + ') === "[object Array]")'
-                        + parent + ' = ' + parent + '.filter(function() {return true;});');
-                ////////////////////////////////////////////////////////////////
+                   cls.__shadowmodel = $.extend(true, {}, cls.model.field); //Function.apply(null, ['cls', 'return $.extend({}, ' + parent + ');'])(cls);
+                 
+                 var v1 = 'if (Object.prototype.toString.call(' + parent + ') === "[object Array]")'
+                 + 'cls.__shadowmodel.' + parent.replace('cls.model.field.', '') + ' = ' + parent + ';';
+                 eval(v1);
+                 eval('if (Object.prototype.toString.call(' + parent + ') === "[object Array]")'
+                 + parent + ' = ' + parent + '.filter(function() {return true;});');
+                 ////////////////////////////////////////////////////////////////
+                 */
             } else {
                 delete cls.model.field[notation];
             }
@@ -291,6 +292,8 @@
             return viewMethod;
         };
         me.preRenderView = function($field, item) {
+            if (typeof cls.model.get($field.getName()) === 'undefined')
+                return false;
             if (!$field.attr('data-filter'))
                 return true;
             return eval("(" + $field.attr('data-filter').replace('this', 'cls') + ")");
@@ -310,6 +313,7 @@
                         return;
                     }
 
+
                     var UpdateAllHTML = true;
                     fieldN = $scope.attr('data-name') || $scope.attr('name');
                     field = cls.model.get(fieldN);
@@ -318,8 +322,8 @@
                     if (!refreshAll) {
                         if ($this[0] === $scope[0]
                                 || (typeof cls._modelprechange !== 'undefined'
-                                        && typeof cls._modelprechange[fieldN] !== 'undefined'
-                                        && cls._modelprechange[fieldN] == field))
+                                && typeof cls._modelprechange[fieldN] !== 'undefined'
+                                && cls._modelprechange[fieldN] == field))
                             return;
                     }
 
@@ -378,7 +382,7 @@
                                                         $(this).remove();
                                                     }
                                                 } else {
-                                                    if (eval('(typeof cls.__shadowmodel.' + $(this).getName() + ' === "undefined")')) {
+                                                    if (eval('(typeof cls.model.field.' + $(this).getName() + ' === "undefined")')) {
                                                         $(this).remove();
                                                     }
                                                 }
@@ -398,7 +402,13 @@
                             }
 
                         } else if (typeof viewfield === 'function') {
-                            decorated = viewfield.call(cls.view, field, fieldN);
+
+                            if (typeof field === 'undefined') {
+                                //stop here and kill field in view
+                                $globalScope.find(selector).remove();
+                            } else {
+                                decorated = viewfield.call(cls.view, field, fieldN);
+                            }
                         }
 
                         if (typeof decorated === 'function') {

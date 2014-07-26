@@ -10,8 +10,8 @@ var interface = function() {
     this.interactions = {
         'filterbutton': {
             'click': function(e, ui) {
-                var $area = $($(this).attr('data-connected'));
-                ui.toggle($area).slideToggle(200);
+                var $areaToToggle = $($(this).attr('data-connected'));
+                ui.toggle($areaToToggle).slideToggle(200);
             }
         },
         'todo': {
@@ -97,4 +97,5 @@ var interface = function() {
         }
     };
 };
+
 $('body').klaster_(new interface());
