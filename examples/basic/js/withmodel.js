@@ -82,7 +82,7 @@ var interface = function() {
                 return this.render({'item': value, 'index': index});
             },
             length: function(todos) {
-                return todos.length;
+                return todos.filter(function() {return true;}).length;
             },
             todoliste: function(todos, $field) {
                 var list = [];

@@ -246,27 +246,36 @@
         };
         cls.model.set = function(notation, value) {
             if (typeof cls.model.field[notation] === 'undefined' && notation.indexOf('[') !== -1) {
-                eval("cls.model.field." + notation + "=" + JSON.stringify(value) + ";");
+                var parent = cls.model._getParentObject(notation);
+                
+                eval("if( (typeof " + parent + "!== 'undefined') && typeof cls.model.field." + notation + "!== 'undefined' ) cls.model.field." + notation + "=" + JSON.stringify(value) + ";");
             } else {
                 cls.model.field[notation] = value;
             }
         };
+        cls.model._getParentObject = function(notation) {
+            var parent;
+            if (notation.indexOf(']') > notation.indexOf('.')) {
+                parent = 'cls.model.field.' + notation.replace(notation.match(/\[(.*?)\]/gi).pop(), '');
+            } else {
+                var p = notation.split('.');
+                p.pop();
+                parent = 'cls.model.field.' + p.join('.');
+            }
+            return parent;
+        };
+
         cls.model._delete = function(notation) {
             if (typeof cls.model.field[notation] === 'undefined' && notation.indexOf('[') !== -1) {
-                eval("delete cls.model.field." + notation + ";");
+
+                var parent = cls.model._getParentObject(notation);
+
+                eval("if(typeof cls.model.field." + notation + "!== 'undefined' ) delete cls.model.field." + notation + ";");
                 //CLEANUP EMPTY ARRAY ELEMENTS//////////////////////////////////
-               /*  var parent;
-                if (notation.indexOf(']') > notation.indexOf('.')) {
-                    parent = 'cls.model.field.' + notation.replace(notation.match(/\[(.*?)\]/gi).pop(), '');
-                } else {
-                    var p = notation.split('.');
-                    p.pop();
-                    parent = 'cls.model.field.' + p.join('.');
-                }
-
-                //shadow model
-
-                   cls.__shadowmodel = $.extend(true, {}, cls.model.field); //Function.apply(null, ['cls', 'return $.extend({}, ' + parent + ');'])(cls);
+                /*  
+                 //shadow model
+                 
+                 cls.__shadowmodel = $.extend(true, {}, cls.model.field); //Function.apply(null, ['cls', 'return $.extend({}, ' + parent + ');'])(cls);
                  
                  var v1 = 'if (Object.prototype.toString.call(' + parent + ') === "[object Array]")'
                  + 'cls.__shadowmodel.' + parent.replace('cls.model.field.', '') + ' = ' + parent + ';';
@@ -313,7 +322,6 @@
                         return;
                     }
 
-
                     var UpdateAllHTML = true;
                     fieldN = $scope.attr('data-name') || $scope.attr('name');
                     field = cls.model.get(fieldN);
@@ -352,9 +360,9 @@
                                 UpdateAllHTML = false;
                                 if (typeof cls.view.views[viewCb] === 'function') {
                                     var $child, index, $html, m_index = 0;
-                                    if (changes[changeIndex][1] === "length") {
+                                    if (changes[changeIndex][1] === "length" || typeof changes[changeIndex][3] === 'undefined') {
 
-                                        if (changes[changeIndex][2] < changes[changeIndex][3]) { // array increased
+                                        if (typeof changes[changeIndex][3] !== 'undefined' && changes[changeIndex][2] < changes[changeIndex][3]) { // array increased
                                             for (index in field) {
                                                 $child = $scope.find('[data-name="' + fieldN + '\[' + index + '\]"]');
                                                 if (!$child.get(0)) {
@@ -390,6 +398,7 @@
                                             });
                                         }
                                     }
+
                                 }
 
 
@@ -778,7 +787,7 @@
                     cls.debug('name:' + name + ', event:' + event);
                     $(this).off(event);
                     $(this).on(event, factory(this, event));
-                    if ($el.attr('data-defaultvalues') !== 'model') {
+                    if ($el.attr('data-defaultvalues') !== 'model' && !$el.parents('[data-defaultvalues="model"]').get(0)) {
                         InitValue = $(this).getValue();
                         cls.updateValue.call(this, InitValue);
                     }
