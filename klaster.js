@@ -166,7 +166,8 @@
             'model': {
                 field: {},
                 event: {
-                    'onChange': {},
+                    'onChange': function() {
+                    },
                     'sync': function() {
                     }
                 }
@@ -210,13 +211,13 @@
             for (var key in cls.model.field) {
                 if (cls.has(cls.model.field, key)) {
                     cls._modelprechange[key] = cls.model.field[key].toString();
-                    var base = [];
-                    if (Object.prototype.toString.call(cls.model.field[key]) === "[object Object]") {
-                        base = {};
+                    var base = {};
+                    if (Object.prototype.toString.call(cls.model.field[key]) === "[object Array]") {
+                        base = [];
                     }
 
                     if (typeof cls.model.field[key] !== 'string') {
-                        cls._modelprechangeReal[key] = $.extend(base, cls.model.field[key]);
+                        cls._modelprechangeReal[key] = $.extend(true, base, cls.model.field[key]);
                     } else {
                         cls._modelprechangeReal[key] = cls.model.field[key];
                     }
@@ -247,8 +248,8 @@
         cls.model.set = function(notation, value) {
             if (typeof cls.model.field[notation] === 'undefined' && notation.indexOf('[') !== -1) {
                 var parent = cls.model._getParentObject(notation);
-                
-                eval("if( (typeof " + parent + "!== 'undefined') && typeof cls.model.field." + notation + "!== 'undefined' ) cls.model.field." + notation + "=" + JSON.stringify(value) + ";");
+
+                eval("if( (typeof " + parent + "!== 'undefined')) cls.model.field." + notation + "=" + JSON.stringify(value) + ";");
             } else {
                 cls.model.field[notation] = value;
             }
@@ -268,7 +269,7 @@
         cls.model._delete = function(notation) {
             if (typeof cls.model.field[notation] === 'undefined' && notation.indexOf('[') !== -1) {
 
-                var parent = cls.model._getParentObject(notation);
+                // var parent = cls.model._getParentObject(notation);
 
                 eval("if(typeof cls.model.field." + notation + "!== 'undefined' ) delete cls.model.field." + notation + ";");
                 //CLEANUP EMPTY ARRAY ELEMENTS//////////////////////////////////
@@ -326,7 +327,8 @@
                     fieldN = $scope.attr('data-name') || $scope.attr('name');
                     field = cls.model.get(fieldN);
                     viewfield = me.getFieldView(fieldN);
-                    changeCb = cls.model.event.onChange[$scope.getName()];
+                    if (typeof cls.model.event.onChange !== 'undefined')
+                        changeCb = cls.model.event.onChange[$scope.getName()];
                     if (!refreshAll) {
                         if ($this[0] === $scope[0]
                                 || (typeof cls._modelprechange !== 'undefined'
