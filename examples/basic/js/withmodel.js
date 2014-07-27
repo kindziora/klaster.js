@@ -53,11 +53,6 @@ var interface = function() {
             }
         },
         event: {
-            'onChange': {
-                'todosCompleted': function() {
-                    console.log('fertige todos hat sich geändert', arguments);
-                }
-            },
             'sync': function() { //after model fields have changed
                 $('#json-preview').html(JSON.stringify(this.field));
             }
@@ -65,31 +60,15 @@ var interface = function() {
 
     };
     this.view = {
-        templates: $.get('app/cache/templates.json'),
-        render: function(tplVars, tplName) {
-
-            return twig({
-                data: intfc.view.templates[tplName || arguments.callee.caller.name]
-            }).render(tplVars);
-        },
         views: {
             'todos[*]': function(value, index) {
                 return  '<input type="checkbox" name="todosCompleted" data-name="todos[' + index + '].completed" data-multiple="false" data-on="click" />'
                         + '<label data-on="dblclick->todos[*].name" data-name="todos[' + index + '].name">' + value.name + "</label> <a data-name='todo.delete' data-on='click' data-omit='true' data-value='" + value.name + "'>delete</a>";
             },
-            'todos2[*]': function(value, index) {
-
-                return this.render({'item': value, 'index': index});
-            },
             length: function(todos) {
-                return todos.filter(function() {return true;}).length;
-            },
-            todoliste: function(todos, $field) {
-                var list = [];
-                todos.forEach(function(val, index) {
-                    list.push("<li data-name=\"todos[" + index + "]\"> " + intfc.view.views['todos[*]'](val, index) + "</li>");
-                });
-                return list.join('');
+                return todos.filter(function() {
+                    return true;
+                }).length;
             },
             "foreach->todoliste2": function(todos, index, $field) {
                 return "<li data-name=\"todos[" + index + "]\"> " + intfc.view.views['todos[*]'](todos[index], index) + "</li>";
