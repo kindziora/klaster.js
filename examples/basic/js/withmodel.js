@@ -62,8 +62,10 @@ var interface = function() {
     this.view = {
         views: {
             'todos[*]': function(value, index) {
-                return  '<input type="checkbox" name="todosCompleted" data-name="todos[' + index + '].completed" data-multiple="false" data-on="click" />'
-                        + '<label data-on="dblclick->todos[*].name" data-name="todos[' + index + '].name">' + value.name + "</label> <a data-name='todo.delete' data-on='click' data-omit='true' data-value='" + value.name + "'>delete</a>";
+
+                
+                return  '<input type="checkbox" name="todosCompleted" data-name="' + index + '.completed" data-multiple="false" data-on="click" ' + ((value.completed) ? 'checked="' + value.completed + '"' : '') + ' />'
+                        + '<label data-on="dblclick->todos[*].name" data-name="' + index + '.name">' + value.name + "</label> <a data-name='todo.delete' data-on='click' data-omit='true' data-value='" + value.name + "'>delete</a>";
             },
             length: function(todos) {
                 return todos.filter(function() {
@@ -71,7 +73,7 @@ var interface = function() {
                 }).length;
             },
             "foreach->todoliste2": function(todos, index, $field) {
-                return "<li data-name=\"todos[" + index + "]\"> " + intfc.view.views['todos[*]'](todos[index], index) + "</li>";
+                return "<li data-name=\"todos[" + index + "]\">" + intfc.view.views['todos[*]'](todos[index], 'todos[' + index + ']') + "</li>";
             }
         }
     };
