@@ -12,9 +12,13 @@ It aims on rich frontend experiences and simplicity.
 ##current state
 
 interface-model-view
--better 2 way data binding
+
+better 2 way data binding
+
 filter in templates
+
 foreach in templates
+
 omit toggle
 
 ##Work in progress
