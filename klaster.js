@@ -9,72 +9,72 @@
 
     var me = {}, prefix = 'data',
             docapi = {
-                'Controller': {
-                    'this.interactions': {
-                        'dom-attribute name': {
-                            'on-name': 'event callback handler, params(e, controller) context(this) is jQuery dom element'
-                        }
-                    },
-                    'this.delay': 'integer delay in milliseconds used for changes on model call to sync function timeout',
-                    'change': 'callback that executes after change of model data(this.model.values) with a delay of milliseconds declared with this.delay default 0'
-
-                },
-                'dom-attributes': {
-                    'defaultvalues': {
-                        'attr': prefix + '-defaultvalues',
-                        'value': 'String value:"client" or "server" that means our app uses the field.values frtom dom or model/javascript'
-                    },
-                    'name': {
-                        'attr': prefix + '-name',
-                        'value': 'String containing name of element, not unique'
-                    },
-                    'omit': {
-                        'attr': prefix + '-omit',
-                        'value': 'String/that evaluates to boolean, whether ignoring the area for model representation data or not'
-                    },
-                    'filter': {
-                        'attr': prefix + '-filter',
-                        'value': 'filter expression javascript is valid'
-                    },
-                    'value': {
-                        'attr': prefix + '-value',
-                        'value': 'String, containing the value of an element, can be plain or json'
-                    },
-                    'multiple': {
-                        'attr': prefix + '-multiple',
-                        'value': 'String/that evaluates to boolean, whether this element is part of multiple elements like checkbox',
-                        'children': {
-                            'checked': {
-                                'attr': prefix + '-checked',
-                                'value': 'String/that evaluates to boolean, whether this element is will apear inside a list of multiple elements with similar data-name, like checkbox',
-                            }
-                        }
-                    },
-                    'delay': {
-                        'attr': prefix + '-delay',
-                        'value': 'number of miliseconds until sync'
-                    },
-                    'on': {
-                        'attr': prefix + '-on',
-                        'value': 'event that triggers matching action method, also alias is possible. eg. hover->klasterhover'
-                    },
-                    'view': {
-                        'attr': prefix + '-view',
-                        'value': {
-                            'desc': 'defines which view function callback is executed for rendering output',
-                            'params': {
-                                '[viewname]': 'name of view render function (calls it) and uses return string to fill html of this element',
-                                'for->[viewname]': 'name of view render function and calls it for every array item and uses return string to fill html of this elements'
-                            },
-                            definition: {
-                                'iterate': 'foreach->'
-                            }
-                        }
-                    }
-
+        'Controller': {
+            'this.interactions': {
+                'dom-attribute name': {
+                    'on-name': 'event callback handler, params(e, controller) context(this) is jQuery dom element'
                 }
-
             },
+            'this.delay': 'integer delay in milliseconds used for changes on model call to sync function timeout',
+            'change': 'callback that executes after change of model data(this.model.values) with a delay of milliseconds declared with this.delay default 0'
+
+        },
+        'dom-attributes': {
+            'defaultvalues': {
+                'attr': prefix + '-defaultvalues',
+                'value': 'String value:"client" or "server" that means our app uses the field.values frtom dom or model/javascript'
+            },
+            'name': {
+                'attr': prefix + '-name',
+                'value': 'String containing name of element, not unique'
+            },
+            'omit': {
+                'attr': prefix + '-omit',
+                'value': 'String/that evaluates to boolean, whether ignoring the area for model representation data or not'
+            },
+            'filter': {
+                'attr': prefix + '-filter',
+                'value': 'filter expression javascript is valid'
+            },
+            'value': {
+                'attr': prefix + '-value',
+                'value': 'String, containing the value of an element, can be plain or json'
+            },
+            'multiple': {
+                'attr': prefix + '-multiple',
+                'value': 'String/that evaluates to boolean, whether this element is part of multiple elements like checkbox',
+                'children': {
+                    'checked': {
+                        'attr': prefix + '-checked',
+                        'value': 'String/that evaluates to boolean, whether this element is will apear inside a list of multiple elements with similar data-name, like checkbox',
+                    }
+                }
+            },
+            'delay': {
+                'attr': prefix + '-delay',
+                'value': 'number of miliseconds until sync'
+            },
+            'on': {
+                'attr': prefix + '-on',
+                'value': 'event that triggers matching action method, also alias is possible. eg. hover->klasterhover'
+            },
+            'view': {
+                'attr': prefix + '-view',
+                'value': {
+                    'desc': 'defines which view function callback is executed for rendering output',
+                    'params': {
+                        '[viewname]': 'name of view render function (calls it) and uses return string to fill html of this element',
+                        'for->[viewname]': 'name of view render function and calls it for every array item and uses return string to fill html of this elements'
+                    },
+                    definition: {
+                        'iterate': 'foreach->'
+                    }
+                }
+            }
+
+        }
+
+    },
     api = docapi['dom-attributes'];
     $.fn.getName = function() {
         return this.attr(this.nameAttr());
@@ -345,8 +345,8 @@
                     if (!refreshAll) {
                         if ($this[0] === $scope[0]
                                 || (typeof cls._modelprechange !== 'undefined'
-                                        && typeof cls._modelprechange[fieldN] !== 'undefined'
-                                        && cls._modelprechange[fieldN] === field))
+                                && typeof cls._modelprechange[fieldN] !== 'undefined'
+                                && cls._modelprechange[fieldN] === field))
                             return;
                     }
 
@@ -376,6 +376,7 @@
                                 if (typeof cls.view.views[viewCb] === 'function') {
                                     var $child, index, $html;
                                     var possibleFilter = false, mfilter = $scope.attr(api.filter.attr);
+
                                     if (mfilter) {
                                         var changedpart = changes[changeIndex][0].match(/\[(.*?)\]/gi).pop().replace('[', '').replace(']', '');
                                         possibleFilter = (mfilter.indexOf(changedpart) !== -1);
