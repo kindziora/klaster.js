@@ -375,12 +375,6 @@
                                 UpdateAllHTML = false;
                                 if (typeof cls.view.views[viewCb] === 'function') {
                                     var $child, index, $html;
-                                    var possibleFilter = false, mfilter = $scope.attr(api.filter.attr);
-
-                                    if (mfilter) {
-                                        var changedpart = changes[changeIndex][0].match(/\[(.*?)\]/gi).pop().replace('[', '').replace(']', '');
-                                        possibleFilter = (mfilter.indexOf(changedpart) !== -1);
-                                    }
 
                                     function addE() {
                                         var m_index = 0;

@@ -6,10 +6,13 @@
 var interface = function() {
     var intfc = this;
     this.interactions = {
-        'filterbutton': {
+        'toggle': {
             'click': function(e, ui) {
-                var $areaToToggle = $($(this).attr('data-connected'));
-                ui.toggle($areaToToggle).slideToggle(200);
+                var $areaToToggle = $('.' + $(this).text());
+                $('.todolist').hide();
+                $('.selected').removeClass('selected');
+                $(this).addClass('selected');
+                $areaToToggle.show();
             }
         },
         'todo': {
@@ -44,9 +47,6 @@ var interface = function() {
             ]
         },
         event: {
-            'sync': function() { //after model fields have changed
-                $('#json-preview').html(JSON.stringify(this.field));
-            }
         }
 
     };

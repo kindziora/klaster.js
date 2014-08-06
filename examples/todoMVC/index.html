@@ -14,22 +14,24 @@
             <section id="main">
                 <input id="toggle-all" type="checkbox">
                 <label for="toggle-all">Mark all as complete</label>
-                <ul id="todo-list" data-name="todos" data-view="foreach->todoliste2"></ul>
+                <ul id="todo-list" class="todolist All" data-name="todos" data-view="foreach->todoliste2"></ul>
+                <ul class="todolist Active" data-name="todos" data-view="foreach->todoliste2" data-filter="!item.completed" style="display:none;"></ul>
+                <ul class="todolist Completed" data-name="todos" data-view="foreach->todoliste2" data-filter="item.completed"  style="display:none;"></ul>
             </section>
             <footer id="footer">
                 <span id="todo-count" data-name="todos" data-view="length"></span>
                 <ul id="filters">
                     <li>
-                        <a href="#/" class="selected">All</a>
+                        <a href="#/" class="selected" data-name="toggle" data-on="click">All</a>
                     </li>
                     <li>
-                        <a href="#/active">Active</a>
+                        <a href="#/active" data-name="toggle" data-on="click">Active</a>
                     </li>
                     <li>
-                        <a href="#/completed">Completed</a>
+                        <a href="#/completed" data-name="toggle" data-on="click">Completed</a>
                     </li>
                 </ul>
-                <button id="clear-completed">Clear completed</button>
+                <button id="clear-completed" data-name="clear-completed" data-on="click">Clear completed</button>
             </footer>
         </section>
         <footer id="info">
