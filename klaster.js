@@ -9,72 +9,72 @@
 
     var me = {}, prefix = 'data',
             docapi = {
-        'Controller': {
-            'this.interactions': {
-                'dom-attribute name': {
-                    'on-name': 'event callback handler, params(e, controller) context(this) is jQuery dom element'
-                }
-            },
-            'this.delay': 'integer delay in milliseconds used for changes on model call to sync function timeout',
-            'change': 'callback that executes after change of model data(this.model.values) with a delay of milliseconds declared with this.delay default 0'
-
-        },
-        'dom-attributes': {
-            'defaultvalues': {
-                'attr': prefix + '-defaultvalues',
-                'value': 'String value:"client" or "server" that means our app uses the field.values frtom dom or model/javascript'
-            },
-            'name': {
-                'attr': prefix + '-name',
-                'value': 'String containing name of element, not unique'
-            },
-            'omit': {
-                'attr': prefix + '-omit',
-                'value': 'String/that evaluates to boolean, whether ignoring the area for model representation data or not'
-            },
-            'filter': {
-                'attr': prefix + '-filter',
-                'value': 'filter expression javascript is valid'
-            },
-            'value': {
-                'attr': prefix + '-value',
-                'value': 'String, containing the value of an element, can be plain or json'
-            },
-            'multiple': {
-                'attr': prefix + '-multiple',
-                'value': 'String/that evaluates to boolean, whether this element is part of multiple elements like checkbox',
-                'children': {
-                    'checked': {
-                        'attr': prefix + '-checked',
-                        'value': 'String/that evaluates to boolean, whether this element is will apear inside a list of multiple elements with similar data-name, like checkbox',
-                    }
-                }
-            },
-            'delay': {
-                'attr': prefix + '-delay',
-                'value': 'number of miliseconds until sync'
-            },
-            'on': {
-                'attr': prefix + '-on',
-                'value': 'event that triggers matching action method, also alias is possible. eg. hover->klasterhover'
-            },
-            'view': {
-                'attr': prefix + '-view',
-                'value': {
-                    'desc': 'defines which view function callback is executed for rendering output',
-                    'params': {
-                        '[viewname]': 'name of view render function (calls it) and uses return string to fill html of this element',
-                        'for->[viewname]': 'name of view render function and calls it for every array item and uses return string to fill html of this elements'
+                'Controller': {
+                    'this.interactions': {
+                        'dom-attribute name': {
+                            'on-name': 'event callback handler, params(e, controller) context(this) is jQuery dom element'
+                        }
                     },
-                    definition: {
-                        'iterate': 'foreach->'
+                    'this.delay': 'integer delay in milliseconds used for changes on model call to sync function timeout',
+                    'change': 'callback that executes after change of model data(this.model.values) with a delay of milliseconds declared with this.delay default 0'
+
+                },
+                'dom-attributes': {
+                    'defaultvalues': {
+                        'attr': prefix + '-defaultvalues',
+                        'value': 'String value:"client" or "server" that means our app uses the field.values frtom dom or model/javascript'
+                    },
+                    'name': {
+                        'attr': prefix + '-name',
+                        'value': 'String containing name of element, not unique'
+                    },
+                    'omit': {
+                        'attr': prefix + '-omit',
+                        'value': 'String/that evaluates to boolean, whether ignoring the area for model representation data or not'
+                    },
+                    'filter': {
+                        'attr': prefix + '-filter',
+                        'value': 'filter expression javascript is valid'
+                    },
+                    'value': {
+                        'attr': prefix + '-value',
+                        'value': 'String, containing the value of an element, can be plain or json'
+                    },
+                    'multiple': {
+                        'attr': prefix + '-multiple',
+                        'value': 'String/that evaluates to boolean, whether this element is part of multiple elements like checkbox',
+                        'children': {
+                            'checked': {
+                                'attr': prefix + '-checked',
+                                'value': 'String/that evaluates to boolean, whether this element is will apear inside a list of multiple elements with similar data-name, like checkbox',
+                            }
+                        }
+                    },
+                    'delay': {
+                        'attr': prefix + '-delay',
+                        'value': 'number of miliseconds until sync'
+                    },
+                    'on': {
+                        'attr': prefix + '-on',
+                        'value': 'event that triggers matching action method, also alias is possible. eg. hover->klasterhover'
+                    },
+                    'view': {
+                        'attr': prefix + '-view',
+                        'value': {
+                            'desc': 'defines which view function callback is executed for rendering output',
+                            'params': {
+                                '[viewname]': 'name of view render function (calls it) and uses return string to fill html of this element',
+                                'for->[viewname]': 'name of view render function and calls it for every array item and uses return string to fill html of this elements'
+                            },
+                            definition: {
+                                'iterate': 'foreach->'
+                            }
+                        }
                     }
+
                 }
-            }
 
-        }
-
-    },
+            },
     api = docapi['dom-attributes'];
     $.fn.getName = function() {
         return this.attr(this.nameAttr());
@@ -239,29 +239,37 @@
          * @returns {@exp;cls@pro;model@call;getValue}
          */
         cls.model.get = function(notation) {
-            if (typeof cls.model.field[notation] === 'undefined' && notation.indexOf('[') !== -1) {
-                return eval("(typeof cls.model.field." + notation + "!== 'undefined' ) ? cls.model.field." + notation + ": undefined;");
-            } else {
-                return cls.model.field[notation];
+            try {
+                if (typeof cls.model.field[notation] === 'undefined' && notation.indexOf('[') !== -1) {
+                    return eval("(typeof cls.model.field." + notation + "!== 'undefined' ) ? cls.model.field." + notation + ": undefined;");
+                } else {
+                    return cls.model.field[notation];
+                }
+            } catch (err) {
+                return undefined;
             }
         };
         cls.model.set = function(notation, value) {
             if (typeof cls.model.field[notation] === 'undefined' && notation.indexOf('[') !== -1) {
                 var parent = cls.model._getParentObject(notation);
-
                 eval("if( (typeof " + parent + "!== 'undefined')) cls.model.field." + notation + "=" + JSON.stringify(value) + ";");
             } else {
                 cls.model.field[notation] = value;
             }
         };
-        cls.model._getParentObject = function(notation) {
-            var parent;
+
+        cls.model._getParentObject = function(notation, ns) {
+            if (typeof ns === 'undefined')
+                ns = 'cls.model.field.';
+            var parent = false;
+            if (!notation)
+                return parent;
             if (notation.indexOf(']') > notation.indexOf('.')) {
-                parent = 'cls.model.field.' + notation.replace(notation.match(/\[(.*?)\]/gi).pop(), '');
+                parent = ns + notation.replace(notation.match(/\[(.*?)\]/gi).pop(), '');
             } else {
                 var p = notation.split('.');
                 p.pop();
-                parent = 'cls.model.field.' + p.join('.');
+                parent = ns + p.join('.');
             }
             return parent;
         };
@@ -289,12 +297,15 @@
                 delete cls.model.field[notation];
             }
         };
-        me.getFieldView = function(fieldN) {
 
-            var viewMethod;
+        me.getFieldView = function(fieldN) {
+            var viewMethod = false;
             if (typeof cls.view.views[fieldN] === 'undefined') {
                 if (fieldN.indexOf('[') !== -1) {
-                    viewMethod = typeof cls.view.views[fieldN.split('[')[0] + '[*]'] !== 'undefined' ? cls.view.views[fieldN.split('[')[0] + '[*]'] : undefined;
+                    var finestMatch = fieldN.match(/([a-z].*?\[\w.*\])/gi);
+                    if (typeof finestMatch !== 'undefined' && finestMatch)
+                        finestMatch = finestMatch.pop();
+                    viewMethod = typeof cls.view.views[fieldN.split('[')[0] + '[*]'] !== 'undefined' ? cls.view.views[finestMatch.split('[').pop() + '[*]'] : undefined;
                 }
             } else {
                 viewMethod = cls.view.views[fieldN];
@@ -306,7 +317,9 @@
                 return false;
             if (!$field.attr('data-filter'))
                 return true;
-            return eval("(" + $field.attr('data-filter').replace('this', 'cls') + ")");
+
+            return eval("(" + $field.attr('data-filter').replace(new RegExp("this", "gi"), 'cls') + ")");
+
         };
         /**
          * two way databinding
@@ -315,7 +328,7 @@
         me.model2view = function(refreshAll) {
             var fieldname, $this = this, decorated = '', calllist = {}, field, changeCb;
             var addrN, fieldname, fieldnameRaw, changes;
-            this.parseDom = function(selector, changeIndex) {
+            var parseDom = function(selector, changeIndex) {
                 var fieldN = "", viewfield;
                 $globalScope.find(selector).each(function() {
                     var $scope = $(this);
@@ -332,8 +345,8 @@
                     if (!refreshAll) {
                         if ($this[0] === $scope[0]
                                 || (typeof cls._modelprechange !== 'undefined'
-                                && typeof cls._modelprechange[fieldN] !== 'undefined'
-                                && cls._modelprechange[fieldN] == field))
+                                        && typeof cls._modelprechange[fieldN] !== 'undefined'
+                                        && cls._modelprechange[fieldN] === field))
                             return;
                     }
 
@@ -342,14 +355,13 @@
                             changeCb.call(cls.model, field, $scope.val() || $scope.html(), $scope, 'controller');
                         calllist[$scope.getName()] = true;
                     }
-
+                    var viewCb = $scope.attr(api.view.attr);
                     decorated = field;
                     if ($scope.is("input") || $scope.is("select")) {
                         $scope.val(decorated);
                     } else if ($scope.is("textarea")) {
                         $scope.text(decorated);
                     } else {
-                        var viewCb = $scope.attr(api.view.attr);
                         if (viewCb) {
 
                             if (viewCb.indexOf(api.view.value.definition.iterate) !== -1) {
@@ -357,49 +369,73 @@
                                 // iterate function for native partial lists
                                 if (refreshAll) {
                                     changeIndex = 0;
-                                    changes = [["[todos]", "length", 2, 3]];
+                                    changes = [["[]", "length", 2, 3]];
                                 }
+
                                 UpdateAllHTML = false;
                                 if (typeof cls.view.views[viewCb] === 'function') {
-                                    var $child, index, $html, m_index = 0;
-                                    if (changes[changeIndex][1] === "length" || typeof changes[changeIndex][3] === 'undefined') {
+                                    var $child, index, $html;
+                                    var possibleFilter = false, mfilter = $scope.attr(api.filter.attr);
+                                    if (mfilter) {
+                                        var changedpart = changes[changeIndex][0].match(/\[(.*?)\]/gi).pop().replace('[', '').replace(']', '');
+                                        possibleFilter = (mfilter.indexOf(changedpart) !== -1);
+                                    }
 
-                                        if (typeof changes[changeIndex][3] !== 'undefined' && changes[changeIndex][2] < changes[changeIndex][3]) { // array increased
-                                            for (index in field) {
-                                                $child = $scope.find('[data-name="' + fieldN + '\[' + index + '\]"]');
-                                                if (!$child.get(0)) {
+                                    function addE() {
+                                        var m_index = 0;
+                                        for (index in field) {
+                                            $child = $scope.find('[data-name="' + fieldN + '\[' + index + '\]"]');
+                                            if (!$child.get(0)) {
 
-                                                    if (me.preRenderView($scope, field[index])) {
-                                                        $html = $(cls.view.views[viewCb].call(cls.view, field, index, $scope));
-                                                        $html.data('value', field[index]);
-                                                        cls.bind($html);
-                                                        var $close = $scope.find('[data-name="' + fieldN + '\[' + m_index + '\]"]');
-                                                        if ($close.get(0)) {
-                                                            $html.insertAfter($close);
-                                                        } else {
-                                                            $scope.append($html);
-                                                        }
+                                                if (me.preRenderView($scope, field[index])) {
+                                                    $html = $(cls.view.views[viewCb].call(cls.view, field, index, $scope));
+                                                    $html.data('value', field[index]);
+                                                    cls.bind($html);
+                                                    var $close = $scope.find('[data-name="' + fieldN + '\[' + m_index + '\]"]');
+                                                    if ($close.get(0)) {
+                                                        $html.insertAfter($close);
+                                                    } else {
+                                                        $scope.append($html);
                                                     }
-
                                                 }
-                                                m_index = index;
+
                                             }
-                                        } else { // array decreased
-                                            $scope.children().each(function() {
-                                                var name = $(this).getName().split('[')[1].split(']')[0];
-                                                if (Object.prototype.toString.call(field) === "[object Object]") {
-                                                    if (typeof field[name] === 'undefined') {
-                                                        $(this).remove();
-                                                    }
-                                                } else {
-                                                    if (eval('(typeof cls.model.field.' + $(this).getName() + ' === "undefined")')) {
-                                                        $(this).remove();
-                                                    }
-                                                }
-
-                                            });
+                                            m_index = index;
                                         }
                                     }
+
+                                    function killE() {
+                                        $scope.children().each(function() {
+                                            var name = $(this).getName().split('[')[1].split(']')[0];
+                                            if (Object.prototype.toString.call(field) === "[object Object]") {
+                                                if (typeof field[name] === 'undefined') {
+                                                    $(this).remove();
+                                                }
+                                            } else {
+                                                if (!cls.model.get($(this).getName())
+                                                        || typeof field[name] === 'undefined'
+                                                        || !me.preRenderView($scope, field[name])) {
+                                                    $(this).remove();
+                                                }
+
+                                            }
+
+                                        });
+                                    }
+
+                                    // || wenn filter existiert auf die eigenschaft die sich geändert hat passt
+                                    addE();
+                                    killE();
+                                    /*if (changes[changeIndex][1] === "value" && possibleFilter) {
+                                     addE();
+                                     killE();
+                                     } else {
+                                     if (typeof changes[changeIndex][3] !== 'undefined' && parseInt(changes[changeIndex][2]) < parseInt(changes[changeIndex][3])) { // array increased
+                                     addE();
+                                     } else { // array decreased
+                                     killE();
+                                     }
+                                     }*/
 
                                 }
 
@@ -407,7 +443,7 @@
                             } else {
                                 if (typeof cls.view.views[viewCb] === 'function') {
                                     if (me.preRenderView($scope, field)) {
-                                        decorated = cls.view.views[viewCb].call(cls.view, field, $scope);
+                                        decorated = cls.view.views[viewCb].call(cls.view, field, fieldN, $scope);
                                     }
                                 }
                             }
@@ -418,7 +454,7 @@
                                 //stop here and kill field in view
                                 $globalScope.find(selector).remove();
                             } else {
-                                decorated = viewfield.call(cls.view, field, fieldN);
+                                decorated = viewfield.call(cls.view, field, fieldN, $scope);
                             }
                         }
 
@@ -436,30 +472,61 @@
 
                     }
 
+                    if (!viewfield) {
+                        var match = fieldN;
+                        while (match !== '')
+                        {
+                            match = cls.model._getParentObject(match, '');
+                            var _notation = match.replace(/\[/g, '\\[').replace(/\]/g, '\\]');
+                            var findNotation = '[data-name="' + _notation + '"],[name="' + _notation + '"]';
+                            var $myPEl = $globalScope.find(findNotation);
+                            if (match !== "" && (me.getFieldView(match) || (typeof $myPEl !== 'undefined' && $myPEl.attr(api.view.attr)))) {
+                                if ($myPEl.length)
+                                    $myPEl = $myPEl[0];
+                                parseDom(findNotation, 0);
+                                break;
+                            }
+                        }
+                    }
+
                     $scope.data('value', field);
                 });
             };
+            function findExistingElement(fieldnameRaw_, noCallParse) {
+                if (!fieldnameRaw_)
+                    return;
+                var match = (/\[(.*?)\]/).exec(fieldnameRaw_);
+                var fieldnamei = fieldnameRaw_;
+                if (match) {
+                    fieldnamei = fieldnameRaw_.replace(match[0], match[1]);
+                    while ((match = /\[([a-z].*?)\]/ig.exec(fieldnamei)) != null)
+                    {
+                        fieldnamei = fieldnamei.replace(match[0], '.' + match[1]);
+                    }
+                }
+
+                fieldnamei = fieldnamei.replace(/\[/g, '\\[').replace(/\]/g, '\\]');
+                if (fieldnamei !== '') {
+                    var selector = '[data-name="' + fieldnamei + '"],[name="' + fieldnamei + '"]';
+                    if ($globalScope.find(selector).get(0)) {
+                        if (!noCallParse) {
+                            parseDom(selector, addrN);
+                        } else {
+                            return selector;
+                        }
+
+                    } else { // get parent
+
+                        var parentMatch = cls.model._getParentObject(match, '');
+                        return findExistingElement(parentMatch);
+                    }
+                }
+            }
+            ;
             if (!refreshAll) {
                 changes = cls.getChangedModelFields();
                 for (addrN in changes) {
                     fieldnameRaw = changes[addrN][0];
-                    function findExistingElement(fieldnameRaw_) {
-                        var fieldnamei = fieldnameRaw_.replace(fieldnameRaw_.split(']')[0] + ']', fieldnameRaw_.split(']')[0].split('[')[1]);
-                        fieldnamei = fieldnamei.replace('[', '\\[').replace(']', '\\]');
-                        if (fieldnamei !== '') {
-                            var selector = '[data-name="' + fieldnamei + '"],[name="' + fieldnamei + '"]';
-                            if ($globalScope.find(selector).get(0)) {
-                                $this.parseDom(selector, addrN);
-                            } else { // get parent
-
-                                var parentMatch = fieldnameRaw_
-                                        .match(/\[(.*?)\]/gi);
-                                parentMatch.pop();
-                                return findExistingElement(parentMatch.join(''));
-                            }
-                        }
-                    }
-                    ;
                     findExistingElement(fieldnameRaw);
                     /* if ($.type(cls.model.field[fieldname]) === 'object' || $.type(cls.model.field[fieldname]) === 'array') {
                      this.parseDom('[data-name^="' + fieldname + '\["],[name^="' + fieldname + '\["]');
@@ -467,7 +534,7 @@
                 }
             } else {
                 var selector = '[data-name],[name]';
-                $this.parseDom($globalScope.find(selector), addrN);
+                parseDom($globalScope.find(selector), addrN);
             }
 
         };
@@ -795,7 +862,6 @@
                     }
                 }
             });
-
             if ($el.attr('data-defaultvalues') === 'model') {
                 me.model2view.call($el, true);
             }
@@ -803,9 +869,7 @@
 
             return filter;
         };
-
         cls.filter = cls.bind(this);
-
         if (typeof child.init !== "undefined") {
             if (child.init(cls)) {
                 cls.recognizeChange.setup();
