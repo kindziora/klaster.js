@@ -5,16 +5,21 @@ It aims on rich frontend experiences and simplicity.
 
 ##goals
 
-  1. simple structure
-  2. easy debugging
-  3. easy to work with
+  1. progressive functionality and complexity
+  2. easy to work with
+  3. easy debugging
+ 
+##current state
 
+interface-model-view
 
-##start with
+better 2 way data binding
 
+filter in templates
 
+foreach in templates
 
-
+omit toggle
 
 ##Work in progress
 
