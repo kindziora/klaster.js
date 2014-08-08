@@ -12,26 +12,27 @@
                 <input id="new-todo" name="todo" data-omit="true" data-on="keyup" placeholder="What needs to be done?" autofocus>
             </header>
             <section id="main">
-                <input id="toggle-all" type="checkbox">
+                <input id="toggle-all" data-name="toggle-all" data-on="click" data-omit="true" type="checkbox"/>
                 <label for="toggle-all">Mark all as complete</label>
-                <ul id="todo-list" class="todolist All" data-name="todos" data-view="foreach->todoliste2"></ul>
-                <ul class="todolist Active" data-name="todos" data-view="foreach->todoliste2" data-filter="!item.completed" style="display:none;"></ul>
-                <ul class="todolist Completed" data-name="todos" data-view="foreach->todoliste2" data-filter="item.completed"  style="display:none;"></ul>
+                <ul id="todo-list" class="todolist All" data-name="todos" data-view="foreach->todoliste2">
+
+                </ul> 
             </section>
             <footer id="footer">
                 <span id="todo-count" data-name="todos" data-view="length"></span>
                 <ul id="filters">
                     <li>
-                        <a href="#/" class="selected" data-name="toggle" data-on="click">All</a>
+                        <a href="#/" class="selected" data-name="toggle" data-on="click" data-value="">All</a>
                     </li>
                     <li>
-                        <a href="#/active" data-name="toggle" data-on="click">Active</a>
+                        <a href="#/active" data-name="toggle" data-on="click" data-value="!item.completed">Active</a>
                     </li>
                     <li>
-                        <a href="#/completed" data-name="toggle" data-on="click">Completed</a>
+                        <a href="#/completed" data-name="toggle" data-on="click" data-value="item.completed">Completed</a>
                     </li>
                 </ul>
-                <button id="clear-completed" data-name="clear-completed" data-on="click">Clear completed</button>
+                <div data-name="todos" data-view="clearbutton" data-filter="this.activeTodoExist(item)">
+                </div>
             </footer>
         </section>
         <footer id="info">

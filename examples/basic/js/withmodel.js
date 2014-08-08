@@ -39,6 +39,8 @@ var interface = function() {
             }
         }
     };
+    
+    
     this.model = {
         'field': {// here we declare model fields, with default values this is not strict default values are only used if we use directive: data-defaultvalues="client" on default we use server side default values because of the first page load
             'todos': [
@@ -59,6 +61,8 @@ var interface = function() {
         }
 
     };
+    
+    
     this.view = {
         views: {
             'todos[*]': function(value, index) {
