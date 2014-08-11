@@ -1,6 +1,9 @@
 /**
  * 
- * klaster.js by Alexander Kindziora is a mvma (model-view-model-action) framework for user interfaces
+ * klaster.js by Alexander Kindziora 2014 
+ * 
+ * is a mva (model-view-action) framework for user interfaces
+ * 
  */
 var interface = function() {
     var intfc = this;
