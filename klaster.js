@@ -173,11 +173,7 @@
                 }
             },
             'view': {
-                field: {
-                },
-                list: {
-                },
-                template: {
+                views: {
                 }
             },
             'filter': {
@@ -641,7 +637,7 @@
             if (typeof cls.sync === "function") {
                 cls.sync.call(cls, this);
             }
-
+            
             me.model2view.call($(this));
             return true;
         };

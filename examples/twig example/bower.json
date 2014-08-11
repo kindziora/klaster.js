@@ -3,6 +3,7 @@
     "version": "0.0.0",
     "dependencies": {
         "todomvc-common": "~0.1.4",
+        "twig.js": "~0.7.2",
         "jquery": "2.1.1"
     }
 }
