@@ -1,5 +1,5 @@
 <div class="view">
-    <input class="toggle" type="checkbox" name="todosCompleted" data-name="{{index}}.completed" data-multiple="false" data-on="click" {% if value.completed %} checked="checked"{% endif %} />'
+    <input class="toggle" type="checkbox" name="todosCompleted" data-name="{{index}}.completed" data-multiple="false" data-on="click" {% if value.completed %} checked="checked"{% endif %} />
     <label data-on="dblclick->todo.name" data-name="{{index}}.name">{{value.name}}</label>
     <button class="destroy" data-name="todo.delete" data-on="click" data-omit="true" data-value="{{value.name}}"></button>
 </div>

@@ -94,7 +94,7 @@ var twigInterface = function() {
             },
             "foreach->todoliste2": function(todos, index, $field) {
                 var content = intfc.view.views['todos[*]'](todos[index], 'todos[' + index + ']');
-                return intfc.view.render({'content': content, 'index': index});
+                return intfc.view.render({'content': content, 'index': index, 'todos': todos});
             }
         }
     };
@@ -108,11 +108,9 @@ var length = Object.keys(mytodos.view.views).length, cnt = 1;
 for (var v in mytodos.view.views) {
     $.get('view/twigInterface/' + v + '.html.twig').always(function(v) {
         return function(content) {
-            if (typeof content !== 'undefined') {
-                mytodos.view.templates_[mytodos.view.views[v]] = content;
-                if (length <= cnt) {
-                    $('#todoapp').klaster_(mytodos);
-                }
+            mytodos.view.templates_[mytodos.view.views[v]] = content;
+            if (length <= cnt) {
+                $('#todoapp').klaster_(mytodos);
             }
             cnt++;
         };
