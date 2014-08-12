@@ -13,3 +13,6 @@ var myspapp = function() {
     //apply interfaces // klaster_
     
 };
+page('/', function(){
+    console.log(arguments);
+})
