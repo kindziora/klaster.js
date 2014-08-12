@@ -173,6 +173,13 @@
                 }
             },
             'view': {
+                templates_: {},
+                templates: function(name) {
+                    return this.templates_[name];
+                },
+                render: function(tplVars, tplName) {
+                   
+                },
                 views: {
                 }
             },
@@ -637,7 +644,7 @@
             if (typeof cls.sync === "function") {
                 cls.sync.call(cls, this);
             }
-            
+
             me.model2view.call($(this));
             return true;
         };

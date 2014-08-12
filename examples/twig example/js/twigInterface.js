@@ -5,7 +5,7 @@
  * is a mva (model-view-action) framework for user interfaces
  * 
  */
-var interface = function() {
+var twigInterface = function() {
     var intfc = this;
     this.interactions = {
         'toggle': {
@@ -74,49 +74,47 @@ var interface = function() {
 
     this.view = {
         templates_: {},
-        templates: function(name) {
-            if (typeof this.templates_[name] === 'undefined') {
-                alert('template not ready!');
-            }
-            return this.templates_[name];
-        },
         render: function(tplVars, tplName) {
             return twig({
-                data: intfc.view.templates(tplName || arguments.callee.caller.name)
+                data: intfc.view.templates_[tplName || arguments.callee.caller]
             }).render(tplVars);
         },
         views: {
             'todos[*]': function(value, index) {
-                return this.render({'item': value, 'index': index});
+                return intfc.view.render({'value': value, 'index': index});
             },
             length: function(todos, notation, $scope) {
                 var length = todos.filter(function(item) {
                     return !item.completed;
                 }).length;
-                return  length + ' item' + ((length === 1) ? '' : 's') + ' left';
+                return length + ' item' + ((length === 1) ? '' : 's') + ' left';
             },
             "clearbutton": function(todos, notation, $scope) {
-                return this.render({'item': value, 'index': index});
+                return intfc.view.render({'item': todos, 'index': notation});
             },
             "foreach->todoliste2": function(todos, index, $field) {
                 var content = intfc.view.views['todos[*]'](todos[index], 'todos[' + index + ']');
-                return this.render({'content': content, 'index': index});
+                return intfc.view.render({'content': content, 'index': index});
             }
         }
     };
 };
 
 
-var mytodos = new interface();
+var mytodos = new twigInterface();
+
+var length = Object.keys(mytodos.view.views).length, cnt = 1;
 
 for (var v in mytodos.view.views) {
-    $.get('view/twigInterface/' + v + '.html.twig', function(content) {
-        if (typeof content !== 'undefined')
-            mytodos.view.templates_[v] = content;
-    });
+    $.get('view/twigInterface/' + v + '.html.twig').always(function(v) {
+        return function(content) {
+            if (typeof content !== 'undefined') {
+                mytodos.view.templates_[mytodos.view.views[v]] = content;
+                if (length <= cnt) {
+                    $('#todoapp').klaster_(mytodos);
+                }
+            }
+            cnt++;
+        };
+    }(v));
 }
-
-$('#todoapp').klaster_(mytodos);
-
-
-
