@@ -178,7 +178,7 @@
                     return this.templates_[name];
                 },
                 render: function(tplVars, tplName) {
-                   
+
                 },
                 views: {
                 }
@@ -186,9 +186,10 @@
             'filter': {
             },
             'config': {
-                debug: false
+                debug: true
             }
         }, child);
+
         /**
          *get class property with default value
          */
@@ -400,7 +401,7 @@
 
             local.getDecoratedValuePrimitive = function($scope, scopeModelField) {
                 var fieldN = $scope.getName(),
-                        viewRenderFuntionName = $scope.attr(api.view.attr) || me.getFieldView(fieldN),
+                        viewRenderFuntionName = $scope.attr(api.view.attr) || fieldN,
                         DecoratedValuePrimitive = scopeModelField;
 
 
@@ -436,7 +437,7 @@
                         if (!$child.get(0)) {
 
                             if (me.preRenderView($scope, field[index])) {
-                                $html = $(cls.view.views[viewRenderFuntionName].call(cls.view, field, index, $scope));
+                                $html = $(cls.view.views[viewRenderFuntionName].call(cls.view, field[index], index, $scope));
                                 $html.data('value', field[index]);
                                 cls.bind($html);
                                 var $close = $scope.find('[data-name="' + $scope.getName() + '\[' + m_index + '\]"]');
@@ -491,22 +492,25 @@
                             ,
                             '').replace(/\[/g, '\[').replace(/\]/g, '\]'),
                             findNotation = local.getSelector(_notation),
-                            $child = $scope.find(findNotation),
                             notationClean = _notation.replace(/\\/g, ""),
                             myChangedField = cls.model.get(notationClean);
 
                     index = /\[(.*?)\]/gi.exec(notationClean)[1];
 
+                    var listItemName = notationClean.split(']')[0] + ']';
+
+                    $child = $scope.find(local.getSelector(listItemName, true));
+
                     if (typeof myChangedField !== 'undefined' && me.preRenderView($scope, field[index])) {
 
                         if (!$child.get(0)) {
-                            $html = $(cls.view.views[viewRenderFuntionName].call(cls.view, field, index, $scope));
+                            $html = $(cls.view.views[viewRenderFuntionName].call(cls.view, field[index], index, $scope));
                         } else {
-                            $html = $(cls.view.views[viewRenderFuntionName].call(cls.view, field, index, $scope));
+                            $html = $(cls.view.views[viewRenderFuntionName].call(cls.view, field[index], index, $scope));
                             $child.replaceWith($html);
                         }
 
-                        $html.data('value', myChangedField);
+                        $html.data('value', field[index]);
                         cls.bind($html);
                         if (!$child.get(0)) {
                             $scope.append($html);
@@ -521,7 +525,7 @@
 
 
             local.isHtmlList = function($scope) {
-                return $scope.attr(api.view.attr).indexOf(api.view.value.definition.iterate) !== -1;
+                return $scope.attr(api.view.attr) && $scope.attr(api.view.attr).indexOf(api.view.value.definition.iterate) !== -1;
             };
 
             local.iteratedAllViewEl = function($scope, change, ready) {
@@ -537,7 +541,7 @@
                     var $myPEl = $globalScope.find(findNotation);
                     if (match !== "" && (me.getFieldView(match) || (typeof $myPEl !== 'undefined' && $myPEl.attr(api.view.attr)))) {
                         ready();
-                        $myPEl.each(local.eachViewRepresenation($myPEl.length, change, true, ready));
+                        $myPEl.each(local.eachViewRepresentation($myPEl.length, change, true, ready));
                         break;
                     }
                 }
@@ -545,7 +549,7 @@
 
 
             //each element set value or render view
-            local.eachViewRepresenation = function(cnt, change, foundRepresentation, ready) {
+            local.eachViewRepresentation = function(cnt, change, foundRepresentation, ready) {
 
                 return function() {
                     // check how to treat this field
@@ -611,13 +615,13 @@
                 var cnt = $globalScope.find(selector).length;
 
                 var ready = function() {
-                    if (typeof cls.model.event !== "undefined" && typeof cls.model.event.onChange !== 'undefined') {
+                    if (typeof cls.model.event !== "undefined" && typeof cls.model.event.onChange !== 'undefined' && typeof cls.model.event.onChange[fieldNotation] === 'function') {
                         var changeCb = cls.model.event.onChange[fieldNotation];
                         changeCb.call(cls.model, cls.model.get(fieldNotation), changes[addrN], 'controller');
                     }
                 };
 
-                $globalScope.find(selector).each(local.eachViewRepresenation(cnt, changes[addrN], true, ready));
+                $globalScope.find(selector).each(local.eachViewRepresentation(cnt, changes[addrN], true, ready));
 
                 if (cnt === 0) {
                     cacheEls[cls.model._getParentObject(fieldNotation, '')] = [undefined, changes[addrN], ready];
