@@ -157,7 +157,9 @@
         this.data('value', value);
     };
     $.fn.klaster_ = function(child) {
+
         var $globalScope = this;
+
         var cls = $.extend({
             'delay': 0,
             'api': docapi,
@@ -173,12 +175,11 @@
                 }
             },
             'view': {
+                'viewpath': 'view/',
+                'fileextension': 'html.twig',
+                'templates': false,
                 templates_: {},
-                templates: function(name) {
-                    return this.templates_[name];
-                },
                 render: function(tplVars, tplName) {
-
                 },
                 views: {
                 }
@@ -931,6 +932,7 @@
          * bind dom to matching methods
          */
         cls.bind = function(element) {
+
             var events = {}, event = {}, name = "", method = "";
             var filter, $el;
             filter = cls.dispatchFilter(element);
@@ -984,11 +986,36 @@
             }
             return filter;
         };
-        cls.filter = cls.bind(this);
-        if (typeof child.init !== "undefined") {
-            if (child.init(cls)) {
-                cls.recognizeChange.setup();
+
+        cls.init = function() {
+
+            cls.filter = cls.bind(this);
+
+            if (typeof child.init !== "undefined") {
+                if (child.init(cls)) {
+                    cls.recognizeChange.setup();
+                }
             }
+        }.bind(this);
+
+        if (cls.view.templates) {
+            // preloading alle templates, then init klaster interface
+            var length = Object.keys(cls.view.views).length, cnt = 1;
+            for (var v in cls.view.views) {
+                $.get((cls.view.viewpath) + v + '.' + cls.view.fileextension + '?v=' + ((cls.config.debug) ? Math.random() : '1')).always(function(v) {
+                    return function(content) {
+                        cls.view.templates_[cls.view.views[v]] = content;
+                        cls.view.templates_[v] = content;
+                        if (length <= cnt) {
+                            child.view.templates_ = cls.view.templates_;
+                            cls.init();
+                        }
+                        cnt++;
+                    };
+                }(v));
+            }
+        } else {
+            cls.init();
         }
 
     };
