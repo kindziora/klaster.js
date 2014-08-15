@@ -168,7 +168,7 @@
             'model': {
                 field: {},
                 event: {
-                    'onChange': function() {
+                    'postChange': function() {
                     },
                     'sync': function() {
                     }
@@ -313,19 +313,25 @@
             }
         };
 
-        me.getFieldView = function(fieldN) {
-            var viewMethod = false;
+        cls.getView = function($scope) {
+            return $scope.attr(api.view.attr) || me.getFieldView($scope.getName(), true);
+        };
+
+        me.getFieldView = function(fieldN, getname) {
+            var viewMethod = false, name = false;
             if (typeof cls.view.views[fieldN] === 'undefined') {
                 if (fieldN.indexOf('[') !== -1) {
                     var finestMatch = fieldN.match(/([a-z].*?\[\w.*\])/gi);
                     if (typeof finestMatch !== 'undefined' && finestMatch)
                         finestMatch = finestMatch.pop();
+                    name = typeof cls.view.views[fieldN.split('[')[0] + '[*]'] !== 'undefined' ? finestMatch.split('[').pop() + '[*]' : fieldN;
                     viewMethod = typeof cls.view.views[fieldN.split('[')[0] + '[*]'] !== 'undefined' ? cls.view.views[finestMatch.split('[').pop() + '[*]'] : undefined;
                 }
             } else {
                 viewMethod = cls.view.views[fieldN];
+                name = fieldN;
             }
-            return viewMethod;
+            return (getname) ? name : viewMethod;
         };
 
         me.preRenderView = function($field, item) {
@@ -397,12 +403,12 @@
             };
 
             local.hasView = function($scope) {
-                return $scope.attr(api.view.attr) || me.getFieldView($scope.getName());
+                return $scope.attr(api.view.attr) || me.getFieldView($scope.getName(), true);
             };
 
             local.getDecoratedValuePrimitive = function($scope, scopeModelField) {
                 var fieldN = $scope.getName(),
-                        viewRenderFuntionName = $scope.attr(api.view.attr) || fieldN,
+                        viewRenderFuntionName = cls.getView($scope),
                         DecoratedValuePrimitive = scopeModelField;
 
 
@@ -427,7 +433,7 @@
 
             local.updateHtmlList = function($scope, field, change) {
                 var $child, index, $html;
-                var viewRenderFuntionName = $scope.attr(api.view.attr) || me.getFieldView($scope.getName());
+                var viewRenderFuntionName = cls.getView($scope);
 
                 function addE() {
 
@@ -435,28 +441,38 @@
                     for (index in field) {
 
                         $child = $scope.find('[data-name="' + $scope.getName() + '\[' + index + '\]"]');
-                        if (!$child.get(0)) {
 
-                            if (me.preRenderView($scope, field[index])) {
-                                $html = $(cls.view.views[viewRenderFuntionName].call(cls.view, field[index], index, $scope));
-                                $html.data('value', field[index]);
-                                cls.bind($html);
-                                var $close = $scope.find('[data-name="' + $scope.getName() + '\[' + m_index + '\]"]');
-                                if ($close.get(0)) {
-                                    $html.insertAfter($close);
-                                } else {
-                                    $scope.append($html);
-                                }
+
+                        if (me.preRenderView($scope, field[index])) {
+                            $html = $(cls.view.views[viewRenderFuntionName].call(cls.view, field[index], index, $scope));
+
+                            var $close = $scope.find('[data-name="' + $scope.getName() + '\[' + m_index + '\]"]');
+
+                            if ($child.get(0)) {
+                                $child.replaceWith($html);
+                            } else if ($close.get(0)) {
+                                $html.insertAfter($close);
+                            } else {
+                                $scope.append($html);
                             }
 
+                            $html.data('value', field[index]);
+                            cls.bind($html);
+                            cls.postRender($html);
+
+                        } else {
+                            $child.remove();
                         }
+
+
                         m_index = index;
                     }
                 }
 
                 function killE() {
                     $scope.children().each(function() {
-                        var name = /\[(.*?)\]/gi.exec($(this).getName())[1];
+                        var Elname = $(this).getName();
+                        var name = /\[(.*?)\]/gi.exec(Elname)[1];
 
                         if (!cls.model.get($(this).getName())
                                 || typeof field[name] === 'undefined'
@@ -503,16 +519,16 @@
                     $child = $scope.find(local.getSelector(listItemName, true));
 
                     if (typeof myChangedField !== 'undefined' && me.preRenderView($scope, field[index])) {
+                        $html = $(cls.view.views[viewRenderFuntionName].call(cls.view, field[index], index, $scope));
 
-                        if (!$child.get(0)) {
-                            $html = $(cls.view.views[viewRenderFuntionName].call(cls.view, field[index], index, $scope));
-                        } else {
-                            $html = $(cls.view.views[viewRenderFuntionName].call(cls.view, field[index], index, $scope));
+                        if ($child.get(0)) {
                             $child.replaceWith($html);
                         }
 
                         $html.data('value', field[index]);
                         cls.bind($html);
+                        cls.postRender($html);
+
                         if (!$child.get(0)) {
                             $scope.append($html);
                         }
@@ -616,8 +632,8 @@
                 var cnt = $globalScope.find(selector).length;
 
                 var ready = function() {
-                    if (typeof cls.model.event !== "undefined" && typeof cls.model.event.onChange !== 'undefined' && typeof cls.model.event.onChange[fieldNotation] === 'function') {
-                        var changeCb = cls.model.event.onChange[fieldNotation];
+                    if (typeof cls.model.event !== "undefined" && typeof cls.model.event.postChange !== 'undefined' && typeof cls.model.event.postChange[fieldNotation] === 'function') {
+                        var changeCb = cls.model.event.postChange[fieldNotation];
                         changeCb.call(cls.model, cls.model.get(fieldNotation), changes[addrN], 'controller');
                     }
                 };
@@ -916,6 +932,13 @@
             };
         };
 
+        cls.postRender = function($field) {
+            var funcName = cls.getView($field);
+            if (typeof cls.view.event !== "undefined" && typeof cls.view.event.postRender !== 'undefined' && typeof cls.view.event.postRender[funcName] === 'function') {
+                cls.view.event.postRender[funcName].call(cls.model, $field, cls.model.get($field.getName()));
+            }
+        };
+
         /**
          * this updates a partial area
          * @param {type} $html
@@ -925,7 +948,9 @@
                 $html = '';
             $(this).html($html);
             cls.bind($(this));
+            cls.postRender($(this));
         };
+
 
         /**
          * @todo rethink is this the best way to bind the methods?
