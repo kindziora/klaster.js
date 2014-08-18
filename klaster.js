@@ -817,7 +817,7 @@
             if (Object.prototype.toString.call(o1) == "[object Array]") {
                 var o1l = getUndefinedLength(o1), o2l = getUndefinedLength(o2);
                 if (o1l != o2l) {
-                    return [["", "length", o1l, o2l]]; // different length
+                  //  return [["", "length", o1l, o2l]]; // different length
                 }
                 var diff = [];
                 for (var i = 0; i < o1.length; i++) {
