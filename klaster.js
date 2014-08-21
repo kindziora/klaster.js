@@ -331,7 +331,9 @@
                 viewMethod = cls.view.views[fieldN];
                 name = fieldN;
             }
-            return (getname) ? name : viewMethod;
+            var result = (getname) ? name : viewMethod;
+
+            return typeof cls.view.views[name] !== 'undefined' ? result : false;
         };
 
         me.preRenderView = function($field, item) {
@@ -350,6 +352,10 @@
          * @returns {undefined}
          */
         function normalizeChangeResponse(change) {
+
+            if (change.substr(0, 1) !== '[')
+                return change;
+
             if (!change)
                 return;
             var match = (/\[(.*?)\]/).exec(change);
@@ -504,19 +510,11 @@
                 }
 
                 if (change[1] === 'value') { // value of subelement has changed
-                    var _notation = cls.model._getParentObject(
-                            normalizeChangeResponse(change[0])
-                            ,
-                            '').replace(/\[/g, '\[').replace(/\]/g, '\]'),
-                            findNotation = local.getSelector(_notation),
-                            notationClean = _notation.replace(/\\/g, ""),
-                            myChangedField = cls.model.get(notationClean);
+                    var _notation = change[0],
+                            myChangedField = cls.model.get(_notation),
+                            index = /\[(.*?)\]/gi.exec(_notation)[1];
 
-                    index = /\[(.*?)\]/gi.exec(notationClean)[1];
-
-                    var listItemName = notationClean.split(']')[0] + ']';
-
-                    $child = $scope.find(local.getSelector(listItemName, true));
+                    $child = $scope.find(local.getSelector(_notation, true));
 
                     if (typeof myChangedField !== 'undefined' && me.preRenderView($scope, field[index])) {
                         $html = $(cls.view.views[viewRenderFuntionName].call(cls.view, field[index], index, $scope));
@@ -539,7 +537,6 @@
                 }
 
             };
-
 
             local.isHtmlList = function($scope) {
                 return $scope.attr(api.view.attr) && $scope.attr(api.view.attr).indexOf(api.view.value.definition.iterate) !== -1;
@@ -570,7 +567,7 @@
 
                 return function() {
                     // check how to treat this field
-                    var $scope = $(this), fieldN = $scope.attr('data-name') || $scope.attr('name');
+                    var $scope = $(this), fieldN = $scope.getName();
                     var scopeModelField = cls.model.get(fieldN);
                     var decoratedFieldValue;
 
@@ -592,6 +589,8 @@
                         return;
                     }
 
+                    var cced = $scope.data('cvalue');
+
                     if (local.isPrimitiveValue($scope)) {
                         decoratedFieldValue = local.getDecoratedValuePrimitive($scope, scopeModelField);
                         local.setPrimitiveValue($scope, decoratedFieldValue);
@@ -599,11 +598,23 @@
 
                         if (local.isHtmlList($scope)) {
                             //render partial list of html elements
+
+                            if ($scope.getName().indexOf('[') === -1) {
+                                change[1] = 'view-filter';
+                                change[2] = 2;
+                                change[3] = 1;
+                            }
+
+
                             local.updateHtmlList($scope, scopeModelField, change);
                         } else {
-                            decoratedFieldValue = local.getDecoratedValuePrimitive($scope, scopeModelField);
 
-                            local.setHtmlValue($scope, decoratedFieldValue);
+                            if (cced !== scopeModelField) {
+                                decoratedFieldValue = local.getDecoratedValuePrimitive($scope, scopeModelField);
+                                local.setHtmlValue($scope, decoratedFieldValue);
+                                $scope.data('cvalue', scopeModelField);
+                            }
+
                         }
 
                     }
@@ -612,6 +623,28 @@
 
                 }
             };
+
+            /**
+             * 
+             * @param {type} notation
+             * @returns {Boolean}
+             */
+            cls.findUntilParentExists = function(notation) {
+                if (notation === '')
+                    return false;
+                var fieldNotation = normalizeChangeResponse(notation);
+                var selector = local.getSelector(fieldNotation, true);
+                var match = $globalScope.find(selector);
+                var cnt = match.length;
+                if (cnt === 0) {
+                    if (cls.model._getParentObject(notation, '') === "")
+                        return false;
+                    return cls.findUntilParentExists(cls.model._getParentObject(notation, ''));
+                } else {
+                    return match;
+                }
+            };
+
 
             var addrN, changes;
             //get changed fields
@@ -627,27 +660,24 @@
 
             for (addrN in changes) { //only this fields need to be refreshed
 
-                var fieldNotation = normalizeChangeResponse(changes[addrN][0]);
-                var selector = local.getSelector(fieldNotation, true);
-                var cnt = $globalScope.find(selector).length;
+                var $els = cls.findUntilParentExists(changes[addrN][0]);
+                if (!$els)
+                    continue;
+                changes[addrN][0] = $els.getName();
 
-                var ready = function() {
-                    if (typeof cls.model.event !== "undefined" && typeof cls.model.event.postChange !== 'undefined' && typeof cls.model.event.postChange[fieldNotation] === 'function') {
-                        var changeCb = cls.model.event.postChange[fieldNotation];
-                        changeCb.call(cls.model, cls.model.get(fieldNotation), changes[addrN], 'controller');
-                    }
-                };
-
-                $globalScope.find(selector).each(local.eachViewRepresentation(cnt, changes[addrN], true, ready));
-
-                if (cnt === 0) {
-                    cacheEls[cls.model._getParentObject(fieldNotation, '')] = [undefined, changes[addrN], ready];
-                }
+                cacheEls[$els.getName()] = [$els, changes[addrN]];
             }
 
             for (var el in cacheEls) {
-                //try parent but remember on following change that parent was rendered
-                local.iteratedAllViewEl.apply(this, cacheEls[el]);
+                var $els = cacheEls[el][0], changes = cacheEls[el][1];
+
+                var cnt = $els.length;
+                $els.each(local.eachViewRepresentation(cnt, changes, true, function() {
+                    if (typeof cls.model.event !== "undefined" && typeof cls.model.event.postChange !== 'undefined' && typeof cls.model.event.postChange[$els.getName()] === 'function') {
+                        var changeCb = cls.model.event.postChange[$els.getName()];
+                        changeCb.call(cls.model, cls.model.get($els.getName()), changes, 'controller');
+                    }
+                }));
             }
 
         };
@@ -761,6 +791,7 @@
 
             return false;
         };
+
         /**
          * http://stackoverflow.com/questions/27030/comparing-arrays-of-objects-in-javascript
          * @param {type} o1
@@ -817,7 +848,7 @@
             if (Object.prototype.toString.call(o1) == "[object Array]") {
                 var o1l = getUndefinedLength(o1), o2l = getUndefinedLength(o2);
                 if (o1l != o2l) {
-                  //  return [["", "length", o1l, o2l]]; // different length
+                    // return [["", "length", o1l, o2l]]; // different length
                 }
                 var diff = [];
                 for (var i = 0; i < o1.length; i++) {
