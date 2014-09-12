@@ -58,6 +58,10 @@ var interface = function() {
             'todos': [
                 {name: 'checkout klaster.js', completed: false}
             ]
+        },
+        syncByRemote: function(data) {
+            intfc.model.field = data;
+            intfc.model2view.call(this);
         }
     };
 
@@ -94,4 +98,6 @@ var interface = function() {
     };
 };
 
-$('#todoapp').klaster_(new interface());
+var myinterface = new interface();
+
+$('#todoapp').klaster_(myinterface);

@@ -6,34 +6,8 @@
         <link rel="stylesheet" href="bower_components/todomvc-common/base.css">
     </head>
     <body>
-        <section id="todoapp" data-defaultvalues="model">
-            <header id="header">
-                <h1>todos</h1>
-                <input id="new-todo" name="todo" data-omit="true" data-on="keyup" placeholder="What needs to be done?" autofocus>
-            </header>
-            <section id="main">
-                <input id="toggle-all" data-name="toggle-all" data-on="click" data-omit="true" type="checkbox"/>
-                <label for="toggle-all">Mark all as complete</label>
-                <ul id="todo-list" class="todolist All" data-name="todos" data-view="foreach->todoliste2">
+        <section id="todoapp" data-defaultvalues="model" data-name="page">
 
-                </ul> 
-            </section>
-            <footer id="footer">
-                <span id="todo-count" data-name="todos" data-view="length"></span>
-                <ul id="filters">
-                    <li>
-                        <a href="#/" class="selected" data-name="toggle" data-on="click" data-value="">All</a>
-                    </li>
-                    <li>
-                        <a href="#/active" data-name="toggle" data-on="click" data-value="!item.completed">Active</a>
-                    </li>
-                    <li>
-                        <a href="#/completed" data-name="toggle" data-on="click" data-value="item.completed">Completed</a>
-                    </li>
-                </ul>
-                <div data-name="todos" data-view="clearbutton" data-filter="this.activeTodoExist(item)">
-                </div>
-            </footer>
         </section>
         <footer id="info">
             <p>Double-click to edit a todo</p>
@@ -42,7 +16,7 @@
         </footer>
         <script src="bower_components/todomvc-common/base.js"></script>
         <script src="bower_components/jquery/dist/jquery.min.js"></script>
-         <script src="bower_components/page/index.js"></script>
+        <script src="bower_components/page/index.js"></script>
         <script src="../../klaster.js"></script>
         <script src="js/app.js"></script>
     </body>

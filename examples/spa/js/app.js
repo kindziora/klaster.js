@@ -13,6 +13,11 @@ var myspapp = function() {
     //apply interfaces // klaster_
     
 };
-page('/', function(){
+
+page.base('/klaster.js/examples/spa/');
+
+page('*', function(){
     console.log(arguments);
-})
+});
+
+page();

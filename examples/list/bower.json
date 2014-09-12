@@ -1,0 +1,8 @@
+{
+    "name": "todomvc-klaster.js",
+    "version": "0.0.0",
+    "dependencies": {
+        "twig.js": "~0.7.2",
+        "jquery": "2.1.1"
+    }
+}

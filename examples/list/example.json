@@ -1,0 +1,1689 @@
+[
+  {
+    "queueItem": {
+      "id": "53d9fc45994e2972db8302e2"
+    },
+    "payload": {
+      "id": "8634",
+      "otaName": "amoma",
+      "name": "Gold Hotel Wine & Dine",
+      "address": "Hegyalja Ut 14 - Budapest",
+      "latitude": 47.488856,
+      "longitude": 19.034394,
+      "stars": 4,
+      "correct": "5331fc982b02004202b1aa67"
+    },
+    "potentialMatches": [
+      {
+        "id": "5331fc982b02004202b1aa67",
+        "basicInfo": {
+          "name": "Gold Buda",
+          "address": {
+            "street": "Hegyalja út",
+            "streetNumber": "14"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              19.034379422665,
+              47.488839745921
+            ]
+          }
+        },
+        "stars": 3
+      },
+      {
+        "id": "53320ed62b0200de03b41fa6",
+        "basicInfo": {
+          "name": "Olinala Diamante & Villas Olinala Princess",
+          "address": {
+            "street": "Circuito Olinalá",
+            "streetNumber": "23"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              -99.8151,
+              16.798883
+            ]
+          }
+        },
+        "stars": 4
+      },
+      {
+        "id": "533202572b0200b602b24a34",
+        "basicInfo": {
+          "name": "Sol Rio de Luna/Mares Resort - Sol Rio de Luna",
+          "address": {
+            "street": "Crta. De Guardalavaca",
+            "streetNumber": ""
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              -75.871568620205,
+              21.111691253657
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "queueItem": {
+      "id": "53d9fc45994e2972db8302e4"
+    },
+    "payload": {
+      "id": "8659",
+      "otaName": "amoma",
+      "name": "Hunguest Hotel Helios",
+      "address": "91 Vorosmarty U. - Heviz",
+      "latitude": 46.78069,
+      "longitude": 17.185185,
+      "stars": 3,
+      "correct": "533205762b02009002b2cd90"
+    },
+    "potentialMatches": [
+      {
+        "id": "5331fbc72b02004a02b1552f",
+        "basicInfo": {
+          "name": "Louis Kerkyra Golf",
+          "address": {
+            "street": "",
+            "streetNumber": ""
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              19.885977,
+              39.634548
+            ]
+          }
+        },
+        "stars": 4
+      },
+      {
+        "id": "5331fc892b02004c02b1a43f",
+        "basicInfo": {
+          "name": "Cims Pas Estudios Turisticos",
+          "address": {
+            "street": "San Jordi",
+            "streetNumber": "33"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              1.733098,
+              42.542341
+            ]
+          }
+        },
+        "stars": 2
+      },
+      {
+        "id": "533205762b02009002b2cd90",
+        "basicInfo": {
+          "name": "Hunguest Helios - Haus Benjamin",
+          "address": {
+            "street": "Vorosmarty u.",
+            "streetNumber": "91"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              17.186442017555,
+              46.780916573782
+            ]
+          }
+        }
+      },
+      {
+        "id": "5331fb2b2b02002902b126fb",
+        "basicInfo": {
+          "name": "Hunguest Helios - Haus Benjamin / Haus Anna",
+          "address": {
+            "street": "Vorosmarty u.",
+            "streetNumber": "91"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              17.18544960022,
+              46.780677795812
+            ]
+          }
+        },
+        "stars": 3
+      }
+    ]
+  },
+  {
+    "queueItem": {
+      "id": "53d9fc45994e2972db8302e5"
+    },
+    "payload": {
+      "id": "8666",
+      "otaName": "amoma",
+      "name": "Centerhotel Skjaldbreid",
+      "address": "16 Laugaveguv - Reykjavik",
+      "latitude": 64.145872,
+      "longitude": -21.930969,
+      "stars": 3,
+      "correct": ""
+    },
+    "potentialMatches": [
+      {
+        "id": "5331fc942b02004d02b1a881",
+        "basicInfo": {
+          "name": "Centerhotel Klöpp",
+          "address": {
+            "street": "Klapparstíg",
+            "streetNumber": "26"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              -21.9291,
+              64.146275
+            ]
+          }
+        },
+        "stars": 3
+      },
+      {
+        "id": "5331fc072b02004b02b16e9f",
+        "basicInfo": {
+          "name": "Sunmarotel Miramare Beach",
+          "address": {
+            "street": "",
+            "streetNumber": ""
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              19.927225112915,
+              39.489958141916
+            ]
+          }
+        },
+        "stars": 4
+      },
+      {
+        "id": "53cd5edb3c00002e00de57df",
+        "basicInfo": {
+          "name": "Calimera Miramare Beach And Spa",
+          "address": {
+            "street": "Moraitika Corfu 49100, - Corfu",
+            "streetNumber": ""
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              19.926817417,
+              39.490297614
+            ]
+          }
+        },
+        "stars": 5
+      },
+      {
+        "id": "533991bfa6000032019f9d3e",
+        "basicInfo": {
+          "name": "Quality Inn",
+          "address": {
+            "street": "Nieto",
+            "streetNumber": "102"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              -102.2966303258,
+              21.880157076574
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "queueItem": {
+      "id": "53d9fc45994e2972db8302e8"
+    },
+    "payload": {
+      "id": "8692",
+      "otaName": "amoma",
+      "name": "Ashoka International Delhi",
+      "address": "3382, D.b.gupta Road, Karol Bagh, New Delhi - New Delhi",
+      "latitude": 28.6447846,
+      "longitude": 77.214106,
+      "stars": 2,
+      "correct": ""
+    },
+    "potentialMatches": [
+      {
+        "id": "533205f12b0200a502b2dc63",
+        "basicInfo": {
+          "name": "Hotel Today International",
+          "address": {
+            "street": "",
+            "streetNumber": ""
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              77.2137635,
+              28.6448775
+            ]
+          }
+        },
+        "stars": 3
+      },
+      {
+        "id": "53b403583f000035015ef431",
+        "basicInfo": {
+          "name": "Hotel Om International",
+          "address": {
+            "street": "",
+            "streetNumber": ""
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              77.214307125,
+              28.64470805
+            ]
+          }
+        }
+      },
+      {
+        "id": "533217e72b02002404b5f0b6",
+        "basicInfo": {
+          "name": "The Pearl Hotel Delhi",
+          "address": {
+            "street": "Desh bandhu Gupta Road",
+            "streetNumber": "8721/1"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              77.2137472,
+              28.6448565
+            ]
+          }
+        },
+        "stars": 3.5
+      },
+      {
+        "id": "53320ede2b02000e04b421c9",
+        "basicInfo": {
+          "name": "Hotel Sita International",
+          "address": {
+            "street": "D.B. Gupta Road",
+            "streetNumber": "3/10"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              77.2137626,
+              28.6449537
+            ]
+          }
+        },
+        "stars": 3
+      }
+    ]
+  },
+  {
+    "queueItem": {
+      "id": "53d9fc46994e2972db8302ec"
+    },
+    "payload": {
+      "id": "8702",
+      "otaName": "amoma",
+      "name": "Regent Continental",
+      "address": "4/73 W.e.a. Krishna Market - New Delhi",
+      "latitude": 28.650667,
+      "longitude": 77.19078,
+      "stars": 3,
+      "correct": ""
+    },
+    "potentialMatches": [
+      {
+        "id": "533206c92b0200b202b309d7",
+        "basicInfo": {
+          "name": "Continental",
+          "address": {
+            "street": "",
+            "streetNumber": ""
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              -0.05342665735227,
+              43.095757379901
+            ]
+          }
+        }
+      },
+      {
+        "id": "5339957fa60000ce00a0b9f3",
+        "basicInfo": {
+          "name": "The Majestic Palace",
+          "address": {
+            "street": "Saraswati Marg",
+            "streetNumber": "4/35"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              77.1912423,
+              28.651331
+            ]
+          }
+        }
+      },
+      {
+        "id": "53399560a600008401a09d33",
+        "basicInfo": {
+          "name": "Tsamis",
+          "address": {
+            "street": "",
+            "streetNumber": ""
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              20.83064,
+              37.833985
+            ]
+          }
+        }
+      },
+      {
+        "id": "5331fa262b02003d02b0fe9b",
+        "basicInfo": {
+          "name": "Tsamis Zante",
+          "address": {
+            "street": "Kypseli",
+            "streetNumber": ""
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              20.830667,
+              37.834065
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "queueItem": {
+      "id": "53d9fc48994e2972db830300"
+    },
+    "payload": {
+      "id": "8974",
+      "otaName": "amoma",
+      "name": "Lacona",
+      "address": "Viale Dei Golfi - Capoliveri",
+      "latitude": 42.77,
+      "longitude": 10.308,
+      "stars": 4,
+      "correct": ""
+    },
+    "potentialMatches": [
+      {
+        "id": "5332133c2b02001504b51059",
+        "basicInfo": {
+          "name": "Villa Conti",
+          "address": {
+            "street": "Via Della Madonna Di Lacona",
+            "streetNumber": "514"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              10.307259,
+              42.769148
+            ]
+          }
+        }
+      },
+      {
+        "id": "5331fba12b02004102b146ae",
+        "basicInfo": {
+          "name": "Doctor's Cave Beach",
+          "address": {
+            "street": "Gloucester Avenue",
+            "streetNumber": ""
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              -77.927921712399,
+              18.487133761619
+            ]
+          }
+        },
+        "stars": 3
+      },
+      {
+        "id": "5331fa8e2b02004102b100d5",
+        "basicInfo": {
+          "name": "Comfort Oru",
+          "address": {
+            "street": "Narva Road",
+            "streetNumber": "120 b"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              24.804768562317,
+              59.443067910403
+            ]
+          }
+        },
+        "stars": 3
+      },
+      {
+        "id": "53320b0e2b02002604b388f5",
+        "basicInfo": {
+          "name": "Maria Luisa B&B",
+          "address": {
+            "street": "Via Antonio Salandra",
+            "streetNumber": "6"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              12.49551,
+              41.905633
+            ]
+          }
+        },
+        "stars": 0
+      }
+    ]
+  },
+  {
+    "queueItem": {
+      "id": "53d9fc48994e2972db830301"
+    },
+    "payload": {
+      "id": "8990",
+      "otaName": "amoma",
+      "name": "San Carlo",
+      "address": "Via Napo Torriani 28 - Milan",
+      "latitude": 45.484,
+      "longitude": 9.203,
+      "stars": 3,
+      "correct": ""
+    },
+    "potentialMatches": [
+      {
+        "id": "5331fbc12b02002b02b152b7",
+        "basicInfo": {
+          "name": "Flora",
+          "address": {
+            "street": "Via Napo Torriani",
+            "streetNumber": "23"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              9.20306,
+              45.483058
+            ]
+          }
+        },
+        "stars": 3
+      },
+      {
+        "id": "5331fc682b02004c02b198c3",
+        "basicInfo": {
+          "name": "Best Western Atlantic",
+          "address": {
+            "street": "Via Napo Torriani",
+            "streetNumber": "24"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              9.2032787203789,
+              45.483112810684
+            ]
+          }
+        },
+        "stars": 4
+      },
+      {
+        "id": "5331fbb82b02004202b14f78",
+        "basicInfo": {
+          "name": "De la Cite Carcassonne - MGallery Collection",
+          "address": {
+            "street": "Place Auguste-Pierre Pont",
+            "streetNumber": ""
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              2.3625057935715,
+              43.205508179992
+            ]
+          }
+        },
+        "stars": 4
+      },
+      {
+        "id": "5331fb022b02004202b11cd2",
+        "basicInfo": {
+          "name": "Angsana Riad Dar Zaouia",
+          "address": {
+            "street": "Derb NaKouss Derb Zaouia",
+            "streetNumber": ""
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              -7.9836702346802,
+              31.621666920228
+            ]
+          }
+        }
+      },
+      {
+        "id": "53320c2a2b02001c04b3ada7",
+        "basicInfo": {
+          "name": "Locanda Antico Fiore",
+          "address": {
+            "street": "",
+            "streetNumber": "3486"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              12.330208,
+              45.4349
+            ]
+          }
+        },
+        "stars": 0
+      }
+    ]
+  },
+  {
+    "queueItem": {
+      "id": "53d9fc4a994e2972db830306"
+    },
+    "payload": {
+      "id": "9224",
+      "otaName": "amoma",
+      "name": "Hotel Arte",
+      "address": "Viale Mansfield, 3 - Parma",
+      "latitude": 44.827,
+      "longitude": 10.338,
+      "stars": 3,
+      "correct": "5331fcd62b02004b02b1c320"
+    },
+    "potentialMatches": [
+      {
+        "id": "5331fcd62b02004b02b1c320",
+        "basicInfo": {
+          "name": "My One Arte",
+          "address": {
+            "street": "Viale Mansfield",
+            "streetNumber": "3"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              10.338228,
+              44.82691
+            ]
+          }
+        }
+      },
+      {
+        "id": "53399397a600000e01a01fbf",
+        "basicInfo": {
+          "name": "Antinea",
+          "address": {
+            "street": "",
+            "streetNumber": ""
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              -2.0051772691545,
+              48.655623088291
+            ]
+          }
+        }
+      },
+      {
+        "id": "533206d82b0200b002b30caa",
+        "basicInfo": {
+          "name": "Campanile La Rochelle Est - Terrasses de Mirande",
+          "address": {
+            "street": "Rue des Eglantiers Fief des Ardennes",
+            "streetNumber": ""
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              -1.1211097240448,
+              46.169481371529
+            ]
+          }
+        },
+        "stars": 2
+      },
+      {
+        "id": "5331fa8e2b02004102b100d5",
+        "basicInfo": {
+          "name": "Comfort Oru",
+          "address": {
+            "street": "Narva Road",
+            "streetNumber": "120 b"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              24.804768562317,
+              59.443067910403
+            ]
+          }
+        },
+        "stars": 3
+      }
+    ]
+  },
+  {
+    "queueItem": {
+      "id": "53d9fc4a994e2972db83030f"
+    },
+    "payload": {
+      "id": "9287",
+      "otaName": "amoma",
+      "name": "Airone",
+      "address": "V.le Regina Elena, 201, - Rimini",
+      "latitude": 44.052063844,
+      "longitude": 12.599086761,
+      "stars": 3,
+      "correct": ""
+    },
+    "potentialMatches": [
+      {
+        "id": "533212942b0200db03b4d27d",
+        "basicInfo": {
+          "name": "Diamond",
+          "address": {
+            "street": "Viale Regina Elena",
+            "streetNumber": "183"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              12.597515,
+              44.051663
+            ]
+          }
+        },
+        "stars": 3
+      },
+      {
+        "id": "533206c92b0200b202b309d7",
+        "basicInfo": {
+          "name": "Continental",
+          "address": {
+            "street": "",
+            "streetNumber": ""
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              -0.05342665735227,
+              43.095757379901
+            ]
+          }
+        }
+      },
+      {
+        "id": "5331fbd92b02004102b15b22",
+        "basicInfo": {
+          "name": "Antipodes Hotels & Résidences St Jean",
+          "address": {
+            "street": "Avenue Du Paradis",
+            "streetNumber": "1"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              -0.052798,
+              43.09417
+            ]
+          }
+        }
+      },
+      {
+        "id": "5331fc6c2b02004b02b19ae2",
+        "basicInfo": {
+          "name": "Arcades",
+          "address": {
+            "street": "Avenue Du Paradis",
+            "streetNumber": "13"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              -0.052858293056488,
+              43.093818569876
+            ]
+          }
+        }
+      },
+      {
+        "id": "533206152b0200a502b2e412",
+        "basicInfo": {
+          "name": "Saint-Louis de France",
+          "address": {
+            "street": "Avenue Du Paradis",
+            "streetNumber": "5"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              -0.052367448806763,
+              43.094590271361
+            ]
+          }
+        },
+        "stars": 3
+      }
+    ]
+  },
+  {
+    "queueItem": {
+      "id": "53d9fc4b994e2972db830311"
+    },
+    "payload": {
+      "id": "9434",
+      "otaName": "amoma",
+      "name": "Antica Domus",
+      "address": "96 Via Xx Settember - Rome",
+      "latitude": 41.9057,
+      "longitude": 12.4962,
+      "stars": 2,
+      "correct": ""
+    },
+    "potentialMatches": [
+      {
+        "id": "53320b0e2b02002604b388f5",
+        "basicInfo": {
+          "name": "Maria Luisa B&B",
+          "address": {
+            "street": "Via Antonio Salandra",
+            "streetNumber": "6"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              12.49551,
+              41.905633
+            ]
+          }
+        },
+        "stars": 0
+      },
+      {
+        "id": "5331fc5e2b02004c02b19484",
+        "basicInfo": {
+          "name": "Best Western Beausejour",
+          "address": {
+            "street": "Avenue de la Gare",
+            "streetNumber": "16"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              -0.0429368019104,
+              43.099734373003
+            ]
+          }
+        },
+        "stars": 3
+      },
+      {
+        "id": "5332069a2b0200af02b2fd2b",
+        "basicInfo": {
+          "name": "Alla Campana",
+          "address": {
+            "street": "Calle dei Fabbri",
+            "streetNumber": "4719"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              12.335846722126,
+              45.436093586841
+            ]
+          }
+        },
+        "stars": 0
+      },
+      {
+        "id": "5331fc122b02004202b17342",
+        "basicInfo": {
+          "name": "Palazzo Sant' Angelo",
+          "address": {
+            "street": "Sestiere San Marco",
+            "streetNumber": "3478b-3488"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              12.335656285286,
+              45.437395997322
+            ]
+          }
+        },
+        "stars": 4
+      }
+    ]
+  },
+  {
+    "queueItem": {
+      "id": "53d9fc4b994e2972db830314"
+    },
+    "payload": {
+      "id": "9557",
+      "otaName": "amoma",
+      "name": "Relais Group Pantheon",
+      "address": "Via Santo Stefano - Rome",
+      "latitude": 41.896835,
+      "longitude": 12.479286,
+      "stars": 3,
+      "correct": ""
+    },
+    "potentialMatches": [
+      {
+        "id": "5331fcaa2b02003f02b1b1ed",
+        "basicInfo": {
+          "name": "Pantheon Inn",
+          "address": {
+            "street": "Via Santa Caterina da Siena",
+            "streetNumber": "57"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              12.478022,
+              41.897497
+            ]
+          }
+        },
+        "stars": 3
+      },
+      {
+        "id": "53320b062b0200af03b3856a",
+        "basicInfo": {
+          "name": "Best (Pantheon)",
+          "address": {
+            "street": "Corso Vittorio Emanuele II",
+            "streetNumber": "21"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              12.478171,
+              41.895793
+            ]
+          }
+        },
+        "stars": 0
+      },
+      {
+        "id": "5331fb8f2b02004102b13e12",
+        "basicInfo": {
+          "name": "Theatre",
+          "address": {
+            "street": "Rue De Savoie",
+            "streetNumber": "10"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              4.831903,
+              45.760215
+            ]
+          }
+        }
+      },
+      {
+        "id": "533215a82b0200f603b59c63",
+        "basicInfo": {
+          "name": "Arcantis Du Theatre",
+          "address": {
+            "street": "",
+            "streetNumber": ""
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              4.8316638683244,
+              45.760138485559
+            ]
+          }
+        },
+        "stars": 3
+      },
+      {
+        "id": "5331fcc02b02004b02b1b981",
+        "basicInfo": {
+          "name": "Calinda Viva Villahermosa",
+          "address": {
+            "street": "Av. Ruiz Cortinez Y Paseo",
+            "streetNumber": ""
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              -92.940502,
+              17.99616
+            ]
+          }
+        },
+        "stars": 5
+      },
+      {
+        "id": "5331fbe52b02004102b160b8",
+        "basicInfo": {
+          "name": "Oceania Le Métropole ",
+          "address": {
+            "street": "rue du Clos Rene",
+            "streetNumber": "3"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              3.8804215192795,
+              43.606608051527
+            ]
+          }
+        },
+        "stars": 4
+      }
+    ]
+  },
+  {
+    "queueItem": {
+      "id": "53d9fc4c994e2972db830315"
+    },
+    "payload": {
+      "id": "9584",
+      "otaName": "amoma",
+      "name": "Hotel Verona Rome",
+      "address": "Via di Santa Maria Maggiore 154 - Rome",
+      "latitude": 41.8969968,
+      "longitude": 12.4987281,
+      "stars": 3,
+      "correct": ""
+    },
+    "potentialMatches": [
+      {
+        "id": "53320b162b0200c003b38c4a",
+        "basicInfo": {
+          "name": "Maggiore B&B",
+          "address": {
+            "street": "Piazza di Santa Maria Maggiore",
+            "streetNumber": "12"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              12.499019510997,
+              41.896905824853
+            ]
+          }
+        },
+        "stars": 0
+      },
+      {
+        "id": "53399250a6000012019fc3ec",
+        "basicInfo": {
+          "name": "Quinta Real Villahermosa",
+          "address": {
+            "street": "Paseo Usumacinta",
+            "streetNumber": "1402"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              -92.956502437592,
+              18.000570357483
+            ]
+          }
+        }
+      },
+      {
+        "id": "5331fbe52b02004102b160b8",
+        "basicInfo": {
+          "name": "Oceania Le Métropole ",
+          "address": {
+            "street": "rue du Clos Rene",
+            "streetNumber": "3"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              3.8804215192795,
+              43.606608051527
+            ]
+          }
+        },
+        "stars": 4
+      },
+      {
+        "id": "533211a02b0200ca03b49185",
+        "basicInfo": {
+          "name": "Abasun Hotel Montpellier Centre",
+          "address": {
+            "street": "Rue de Maguelone",
+            "streetNumber": "13"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              3.8798231,
+              43.606887
+            ]
+          }
+        },
+        "stars": 0
+      }
+    ]
+  },
+  {
+    "queueItem": {
+      "id": "53d9fc4d994e2972db83031b"
+    },
+    "payload": {
+      "id": "9789",
+      "otaName": "amoma",
+      "name": "Palazzo Sant'Angelo",
+      "address": "San Marco, 3878/b - 3488  - Venice",
+      "latitude": 45.4355,
+      "longitude": 12.3311,
+      "stars": 4,
+      "correct": ""
+    },
+    "potentialMatches": [
+      {
+        "id": "533206b22b02002802b30437",
+        "basicInfo": {
+          "name": "Palazzo Paruta",
+          "address": {
+            "street": "",
+            "streetNumber": ""
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              12.331286743129,
+              45.434225601457
+            ]
+          }
+        },
+        "stars": 4
+      },
+      {
+        "id": "53320c2a2b02001c04b3ada7",
+        "basicInfo": {
+          "name": "Locanda Antico Fiore",
+          "address": {
+            "street": "",
+            "streetNumber": "3486"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              12.330208,
+              45.4349
+            ]
+          }
+        },
+        "stars": 0
+      },
+      {
+        "id": "53399250a6000012019fc3ec",
+        "basicInfo": {
+          "name": "Quinta Real Villahermosa",
+          "address": {
+            "street": "Paseo Usumacinta",
+            "streetNumber": "1402"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              -92.956502437592,
+              18.000570357483
+            ]
+          }
+        }
+      },
+      {
+        "id": "5331fbe52b02004102b160b8",
+        "basicInfo": {
+          "name": "Oceania Le Métropole ",
+          "address": {
+            "street": "rue du Clos Rene",
+            "streetNumber": "3"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              3.8804215192795,
+              43.606608051527
+            ]
+          }
+        },
+        "stars": 4
+      },
+      {
+        "id": "533211a02b0200ca03b49185",
+        "basicInfo": {
+          "name": "Abasun Hotel Montpellier Centre",
+          "address": {
+            "street": "Rue de Maguelone",
+            "streetNumber": "13"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              3.8798231,
+              43.606887
+            ]
+          }
+        },
+        "stars": 0
+      }
+    ]
+  },
+  {
+    "queueItem": {
+      "id": "53d9fc4d994e2972db83031c"
+    },
+    "payload": {
+      "id": "9815",
+      "otaName": "amoma",
+      "name": "Palazzo la Scala",
+      "address": "San Marco,4737 Calle de le Scale, (Calle dei Fabbr - Venice",
+      "latitude": 45.43714,
+      "longitude": 12.33658,
+      "stars": 3,
+      "correct": ""
+    },
+    "potentialMatches": [
+      {
+        "id": "5332069a2b0200af02b2fd2b",
+        "basicInfo": {
+          "name": "Alla Campana",
+          "address": {
+            "street": "Calle dei Fabbri",
+            "streetNumber": "4719"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              12.335846722126,
+              45.436093586841
+            ]
+          }
+        },
+        "stars": 0
+      },
+      {
+        "id": "5331fc122b02004202b17342",
+        "basicInfo": {
+          "name": "Palazzo Sant' Angelo",
+          "address": {
+            "street": "Sestiere San Marco",
+            "streetNumber": "3478b-3488"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              12.335656285286,
+              45.437395997322
+            ]
+          }
+        },
+        "stars": 4
+      },
+      {
+        "id": "533205312b0200af02b2af9a",
+        "basicInfo": {
+          "name": "Alla Fava",
+          "address": {
+            "street": "",
+            "streetNumber": ""
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              12.337970406091,
+              45.437226270897
+            ]
+          }
+        },
+        "stars": 2
+      }
+    ]
+  },
+  {
+    "queueItem": {
+      "id": "53d9fc4d994e2972db83031e"
+    },
+    "payload": {
+      "id": "9940",
+      "otaName": "amoma",
+      "name": "Superclubs Breezes Montego Bay",
+      "address": "Whitesands P.O.,,Gloucester Avenue Montego Bay - Montego Bay",
+      "latitude": 18.487488,
+      "longitude": -77.928599,
+      "stars": 4,
+      "correct": ""
+    },
+    "potentialMatches": [
+      {
+        "id": "5331fba12b02004102b146ae",
+        "basicInfo": {
+          "name": "Doctor's Cave Beach",
+          "address": {
+            "street": "Gloucester Avenue",
+            "streetNumber": ""
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              -77.927921712399,
+              18.487133761619
+            ]
+          }
+        },
+        "stars": 3
+      },
+      {
+        "id": "5331fa9e2b02002802b103cd",
+        "basicInfo": {
+          "name": "The Gloucestershire",
+          "address": {
+            "street": "Glocester Avenue",
+            "streetNumber": ""
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              -77.92813628912,
+              18.486955695995
+            ]
+          }
+        },
+        "stars": 3
+      },
+      {
+        "id": "53399436a60000b700a0415c",
+        "basicInfo": {
+          "name": "Adagio Access Nantes Sextant - geschlossen",
+          "address": {
+            "street": "boulevard Saint Aignan",
+            "streetNumber": "82"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              -1.5795193612575,
+              47.206584865441
+            ]
+          }
+        }
+      },
+      {
+        "id": "5331fa8e2b02004102b100d5",
+        "basicInfo": {
+          "name": "Comfort Oru",
+          "address": {
+            "street": "Narva Road",
+            "streetNumber": "120 b"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              24.804768562317,
+              59.443067910403
+            ]
+          }
+        },
+        "stars": 3
+      }
+    ]
+  },
+  {
+    "queueItem": {
+      "id": "53d9fc4e994e2972db830322"
+    },
+    "payload": {
+      "id": "9967",
+      "otaName": "amoma",
+      "name": "Heartbeat",
+      "address": "P.o Box 3095 - Negril",
+      "latitude": 18.273978196,
+      "longitude": -78.35314337,
+      "stars": 2,
+      "correct": ""
+    },
+    "potentialMatches": [
+      {
+        "id": "5331ff3f2b02002a02b20138",
+        "basicInfo": {
+          "name": "The Gardenia Resort",
+          "address": {
+            "street": "",
+            "streetNumber": ""
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              -78.353140372276,
+              18.273979734893
+            ]
+          }
+        },
+        "stars": 3
+      },
+      {
+        "id": "533205422b0200a502b2b691",
+        "basicInfo": {
+          "name": "The Oasis At Sunset",
+          "address": {
+            "street": "",
+            "streetNumber": ""
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              -78.353509,
+              18.273327
+            ]
+          }
+        }
+      },
+      {
+        "id": "5331fcfe2b02004202b1d1eb",
+        "basicInfo": {
+          "name": "Ibis Nice Palais des Congres",
+          "address": {
+            "street": "Rue Barberis",
+            "streetNumber": "38"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              7.286097407341,
+              43.704173180901
+            ]
+          }
+        },
+        "stars": 3
+      },
+      {
+        "id": "5331fc5e2b02004c02b19484",
+        "basicInfo": {
+          "name": "Best Western Beausejour",
+          "address": {
+            "street": "Avenue de la Gare",
+            "streetNumber": "16"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              -0.0429368019104,
+              43.099734373003
+            ]
+          }
+        },
+        "stars": 3
+      },
+      {
+        "id": "5331fc682b02004c02b198c3",
+        "basicInfo": {
+          "name": "Best Western Atlantic",
+          "address": {
+            "street": "Via Napo Torriani",
+            "streetNumber": "24"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              9.2032787203789,
+              45.483112810684
+            ]
+          }
+        },
+        "stars": 4
+      }
+    ]
+  },
+  {
+    "queueItem": {
+      "id": "53d9fc4e994e2972db830326"
+    },
+    "payload": {
+      "id": "10077",
+      "otaName": "amoma",
+      "name": "Holiday Inn Aguascalientes",
+      "address": "Calle Nieto 102 Esq. Jose Maria Chavez Col Centro - Aguascalientes",
+      "latitude": 21.880015,
+      "longitude": -102.29648,
+      "stars": 4,
+      "correct": "533991bfa6000032019f9d3e"
+    },
+    "potentialMatches": [
+      {
+        "id": "533991bfa6000032019f9d3e",
+        "basicInfo": {
+          "name": "Quality Inn",
+          "address": {
+            "street": "Nieto",
+            "streetNumber": "102"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              -102.2966303258,
+              21.880157076574
+            ]
+          }
+        }
+      },
+      {
+        "id": "5331fc7e2b02004c02b1a1eb",
+        "basicInfo": {
+          "name": "Park Inn Nice",
+          "address": {
+            "street": "Bd René Cassin",
+            "streetNumber": "179"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              7.2089195251465,
+              43.667351637533
+            ]
+          }
+        },
+        "stars": 4
+      },
+      {
+        "id": "5331fc7e2b02004c02b1a1eb",
+        "basicInfo": {
+          "name": "Park Inn Nice",
+          "address": {
+            "street": "Bd René Cassin",
+            "streetNumber": "179"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              7.2089195251465,
+              43.667351637533
+            ]
+          }
+        },
+        "stars": 4
+      },
+      {
+        "id": "5331fbd92b02004102b15b22",
+        "basicInfo": {
+          "name": "Antipodes Hotels & Résidences St Jean",
+          "address": {
+            "street": "Avenue Du Paradis",
+            "streetNumber": "1"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              -0.052798,
+              43.09417
+            ]
+          }
+        }
+      },
+      {
+        "id": "5331fba12b02004102b146ae",
+        "basicInfo": {
+          "name": "Doctor's Cave Beach",
+          "address": {
+            "street": "Gloucester Avenue",
+            "streetNumber": ""
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              -77.927921712399,
+              18.487133761619
+            ]
+          }
+        },
+        "stars": 3
+      }
+    ]
+  },
+  {
+    "queueItem": {
+      "id": "53d9fc4f994e2972db830328"
+    },
+    "payload": {
+      "id": "10146",
+      "otaName": "amoma",
+      "name": "Serena Centro",
+      "address": "107 Heroes, Colonia Centro - Guadalajara",
+      "latitude": 20.671859644,
+      "longitude": -103.3461161,
+      "stars": 3,
+      "correct": ""
+    },
+    "potentialMatches": [
+      {
+        "id": "533210d92b02004102b4774f",
+        "basicInfo": {
+          "name": "Aranzazú Centro Histórico",
+          "address": {
+            "street": "Avenida Revolución",
+            "streetNumber": "110"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              -103.34585398436,
+              20.671327998675
+            ]
+          }
+        },
+        "stars": 2
+      },
+      {
+        "id": "533210e12b02002504b479ef",
+        "basicInfo": {
+          "name": "Aranzazu Eco",
+          "address": {
+            "street": "Av. Revolución",
+            "streetNumber": "120"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              -103.34588,
+              20.671707
+            ]
+          }
+        },
+        "stars": 2
+      },
+      {
+        "id": "53399397a600000e01a01fbf",
+        "basicInfo": {
+          "name": "Antinea",
+          "address": {
+            "street": "",
+            "streetNumber": ""
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              -2.0051772691545,
+              48.655623088291
+            ]
+          }
+        }
+      },
+      {
+        "id": "5331fbc72b02004a02b1552f",
+        "basicInfo": {
+          "name": "Louis Kerkyra Golf",
+          "address": {
+            "street": "",
+            "streetNumber": ""
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              19.885977,
+              39.634548
+            ]
+          }
+        },
+        "stars": 4
+      },
+      {
+        "id": "5331fc892b02004c02b1a43f",
+        "basicInfo": {
+          "name": "Cims Pas Estudios Turisticos",
+          "address": {
+            "street": "San Jordi",
+            "streetNumber": "33"
+          },
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              1.733098,
+              42.542341
+            ]
+          }
+        },
+        "stars": 2
+      }
+    ]
+  }
+]

@@ -91,7 +91,7 @@ var interface = function() {
                 return '<button id="clear-completed" data-name="clear-completed" data-on="click">Clear completed</button>';
             },
             "foreach->todoliste2": function(todos, index, $field) {
-                return "<li class='" + ((todos[index].completed) ? 'completed' : '') + "' data-name=\"todos[" + index + "]\">" + intfc.view.views['todos[*]'](todos[index], 'todos[' + index + ']') + "</li>";
+                return "<li class='" + ((todos.completed) ? 'completed' : '') + "' data-name=\"todos[" + index + "]\">" + intfc.view.views['todos[*]'](todos, 'todos[' + index + ']') + "</li>";
             }
         }
     };
