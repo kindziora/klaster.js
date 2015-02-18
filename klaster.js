@@ -1,10 +1,10 @@
 /**
  * klaster is a jquery filter plugin for extended filters by dom rules and javascript based on filter classes
- * @author Alexander Kindziora 2014
+ * @author Alexander Kindziora 2015
  * 
  */
 
-(function($) {
+(function ($) {
 //"use strict";
 
     var me = {}, prefix = 'data',
@@ -46,7 +46,7 @@
                         'children': {
                             'checked': {
                                 'attr': prefix + '-checked',
-                                'value': 'String/that evaluates to boolean, whether this element is will apear inside a list of multiple elements with similar data-name, like checkbox',
+                                'value': 'String/that evaluates to boolean, whether this element is will apear inside a list of multiple elements with similar data-name, like checkbox'
                             }
                         }
                     },
@@ -76,17 +76,17 @@
 
             },
     api = docapi['dom-attributes'];
-    $.fn.getName = function() {
+    $.fn.getName = function () {
         return this.attr(this.nameAttr());
     };
-    $.fn.nameAttr = function() {
+    $.fn.nameAttr = function () {
         return this.attr(api.name.attr) ? api.name.attr : 'name';
     };
-    $.fn.toggleOmit = function() {
+    $.fn.toggleOmit = function () {
         this.attr(api.omit.attr, !(this.attr(api.omit.attr) ? (this.attr(api.omit.attr).toLowerCase() === "true") : false));
         return this;
     };
-    me.value = function() {
+    me.value = function () {
         if (this.attr(api.omit.attr) === "true") {
             return undefined;
         }
@@ -99,13 +99,13 @@
         return value;
     };
     me.multipleValues = {
-        "checked": function($el, $elements) {
+        "checked": function ($el, $elements) {
 
             if ($el.attr(api.multiple.attr) === 'false' || $('[' + $el.nameAttr() + '="' + $el.getName() + '"]').length === 1)
                 return $el.is(':checked');
             var values = [],
                     value = undefined;
-            $elements.each(function() {
+            $elements.each(function () {
                 value = me.value.call($(this));
                 if (typeof value !== 'undefined') {
                     values.push(value);
@@ -113,17 +113,17 @@
             });
             return values;
         },
-        "checkbox": function() {
+        "checkbox": function () {
             return me.multipleValues.checked(this, $('[' + this.nameAttr() + '="' + this.getName() + '"]:checked'));
         },
-        "radio": function() {
+        "radio": function () {
             return me.multipleValues.checkbox;
         },
-        "data-multiple": function() {
+        "data-multiple": function () {
             return me.multipleValues.checked(this, $('[' + this.nameAttr() + '="' + this.getName() + '"][data-checked="true"]'));
         }
     };
-    $.fn.getValues = function(type) {
+    $.fn.getValues = function (type) {
         if (typeof me.multipleValues[type] === 'undefined'
                 && this.attr(api.multiple.attr)) {
             type = api.multiple.attr;
@@ -135,7 +135,7 @@
      * @param {type} multiple
      * @return {type} value
      */
-    $.fn.getValue = function(multiple) {
+    $.fn.getValue = function (multiple) {
         /**
          * return undefined if this element will be omitted
          */
@@ -153,10 +153,10 @@
         }
 
     };
-    $.fn.setValue = function(value) {
+    $.fn.setValue = function (value) {
         this.data('value', value);
     };
-    $.fn.klaster_ = function(child) {
+    $.fn.klaster_ = function (child) {
 
         var $globalScope = this;
 
@@ -168,9 +168,9 @@
             'model': {
                 field: {},
                 event: {
-                    'postChange': function() {
+                    'postChange': function () {
                     },
-                    'sync': function() {
+                    'sync': function () {
                     }
                 }
             },
@@ -179,7 +179,7 @@
                 'fileextension': 'html.twig',
                 'templates': false,
                 templates_: {},
-                render: function(tplVars, tplName) {
+                render: function (tplVars, tplName) {
                 },
                 views: {
                 }
@@ -194,11 +194,11 @@
         /**
          *get class property with default value
          */
-        cls.get = function(name, value) {
+        cls.get = function (name, value) {
             return ((typeof cls[name] !== 'undefined') ? cls[name] : value);
         };
 
-        cls.addFilter = function($el, filter) {
+        cls.addFilter = function ($el, filter) {
             $el.attr(api.filter, filter);
 
         };
@@ -206,7 +206,7 @@
         /**
          * log debug messages
          */
-        cls.debug = function() {
+        cls.debug = function () {
             if (cls.config.debug) {
                 if (typeof arguments !== 'undefined') {
                     for (var msg in arguments) {
@@ -218,8 +218,8 @@
 
         cls.viewFilter = {};
 
-        cls.updateViewFilter = function() {
-            $globalScope.find('[data-filter]').each(function() {
+        cls.updateViewFilter = function () {
+            $globalScope.find('[data-filter]').each(function () {
                 cls.viewFilter[$(this).attr('id')] = $(this).attr('data-filter');
             });
         }
@@ -227,7 +227,7 @@
         /*
          * gets executed before an event is triggered
          */
-        cls.pre_trigger = function(e) {
+        cls.pre_trigger = function (e) {
             cls._modelprechange = {};
             cls._modelprechangeReal = {};
             cls._modelpresize = 0;
@@ -263,7 +263,7 @@
          * @param {type} index
          * @returns {@exp;cls@pro;model@call;getValue}
          */
-        cls.model.get = function(notation) {
+        cls.model.get = function (notation) {
             try {
                 if (typeof cls.model.field[notation] === 'undefined' && notation.indexOf('[') !== -1) {
                     return eval("(typeof cls.model.field." + notation + "!== 'undefined' ) ? cls.model.field." + notation + ": undefined;");
@@ -274,7 +274,7 @@
                 return undefined;
             }
         };
-        cls.model.set = function(notation, value) {
+        cls.model.set = function (notation, value) {
             if (typeof cls.model.field[notation] === 'undefined' && notation.indexOf('[') !== -1) {
                 var parent = cls.model._getParentObject(notation);
                 eval("if( (typeof " + parent + "!== 'undefined')) cls.model.field." + notation + "=" + JSON.stringify(value) + ";");
@@ -283,7 +283,7 @@
             }
         };
 
-        cls.model._getParentObject = function(notation, ns) {
+        cls.model._getParentObject = function (notation, ns) {
             if (typeof ns === 'undefined')
                 ns = 'cls.model.field.';
             var parent = false;
@@ -299,7 +299,7 @@
             return parent;
         };
 
-        cls.model._delete = function(notation) {
+        cls.model._delete = function (notation) {
             if (typeof cls.model.field[notation] === 'undefined' && notation.indexOf('[') !== -1) {
                 try {
                     // var parent = cls.model._getParentObject(notation);
@@ -313,11 +313,11 @@
             }
         };
 
-        cls.getView = function($scope) {
+        cls.getView = function ($scope) {
             return $scope.attr(api.view.attr) || me.getFieldView($scope.getName(), true);
         };
 
-        me.getFieldView = function(fieldN, getname) {
+        me.getFieldView = function (fieldN, getname) {
             var viewMethod = false, name = false;
             if (typeof cls.view.views[fieldN] === 'undefined') {
                 if (fieldN.indexOf('[') !== -1) {
@@ -336,7 +336,7 @@
             return typeof cls.view.views[name] !== 'undefined' ? result : false;
         };
 
-        me.preRenderView = function($field, item) {
+        me.preRenderView = function ($field, item) {
             if (typeof cls.model.get($field.getName()) === 'undefined')
                 return false;
             if (!$field.attr('data-filter'))
@@ -371,7 +371,7 @@
             return fieldnamei;//.replace(/\[/g, '\\[').replace(/\]/g, '\\]');
         }
 
-        me.model2view = function() {
+        me.model2view = function () {
             var local = {};
             var $this = this;
 
@@ -380,7 +380,7 @@
              * @param {type} $scope
              * @returns {unresolved}
              */
-            local.isPrimitiveValue = function($scope) {
+            local.isPrimitiveValue = function ($scope) {
                 return $scope.is("input") || $scope.is("select") || $scope.is("textarea");
             };
 
@@ -390,7 +390,7 @@
              * @param {type} decorated
              * @returns {undefined}
              */
-            local.setPrimitiveValue = function($scope, decorated) {
+            local.setPrimitiveValue = function ($scope, decorated) {
                 if ($scope.is("input") || $scope.is("select")) {
                     $scope.val(decorated);
                 } else if ($scope.is("textarea")) {
@@ -404,15 +404,15 @@
              * @param {type} decorated
              * @returns {undefined}
              */
-            local.setHtmlValue = function($scope, decorated) {
+            local.setHtmlValue = function ($scope, decorated) {
                 cls.set.call($scope, decorated);
             };
 
-            local.hasView = function($scope) {
+            local.hasView = function ($scope) {
                 return $scope.attr(api.view.attr) || me.getFieldView($scope.getName(), true);
             };
 
-            local.getDecoratedValuePrimitive = function($scope, scopeModelField) {
+            local.getDecoratedValuePrimitive = function ($scope, scopeModelField) {
                 var fieldN = $scope.getName(),
                         viewRenderFuntionName = cls.getView($scope),
                         DecoratedValuePrimitive = scopeModelField;
@@ -430,14 +430,14 @@
             };
 
 
-            local.getSelector = function(name, escapeit) {
+            local.getSelector = function (name, escapeit) {
                 if (escapeit)
                     name = name.replace(/\[/g, '\[').replace(/\]/g, '\]')
                 return '[data-name="' + name + '"],[name="' + name + '"]';
             };
 
 
-            local.updateHtmlList = function($scope, field, change) {
+            local.updateHtmlList = function ($scope, field, change) {
                 var $child, index, $html;
                 var viewRenderFuntionName = cls.getView($scope);
 
@@ -447,7 +447,6 @@
                     for (index in field) {
 
                         $child = $scope.find('[data-name="' + $scope.getName() + '\[' + index + '\]"]');
-
 
                         if (me.preRenderView($scope, field[index])) {
                             $html = $(cls.view.views[viewRenderFuntionName].call(cls.view, field[index], index, $scope));
@@ -476,7 +475,7 @@
                 }
 
                 function killE() {
-                    $scope.children().each(function() {
+                    $scope.children().each(function () {
                         var Elname = $(this).getName();
                         var name = /\[(.*?)\]/gi.exec(Elname)[1];
 
@@ -538,11 +537,11 @@
 
             };
 
-            local.isHtmlList = function($scope) {
+            local.isHtmlList = function ($scope) {
                 return $scope.attr(api.view.attr) && $scope.attr(api.view.attr).indexOf(api.view.value.definition.iterate) !== -1;
             };
 
-            local.iteratedAllViewEl = function($scope, change, ready) {
+            local.iteratedAllViewEl = function ($scope, change, ready) {
                 // and no view to display the change so try to display change with parent node
                 var field_notation = normalizeChangeResponse(change[0]);
                 var match = field_notation;
@@ -563,9 +562,9 @@
 
 
             //each element set value or render view
-            local.eachViewRepresentation = function(cnt, change, foundRepresentation, ready) {
+            local.eachViewRepresentation = function (cnt, change, foundRepresentation, ready) {
 
-                return function() {
+                return function () {
                     // check how to treat this field
                     var $scope = $(this), fieldN = $scope.getName();
                     var scopeModelField = cls.model.get(fieldN);
@@ -629,7 +628,7 @@
              * @param {type} notation
              * @returns {Boolean}
              */
-            cls.findUntilParentExists = function(notation) {
+            cls.findUntilParentExists = function (notation) {
                 if (notation === '')
                     return false;
                 var fieldNotation = normalizeChangeResponse(notation);
@@ -650,7 +649,7 @@
             //get changed fields
             changes = cls.getChangedModelFields() || [];
 
-            $globalScope.find('[data-filter]').each(function() {
+            $globalScope.find('[data-filter]').each(function () {
                 if (cls.viewFilter[$(this).attr('id')] !== $(this).attr('data-filter')) { // filter for this view has changed
                     changes.push([$(this).getName(), 'view-filter', cls.viewFilter[$(this).getName()], $(this).attr('data-filter')]);
                 }
@@ -672,7 +671,7 @@
                 var $els = cacheEls[el][0], changes = cacheEls[el][1];
 
                 var cnt = $els.length;
-                $els.each(local.eachViewRepresentation(cnt, changes, true, function() {
+                $els.each(local.eachViewRepresentation(cnt, changes, true, function () {
                     if (typeof cls.model.event !== "undefined" && typeof cls.model.event.postChange !== 'undefined' && typeof cls.model.event.postChange[$els.getName()] === 'function') {
                         var changeCb = cls.model.event.postChange[$els.getName()];
                         changeCb.call(cls.model, cls.model.get($els.getName()), changes, 'controller');
@@ -687,7 +686,7 @@
          * gets executed after a change on dom objects
          * "this" is the dom element responsible for the change
          */
-        cls.changed = function() {
+        cls.changed = function () {
             if (typeof cls.model.event !== "undefined" && typeof cls.model.event.sync === "function") {
                 cls.model.event.sync.call(cls.model, this);
             }
@@ -697,6 +696,12 @@
             }
 
             me.model2view.call($(this));
+
+            if (typeof cls.view.postRender !== 'undefined') {
+                cls.view.postRender();
+            }
+
+
             return true;
         };
 
@@ -705,7 +710,7 @@
          * @param {type} value
          * @param {type} old
          */
-        cls.updateValue = function(value, old) {
+        cls.updateValue = function (value, old) {
             if (typeof value !== 'undefined') {
                 //$(this).setValue(value);
                 //cls.model.field[$(this).getName()] = value;
@@ -716,13 +721,13 @@
             }
         };
         //from view to model
-        cls.updateViewToModel = function($where) {
-            ($where.find(cls.filter.events) || $(cls.filter.events)).each(function() {
+        cls.updateViewToModel = function ($where) {
+            ($where.find(cls.filter.events) || $(cls.filter.events)).each(function () {
                 cls.updateValue.call(this, $(this).getValue());
             });
         };
 
-        cls.toggle = function($scope) {
+        cls.toggle = function ($scope) {
             if (typeof child.toggle === "function") {
                 return child.toggle.call(this, $scope);
             } else {
@@ -736,33 +741,33 @@
          *@description one common callback for changed is an ajax call with all values to a REST backend to update data
          * 
          */
-        cls.recognizeChange = function() {
+        cls.recognizeChange = function () {
             var mio = {};
-            mio.changed = function(el) {
+            mio.changed = function (el) {
                 cls.changed.call(el);
                 delete cls.timeoutID;
             };
-            mio.cancel = function() {
+            mio.cancel = function () {
                 if (typeof cls.timeoutID === "number") {
                     window.clearTimeout(cls.timeoutID);
                     delete cls.timeoutID;
                 }
             };
-            mio.setup = function() {
+            mio.setup = function () {
                 var mes = this;
                 mio.cancel();
-                cls.timeoutID = window.setTimeout(function(msg) {
+                cls.timeoutID = window.setTimeout(function (msg) {
                     mio.changed(mes);
                 }, $(mes).attr(api.delay.attr) || cls.delay);
             };
             return mio;
         }();
-        cls.has = function(obj, key) {
+        cls.has = function (obj, key) {
             return hasOwnProperty.call(obj, key);
         };
-        cls.modelchanged = function(field) {
+        cls.modelchanged = function (field) {
 
-            var compare = function(fieldName) {
+            var compare = function (fieldName) {
                 if (typeof cls._modelprechange[fieldName] === 'undefined') {
                     return true;
                 } else {
@@ -798,7 +803,7 @@
          * @param {type} o2
          * @returns {Array|$@call;extend.diffObjects.diff|undefined}
          */
-        cls.diffObjects = function(o1, o2) {
+        cls.diffObjects = function (o1, o2) {
 
             if ((o1 == null)) {
                 if (Object.prototype.toString.call(o2) == "[object Object]") {
@@ -820,10 +825,10 @@
             // choose a map() impl.
             // you may use $.map from jQuery if you wish
             var map = Array.prototype.map ?
-                    function(a) {
+                    function (a) {
                         return Array.prototype.map.apply(a, Array.prototype.slice.call(arguments, 1));
                     } :
-                    function(a, f) {
+                    function (a, f) {
                         var ret = new Array(a.length), value;
                         for (var i = 0, length = a.length; i < length; i++)
                             ret[i] = f(a[i], i);
@@ -839,7 +844,7 @@
             }
 
             function getUndefinedLength(arr) {
-                return arr.filter(function() {
+                return arr.filter(function () {
                     return true;
                 }).length;
             }
@@ -856,7 +861,7 @@
                     var innerDiff = cls.diffObjects(o1[i], o2[i]);
                     if (innerDiff) { // o1[i] != o2[i]
                         // merge diff array into parent's while including parent object name ([i])
-                        push.apply(diff, map(innerDiff, function(o, j) {
+                        push.apply(diff, map(innerDiff, function (o, j) {
                             o[0] = "[" + i + "]" + o[0];
                             return o;
                         }));
@@ -885,7 +890,7 @@
                         var innerDiff = cls.diffObjects(o1[prop], o2[prop]);
                         if (innerDiff) { // o1[prop] != o2[prop]
                             // merge diff array into parent's while including parent object name ([prop])
-                            push.apply(diff, map(innerDiff, function(o, j) {
+                            push.apply(diff, map(innerDiff, function (o, j) {
                                 o[0] = "[" + prop + "]" + o[0];
                                 return o;
                             }));
@@ -919,28 +924,28 @@
          * 
          * @returns {Array}
          */
-        cls.getChangedModelFields = function() {
+        cls.getChangedModelFields = function () {
             return cls.diffObjects(cls._modelprechangeReal, cls.model.field);
         };
 
         /*
          * gets executed after an event is triggered
          */
-        cls.post_trigger = function(e, result) {
+        cls.postProcess = function (e, result) {
             if ((result != cls.model.field[$(this).getName()]) || cls.modelchanged($(this).getName())) {
                 cls.debug('changed', result, cls.model.field[$(this).getName()], $(this).getName());
                 cls.recognizeChange.setup.call(this);
                 cls.updateValue.call(this, result, cls.model.field[$(this).getName()]);
             }
 
-            if (typeof child.post_trigger !== "undefined")
-                return child.post_trigger.call(this, e);
+            if (typeof child.postProcess !== "undefined")
+                return child.postProcess.call(this, e, child);
             return true;
         };
         /**
          *dispatch events for dom element
          */
-        cls.dispatchEvents = function() {
+        cls.dispatchEvents = function () {
             var events = $(this).attr(api.on.attr).split(','), i = 0, event = "", FinalEvents = {}, parts = "";
             for (i in events) {
                 event = $.trim(events[i]);
@@ -956,25 +961,27 @@
         /**
          * find all filters and init there configs
          */
-        cls.dispatchFilter = function(byElement) {
+        cls.dispatchFilter = function (byElement) {
             return {
                 'object': child,
                 '$el': byElement
             };
         };
 
-        cls.postRender = function($field) {
+        cls.postRender = function ($field) {
             var funcName = cls.getView($field);
+
             if (typeof cls.view.event !== "undefined" && typeof cls.view.event.postRender !== 'undefined' && typeof cls.view.event.postRender[funcName] === 'function') {
                 cls.view.event.postRender[funcName].call(cls.model, $field, cls.model.get($field.getName()));
             }
+
         };
 
         /**
          * this updates a partial area
          * @param {type} $html
          */
-        cls.set = function($html) {
+        cls.set = function ($html) {
             if (typeof $html === 'undefined')
                 $html = '';
             $(this).html($html);
@@ -987,15 +994,15 @@
          * @todo rethink is this the best way to bind the methods?
          * bind dom to matching methods
          */
-        cls.bind = function(element) {
+        cls.bind = function (element) {
 
             var events = {}, event = {}, name = "", method = "";
             var filter, $el;
             filter = cls.dispatchFilter(element);
             $el = element;
             /* variable injection via lambda function factory used in iteration */
-            var factory = function(me, event) {
-                return function(e, args) {
+            var factory = function (me, event) {
+                return function (e, args) {
                     name = $(me).getName();
                     method = events[name][event];
                     var result = true;
@@ -1016,7 +1023,7 @@
                         } else {
                             result = $(me).getValue();
                         }
-                        cls.post_trigger.call(me, e, result);
+                        cls.postProcess.call(me, e, result);
                     }
 
                 };
@@ -1024,7 +1031,7 @@
             //filter.fields = filter.$el.find('[name],[data-name]'),
             filter.events = filter.$el.find('[' + api.on.attr + ']');
             var InitValue = '';
-            $(filter.events).each(function() {
+            $(filter.events).each(function () {
                 name = $(this).getName();
                 events[name] = cls.dispatchEvents.call(this);
                 for (event in events[name]) {
@@ -1043,7 +1050,7 @@
             return filter;
         };
 
-        cls.init = function() {
+        cls.init = function () {
 
             cls.filter = cls.bind(this);
 
@@ -1058,8 +1065,8 @@
             // preloading alle templates, then init klaster interface
             var length = Object.keys(cls.view.views).length, cnt = 1;
             for (var v in cls.view.views) {
-                $.get((cls.view.viewpath) + v + '.' + cls.view.fileextension + '?v=' + ((cls.config.debug) ? Math.random() : '1')).always(function(v) {
-                    return function(content) {
+                $.get((cls.view.viewpath) + v + '.' + cls.view.fileextension + '?v=' + ((cls.config.debug) ? Math.random() : '1')).always(function (v) {
+                    return function (content) {
                         cls.view.templates_[cls.view.views[v]] = content;
                         cls.view.templates_[v] = content;
                         if (length <= cnt) {

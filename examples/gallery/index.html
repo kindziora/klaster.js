@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" data-framework="javascript">
+    <head>
+        <meta charset="utf-8">
+        <title>klaster.js • list twig</title>
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/lightbox.css">
+        <script src="bower_components/jquery/dist/jquery.min.js"></script>
+
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+        <script src="bower_components/twig.js/twig.js"></script>
+
+    </head>
+
+    <style type="text/css">
+        html { height: 100% }
+        body { height: 100%; margin: 0; padding: 0 }
+        #map_canvas { height: 100% }
+        .dot{
+            cursor:pointer;
+            background-color:#F0EDE5;
+            padding:6px;
+            border-radius:6px;
+            box-shadow: 1px 0px 2px lightgray;
+            float:left;
+            margin-right: 7px;
+        }
+        .dot.high{
+            background-color:#A2C5FE;
+            box-shadow: 1px 0px 3px #A5C7FD;
+            padding:10px;
+            border-radius:10px;
+            margin-top:-4px;
+        }
+
+        .dot.done{
+            background-color:#B3D1FF;
+            box-shadow: 1px 0px 3px #B3D1FF;
+
+        }
+        .dot.blue{
+            background-color:#599AEA;
+            box-shadow: 1px 0px 3px #599AEA; 
+        }
+
+        .dot.later{
+            background-color:#D3CABD; 
+            box-shadow: 1px 0px 3px #D3CABD;
+        }
+        .dot.match{
+            background-color: #CADFAA; 
+            box-shadow: 1px 0px 3px #CADFAA;
+        }
+        .dot.new{
+            background-color:#D3CABD; 
+            box-shadow: 1px 0px 3px #D3CABD;
+        }
+    </style>
+
+    <body>
+        <section id="todoapp" data-defaultvalues="model">
+
+            <div class="container">
+
+                <div class="row-fluid">
+
+
+                </div>
+
+                <div class="row-fluid">
+                    <div class="span4">
+                        <h3>passt besser hier?</h3>
+                           <ul data-name="job_similar_tags" data-view="foreach->job_similar_tags" >
+                               
+                            </ul> 
+                    </div>  
+                    <div  class="span8">
+
+                        <div class="row-fluid">
+                            <div class="span12">
+                           <h3>Beschreibung</h3>
+                                <div data-name="job_description">
+
+
+                                </div>
+                                <hr/>
+                            </div> 
+                        </div>   
+
+                        <div class="row-fluid">
+
+                            <div data-name="items" data-view="foreach->items" >
+
+                            </div> 
+                            <hr/>
+
+                        </div>
+
+                    </div>  
+
+                </div>  
+        </section>
+
+        <script src="js/helper/search.js"></script>
+        <script src="../../klaster.js"></script>
+        <script src="js/twigInterface.js"></script>
+
+    </body>
+</html>
