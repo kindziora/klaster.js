@@ -70,16 +70,24 @@
 
                 <div class="row-fluid">
                     <div class="span4">
+                        <h3>Positiv Beispiele</h3>
+                        <ul data-name="job_image_positive_samples" data-view="foreach->job_image_positive_samples" >
+
+                        </ul> 
+                        <h3>Negativ Beispiele</h3>
+                        <ul data-name="job_image_negative_samples" data-view="foreach->job_image_negative_samples" >
+
+                        </ul> 
                         <h3>passt besser hier?</h3>
-                           <ul data-name="job_similar_tags" data-view="foreach->job_similar_tags" >
-                               
-                            </ul> 
+                        <ul data-name="job_similar_tags" data-view="foreach->job_similar_tags" >
+
+                        </ul> 
                     </div>  
                     <div  class="span8">
 
                         <div class="row-fluid">
                             <div class="span12">
-                           <h3>Beschreibung</h3>
+                                <h3 data-name="tag_name" data-view="job_description"></h3>
                                 <div data-name="job_description">
 
 
@@ -92,8 +100,7 @@
 
                             <div data-name="items" data-view="foreach->items" >
 
-                            </div> 
-                            <hr/>
+                            </div>    
 
                         </div>
 
