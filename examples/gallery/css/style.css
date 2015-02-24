@@ -25,6 +25,7 @@
 }
 
 .thumbnail{
+    position:relative;
     height: 190px;
     overflow: hidden;
 }
@@ -140,4 +141,39 @@ ul[data-name="job_similar_tags"] li{
     height: 12px;
     font-size: 11px;
     line-height: 10px;
+}
+
+.failed, .success{
+    display:none;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    position:absolute;
+    background-color:rgba(255, 0, 0, 0.4);
+    font-size:244px;
+    text-align:center;
+    color:black;
+    line-height:193px;
+    cursor:pointer;
+}
+
+.success{
+    background-color:rgba(0, 255, 0, 0.4);
+}
+
+.marked .failed{
+    display:block;
+}
+
+.marked:hover{
+    outline:9px solid green; 
+}
+
+.marked:hover .failed{
+    display:none;   
+}
+
+.marked:hover .success{
+    display:block;
 }

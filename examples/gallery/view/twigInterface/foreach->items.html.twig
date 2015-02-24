@@ -13,7 +13,7 @@
                 <a href="https://www.google.com/search?q={{item.item_name |encodeURIComponent}}" target="_blank"><div class="bright span6">www</div></a>
             </div>
         </div>
-    </div> 
+    </div>
 
     <p class="name">{{item.item_name}}</p>
     <div class="lightbox" data-name="bg" data-on="click" id="img{{index}}">
@@ -26,7 +26,7 @@
             </div> 
             <div class="clear"></div>
         </div>
-    </div> 
+    </div>
 
     <div class="lightbox"  data-name="bg" data-on="click" id="text{{index}}">
         <div class="box" >
@@ -36,6 +36,7 @@
             </div> 
             <div class="clear"></div>
         </div>
-    </div>  
-
+    </div>
+    <div class="failed">X</div>
+    <div class="success" data-name="success" data-on="click->mark" data-index="{{index}}">&#10003;</div>
 </div>
