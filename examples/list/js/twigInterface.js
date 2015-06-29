@@ -115,9 +115,7 @@ var twigInterface = function (model) {
                 }
             }
         },
-        init: function () {
-
-
+        init: function () { 
             Twig.extendFilter('encodeURIComponent', function (str) {
                 return encodeURIComponent(str);
             });
