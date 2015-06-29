@@ -4,17 +4,7 @@
     position:relative;
 }
 
-.container .overlay{
-    position:absolute;
-    top:0;
-    left:0;
-    height: 100%;
-
-    opacity:0;
-    margin-left:0;
-}
-
-.container .overlay{
+#todoapp .overlay{
     position:absolute;
     top: 0;
     left: 0;
@@ -35,7 +25,7 @@
     color:white;
 }
 
-.overlay:hover{
+#todoapp .overlay:hover{
     opacity:1;
 }
 
@@ -88,9 +78,9 @@
 }
 
 .width5{
-    width:160px;
-    float:left;
-    margin: 10px;
+    width: 149px;
+    float: left;
+    margin: 7px;
 }
 
 .height5{
@@ -143,6 +133,10 @@ ul[data-name="job_similar_tags"] li{
     line-height: 10px;
 }
 
+ul li img{
+    max-width: 109px;
+}
+
 .failed, .success{
     display:none;
     top:0;
@@ -176,4 +170,9 @@ ul[data-name="job_similar_tags"] li{
 
 .marked:hover .success{
     display:block;
+}
+
+.text{
+    overflow: auto;
+    max-height: 768px;
 }

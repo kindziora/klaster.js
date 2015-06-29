@@ -60,57 +60,432 @@
 
     <body>
         <section id="todoapp" data-defaultvalues="model">
+ 
 
-            <div class="container">
-
-                <div class="row-fluid">
-
-
+            <div class="row-fluid">
+                <div class="span4">
+                    <h4>Positiv</h4>
+                    <ul data-name="job_image_positive_samples" data-view="foreach->job_image_positive_samples" >
+                    </ul>
+                    <h4>Negativ</h4>
+                    <ul data-name="job_image_negative_samples" data-view="foreach->job_image_negative_samples" >
+                    </ul>
+                    <h4>passt besser hier?</h4>
+                    <ul data-name="job_similar_tags" data-view="foreach->job_similar_tags" ></ul>
                 </div>
+                <div  class="span8">
 
-                <div class="row-fluid">
-                    <div class="span4">
-                        <h3>Positiv Beispiele</h3>
-                        <ul data-name="job_image_positive_samples" data-view="foreach->job_image_positive_samples" >
+                    <div class="row-fluid">
+                        <div class="span10">
+                            <h3 data-name="tag_name" data-view="job_description"></h3>
+                            <i data-name="job_tag_breadcrumb"> 
+                            </i>
+                            <div data-name="job_description"> 
+                            </div>
+                            <hr/>
+                        </div> 
+                        <div class="span2">
+                            
+                            <div data-name="meta" data-view="paymentCent"></div>
+                        </div> 
+                    </div>   
 
-                        </ul> 
-                        <h3>Negativ Beispiele</h3>
-                        <ul data-name="job_image_negative_samples" data-view="foreach->job_image_negative_samples" >
+                    <div class="row-fluid">
 
-                        </ul> 
-                        <h3>passt besser hier?</h3>
-                        <ul data-name="job_similar_tags" data-view="foreach->job_similar_tags" >
+                        <div data-name="items" data-view="foreach->items" >
 
-                        </ul> 
-                    </div>  
-                    <div  class="span8">
+                        </div>    
 
-                        <div class="row-fluid">
-                            <div class="span12">
-                                <h3 data-name="tag_name" data-view="job_description"></h3>
-                                <div data-name="job_description">
-
-
-                                </div>
-                                <hr/>
-                            </div> 
-                        </div>   
-
-                        <div class="row-fluid">
-
-                            <div data-name="items" data-view="foreach->items" >
-
-                            </div>    
-
-                        </div>
-
-                    </div>  
+                    </div>
 
                 </div>  
-        </section>
 
+
+        </section>
+        <textarea class="jsonResult">[{"id":"411065416-2954","result":true},{"id":"411065417-2954","result":false},{"id":"411065420-2954","result":false},{"id":"411065421-2954","result":false},{"id":"411065424-2954","result":true},{"id":"411065425-2954","result":true},{"id":"411065433-2954"},{"id":"411065434-2954"},{"id":"411065443-2954","result":true},{"id":"411065449-2954","result":true},{"id":"411065451-2954","result":true},{"id":"411065455-2954","result":true},{"id":"411065459-2954","result":true},{"id":"411065460-2954","result":true},{"id":"411065466-2954","result":true},{"id":"411065467-2954","result":true},{"id":"411065472-2954","result":true},{"id":"411065476-2954","result":true},{"id":"411065480-2954","result":true},{"id":"411065482-2954","result":true},{"id":"411065483-2954","result":true},{"id":"411065487-2954","result":true},{"id":"411065493-2954","result":true},{"id":"411065507-2954","result":true},{"id":"411065516-2954","result":true}]</textarea>
         <script src="js/helper/search.js"></script>
         <script src="../../klaster.js"></script>
+
+
+        <script>
+            model = {
+    "_id" :  ("54e44e8193194ffc7a8b462e"),
+    "items" : [ 
+        {
+            "job_id" : "411065416-2954",
+            "item_id" : (411065416),
+            "item_name" : "2 von Cnouch, braun, Ohne Beleuchtung",
+            "item_description" : "Formschöner 2,5-Sitzer, wahlweise mit RGB-LED-Unterbaubeleuchtung (mit Netzkabel) und attraktiver Steppung im Sitzbereich, welches dieses Polstermöbel zu einem absoluten Hingucker machen. Das FSC®-zertifizierte Holzuntergestell, die Wellenunterfederung und die atmungsaktive Polyätherschaum-Polsterung sorgen für einen angenehmen Sitzkomfort. Wahlweise in 3 bewährten und pflegeleichten Bezugsqualitäten erhältlich. Frei im Raum stellbar. . Details: Frei im Raum stellbar. In der Lieferung sind keine Zierkissen enthalten. In verschiedenen Bezugsqualitäten erhältlich. Individuell zu kombinieren. In hochwertiger Verarbeitung. Elegante Füße in Chromoptik. Füße aus Kunststoff. Hoher Sitzkomfort. Trendiges Design. Bestellen Sie den passenden Hocker am besten gleich mit. Sitzkomfort: Komfortable Wellenunterfederung. Atmungsaktive Polyätherschaum-Polsterung. Stabiles Holzuntergestell. Generelle Maße: 186 cm Breite. 80 cm Höhe. Sitzbreite zwischen den Armlehnen: 146 cm. 85 cm Gesamttiefe. 46 cm Sitzhöhe. 55 cm Sitztiefe. 60 cm Armlehnen-Höhe. 20 cm Armlehnen-Breite. Höhe der Füße: 7 cm. Alle Maße sind ca. Maße. Bezüge/Qualitäten: Microfaser ALCAZAR (100% Polyester). Feine, edle Struktur ( 100 % Polyester ). Kunstleder SOFTLUX®. FSC®-zertifizierter Holzwerkstoff: Das Holz dieser Produkte stammt aus vorbildlich bewirtschafteten Wäldern, die von einer unabhängigen Organisation in Übereinstimmung mit den strengen ökologischen, sozialen und wirtschaftlichen Standards des Forest Stewardship Council® zertifiziert wurden.",
+            "item_external_category" : "[topCategory:Sofas][category:2- & 3-Sitzer][brand:cnouch][color:braun]",
+            "item_brand_name" : "cnouch",
+            "image_url" : "http://de1.vmstatic.com/2-von-cnouch-braun-ohne-beleuchtung-411065416-0-150-07.jpg",
+            "language" : "de",
+            "tag_id" : (2954),
+            "tag_name" : "3 Sitzer Sofas"
+        }, 
+        {
+            "job_id" : "411065417-2954",
+            "item_id" : (411065417),
+            "item_name" : "3-Sitzer von Cnouch, natur",
+            "item_description" : "3-Sitzer in hochwertiger Verarbeitung, mit Rücken- und Armlehnenverstellung. Aus FSC®-zertifiziertem Holzwerkstoff. Ein stabiles Holzuntergestell, komfortable Wellenunterfederung und atmungsaktive Polyätherschaum-Polsterung sorgen für bequemen Sitz. Frei im Raum stellbar. In 4 schönen und strapazierfähigen Bezugsqualitäten: SOFTLUX®-Kunstleder; streichelweiche Luxus-Microfaser aus 100% Polyester; Luxus-Kunstleder in Dicklederoptik; NaturLEDER, handschuhweiches Rindsleder. Ca.-Maße: Breite 223 cm,  Tiefe 104 cm, Höhe 74-93 cm, Sitztiefe/-höhe 61/47 cm. Zusatzinformation: Das braune Luxus-Kunstleder wird mit orangen Kontrastnähten geliefert. Bitte beachten Sie, dass Lederbezüge mehr Nähte aufweisen als Stoffbezüge.",
+            "item_external_category" : "[category:2- & 3-Sitzer][topCategory:Sofas][color:natur][brand:cnouch]",
+            "item_brand_name" : "cnouch",
+            "image_url" : "http://de1.vmstatic.com/3-sitzer-von-cnouch-natur-411065417-0-150-07.jpg",
+            "language" : "de",
+            "tag_id" : (2954),
+            "tag_name" : "3 Sitzer Sofas"
+        }, 
+        {
+            "job_id" : "411065420-2954",
+            "item_id" : (411065420),
+            "item_name" : "2-Sitzer von SIT&MORE, grau",
+            "item_description" : "Polsterprogramm mit exzellenter Detailverarbeitung, aufwendiger Rückensteppung und elegant geschwungenen Armlehnen. Polsterecke wahlweise mit Bettfunktion. Ein stabiles Holzuntergestell, Wellenunterfederung und eine komfortable Federkernpolsterung sorgen für einen erstklassigen Sitzkomfort. Aus FSC®-zertifiziertem Holzwerkstoff. Alle Teile sind frei im Raum stellbar. In vier Bezugsqualitäten erhältlich: PRIMABELLE®-Microfaser, Luxus-Kunstleder, NaturLEDER (in Sizt und Rücken, Korpus in passendem Kunstleder) und einer neuen Luxus-Mircofaser mit Prägung. . Details: Inklusive komfortablem Federkern. Frei im Raum stellbar. In verschiedenen Bezugsqualitäten erhältlich. In hochwertiger Verarbeitung. Hoher Sitzkomfort. Aus FSC®-zertifiziertem Holzwerkstoff. Sitzkomfort: Komfortable Wellenunterfederung. Komfortabler Federkern. Stabiles Holzuntergestell. Generelle Maße: 143 cm Breite. 94 cm Gesamthöhe. 95 cm Gesamttiefe. 46 cm Sitzhöhe. 54 cm Sitztiefe. Höhe der Füße: 2 cm. Alle Maße sind ca. Maße. Bezüge/Qualitäten: Primabelle®-Microfaser. Luxus-Microfaser. Luxus-Kunstleder. NaturLeder. FSC®-zertifiziertem Holzwerkstoff: Das Holz dieser Produkte stammt aus vorbildlich bewirtschafteten Wäldern, die von einer unabhängigen Organisation in Übereinstimmung mit den strengen ökologischen, sozialen und wirtschaftlichen Standards des Forest Stewardship Council® zertifiziert wurden.",
+            "item_external_category" : "[brand:sit&more][category:2- & 3-Sitzer][color:grau][topCategory:Sofas]",
+            "item_brand_name" : "sit&more",
+            "image_url" : "http://de3.vmstatic.com/2-sitzer-von-sit-more-grau-411065420-0-150-07.jpg",
+            "language" : "de",
+            "tag_id" : (2954),
+            "tag_name" : "3 Sitzer Sofas"
+        }, 
+        {
+            "job_id" : "411065421-2954",
+            "item_id" : (411065421),
+            "item_name" : "3-Sitzer von Cnouch, braun",
+            "item_description" : "Attraktiv, kubisch, komfortabel: Polstermöbel-Programm mit extrabreiten Armteilen! In 4 Bezugsqualitäten: pflegeleichte PRIMABELLE®-Microfaser (100% Polyester), unser bewährtes SOFTLUX®-Kunstleder, trendiger Strukturstoff (54% Polyacryl, 46% Polyester), NaturLEDER (handschuhweiches Rindsleder) im Sitz und Rücken - Korpus sowie Rückseite mit farblich passendem SOFTLUX®-Kunstleder bezogen. Aus FSC®-zertifiziertem Holzwerkstoff. Stabiles Holzuntergestell, Wellenunterfederung für hohen Sitzkomfort, atmungsaktive Polyätherschaum-Polsterung. Frei im Raum stellbar. Füße wengefarben. Ca.-Maße: Breite 212 cm, Tiefe 90 cm, Höhe 77 cm, Sitztiefe/-höhe 59/43 cm. Bitte beachten Sie, dass Lederbezüge mehr Nähte aufweisen als Stoffbezüge.",
+            "item_external_category" : "[category:2- & 3-Sitzer][topCategory:Sofas][color:braun][brand:cnouch]",
+            "item_brand_name" : "cnouch",
+            "image_url" : "http://de1.vmstatic.com/3-sitzer-von-cnouch-braun-411065421-0-150-07.jpg",
+            "language" : "de",
+            "tag_id" : (2954),
+            "tag_name" : "3 Sitzer Sofas"
+        }, 
+        {
+            "job_id" : "411065424-2954",
+            "item_id" : (411065424),
+            "item_name" : "2 von Cnouch, wei&szlig;, Mit RGB-LED-Beleuchtung, EEK A",
+            "item_description" : "Formschöner 2,5-Sitzer, wahlweise mit RGB-LED-Unterbaubeleuchtung (mit Netzkabel) und attraktiver Steppung im Sitzbereich, welches dieses Polstermöbel zu einem absoluten Hingucker machen. Das FSC®-zertifizierte Holzuntergestell, die Wellenunterfederung und die atmungsaktive Polyätherschaum-Polsterung sorgen für einen angenehmen Sitzkomfort. Wahlweise in 3 bewährten und pflegeleichten Bezugsqualitäten erhältlich. Frei im Raum stellbar. . Details: Frei im Raum stellbar. In der Lieferung sind keine Zierkissen enthalten. In verschiedenen Bezugsqualitäten erhältlich. Individuell zu kombinieren. In hochwertiger Verarbeitung. Elegante Füße in Chromoptik. Füße aus Kunststoff. Hoher Sitzkomfort. Trendiges Design. Bestellen Sie den passenden Hocker am besten gleich mit. Sitzkomfort: Komfortable Wellenunterfederung. Atmungsaktive Polyätherschaum-Polsterung. Stabiles Holzuntergestell. Generelle Maße: 186 cm Breite. 80 cm Höhe. Sitzbreite zwischen den Armlehnen: 146 cm. 85 cm Gesamttiefe. 46 cm Sitzhöhe. 55 cm Sitztiefe. 60 cm Armlehnen-Höhe. 20 cm Armlehnen-Breite. Höhe der Füße: 7 cm. Alle Maße sind ca. Maße. Bezüge/Qualitäten: Microfaser ALCAZAR (100% Polyester). Feine, edle Struktur ( 100 % Polyester ). Kunstleder SOFTLUX®. FSC®-zertifizierter Holzwerkstoff: Das Holz dieser Produkte stammt aus vorbildlich bewirtschafteten Wäldern, die von einer unabhängigen Organisation in Übereinstimmung mit den strengen ökologischen, sozialen und wirtschaftlichen Standards des Forest Stewardship Council® zertifiziert wurden.",
+            "item_external_category" : "[topCategory:Sofas][category:2- & 3-Sitzer][brand:cnouch][color:weiß]",
+            "item_brand_name" : "cnouch",
+            "image_url" : "http://de3.vmstatic.com/2-von-cnouch-weiss-mit-rgb-led-beleuchtung-eek-a-411065424-0-150-07.jpg",
+            "language" : "de",
+            "tag_id" : (2954),
+            "tag_name" : "3 Sitzer Sofas"
+        }, 
+        {
+            "job_id" : "411065425-2954",
+            "item_id" : (411065425),
+            "item_name" : "3-Sitzer von Cnouch, schwarz",
+            "item_description" : "Einladend schickes Polsterprogramm mit exzellenter Detailverarbeitung. Stabiles Holzuntergestell, komfortable Wellenunterfederung, atmungsaktive Polyätherschaum- Polsterung. In 3 ausgezeichneten Bezugsqualitäten: griffig weiches Kunstleder (97% PVC, 3% Polyurethan). velourslederartige Luxus-Microfaser (100% Polyester), feines Luxus-Kunstleder (100% Polyurethan). Ca.-Maße: Tiefe 101 cm, Höhe 80 cm, Sitztiefe/-höhe 58/41 cm. 3-Sitzer-Breite: 230 cm.",
+            "item_external_category" : "[category:2- & 3-Sitzer][topCategory:Sofas][color:schwarz][brand:cnouch]",
+            "item_brand_name" : "cnouch",
+            "image_url" : "http://de1.vmstatic.com/3-sitzer-von-cnouch-schwarz-411065425-0-150-07.jpg",
+            "language" : "de",
+            "tag_id" : (2954),
+            "tag_name" : "3 Sitzer Sofas"
+        }, 
+        {
+            "job_id" : "411065433-2954",
+            "item_id" : (411065433),
+            "item_name" : "Sofa von HOME AFFAIRE, braun, 2-Sitzer",
+            "item_description" : "Gemütliche Polstermöbel im modernen Landhausstil laden zum Sitzen ein. In hochwertiger Verarbeitung, aus FSC zertifiziertem Holzwerkstoff. Stabiles Holzuntergestell, mit Federkern sowie atmungsaktive Polyätherschaum-Polsterung. In vier Bezugsqualitäten erhältlich. Microfaser: 100% Polyester, Melrose/Wildlederoptik: 100% Polyester, Strukturstoff grob oder fein: 50% Polyester, 50% Polypropylene.  . Details: Inklusive komfortablem Federkern. Frei im Raum stellbar. In verschiedenen Bezugsqualitäten erhältlich. Individuell zu kombinieren. In hochwertiger Verarbeitung. In verschiedenen Farbkombinationen erhältlich. Füße aus Holz. Hoher Sitzkomfort. Sitzkomfort: Komfortabler Federkern. Atmungsaktive Polyätherschaum-Polsterung. Stabiles Holzuntergestell. Generelle Maße: 212 cm Breite (3-Sitzer), 156 cm Breite (2-Sitzer). 81 cm Gesamthöhe. 91 cm Gesamttiefe. 40 cm Sitzhöhe. 57 cm Sitztiefe. 53 cm Armlehnen-Höhe. 26 cm Armlehnen-Breite. Höhe der Füße: 7 cm. Alle Maße sind ca. Maße. Bezüge/Qualitäten: Primabelle-Microfaser. Struktur. Melrose- wildlederoptik. Microfaser (100% Polyester), Struktur (50% Polyester/50& Polypropylene), Melrose (100% Polyester). Wissenswertes: Frei im Raum stellbar. Pflegehinweise: Pflegehinweise für Microfaser-Stoffe Zur allgemeinen Pflege reicht es aus, wenn Sie die Oberfläche mit einer weichen Kleiderbürste ab und zu leicht abbürsten oder mit der Polsterdüse absaugen. Flecken sollten Sie grundsätzlich sofort entfernen. Waschen Sie Flecken mit kreisenden Bewegungen und wenig Druck mit einem weißen Baumwolltuch und lauwarmem Wasser großflächig ab. ACHTUNG! Durch zu viel Druck beim Auswaschen können die Farben verblassen! Prüfen Sie vorsorglich an einer versteckt liegenden Stelle, wie sich die Farbgebung des Stoffes verhält. Lassen Sie die feuchten Stellen normal abtrocknen. Verwenden Sie keinen Haartrockner. Ganz hartnäckige Flecken können Sie auch mit einem Polster-/Teppichreiniger auf wasserlöslicher - oder Schaumbasis behandeln. Testen Sie immer zuerst an einer verdeckten Stelle, ob das Reinigungsmittel den Stoff angreift.  Pflegehinweise für Strukturstoffe Dieser Bezug zeichnet sich durch sein dezentes Farbenspiel sowie des angenehmen Griffes aus, der durch einen aufwendigen Herstellungsprozess erzielt wird. Zur allgemeinen Pflege reicht es aus, wenn Sie die Oberfläche mit einer weichen Kleiderbürste ab und zu leicht abbürsten oder mit der Polsterdüse absaugen. Um Ziehfäden zu vermeiden, sollten Sie bitte Haustiere, spitze Gegenstände (wie z.B. Schmuck etc.) von Ihrem neuen Möbel fernhalten Wir wünschen Ihnen viel Freude mit Ihrem neuen Möbel. . FSC®-zertifiziertem Holzwerkstoff: Das Holz dieser Produkte stammt aus vorbildlich bewirtschafteten Wäldern,  die von einer unabhängigen Organisation in Übereinstimmung mit den strengen ökologischen, sozialen und wirtschaftlichen Standards des Forest Stewardship Council® zertifiziert wurden.",
+            "item_external_category" : "[topCategory:Sofas][category:2- & 3-Sitzer][brand:home affaire][color:braun]",
+            "item_brand_name" : "home affaire",
+            "image_url" : "http://de3.vmstatic.com/sofa-von-home-affaire-braun-2-sitzer-411065433-0-150-07.jpg",
+            "language" : "de",
+            "tag_id" : (2954),
+            "tag_name" : "3 Sitzer Sofas"
+        }, 
+        {
+            "job_id" : "411065434-2954",
+            "item_id" : (411065434),
+            "item_name" : "2-Sitzer von Cnouch, natur",
+            "item_description" : "Modernes Polsterprogramm. Mit stabilem Holzuntergestell, Wellenunterfederung und atmungsaktiver Polyätherschaum-Polsterung. In 3 Bezugsqualitäten: pflegeleichte PRIMABELLE®-Microfaser aus 100% Polyester. SOFTLUX®-Kunstleder aus 73% PVC, 25% Polyester und 2% Polyurethan. Strukturstoff aus 56% Polyacryl und 44% Polyester ? angenehm weich, gemütlich und attraktiv in der Optik. Frei im Raum stellbar. Ca.-Maße: Breite 152 cm, Tiefe 82 cm, Höhe 86 cm, Sitztiefe/-höhe 52/43 cm.",
+            "item_external_category" : "[topCategory:Sofas][category:2- & 3-Sitzer][brand:cnouch][color:natur]",
+            "item_brand_name" : "cnouch",
+            "image_url" : "http://de2.vmstatic.com/2-sitzer-von-cnouch-natur-411065434-0-150-07.jpg",
+            "language" : "de",
+            "tag_id" : (2954),
+            "tag_name" : "3 Sitzer Sofas"
+        }, 
+        {
+            "job_id" : "411065443-2954",
+            "item_id" : (411065443),
+            "item_name" : "Sofa von Cnouch",
+            "item_description" : "Sofa, 3-sitzig. Modernes Polsterprogramm, aufwendig verarbeitet und mit hervorragendem Sitzkomfort. Ein Highlight ist der 5-fach verstellbare Rasterbeschlag im Armteil für mehr Bequemlichkeit. Stabiles Holzgestell. Im Sitz Wellen-Unterfederung, Polyätherschaum-Polsterung, Rücken elastische Gurtfederung. Holzfüße kolonialfarben. Frei im Raum aufstellbar. In 2 Bezugsqualitäten lieferbar: Softlux-Kunstleder oder Strukturgewebe aus 54% Acryl, 46% Polyester. Ca.-Maße: B/T/H: 234/90/84 cm , Sitzhöhe 45 cm, Sitztiefe 60 cm. Erläuterung der Bezugsqualitäten: Softlux-Kunstleder. Dieser Bezug ist hautsympathisch, fleckunempfindlich und äußerst strapazierfähig. Die atmungsaktive Oberfläche ist angenehm weich und geschmeidig. Strukturgewebe - unempfindlich. Dieses hochwertige Flachgewebe ist äußerst strapazierfähig, hautsympathisch und formbeständig. Keine elektrostatische Aufladung.  FSC®-zertifizierter Holzwerkstoff: Das Holz dieser Produkte stammt aus vorbildlich bewirtschafteten Wäldern, die von einer unabhängigen Organisation in Übereinstimmung mit den strengen ökologischen, sozialen und wirtschaftlichen Standards des Forest Stewardship Council® zertifiziert wurden.",
+            "item_external_category" : "[topCategory:Sofas][category:2- & 3-Sitzer][brand:cnouch]",
+            "item_brand_name" : "cnouch",
+            "image_url" : "http://de2.vmstatic.com/sofa-von-cnouch-411065443-0-150-07.jpg",
+            "language" : "de",
+            "tag_id" : (2954),
+            "tag_name" : "3 Sitzer Sofas"
+        }, 
+        {
+            "job_id" : "411065449-2954",
+            "item_id" : (411065449),
+            "item_name" : "Sofa von Cnouch, rot",
+            "item_description" : "Sofa, 3-Sitzer. Extravagant mit markanten Armteilen in moderner Optik. Wählen Sie aus verschiedenen Bezugsqualitäten Ihren Favoriten: 1. PRIMABELLE®-Microfaser aus 100% Polyester, 2. SOFTLUX®- Kunstleder 3. Strukturstoff aus 54% Acryl, 46% Polyester. Stabiles Holzgestell. Federkern-Polsterung auf Wellen-Unterfederung. Chromfarbene Metallfüße. Frei im Raum aufstellbar. Ca.-Maße: H. 82, T. 81, Sitzh. 45, Sitzt. 54, Breite 215 cm. FSC®-zertifizierter Holzwerkstoff: Das Holz dieser Produkte stammt aus vorbildlich bewirtschafteten Wäldern, die von einer unabhängigen Organisation in Übereinstimmung mit den strengen ökologischen, sozialen und wirtschaftlichen Standards des Forest Stewardship Council® zertifiziert wurden.",
+            "item_external_category" : "[category:2- & 3-Sitzer][topCategory:Sofas][color:rot][brand:cnouch]",
+            "item_brand_name" : "cnouch",
+            "image_url" : "http://de2.vmstatic.com/sofa-von-cnouch-rot-411065449-0-150-07.jpg",
+            "language" : "de",
+            "tag_id" : (2954),
+            "tag_name" : "3 Sitzer Sofas"
+        }, 
+        {
+            "job_id" : "411065451-2954",
+            "item_id" : (411065451),
+            "item_name" : "3-Sitzer von SIT&MORE, braun",
+            "item_description" : "Polsterprogramm mit exzellenter Detailverarbeitung, aufwendiger Rückensteppung und elegant geschwungenen Armlehnen. Polsterecke wahlweise mit Bettfunktion. Ein stabiles Holzuntergestell, Wellenunterfederung und eine komfortable Federkernpolsterung sorgen für einen erstklassigen Sitzkomfort. Aus FSC®-zertifiziertem Holzwerkstoff. Alle Teile sind frei im Raum stellbar. In vier Bezugsqualitäten erhältlich: PRIMABELLE®-Microfaser, Luxus-Kunstleder, NaturLEDER (in Sizt und Rücken, Korpus in passendem Kunstleder) und einer neuen Luxus-Mircofaser mit Prägung. . Details: Inklusive komfortablem Federkern. Frei im Raum stellbar. In verschiedenen Bezugsqualitäten erhältlich. In hochwertiger Verarbeitung. Hoher Sitzkomfort. Aus FSC®-zertifiziertem Holzwerkstoff. Sitzkomfort: Komfortable Wellenunterfederung. Komfortabler Federkern. Stabiles Holzuntergestell. Generelle Maße: 193 cm Breite. 94 cm Gesamthöhe. 95 cm Gesamttiefe. 46 cm Sitzhöhe. 54 cm Sitztiefe. Höhe der Füße: 2 cm. Alle Maße sind ca. Maße. Bezüge/Qualitäten: Primabelle®-Microfaser. Luxus-Microfaser. Luxus-Kunstleder. NaturLeder. FSC®-zertifiziertem Holzwerkstoff: Das Holz dieser Produkte stammt aus vorbildlich bewirtschafteten Wäldern, die von einer unabhängigen Organisation in Übereinstimmung mit den strengen ökologischen, sozialen und wirtschaftlichen Standards des Forest Stewardship Council® zertifiziert wurden.",
+            "item_external_category" : "[category:2- & 3-Sitzer][brand:sit&more][color:braun][topCategory:Sofas]",
+            "item_brand_name" : "sit&more",
+            "image_url" : "http://de1.vmstatic.com/3-sitzer-von-sit-more-braun-411065451-0-150-07.jpg",
+            "language" : "de",
+            "tag_id" : (2954),
+            "tag_name" : "3 Sitzer Sofas"
+        }, 
+        {
+            "job_id" : "411065455-2954",
+            "item_id" : (411065455),
+            "item_name" : "3-Sitzer von Cnouch, wei&szlig;",
+            "item_description" : "Aus FSC®-zertifiziertem Holzwerkstoff. Das stabile Holzuntergestell, die Wellenunterfederung und die atmungsaktive Polyätherschaum-Polsterung sorgen für einen angenehmen Sitzkomfort.  . In 4 Bezugsqualitäten erhältlich: Unsere bewährte PRIMABELLE®-Microfaser oder Altara Nubuck®, die kuschelweiche Luxus-Microfaser (jeweils aus 100% Polyester), SOFTLUX®-Kunstleder oder NaturLEDER (echtes Rindsleder) in Sitz und Rücken, passendes SOFTLUX®-Kunstleder im Korpus. Frei im Raum stellbar. Ca.-Maße: Breite 190 cm, Höhe 98 cm, Tiefe 95 cm. Sitztiefe/-höhe: 55/43 cm. Bitte beachten Sie, dass Lederbezüge mehr Nähte aufweisen als Stoffbezüge.",
+            "item_external_category" : "[category:2- & 3-Sitzer][topCategory:Sofas][color:weiß][brand:cnouch]",
+            "item_brand_name" : "cnouch",
+            "image_url" : "http://de2.vmstatic.com/3-sitzer-von-cnouch-weiss-411065455-0-150-07.jpg",
+            "language" : "de",
+            "tag_id" : (2954),
+            "tag_name" : "3 Sitzer Sofas"
+        }, 
+        {
+            "job_id" : "411065459-2954",
+            "item_id" : (411065459),
+            "item_name" : "3-Sitzer von Cnouch, schwarz",
+            "item_description" : "Schickes Polstermöbel in trendigem Material- und Farbmix! Stabiles Holzuntergestell, Federkern und atmungsaktive Polyätherschaum-Polsterung. In 3 Bezugsqualitäten: PRIMABELLE®-Microfaser (aus 100% Polyester) im Mix mit Strukturstoff (aus 80% Polyester, 20% Polyacryl), SOFTLUX®-Kunstleder oder SOFTLUX®-Kunstleder im Mix mit schönem Strukturstoff (aus 80% Polyester, 20% Polyacryl). Zierkissen in den Farben 1, 2,111, 140, 511, 540 braun-beige und in 40, 42, 100, 105, 500, 505 grau-pink. Maße (B/T/H): 200/91/62 cm, Höhe mit Kissen: 90 cm, Sitztiefe 80 cm, Sitzhöhe 41 cm. Frei im Raum stellbar. Selbstmontage mit Aufbauanleitung. FSC®-zertifizierter Holzwerkstoff: Das Holz dieser Produkte stammt aus vorbildlich bewirtschafteten Wäldern, die von einer unabhängigen Organisation in Übereinstimmung mit den strengen ökologischen, sozialen und wirtschaftlichen Standards des Forest Stewardship Council® zertifiziert wurden.",
+            "item_external_category" : "[topCategory:Sofas][category:2- & 3-Sitzer][brand:cnouch][color:schwarz]",
+            "item_brand_name" : "cnouch",
+            "image_url" : "http://de2.vmstatic.com/3-sitzer-von-cnouch-schwarz-411065459-0-150-07.jpg",
+            "language" : "de",
+            "tag_id" : (2954),
+            "tag_name" : "3 Sitzer Sofas"
+        }, 
+        {
+            "job_id" : "411065460-2954",
+            "item_id" : (411065460),
+            "item_name" : "Sofa Von Max Winzer",
+            "item_description" : "Sofa, 3-sitzig, Made in Germany. Rustikal, mit hochwertiger Detailverarbeitung. Markante Optik mit dem Flair des Besonderen. Ganz aus massiver Eiche, rustikal gebeizt. Üppig und superbequem - Behaglichkeit pur. Komfortable Polsterung mit hochwertigem Federkern und weiche Armauflagen mit Polyätherschaum und Diolenfüllung. In 2 Bezugsqualitäten lieferbar: Strapazierfähiges Lederimitat »Softlux«, in den Farben creme, mocca, dunkelgrün oder echtem Rindsleder, mit handschuhweichem Griff, durchgefärbt und leicht abgedeckt, in den Farben creme, mocca, dunkelgrün. Ca.-Maße: H. 95, T. 98, Sitzh. 42, Sitzt. 54, B. 202 cm.",
+            "item_external_category" : "[topCategory:Sofas][category:2- & 3-Sitzer][brand:max winzer]",
+            "item_brand_name" : "max winzer",
+            "image_url" : "http://de1.vmstatic.com/sofa-von-max-winzer-411065460-0-150-07.jpg",
+            "language" : "de",
+            "tag_id" : (2954),
+            "tag_name" : "3 Sitzer Sofas"
+        }, 
+        {
+            "job_id" : "411065466-2954",
+            "item_id" : (411065466),
+            "item_name" : "3-Sitzer von SIT&MORE, braun",
+            "item_description" : "Polsterprogramm mit exzellenter Detailverarbeitung, aufwendiger Rückensteppung und elegant geschwungenen Armlehnen. Polsterecke wahlweise mit Bettfunktion. Ein stabiles Holzuntergestell, Wellenunterfederung und eine komfortable Federkernpolsterung sorgen für einen erstklassigen Sitzkomfort. Aus FSC®-zertifiziertem Holzwerkstoff. Alle Teile sind frei im Raum stellbar. In vier Bezugsqualitäten erhältlich: PRIMABELLE®-Microfaser, Luxus-Kunstleder, NaturLEDER (in Sizt und Rücken, Korpus in passendem Kunstleder) und einer neuen Luxus-Mircofaser mit Prägung. . Details: Inklusive komfortablem Federkern. Frei im Raum stellbar. In verschiedenen Bezugsqualitäten erhältlich. In hochwertiger Verarbeitung. Hoher Sitzkomfort. Aus FSC®-zertifiziertem Holzwerkstoff. Sitzkomfort: Komfortable Wellenunterfederung. Komfortabler Federkern. Stabiles Holzuntergestell. Generelle Maße: 193 cm Breite. 94 cm Gesamthöhe. 95 cm Gesamttiefe. 46 cm Sitzhöhe. 54 cm Sitztiefe. Höhe der Füße: 2 cm. Alle Maße sind ca. Maße. Bezüge/Qualitäten: Primabelle®-Microfaser. Luxus-Microfaser. Luxus-Kunstleder. NaturLeder. FSC®-zertifiziertem Holzwerkstoff: Das Holz dieser Produkte stammt aus vorbildlich bewirtschafteten Wäldern, die von einer unabhängigen Organisation in Übereinstimmung mit den strengen ökologischen, sozialen und wirtschaftlichen Standards des Forest Stewardship Council® zertifiziert wurden.",
+            "item_external_category" : "[category:2- & 3-Sitzer][brand:sit&more][topCategory:Sofas][color:braun]",
+            "item_brand_name" : "sit&more",
+            "image_url" : "http://de2.vmstatic.com/3-sitzer-von-sit-more-braun-411065466-0-150-07.jpg",
+            "language" : "de",
+            "tag_id" : (2954),
+            "tag_name" : "3 Sitzer Sofas"
+        }, 
+        {
+            "job_id" : "411065467-2954",
+            "item_id" : (411065467),
+            "item_name" : "2-Sitzer von COTTA, schwarz",
+            "item_description" : "Bequemer und hochwertig verarbeiteter 2-Sitzer inklusive einer praktischen Kopfteilverstellung. Ausgezeichneter Sitzkomfort dank atmungsaktiver Poyätherschaum-Polsterung, Wellenunterfederung und stabilem Holzuntergestell. In 4 schönen und pflegeleichten Bezugsqualitäten erhältlich: Luxus-Microfaser, SOFTLUX®-Kunstleder, Luxus-Kunstleder oder Strukturstoff. Frei im Raum stellbar und flexibel mit den anderen Elementen des Polsterprogrammes zu kombinieren. . Details: Frei im Raum stellbar. Inklusive Rückenverstellung. In hochwertiger Verarbeitung. Elegante Füße in Chromoptik. Füße aus Metall verchromt. Hoher Sitzkomfort. Trendiges Design. Sitzkomfort: Komfortable Wellenunterfederung. Atmungsaktive Polyätherschaum-Polsterung. Stabiles Holzuntergestell. Generelle Maße: 170 cm Breite. 82-93 cm Höhe. Sitzbreite zwischen den Armlehnen: 111 cm. Rückenteilverstellung Höhe von - bis: 82-93 cm. 100 cm Gesamttiefe. 46 cm Sitzhöhe. 60 cm Sitztiefe. Höhe der Füße: 6.5 cm. Alle Maße sind ca. Maße. Bezüge/Qualitäten: Luxus-Microfaser (100% Polyester). Struktur (100% Polyester). Softlux®-Kunstleder. Luxus-Kunstleder. FSC®-zertifizierter Holzwerkstoff: Das Holz dieser Produkte stammt aus vorbildlich bewirtschafteten Wäldern, die von einer unabhängigen Organisation in Übereinstimmung mit den strengen ökologischen, sozialen und wirtschaftlichen Standards des Forest Stewardship Council® zertifiziert wurden.",
+            "item_external_category" : "[topCategory:Sofas][category:2- & 3-Sitzer][brand:cotta][color:schwarz]",
+            "item_brand_name" : "cotta",
+            "image_url" : "http://de3.vmstatic.com/2-sitzer-von-cotta-schwarz-411065467-0-150-07.jpg",
+            "language" : "de",
+            "tag_id" : (2954),
+            "tag_name" : "3 Sitzer Sofas"
+        }, 
+        {
+            "job_id" : "411065472-2954",
+            "item_id" : (411065472),
+            "item_name" : "2 von SIT&MORE, braun",
+            "item_description" : "2,5-Sitzer in hochwertiger Verarbeitung - attraktiv, kubisch und komfortabel. Mit etxrabreiten Armlehnen. Stabiles Holzuntergestell, komfortable Wellenunterfederung und atmungsaktive Polyätherschaum-Polsterung. In 4 Bezugsqualitäten: PRIMABELLE®-Microfaser aus 100% Polyester; SOFTLUX®-Kunstleder; edles Luxus-Kunstleder und NaturLEDER - echtes Rindsleder in Sitz und Rücken, Korpus im passenden SOFTLUX®-Kunstleder. Frei im Raum stellbar. Ca.-Maße: Breite 188 cm, Tiefe 99 cm, Höhe 83 cm. Sitztiefe: 63 cm, Sitzhöhe 41 cm. Bitte beachten Sie, dass Lederbezüge mehr Nähte aufweisen als Stoffbezüge.",
+            "item_external_category" : "[category:2- & 3-Sitzer][topCategory:Sofas][color:braun][brand:sit&more]",
+            "item_brand_name" : "sit&more",
+            "image_url" : "http://de2.vmstatic.com/2-von-sit-more-braun-411065472-0-150-07.jpg",
+            "language" : "de",
+            "tag_id" : (2954),
+            "tag_name" : "3 Sitzer Sofas"
+        }, 
+        {
+            "job_id" : "411065476-2954",
+            "item_id" : (411065476),
+            "item_name" : "2-Sitzer von Cnouch, natur",
+            "item_description" : "Schönes Polsterprogramm mit hohem Sitzkomfort und aufwendiger Detailverarbeitung. Aus FSC®-zertifiziertem Holzwerkstoff. Mit stabilem Holzuntergestell, komfortabler Wellenunterfederung und atmungsaktiver Polyätherschaum- Polsterung.In 4 Bezugsqualitäten: SOFTLUX®-Kunstleder, Luxus-Microfaser (100% Polyester), Luxus-Kunstleder oder NaturLEDER, echtes Rindsleder. Ca.-Maße: Breite/Tiefe/Höhe 159/92/88 cm, Sitztiefe/-höhe 50/42 cm. Alle Elemente sind frei im Raum stellbar. Bitte beachten Sie, dass Lederbezüge mehr Nähte aufweisen als Stoffbezüge.",
+            "item_external_category" : "[topCategory:Sofas][category:2- & 3-Sitzer][brand:cnouch][color:natur]",
+            "item_brand_name" : "cnouch",
+            "image_url" : "http://de2.vmstatic.com/2-sitzer-von-cnouch-natur-411065476-0-150-07.jpg",
+            "language" : "de",
+            "tag_id" : (2954),
+            "tag_name" : "3 Sitzer Sofas"
+        }, 
+        {
+            "job_id" : "411065480-2954",
+            "item_id" : (411065480),
+            "item_name" : "3-Sitzer von Cnouch, natur",
+            "item_description" : "Attraktiv, kubisch, komfortabel: Polstermöbel-Programm mit extrabreiten Armteilen! In 4 Bezugsqualitäten: pflegeleichte PRIMABELLE®-Microfaser (100% Polyester), unser bewährtes SOFTLUX®-Kunstleder, trendiger Strukturstoff (54% Polyacryl, 46% Polyester), NaturLEDER (handschuhweiches Rindsleder) im Sitz und Rücken - Korpus sowie Rückseite mit farblich passendem SOFTLUX®-Kunstleder bezogen. Aus FSC®-zertifiziertem Holzwerkstoff. Stabiles Holzuntergestell, Wellenunterfederung für hohen Sitzkomfort, atmungsaktive Polyätherschaum-Polsterung. Frei im Raum stellbar. Füße wengefarben. Ca.-Maße: Breite 212 cm, Tiefe 90 cm, Höhe 77 cm, Sitztiefe/-höhe 59/43 cm. Bitte beachten Sie, dass Lederbezüge mehr Nähte aufweisen als Stoffbezüge.",
+            "item_external_category" : "[category:2- & 3-Sitzer][topCategory:Sofas][color:natur][brand:cnouch]",
+            "item_brand_name" : "cnouch",
+            "image_url" : "http://de3.vmstatic.com/3-sitzer-von-cnouch-natur-411065480-0-150-07.jpg",
+            "language" : "de",
+            "tag_id" : (2954),
+            "tag_name" : "3 Sitzer Sofas"
+        }, 
+        {
+            "job_id" : "411065482-2954",
+            "item_id" : (411065482),
+            "item_name" : "3-Sitzer von COTTA, natur",
+            "item_description" : "Bequemer und hochwertig verarbeiteter 3-Sitzer inklusive einer praktischen Kopfteilverstellung. Ausgezeichneter Sitzkomfort dank atmungsaktiver Poyätherschaum-Polsterung, Wellenunterfederung und stabilem Holzuntergestell. In 4 schönen und pflegeleichten Bezugsqualitäten erhältlich: Luxus-Microfaser, SOFTLUX®-Kunstleder, Luxus-Kunstleder oder Strukturstoff. Frei im Raum stellbar und flexibel mit den anderen Elementen des Polsterprogrammes zu kombinieren. . Details: Frei im Raum stellbar. Inklusive Rückenverstellung. In hochwertiger Verarbeitung. Elegante Füße in Chromoptik. Füße aus Metall verchromt. Hoher Sitzkomfort. Trendiges Design. Sitzkomfort: Komfortable Wellenunterfederung. Atmungsaktive Polyätherschaum-Polsterung. Stabiles Holzuntergestell. Generelle Maße: 200 cm Breite. 82-93 cm Höhe. Sitzbreite zwischen den Armlehnen: 141 cm. Rückenteilverstellung Höhe von - bis: 82-93 cm. 100 cm Gesamttiefe. 46 cm Sitzhöhe. 60 cm Sitztiefe. Höhe der Füße: 6.5 cm. Alle Maße sind ca. Maße. Bezüge/Qualitäten: Luxus-Microfaser (100% Polyester). Struktur (100% Polyester). Softlux®-Kunstleder. Luxus-Kunstleder. FSC®-zertifizierter Holzwerkstoff: Das Holz dieser Produkte stammt aus vorbildlich bewirtschafteten Wäldern, die von einer unabhängigen Organisation in Übereinstimmung mit den strengen ökologischen, sozialen und wirtschaftlichen Standards des Forest Stewardship Council® zertifiziert wurden.",
+            "item_external_category" : "[topCategory:Sofas][category:2- & 3-Sitzer][brand:cotta][color:natur]",
+            "item_brand_name" : "cotta",
+            "image_url" : "http://de3.vmstatic.com/3-sitzer-von-cotta-natur-411065482-0-150-07.jpg",
+            "language" : "de",
+            "tag_id" : (2954),
+            "tag_name" : "3 Sitzer Sofas"
+        }, 
+        {
+            "job_id" : "411065483-2954",
+            "item_id" : (411065483),
+            "item_name" : "2 von Cnouch, braun",
+            "item_description" : "Schönes Polsterprogramm mit hohem Sitzkomfort und aufwendiger Detailverarbeitung. Aus FSC®-zertifiziertem Holzwerkstoff. Mit stabilem Holzuntergestell, komfortabler Wellenunterfederung und atmungsaktiver Polyätherschaum- Polsterung. In 4 Bezugsqualitäten: SOFTLUX®-Kunstleder, Luxus-Microfaser (100% Polyester), Luxus-Kunstleder oder NaturLEDER, echtes Rindsleder. Ca.-Maße: Breite/Tiefe/Höhe 181/92/88 cm, Sitztiefe/ -höhe 50/42 cm.  Der 2,5-Sitzer in Naturleder ist mit Spannstoff auf der Rückseite bezogen. Bitte beachten Sie, dass Lederbezüge mehr Nähte aufweisen als Stoffbezüge.",
+            "item_external_category" : "[topCategory:Sofas][category:2- & 3-Sitzer][brand:cnouch][color:braun]",
+            "item_brand_name" : "cnouch",
+            "image_url" : "http://de2.vmstatic.com/2-von-cnouch-braun-411065483-0-150-07.jpg",
+            "language" : "de",
+            "tag_id" : (2954),
+            "tag_name" : "3 Sitzer Sofas"
+        }, 
+        {
+            "job_id" : "411065487-2954",
+            "item_id" : (411065487),
+            "item_name" : "3-Sitzer von Cnouch, grau",
+            "item_description" : "Trendige Polstermöbel in moderner Form. Ein stabiles Holzuntergestell, Wellenunterfederung und die atmungsaktive Polyätherschaum-Polsterung sorgen für außergewöhnlichen Sitzkomfort. In 4 Bezugsqualitäten: pflegeleichte PRIMABELLE®-Microfaser oder Luxus- Microfaser aus 100% Polyester, unser bewährtes SOFTLUX®-Kunstleder oder Strukturstoff, pflegeleicht und strapazierfähig, aus 54% Polyacryl, 46% Polyester. Frei im Raum stellbar. Ca.-Maße: jeweilige Tiefe 80 cm, Höhe 72 cm, Sitztiefe/-höhe 51/40 cm.",
+            "item_external_category" : "[topCategory:Sofas][category:2- & 3-Sitzer][brand:cnouch][color:grau]",
+            "item_brand_name" : "cnouch",
+            "image_url" : "http://de1.vmstatic.com/3-sitzer-von-cnouch-grau-411065487-0-150-07.jpg",
+            "language" : "de",
+            "tag_id" : (2954),
+            "tag_name" : "3 Sitzer Sofas"
+        }, 
+        {
+            "job_id" : "411065493-2954",
+            "item_id" : (411065493),
+            "item_name" : "3-Sitzer Von Benformato Home, Braun",
+            "item_description" : "Wenn Sie nicht jedem kurzlebigen Trend folgen, sondern zeitlose gradlinige Formen bevorzugen, ohne auf gehobenen Sitzkomfort verzichten zu wollen, dann wird die Polstermöbelserie Sie begeistern. Haben Sie erst einmal Platz genommen, möchten Sie diese Polstergarnitur nicht mehr missen. Die hochwertige Garnitur strahlt durch ihren Bezug eine gediegene Eleganz aus. Ein ruhender Pol in Ihrem Wohnzimmer. Mit stabilem Holzuntergestell, Wellenunterfederung und atmungsaktive Polyätherschaumpolsterung. Frei im Raum stellbar. Inkl. Zierkissen 48/48 cm aus 100% Polyester. Sitzbreite/tiefe/höhe: 145/53/45 cm. Gesamthöhe 95 cm. Maße: 3- Sitzer B/T/H 206/94/95 cm. Armlehnbreite / höhe: ca. 30,5 cm breit, Höhe ca. 65 cm. Fuß: ca. 50 mm hohe, runde Kunststofffüße, Farbe schwarz. Material/ Qualität: Microfaser: 100% Polyester. Kunstleder. Kunstleder / Struktur: Korpus: Kunstleder, Sitzfläche und Rücken aus Strukturstoff, 60% Polyacryl, 40% Polyester. Alle Maße sind ca. Maße. Aus FSC®-zertifiziertem Holzwerkstoff: Das Holz dieser Produkte stammt aus vorbildlich bewirtschafteten Wäldern, die von einer unabhängigen Organisation in Übereinstimmung mit den strengen ökologischen, sozialen und wirtschaftlichen Standards des Forest Stewardship Council® zertifiziert wurden.",
+            "item_external_category" : "[topCategory:Sofas][category:2- & 3-Sitzer][brand:benformato home][color:braun]",
+            "item_brand_name" : "benformato home",
+            "image_url" : "http://de1.vmstatic.com/3-sitzer-von-benformato-home-braun-411065493-0-150-07.jpg",
+            "language" : "de",
+            "tag_id" : (2954),
+            "tag_name" : "3 Sitzer Sofas"
+        }, 
+        {
+            "job_id" : "411065507-2954",
+            "item_id" : (411065507),
+            "item_name" : "2-Sitzer von MAX WINZER, gr&uuml;n",
+            "item_description" : "Zeitlos schönes Sofa mit einer klaren Formsprache. Aufgrund der schmalen Bauart ist das Sofa für jede Raumgröße passend. Der Hussenlook, lose Sitz- und Rückenkissen verleihen der Garnitur Leichtigkeit. Die Rückseite ist mit dem Originalstoff bezogen, somit ist das Modell frei im Raum stellbar. Füße: Kunststoffgleiter schwarz.  . Details: Frei im Raum stellbar. In hochwertiger Verarbeitung. In verschiedenen Farbkombinationen erhältlich. Hoher Sitzkomfort. Trendiges Design. Softes Sitzerlebnis. Sitzkomfort: Komfortable Wellenunterfederung. Atmungsaktive Polyätherschaum-Polsterung. Stabiles Holzuntergestell. Vollschaumpolsterung auf Stahlwellenunterfederung mit Diolenabdeckung. Lose Sitzkissen aus Vollschaum. Ca.-Maße: Maße der Armlehnen: hinten 22,5 vorne 15 cm hoch. Generelle Maße: 142 cm Breite. 82 cm Gesamthöhe. 87 cm Gesamttiefe. 44 cm Sitzhöhe. 51 cm Sitztiefe. Höhe der Füße: 4 cm. Bezüge/Qualitäten: 100% Polyester Struktur. Wissenswertes: Frei im Raum stellbar. FSC®-zertifizierter Holzwerkstoff: Das Holz dieser Produkte stammt aus vorbildlich bewirtschafteten Wäldern,  die von einer unabhängigen Organisation in Übereinstimmung mit den strengen ökologischen, sozialen und wirtschaftlichen Standards des Forest Stewardship Council® zertifiziert wurden. Pflegehinweis: Pflegehinweise für Strukturstoffe Dieser Bezug zeichnet sich durch sein dezentes Farbenspiel sowie des angenehmen Griffes aus, der durch einen aufwendigen Herstellungsprozess erzielt wird. Zur allgemeinen Pflege reicht es aus, wenn Sie die Oberfläche mit einer weichen Kleiderbürste ab und zu leicht abbürsten oder mit der Polsterdüse absaugen. Um Ziehfäden zu vermeiden, sollten Sie bitte Haustiere, spitze Gegenstände (wie z.B. Schmuck etc.) von Ihrem neuen Möbel fernhalten Wir wünschen Ihnen viel Freude mit Ihrem neuen Möbel. .",
+            "item_external_category" : "[category:2- & 3-Sitzer][topCategory:Sofas][color:grün][brand:max winzer]",
+            "item_brand_name" : "max winzer",
+            "image_url" : "http://de3.vmstatic.com/2-sitzer-von-max-winzer-gruen-411065507-0-150-07.jpg",
+            "language" : "de",
+            "tag_id" : (2954),
+            "tag_name" : "3 Sitzer Sofas"
+        }, 
+        {
+            "job_id" : "411065516-2954",
+            "item_id" : (411065516),
+            "item_name" : "3-Sitzer von Cnouch, wei&szlig;",
+            "item_description" : "Trendiger 3-Sitzer, passend zur Polsterserie. Aus FSC®-zertifiziertem Holzwerkstoff. Ein stabiles Holzuntergestell, die Wellenunterfederung und die atmungsaktive Polyätherschaum-Polsterung sorgen für einen angenehmen Sitzkomfort. In 2 pflegeleichten Bezugsqualitäten erhältlich: Im Materialmix: Luxus-Microfaser im Korpus, mit Strukturstoff in Sitz und Rücken oder Softlux®-Kunstleder im Korpus, mit Strukturstoff in Sitz und Rücken. Frei im Raum stellbar. . Details: Frei im Raum stellbar. In der Lieferung sind keine Zierkissen enthalten. In verschiedenen Bezugsqualitäten erhältlich. Individuell zu kombinieren. In hochwertiger Verarbeitung. In verschiedenen Farbkombinationen erhältlich. Elegante Füße in Chromoptik. Trendiges Design. Bestellen Sie den passenden Hocker am besten gleich mit. Sitzkomfort: Komfortable Wellenunterfederung. Atmungsaktive Polyätherschaum-Polsterung. Stabiles Holzuntergestell. Straffe, feste Polsterung. Generelle Maße: 232 cm Breite. 76 cm Höhe. Sitzbreite zwischen den Armlehnen: 160 cm. 96 cm Tiefe. 40 cm Sitzhöhe. 58 cm Sitztiefe. 47 cm Armlehnen-Höhe. 34 cm Armlehnen-Breite. Höhe der Füße: 3 cm. Alle Maße sind ca. Maße. Bezüge/Qualitäten: Luxus-Microfaser (100% Polyester)/ Struktur (44% Polyacryl; 37% Polyester, 19% Baumwolle). Kunstleder SOFTLUX® / Struktur (90% Polyester, 10% Polyacryl). FSC®-zertifizierter Holzwerkstoff: Das Holz dieser Produkte stammt aus vorbildlich bewirtschafteten Wäldern, die von einer unabhängigen Organisation in Übereinstimmung mit den strengen ökologischen, sozialen und wirtschaftlichen Standards des Forest Stewardship Council® zertifiziert wurden.",
+            "item_external_category" : "[category:2- & 3-Sitzer][topCategory:Sofas][color:weiß][brand:cnouch]",
+            "item_brand_name" : "cnouch",
+            "image_url" : "http://de1.vmstatic.com/3-sitzer-von-cnouch-weiss-411065516-0-150-07.jpg",
+            "language" : "de",
+            "tag_id" : (2954),
+            "tag_name" : "3 Sitzer Sofas"
+        }
+    ],
+    "job_image_positive_samples" : [ 
+        "http://de2.vmstatic.com/image-403212376-0-150-77.jpg", 
+        "http://de2.vmstatic.com/image-223700730-0-150-5C.jpg", 
+        "http://de3.vmstatic.com/image-117752478-0-150-00.jpg"
+    ],
+    "job_image_negative_samples" : [ 
+        "http://de3.vmstatic.com/image-360426182-0-150-5B.jpg", 
+        "http://de2.vmstatic.com/image-99223332-0-150-00.jpg", 
+        "http://de1.vmstatic.com/image-124021338-0-150-60.jpg"
+    ],
+    "job_description" : "\n\t\t\t3 Sitzer Sofas \n\t\t\t- nur 3 sitzgelegenheiten\n\t\t\t- keine Sofargarnitur die aus mehreren Einzelkomponenten besteht\n\t\t\t- kein Sessel\n\t\t\t- keine Möbelsets\n\t\t",
+    "job_similar_tags" : {
+        "2953" : "2 Sitzer Sofas",
+        "3846" : "Ecksofas",
+        "7858" : "Designer-Sofa",
+        "7859" : "Schlafsofas",
+        "21360" : "Ledersofa",
+        "21453" : "Liegesofa",
+        "21456" : "Ottomane",
+        "27402" : "Rattansofa",
+        "27443" : "Verwandlungssofa",
+        "29521" : "Big Sofa",
+        "29522" : "Sofa Couch",
+        "29523" : "Lounge Sofa",
+        "29715" : "Funktionssofa",
+        "29727" : "Megasofa",
+        "29774" : "Relaxsofa",
+        "29775" : "Klappsofa",
+        "39464" : "Longchair",
+        "44766" : "Gartensofa",
+        "49172" : "XXL Sofa",
+        "99212" : "Futonsofa",
+        "100004" : "Echtleder Sofa",
+        "102344" : "Sofa mit Schlaffunktion",
+        "102514" : "sofa mit schlaffunktion",
+        "108332" : "Sofa Kolonialstil",
+        "108345" : "Sofa Antik",
+        "108347" : "Barock Sofa",
+        "108384" : "Gründerzeit Sofa",
+        "108385" : "Biedermeier Sofa",
+        "108415" : "Sofa Landhausstil",
+        "111564" : "Rundsofa",
+        "114003" : "eckcouch",
+        "114005" : "sofaecke",
+        "114006" : "funktionsecke",
+        "114010" : "lederschlafsofa",
+        "114012" : "bettcouch",
+        "114013" : "schlafcouch",
+        "114015" : "eckschlafsofa",
+        "114016" : "bettsofa",
+        "149338" : "Polyrattan Sofa",
+        "154805" : "Sofa U-Form",
+        "247460" : "Sofa mit Relaxfunktion",
+        "318293" : "Küchensofa",
+        "321090" : "Federkern Sofa",
+        "321216" : "Stoffsofa",
+        "364422" : "Retro Sofa",
+        "364502" : "Sofalandschaft",
+        "364532" : "Vintage Sofa"
+    },
+    "meta" : {
+        "alignPaymentCent" : 0,
+        "created_at" :  ("2015-02-18T08:34:09.885Z"),
+        "ttl" :  ("2015-02-18T08:34:09.885Z"),
+        "qm_status" : (1)
+    },
+    "id" : (601)
+};
+
+            cachedUrl = 'view/twigInterface/cached.json';
+            isdev = true;
+            URLS = {'match': "img/check.png", 'failed': "img/failed.png"};
+        </script>
+
         <script src="js/twigInterface.js"></script>
 
     </body>
