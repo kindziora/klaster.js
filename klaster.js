@@ -71,9 +71,7 @@
                             }
                         }
                     }
-
                 }
-
             },
     api = docapi['dom-attributes'];
     $.fn.getName = function () {
