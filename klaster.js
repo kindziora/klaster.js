@@ -71,7 +71,9 @@
                             }
                         }
                     }
+
                 }
+
             },
     api = docapi['dom-attributes'];
     $.fn.getName = function () {
@@ -154,7 +156,7 @@
     $.fn.setValue = function (value) {
         this.data('value', value);
     };
-    $.fn.klaster_ = function (child) {
+    $.fn.klaster_l = function (child) {
 
         var $globalScope = this;
 
@@ -316,6 +318,11 @@
         };
 
         me.getFieldView = function (fieldN, getname) {
+            
+            if(typeof fieldN === 'undefined'){
+                return false;
+            }
+            
             var viewMethod = false, name = false;
             if (typeof cls.view.views[fieldN] === 'undefined') {
                 if (fieldN.indexOf('[') !== -1) {
