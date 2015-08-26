@@ -1,2 +1,7 @@
 /nbproject/private/
 /bower_components/
+/examples/gallery/node_modules/
+/examples/gallery/bower_components/
+/examples/list/bower_components/
+/examples/list/node_modules/
+/examples/todoMVC/bower_components/
