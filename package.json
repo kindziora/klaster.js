@@ -1,0 +1,14 @@
+{
+    "name": "klaster.js",
+    "version": "0.9",
+    "description": "jQuery component",
+    "keywords": [
+        "javascript",
+        "mvc",
+        "pattern",
+        "scopes",
+        "two way databinding",
+        "experimental"
+    ],
+    "main": "./klaster.js"
+}
