@@ -1,19 +1,34 @@
 module.exports = function (grunt) {
 
-    var fs = require('fs');
-    var path = './components/';
 
-    grunt.registerTask('default', 'Updates the viewCache File', function () {
-
-        var files = fs.readdirSync(path);
-        var cachedFiles = {};
-        for (var i in files) {
-            if (files[i].indexOf('.json') === -1) {
-                cachedFiles[files[i].split('.')[0]] = fs.readFileSync(path + files[i], 'utf8');
+    grunt.initConfig({
+        pkg: grunt.file.readJSON('package.json'),
+        concat: {
+            options: {
+                separator: ';'
+            },
+            dist: {
+                src: ['components/*.js'],
+                dest: 'build/klaster.dev.js'
+            }
+        },
+        'closure-compiler': {
+            frontend: {
+                closurePath: '/home/alex/Downloads/compiler-latest',
+                js: 'build/klaster.dev.js',
+                jsOutputFile: 'build/klaster.rl.js',
+                maxBuffer: 500,
+                options: {
+                    compilation_level: 'ADVANCED_OPTIMIZATIONS',
+                    language_in: 'ECMASCRIPT5_STRICT'
+                }
             }
         }
-        console.log(JSON.stringify(cachedFiles, null, 2));
-        fs.writeFileSync(path + 'cached.json', JSON.stringify(cachedFiles, null, 2), 'utf8');
-        
     });
+
+    grunt.loadNpmTasks('grunt-closure-compiler');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+
+    grunt.registerTask('default', ['concat', 'closure-compiler']);
+
 };
