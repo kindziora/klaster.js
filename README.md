@@ -11,6 +11,8 @@ It aims on rich frontend experiences and simplicity.
  
 ##current state
 
+html -> model without any additional markup
+
 interface-model-view
 
 better 2 way data binding
@@ -23,12 +25,15 @@ omit toggle
 
 ##Examples
 
-todoMVC
-
-twig example
+gallery (100%)
+list (100%)
+spa (50%)
+todoMVC (60%)
+twig example (100%)
 
 ##Work in progress
 
-
+refactoring code
+unit test and integration test for the framework and apps
 
 
