@@ -1,19 +1,19 @@
 /**
  * klaster is a jquery filter plugin for extended filters by dom rules and javascript based on filter classes
  * @author Alexander Kindziora 2015
- * 
+ *
  */
 
-(function ($) {
+(function ($, structure, docapi, dom, model) {
 //"use strict";
 
     var me = {};
 
     var api = docapi['dom-attributes'];
 
-    $.fn.klaster_l = function (child) {
+    $.fn.klaster = function (child) {
 
-        var $globalScope = this;
+        var $elScope = this;
 
         var cls = $.extend(structure, child);
 
@@ -29,9 +29,11 @@
                 }
             }
         };
-
+        /**
+         * restriction of content by filter criteria eg. data-filter="this.a !== 0"
+         */
         cls.updateViewFilter = function () {
-            $globalScope.find('[data-filter]').each(function () {
+            $elScope.find('[data-filter]').each(function () {
                 cls.viewFilter[$(this).getName()] = $(this).attr('data-filter');
             });
         }
@@ -58,31 +60,29 @@
             return eval("(" + $field.attr('data-filter').replace(new RegExp("this", "gi"), 'child.filter') + ")");
         };
 
-        /**
-         * 
-         * @param {type} change
-         * @returns {undefined}
-         */
-        function normalizeChangeResponse(change) {
+        cls.postRender = function ($field) {
+            var funcName = cls.getView($field);
 
-            if (change.substr(0, 1) !== '[')
-                return change;
-
-            if (!change)
-                return;
-            var match = (/\[(.*?)\]/).exec(change);
-            var fieldnamei = change;
-            if (match) {
-                fieldnamei = change.replace(match[0], match[1]);
-                while ((match = /\[([a-z].*?)\]/ig.exec(fieldnamei)) != null)
-                {
-                    fieldnamei = fieldnamei.replace(match[0], '.' + match[1]);
-                }
+            if (typeof cls.view.event !== "undefined" && typeof cls.view.event.postRender !== 'undefined' && typeof cls.view.event.postRender[funcName] === 'function') {
+                cls.view.event.postRender[funcName].call(cls.model, $field, cls.model.get($field.getName()));
             }
 
-            return fieldnamei;//.replace(/\[/g, '\\[').replace(/\]/g, '\\]');
-        }
+        };
 
+        /*
+         * gets executed after an event is triggered
+         */
+        cls.postProcess = function (e, result) {
+            if ((result != cls.model.field[$(this).getName()]) || cls.modelchanged($(this).getName())) {
+                cls.debug('changed', result, cls.model.field[$(this).getName()], $(this).getName());
+                cls.recognizeChange.setup.call(this);
+                cls.updateValue.call(this, result, cls.model.field[$(this).getName()]);
+            }
+
+            if (typeof child.postProcess !== "undefined")
+                return child.postProcess.call(this, e, child);
+            return true;
+        };
 
         //from view to model
         cls.updateViewToModel = function ($where) {
@@ -101,11 +101,33 @@
             return $scope;
         }.bind(cls);
 
+        /*
+         * gets executed after a change on dom objects
+         * "this" is the dom element responsible for the change
+         */
+        cls.changed = function () {
+            if (typeof model.event !== "undefined" && typeof model.event.sync === "function") {
+                model.event.sync.call(model, this);
+            }
+
+            if (typeof model.sync === "function") {
+                model.sync.call(data, this);
+            }
+
+            dom.model2view.call($(this));
+
+            if (typeof cls.postRender !== 'undefined') {
+                cls.postRender($(this));
+            }
+
+            return true;
+        };
+
 
         /**
          *recognize if filter values have changed and call someone
          *@description one common callback for changed is an ajax call with all values to a REST backend to update data
-         * 
+         *
          */
         cls.recognizeChange = function () {
             var mio = {};
@@ -133,21 +155,6 @@
             return hasOwnProperty.call(obj, key);
         };
 
-
-        /*
-         * gets executed after an event is triggered
-         */
-        cls.postProcess = function (e, result) {
-            if ((result != cls.model.field[$(this).getName()]) || cls.modelchanged($(this).getName())) {
-                cls.debug('changed', result, cls.model.field[$(this).getName()], $(this).getName());
-                cls.recognizeChange.setup.call(this);
-                cls.updateValue.call(this, result, cls.model.field[$(this).getName()]);
-            }
-
-            if (typeof child.postProcess !== "undefined")
-                return child.postProcess.call(this, e, child);
-            return true;
-        };
         /**
          *dispatch events for dom element
          */
@@ -174,27 +181,6 @@
             };
         };
 
-        cls.postRender = function ($field) {
-            var funcName = cls.getView($field);
-
-            if (typeof cls.view.event !== "undefined" && typeof cls.view.event.postRender !== 'undefined' && typeof cls.view.event.postRender[funcName] === 'function') {
-                cls.view.event.postRender[funcName].call(cls.model, $field, cls.model.get($field.getName()));
-            }
-
-        };
-
-        /**
-         * this updates a partial area
-         * @param {type} $html
-         */
-        cls.set = function ($html) {
-            if (typeof $html === 'undefined')
-                $html = '';
-            $(this).html($html);
-            cls.bind($(this));
-            cls.postRender($(this));
-        };
-
 
         /**
          * @todo rethink is this the best way to bind the methods?
@@ -214,13 +200,13 @@
                     var result = true;
                     if (false !== cls.pre_trigger.call(me, e)) {
                         if (typeof child.interactions[name] !== 'undefined' &&
-                                typeof child.interactions[name][method] !== 'undefined') {
+                            typeof child.interactions[name][method] !== 'undefined') {
                             result = child.interactions[name][method].call(me, e, cls, args);
                             if ($(me).attr(api.omit.attr) === "true") {
                                 result = $(me).getValue();
                             }
                         } else if (typeof child.interactions[method] !== 'undefined' &&
-                                typeof child.interactions[method][event] !== 'undefined') {
+                            typeof child.interactions[method][event] !== 'undefined') {
                             result = child.interactions[method][event].call(me, e, cls, args);
                             if ($(me).attr(api.omit.attr) === "true") {
                                 result = $(me).getValue();
@@ -288,4 +274,4 @@
         }
 
     };
-})(jQuery);
+})(jQuery, k_structure, k_docapi, dom, model);

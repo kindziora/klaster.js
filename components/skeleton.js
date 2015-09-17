@@ -1,6 +1,6 @@
 var prefix = 'data';
 
-var docapi = {
+var k_docapi = {
     'Controller': {
         'this.interactions': {
             'dom-attribute name': {
@@ -66,19 +66,19 @@ var docapi = {
     }
 };
 
-var structure = {
+var k_structure = {
     'delay': 10,
-    'api': docapi,
+    'api': k_docapi,
     'interactions': {
-        test: {
+        'test': {
             'click': function (e) {
 
             }
         }
     },
     'model': {
-        field: {},
-        event: {
+        'field': {},
+        'event': {
             'postChange': function () {
             },
             'sync': function () {
@@ -87,14 +87,14 @@ var structure = {
     },
     'viewFilter' : {},
     'view': {
-        'viewpath': 'view/',
-        'fileextension': 'html.twig',
-        'templates': false,
-        templates_: {},
-        render: function (tplVars, tplName) {
+        'viewpath': 'view/', //if loading templates in realtime
+        'fileextension': 'html.twig', //if loading templates in realtime
+        'templates': false, //check for loading templates in realtime
+        'templates_': {}, // array of templates by name => html or other markup
+        'render': function (tplVars, tplName) { // template render function ... here you can add template engine support for twig, etc.
         },
-        views: {
-            "test": function () {
+        'views': {
+            'test': function () {
 
             }
         }
@@ -102,6 +102,6 @@ var structure = {
     'filter': {
     },
     'config': {
-        debug: true
+        'debug': true
     }
 }
