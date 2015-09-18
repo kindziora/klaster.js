@@ -131,9 +131,7 @@
          * @param {type} $html
          */
         function _set($html) {
-            if (typeof $html === 'undefined')
-                $html = '';
-            $(this).html($html);
+            dom.setHtmlValue.call($(this), $html);
             cls.bind($(this));
             cls.postRenderView($(this));
         }
@@ -144,20 +142,20 @@
          * @param scopeModelField
          * @returns {*}
          */
-        cls.getDecoratedValuePrimitive = function ($scope, scopeModelField) {
+        cls.getDecoValPrimitive = function ($scope, scopeModelField) {
             var fieldN = $scope.getName(),
-                viewRenderFuntionName = dom.getView($scope),
-                DecoratedValuePrimitive = scopeModelField;
+                viewName = dom.getView($scope),
+                DecoValPrimitive = scopeModelField;
 
-            if (viewRenderFuntionName) {
-                DecoratedValuePrimitive = cls.view.views[viewRenderFuntionName].call(cls.view, scopeModelField, fieldN, $scope);
+            if (viewName) {
+                DecoValPrimitive = cls.view.views[viewName].call(cls.view, scopeModelField, fieldN, $scope);
             }
 
             if (!cls.preRenderView($scope, scopeModelField)) {
                 return undefined;
             }
 
-            return DecoratedValuePrimitive;
+            return DecoValPrimitive;
         };
         
         /**
@@ -168,34 +166,37 @@
          */
         cls.updateHtmlList = function ($scope, field, change) {
             var $child, index, $html;
-            var viewRenderFuntionName = dom.getView($scope);
+            var viewName = dom.getView($scope);
 
             /**
+             * differential function to add elements to a list of dom elements
              * add element
              */
-            function addE() {
+            function addListElement() { 
 
                 var m_index = 0;
-                for (index in field) {
+                for (index in field) { //iterate over all items in array 
 
-                    $child = $scope.find('[data-name="' + $scope.getName() + '\[' + index + '\]"]');
+                    $child = $scope.find('[data-name="' + $scope.getName() + '\[' + index + '\]"]'); //get child by name
 
-                    if (cls.preRenderView($scope, field[index])) {
-                        $html = $(cls.view.views[viewRenderFuntionName].call(cls.view, field[index], index, $scope));
+                    if (cls.preRenderView($scope, field[index])) { //check filters or other stuff that could avoid rendering that item
+                        
+                        $html = $(cls.view.views[viewName].call(cls.view, field[index], index, $scope)); //render view
 
                         var $close = $scope.find('[data-name="' + $scope.getName() + '\[' + m_index + '\]"]');
 
                         if ($child.get(0)) {
-                            $child.replaceWith($html);
+                            $child.replaceWith($html); //if sub element exists, replace it
                         } else if ($close.get(0)) {
-                            $html.insertAfter($close);
+                            $html.insertAfter($close); //insert after the last added 
                         } else {
-                            $scope.append($html);
+                            $scope.append($html); //just append at the end
                         }
 
-                        $html.data('value', field[index]);
-                        cls.bind($html);
-                        cls.postRenderView($html);
+                        $html.data('value', field[index]); //apply private value to dom el
+                        
+                        cls.bind($html); //bind to app to new html               
+                        cls.postRenderView($html); //execute post render on added child
 
                     } else {
                         $child.remove();
@@ -207,9 +208,9 @@
             }
 
             /**
-             * remove element
+             * remove dom representation of element inside list that does not exist in model
              */
-            function killE() {
+            function killListElement() {
                 $scope.children().each(function () {
                     var Elname = $(this).getName();
                     var name = /\[(.*?)\]/gi.exec(Elname)[1];
@@ -224,51 +225,61 @@
                 });
             }
 
-            if (change[1] === 'view-filter') {
-                killE();
-                addE();
-            }
-
-            if (change[1] === 'undefined') {
-                addE();
-            }
-
-            if (change[1] === 'length') {
-                if (change[2] < change[3]) { //increased
-                    addE();
+            /**
+             * decide what to update
+             **/
+            function decision(change){
+                    
+                if (change[1] === 'view-filter') {
+                    killListElement();
+                    addListElement();
                 }
-
-                if (change[2] > change[3]) { //decreased
-                    killE();
+    
+                if (change[1] === 'undefined') {
+                    addListElement();
                 }
-            }
-
-            if (change[1] === 'value') { // value of subelement has changed
-                var _notation = change[0],
-                    myChangedField = model.get(_notation),
-                    index = /\[(.*?)\]/gi.exec(_notation)[1];
-
-                $child = $scope.find(dom.getSelector(_notation, true));
-
-                if (typeof myChangedField !== 'undefined' && cls.preRenderView($scope, field[index])) {
-                    $html = $(cls.view.views[viewRenderFuntionName].call(cls.view, field[index], index, $scope));
-
-                    if ($child.get(0)) {
-                        $child.replaceWith($html);
+    
+                if (change[1] === 'length') {
+                    if (change[2] < change[3]) { //increased
+                        addListElement();
                     }
-
-                    $html.data('value', field[index]);
-                    cls.bind($html);
-                    cls.postRenderView($html);
-
-                    if (!$child.get(0)) {
-                        $scope.append($html);
+    
+                    if (change[2] > change[3]) { //decreased
+                        killListElement();
                     }
-                } else {
-                    $child.remove();
                 }
-
+                
+    
+                if (change[1] === 'value') { // value of subelement has changed
+                    var _notation = change[0],
+                        myChangedField = model.get(_notation), //get field that has changed
+                        index = /\[(.*?)\]/gi.exec(_notation)[1]; //get index of item that has chnaged
+    
+                    $child = $scope.find(dom.getSelector(_notation, true)); //find listItem that has changed
+    
+                    if (typeof myChangedField !== 'undefined' && cls.preRenderView($scope, field[index])) {
+                        $html = $(cls.view.views[viewName].call(cls.view, field[index], index, $scope)); // render subitem
+    
+                        if ($child.get(0)) {
+                            $child.replaceWith($html);
+                        }
+    
+                        $html.data('value', field[index]);
+                        cls.bind($html);
+                        cls.postRenderView($html);
+    
+                        if (!$child.get(0)) {
+                            $scope.append($html);
+                        }
+                    } else { // value changed to undefined or filter does remove element
+                        $child.remove(); // remove sub item
+                    }
+    
+                }
+                    
             }
+
+            decision(change); //make decision what to update on list
 
         };
 
@@ -344,7 +355,7 @@
                     var cced = $scope.data('cvalue');
     
                     if (local.isPrimitiveValue($scope)) {
-                        decoratedFieldValue = cls.getDecoratedValuePrimitive($scope, scopeModelField);
+                        decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
                         local.setPrimitiveValue($scope, decoratedFieldValue);
                     } else {
     
@@ -362,8 +373,8 @@
                         } else {
     
                             if (cced !== scopeModelField) {
-                                decoratedFieldValue = cls.getDecoratedValuePrimitive($scope, scopeModelField);
-                                local.setHtmlValue($scope, decoratedFieldValue);
+                                decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
+                                cls._set.call($scope, decoratedFieldValue);
                                 $scope.data('cvalue', scopeModelField);
                             }
     
@@ -437,6 +448,7 @@
                     var $els = cacheEls[el][0], changes = cacheEls[el][1];
     
                     var cnt = $els.length;
+                    
                     $els.each(local.eachViewRepresentation(cnt, changes, true, function () {
                         if (typeof model.event !== "undefined" && typeof model.event.postChange !== 'undefined' && typeof model.event.postChange[$els.getName()] === 'function') {
                             var changeCb = model.event.postChange[$els.getName()];
@@ -446,7 +458,7 @@
                 }
             };
     
-            dom.updateAllViews(cls.getChangedModelFields() || []);
+            dom.updateAllViews(model.getChangedModelFields() || []);
     
         };
 

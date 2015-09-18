@@ -1,4 +1,4 @@
-(function ($) {
+(function ($, api) {
 
     var dom = {
         /**
@@ -231,7 +231,12 @@
      * @returns {undefined}
      */
     dom.setHtmlValue = function ($scope, decorated) {
-        _set.call($scope, decorated);
+ 
+      if (typeof decorated === 'undefined')
+        decorated = '';
+        
+        $($scope).html(decorated);
+        
     };
 
     /**
@@ -275,4 +280,4 @@
     $.fn.getXPath = dom.getXPath;
 
     return dom;
-}(jQuery));
+}(jQuery, k_docapi));
