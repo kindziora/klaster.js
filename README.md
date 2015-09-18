@@ -93,8 +93,8 @@ So if the state of the form does change you could send the json to a backend.
 ```HTML
 <form id="jobform">
   <h2>list</h2>
-   <input type="checkbox" name="onlycompleted" data-on="change" /> only completed
-  <ul data-name="todos" data-view="foreach->todo" data-filter="!item.completed">
+   <input type="checkbox" name="onlycompleted" data-on="change" /> only completed todos
+  <ul data-name="todos" data-view="foreach->todo" data-filter="this.completed">
   ..loading..
   </ul>
 </form>
@@ -107,15 +107,28 @@ So if the state of the form does change you could send the json to a backend.
      'interactions': {
         'onlycompleted' : {
             'change' : function(e){
+            
               $('[data-view="foreach->todo"]').attr('data-filter',
-                    $(this)[0].checked ? "!item.completed" : "item.completed"
+                    $(this)[0].checked ? "!this.completed" : "this.completed"
               ); 
+              
             }
         }
      },
      'model' : {
         'field' : {
-           todos : [{name: "test 1", completed: false}, {name: "test 2", completed: false},{name: "test 3", completed: true}]
+           todos :[{
+                    "name": "test 1",
+                    "completed": false
+                  },
+                  {
+                    "name": "test 2",
+                    "completed": false
+                  },
+                  {
+                    "name": "test 3",
+                    "completed": true
+                  }]
         },
         'event' : {
           'sync' : function() {

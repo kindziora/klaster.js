@@ -35,7 +35,7 @@
      * @param {type} index
      * @returns {@exp;data@pro;model@call;getValue}
      */
-    data['get'] = function (notation) {
+    data.get = function (notation) {
         try {
             if (typeof data['field'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
                 return eval("(typeof data.field." + notation + "!== 'undefined' ) ? data.field." + notation + ": undefined;");
@@ -47,7 +47,7 @@
         }
     };
 
-    data['set'] = function (notation, value) {
+    data.set = function (notation, value) {
         if (typeof data['field'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
             var parent = data._getParentObject(notation);
             eval("if( (typeof " + parent + "!== 'undefined')) data.field." + notation + "=" + JSON.stringify(value) + ";");
@@ -93,17 +93,14 @@
      * @param {type} old
      */
     data.updateValue = function (value, old) {
-        if (typeof value !== 'undefined') {
-            //$(this).setValue(value);
-            //data['field'][$(this).getName()] = value;
+        if (typeof value !== 'undefined') { 
             data.set($(this).getName(), value);
         } else {
-            data._delete($(this).getName());
-            //delete data['field'][$(this).getName()];
+            data._delete($(this).getName()); 
         }
     };
 
-    datachanged = function (field) {
+    data.changed = function (field) {
 
         var compare = function (fieldName) {
             if (typeof data._modelprechange[fieldName] === 'undefined') {
