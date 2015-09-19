@@ -259,7 +259,7 @@
      * @returns {Array}
      */
     data.getChangedModelFields = function () {
-        return data.diffObjects(data._modelprechangeReal, data['field']);
+        return data.diffObjects(data._modelprechangeReal, data.field);
     };
     return data;
 }(jQuery));

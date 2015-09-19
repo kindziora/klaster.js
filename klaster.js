@@ -84,6 +84,7 @@
          * check if model has changed
          */
         cls.post_trigger = function (e, result) {
+            
             if ((result != model.get($(this).getName())) || model.changed($(this).getName())) {
                 
                 cls.debug('changed', result, model.field[$(this).getName()], $(this).getName());
@@ -93,7 +94,7 @@
                 cls.updateValue.call(this, result, model.field[$(this).getName()]);
                 
                 dom.model2View.call($(this));
-                
+                 
             }
 
             if (typeof child.post_trigger !== "undefined")
@@ -146,15 +147,14 @@
             var fieldN = $scope.getName(),
                 viewName = dom.getView($scope),
                 DecoValPrimitive = scopeModelField;
-
-            if (viewName) {
-                DecoValPrimitive = cls.view.views[viewName].call(cls.view, scopeModelField, fieldN, $scope);
-            }
-
+                
             if (!cls.preRenderView($scope, scopeModelField)) {
                 return undefined;
             }
 
+            if (viewName) {
+                DecoValPrimitive = cls.view.views[viewName].call(cls.view, scopeModelField, fieldN, $scope);
+            }
             return DecoValPrimitive;
         };
         
@@ -299,14 +299,14 @@
              * @param change
              * @param ready
              */
-            local.iteratedAllViewEl = function ($scope, change, ready) {
+            local.finalIteratedAllViewEl = function ($scope, change, ready) {
                 // and no view to display the change so try to display change with parent node
                 var field_notation = dom.normalizeChangeResponse(change[0]);
                 var match = field_notation;
                 while (match !== '') {
                     match = model._getParentObject(match, '');
     
-                    var findNotation = local.getSelector(match, true);
+                    var findNotation = dom.getSelector(match, true);
     
                     var $myPEl = $globalScope.find(findNotation);
                     if (match !== "" && (dom.getFieldView(match) || (typeof $myPEl !== 'undefined' && $myPEl.attr(api.view.attr)))) {
@@ -327,8 +327,8 @@
              * @returns {Function}
              */
             local.eachViewRepresentation = function (cnt, change, foundRepresentation, ready) {
-    
                 return function () {
+                    
                     // check how to treat this field
                     var $scope = $(this), fieldN = $scope.getName();
                     var scopeModelField = model.get(fieldN);
@@ -339,14 +339,14 @@
                         cnt--;
                         if (cnt <= 0) {
                             if (!foundRepresentation) {
-                                local.iteratedAllViewEl($scope, change, ready);
+                                local.finalIteratedAllViewEl($scope, change, ready);
                             } else {
                                 ready();
                             }
                         }
                     }
     
-                    if (!local.hasView($scope)) {
+                    if (!dom.hasView($scope)) {
                         foundRepresentation = false;
                         iteration(scopeModelField);
                         return;
@@ -354,28 +354,27 @@
     
                     var cced = $scope.data('cvalue');
     
-                    if (local.isPrimitiveValue($scope)) {
+                    if (dom.isPrimitiveValue($scope)) { //if dom view element is of type primitive
                         decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
-                        local.setPrimitiveValue($scope, decoratedFieldValue);
-                    } else {
+                        dom.setPrimitiveValue($scope, decoratedFieldValue);
+                    } else { // field can contain html
     
-                        if (local.isHtmlList($scope)) {
+                        if (dom.isHtmlList($scope)) {
                             //render partial list of html elements
     
-                            if ($scope.getName().indexOf('[') === -1) {
-                                change[1] = 'view-filter';
+                            if ($scope.getName().indexOf('[') === -1) { // address no array element
+                                change[1] = 'view-filter';// why view filter?
                                 change[2] = 2;
                                 change[3] = 1;
-                            }
+                            } 
+                            cls.updateHtmlList($scope, scopeModelField, change);// why trigger update list?
+                            
+                        } else { // not a list
     
-    
-                            local.updateHtmlList($scope, scopeModelField, change);
-                        } else {
-    
-                            if (cced !== scopeModelField) {
+                            if (cced !== scopeModelField) { // cached value of field != model.field value
                                 decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
-                                cls._set.call($scope, decoratedFieldValue);
-                                $scope.data('cvalue', scopeModelField);
+                                cls._set.call($scope, decoratedFieldValue); // bind html
+                                $scope.data('cvalue', scopeModelField); // set cached value for dom element
                             }
     
                         }
@@ -406,7 +405,7 @@
                 if (notation === '')
                     return false;
                 var fieldNotation = dom.normalizeChangeResponse(notation);
-                var selector = local.getSelector(fieldNotation, true);
+                var selector = dom.getSelector(fieldNotation, true);
                 var match = $globalScope.find(selector);
                 var cnt = match.length;
                 if (cnt === 0) {
@@ -449,12 +448,14 @@
     
                     var cnt = $els.length;
                     
-                    $els.each(local.eachViewRepresentation(cnt, changes, true, function () {
-                        if (typeof model.event !== "undefined" && typeof model.event.postChange !== 'undefined' && typeof model.event.postChange[$els.getName()] === 'function') {
-                            var changeCb = model.event.postChange[$els.getName()];
-                            changeCb.call(model, model.get($els.getName()), changes, 'controller');
+                    $els.each(local.eachViewRepresentation(cnt, changes, true, function ($els) {
+                        return function(){
+                            if (typeof model.event !== "undefined" && typeof model.event.postChange !== 'undefined' && typeof model.event.postChange[$els.getName()] === 'function') {
+                                var changeCb = model.event.postChange[$els.getName()];
+                                changeCb.call(model, model.get($els.getName()), changes, 'controller');
+                            }
                         }
-                    }));
+                    }($els)));
                 }
             };
     
