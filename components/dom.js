@@ -200,6 +200,32 @@ var k_dom =(function ($, api) {
 
         return fieldnamei;//.replace(/\[/g, '\\[').replace(/\]/g, '\\]');
     }
+    
+     /**
+     * replace brackets [] with ['']
+     * @param {type} change
+     * @returns {undefined}
+     */
+   dom.normalizeChangeResponseBrackets = function (change) {
+
+        if (change.substr(0, 1) !== '[')
+            return change;
+
+        if (!change)
+            return;
+        var match = (/\[(.*?)\]/).exec(change);
+        var fieldnamei = change;
+        if (match) {
+            fieldnamei = change.replace(match[0], match[1]);
+            while ((match = /\[([a-z].*?)\]/ig.exec(fieldnamei)) != null) {
+                fieldnamei = fieldnamei.replace(match[0], "['" + match[1] + "']");
+            }
+        }
+
+        return fieldnamei;//.replace(/\[/g, '\\[').replace(/\]/g, '\\]');
+    }
+    
+    
 
     /**
      * no html decorated content
@@ -231,7 +257,7 @@ var k_dom =(function ($, api) {
      * @returns {undefined}
      */
     dom.setHtmlValue = function ($scope, decorated) {
- 
+
       if (typeof decorated === 'undefined')
         decorated = '';
         
@@ -245,7 +271,7 @@ var k_dom =(function ($, api) {
      * @returns {*}
      */
     dom.hasView = function ($scope) {
-        return dom.getFieldView($scope.getName(), true);
+        return $scope.attr(api.view.attr) || dom.getFieldView($scope.getName(), true);
     };
     
      /**
@@ -256,7 +282,8 @@ var k_dom =(function ($, api) {
      */
     dom.getSelector = function (name, escapeit) {
         if (escapeit)
-            name = name.replace(/\[/g, '\[').replace(/\]/g, '\]')
+            name = name.replace(/\[/g, '\[').replace(/\]/g, '\]');
+             
         return '[data-name="' + name + '"],[name="' + name + '"]';
     };
     

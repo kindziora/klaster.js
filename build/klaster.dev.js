@@ -306,6 +306,32 @@ var k_structure = {
 
         return fieldnamei;//.replace(/\[/g, '\\[').replace(/\]/g, '\\]');
     }
+    
+     /**
+     * replace brackets [] with ['']
+     * @param {type} change
+     * @returns {undefined}
+     */
+   dom.normalizeChangeResponseBrackets = function (change) {
+
+        if (change.substr(0, 1) !== '[')
+            return change;
+
+        if (!change)
+            return;
+        var match = (/\[(.*?)\]/).exec(change);
+        var fieldnamei = change;
+        if (match) {
+            fieldnamei = change.replace(match[0], match[1]);
+            while ((match = /\[([a-z].*?)\]/ig.exec(fieldnamei)) != null) {
+                fieldnamei = fieldnamei.replace(match[0], "['" + match[1] + "']");
+            }
+        }
+
+        return fieldnamei;//.replace(/\[/g, '\\[').replace(/\]/g, '\\]');
+    }
+    
+    
 
     /**
      * no html decorated content
@@ -337,7 +363,7 @@ var k_structure = {
      * @returns {undefined}
      */
     dom.setHtmlValue = function ($scope, decorated) {
- 
+
       if (typeof decorated === 'undefined')
         decorated = '';
         
@@ -351,7 +377,7 @@ var k_structure = {
      * @returns {*}
      */
     dom.hasView = function ($scope) {
-        return dom.getFieldView($scope.getName(), true);
+        return $scope.attr(api.view.attr) || dom.getFieldView($scope.getName(), true);
     };
     
      /**
@@ -362,7 +388,8 @@ var k_structure = {
      */
     dom.getSelector = function (name, escapeit) {
         if (escapeit)
-            name = name.replace(/\[/g, '\[').replace(/\]/g, '\]')
+            name = name.replace(/\[/g, '\[').replace(/\]/g, '\]');
+             
         return '[data-name="' + name + '"],[name="' + name + '"]';
     };
     
@@ -661,11 +688,9 @@ var k_structure = {
  */
 
 (function ($, structure, docapi, dom, model) {
-//"use strict";
+    //"use strict";
 
     var me = {};
-     
-
     var api = docapi['dom-attributes'];
      
     $.fn.klaster = function (child) {
@@ -770,7 +795,7 @@ var k_structure = {
         cls.changed = function () {
             if (typeof model.event !== "undefined" && typeof model.event.sync === "function") {
                 model.event.sync.call(model, this);
-            }  
+            }
             return true;
         };
         
@@ -1034,12 +1059,10 @@ var k_structure = {
     
                             if (cced !== scopeModelField) { // cached value of field != model.field value
                                 decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
-                                cls._set.call($scope, decoratedFieldValue); // bind html
+                                _set.call($scope, decoratedFieldValue); // bind html
                                 $scope.data('cvalue', scopeModelField); // set cached value for dom element
                             }
-    
                         }
-    
                     }
     
                     iteration(decoratedFieldValue);
@@ -1066,8 +1089,15 @@ var k_structure = {
                 if (notation === '')
                     return false;
                 var fieldNotation = dom.normalizeChangeResponse(notation);
+                
+                var fieldNotationBrackets = dom.normalizeChangeResponseBrackets(notation);
+                
                 var selector = dom.getSelector(fieldNotation, true);
-                var match = $globalScope.find(selector);
+                
+                var tryDot = $globalScope.find(selector);
+                
+                var match = tryDot.length > 0 ? tryDot : $globalScope.find(dom.getSelector(fieldNotationBrackets, true));
+                
                 var cnt = match.length;
                 if (cnt === 0) {
                     if (model._getParentObject(notation, '') === "")
