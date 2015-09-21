@@ -1,5 +1,5 @@
-(function ($, api) {
-
+var k_dom =(function ($, api) {
+    api = api['dom-attributes'];
     var dom = {
         /**
          * add filter expression
@@ -69,10 +69,10 @@
         if (typeof multiple === 'undefined' || !multiple
             && typeof dom.multipleValues[this.attr('type')] !== 'function'
             && !this.attr(api.multiple.attr)) {
-            return dom.value.call(this);
+            return value.call(this);
         } else {
             /* if multiple is active return values */
-            return this.getValues(this.attr('type'));
+            return getValues(this.attr('type'));
         }
 
     }
@@ -159,21 +159,21 @@
         }
 
         var viewMethod = false, name = false;
-        if (typeof klaster.view.views[fieldN] === 'undefined') {
+        if (typeof dom.child.view.views[fieldN] === 'undefined') {
             if (fieldN.indexOf('[') !== -1) {
                 var finestMatch = fieldN.match(/([a-z].*?\[\w.*\])/gi);
                 if (typeof finestMatch !== 'undefined' && finestMatch)
                     finestMatch = finestMatch.pop();
-                name = typeof klaster.view.views[fieldN.split('[')[0] + '[*]'] !== 'undefined' ? finestMatch.split('[').pop() + '[*]' : fieldN;
-                viewMethod = typeof klaster.view.views[fieldN.split('[')[0] + '[*]'] !== 'undefined' ? klaster.view.views[finestMatch.split('[').pop() + '[*]'] : undefined;
+                name = typeof dom.child.view.views[fieldN.split('[')[0] + '[*]'] !== 'undefined' ? finestMatch.split('[').pop() + '[*]' : fieldN;
+                viewMethod = typeof dom.child.view.views[fieldN.split('[')[0] + '[*]'] !== 'undefined' ? dom.child.view.views[finestMatch.split('[').pop() + '[*]'] : undefined;
             }
         } else {
-            viewMethod = klaster.view.views[fieldN];
+            viewMethod = dom.child.view.views[fieldN];
             name = fieldN;
         }
         var result = (getname) ? name : viewMethod;
 
-        return typeof klaster.view.views[name] !== 'undefined' ? result : false;
+        return typeof dom.child.view.views[name] !== 'undefined' ? result : false;
     };
 
 
@@ -271,8 +271,8 @@
     
 
     $.fn.addFilter = dom.addFilter;
-    $.fn.getValues = dom.getValues;
-    $.fn.getValue = dom.getValue;
+    $.fn.getValues = getValues;
+    $.fn.getValue = getValue;
     $.fn.setValue = dom.setValue;
     $.fn.getName = dom.getName;
     $.fn.nameAttr = dom.nameAttr;

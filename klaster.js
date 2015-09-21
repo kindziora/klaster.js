@@ -8,13 +8,18 @@
 //"use strict";
 
     var me = {};
+     
 
     var api = docapi['dom-attributes'];
-
+     
     $.fn.klaster = function (child) {
         var cls = $.extend(structure, child);
         
+        dom.child = cls;
+        
         var $globalScope = this;
+        
+        model = $.extend(model, child.model);
         
         /**
          * log debug messages
@@ -91,9 +96,9 @@
                 
                 cls.recognizeChange.setup.call(this);
                 
-                cls.updateValue.call(this, result, model.field[$(this).getName()]);
+                model.updateValue.call(this, result, model.field[$(this).getName()]);
                 
-                dom.model2View.call($(this));
+                cls.model2View.call($(this));
                  
             }
 
@@ -286,7 +291,7 @@
         //from view to model
         cls.view2Model = function ($where) {
             ($where.find(cls.filter.events) || $(cls.filter.events)).each(function () {
-                cls.updateValue.call(this, $(this).getValue());
+                model.updateValue.call(this, $(this).getValue());
             });
         };
         
@@ -489,11 +494,7 @@
             };
             return mio;
         }();
-
-        cls.has = function (obj, key) {
-            return hasOwnProperty.call(obj, key);
-        };
-
+ 
         /**
          *dispatch events for dom element
          */
@@ -570,12 +571,12 @@
                     $(this).on(event, factory(this, event));
                     if ($el.attr('data-defaultvalues') !== 'model' && !$el.parents('[data-defaultvalues="model"]').get(0)) {
                         InitValue = $(this).getValue();
-                        cls.updateValue.call(this, InitValue);
+                        model.updateValue.call(this, InitValue);
                     }
                 }
             });
             if ($el.attr('data-defaultvalues') === 'model') {
-                me.model2View.call($el);
+                cls.model2View.call($el);
             }
             return filter;
         };
@@ -612,4 +613,4 @@
         }
 
     };
-})(jQuery, k_structure, k_docapi, dom, model);
+})(jQuery, k_structure, k_docapi, k_dom, k_data);

@@ -8,7 +8,7 @@ module.exports = function (grunt) {
                 separator: ';'
             },
             dist: {
-                src: ['components/*.js'],
+                src: ['components/skeleton.js', 'components/dom.js', 'components/data.js','klaster.js'],
                 dest: 'build/klaster.dev.js'
             }
         },

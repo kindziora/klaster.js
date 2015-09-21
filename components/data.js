@@ -1,8 +1,11 @@
-(function ($) {
+var k_data = (function ($) {
     var data = {
         'field' : {}
     };
-
+ 
+    data.has = function (obj, key) {
+        return hasOwnProperty.call(obj, key);
+    };
     /**
      *
      */
@@ -131,6 +134,7 @@
 
         return false;
     };
+   
 
     /**
      * http://stackoverflow.com/questions/27030/comparing-arrays-of-objects-in-javascript
