@@ -306,6 +306,13 @@
             decision(change); //make decision what to update on list
 
         };
+        
+         //from server to model
+        cls.server2Model = function (data) {
+            //model.set.call(data.field, data.value);
+            var $field = $(dom.getSelector(data.field));
+            cls.post_trigger.call($field, e, data.value);
+        };
 
         //from view to model
         cls.view2Model = function ($where) {
@@ -403,12 +410,12 @@
                                     $scope.data('cvalue', scopeModelField); // set cached value for dom element
                                 }
                             }else{
-                                    var template = cls.view.views[validateResult.view].call(cls, scopeModelField, $scope.getName());
-                                   
-                                    $scope = $($globalScope.find(dom.getValidatorSelector($scope.getName(), validateResult.view)));
-                                    _set.call($scope, template);
-                                    $scope.data('cvalue', scopeModelField); // set cached value for dom element
-                          
+                                var template = cls.view.views[validateResult.view].call(cls, scopeModelField, $scope.getName());
+                               
+                                $scope = $($globalScope.find(dom.getValidatorSelector($scope.getName(), validateResult.view)));
+                                _set.call($scope, template);
+                                $scope.data('cvalue', scopeModelField); // set cached value for dom element
+                      
                             }
                             
                         }

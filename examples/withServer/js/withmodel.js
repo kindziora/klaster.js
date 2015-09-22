@@ -3,7 +3,7 @@
  * klaster.js by Alexander Kindziora is a mvma (model-view-model-action) framework for user interfaces
  */
 
-var interface = function() {
+var interface = function(socket) {
     var intfc = this;
     //try it, to commit x milliseconds after last change
     intfc.delay= 100;
@@ -39,6 +39,10 @@ var interface = function() {
         'event': {
             'sync': function() { //after model fields have changed
                 console.log(JSON.stringify(this.field));
+                
+                
+                socket.emit('modelUpdate', this.field);
+                
             }
         }
     };
@@ -66,7 +70,14 @@ var interface = function() {
         }
     };
     
+    /**
+     * 
+     **/
+    this.server = function( ){ 
+        socket.on('modelUpdate', intfc.server2Model); // expects {value: {}, field : 'user.name'}
+    };
+    
     
 };
 
-$('body').klaster(new interface());
+$('body').klaster(new interface(io()));
