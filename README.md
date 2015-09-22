@@ -23,6 +23,11 @@ foreach in templates
 
 omit toggle
 
+##coming features
+
+server to client 2 way databinding via nodejs
+
+
 ##Examples
 
 gallery (100%)
