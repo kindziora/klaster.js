@@ -1,6 +1,6 @@
 var prefix = 'data';
 
-var k_docapi = {
+var k_docapi = { 
     'Controller': {
         'this.interactions': {
             'dom-attribute name': {
@@ -83,6 +83,9 @@ var k_structure = {
             },
             'sync': function () {
             }
+        },
+        'state' : {
+           /* 'forename' :{result : false, msg : "not valid", value : "45345"} */
         }
     },
     'viewFilter' : {},
@@ -355,19 +358,19 @@ var k_structure = {
             $scope.text(decorated);
         }
     };
-    
+     
     /**
      *
      * @param {type} $scope
      * @param {type} decorated
      * @returns {undefined}
      */
-    dom.setHtmlValue = function ($scope, decorated) {
+    dom.setHtmlValue = function (decorated) {
 
       if (typeof decorated === 'undefined')
         decorated = '';
         
-        $($scope).html(decorated);
+        $(this).html(decorated);
         
     };
 
@@ -391,6 +394,18 @@ var k_structure = {
             name = name.replace(/\[/g, '\[').replace(/\]/g, '\]');
              
         return '[data-name="' + name + '"],[name="' + name + '"]';
+    };
+    
+    /**
+     * get jquery selector for element name
+     * @param name
+     * @param escapeit
+     * @returns {string}
+     */
+    dom.getValidatorSelector = function (name, viewname) { 
+            name = name.replace(/\[/g, '\[').replace(/\]/g, '\]');
+            viewname = viewname.replace(/\[/g, '\[').replace(/\]/g, '\]');
+        return '[data-name="' + name + '"][data-view="' + viewname + '"], [name="' + name + '"][data-view="' + viewname + '"]';
     };
     
     /**
@@ -446,6 +461,50 @@ var k_structure = {
             }
         }
     };
+    
+    /**
+     * set state of a model field value and represent it in the state object eg.
+     * {result: false, msg : "email ist nicht gültig"};
+     **/
+    data.setState = function(notation, value){
+         
+        //check if valid
+        
+        if(typeof value.result === 'undefined') {
+            throw  {
+               message : "A state has to contain a field 'result' of type boolean",
+               name : "ValidationException"
+            };
+        }
+          
+        if (typeof data['state'] === 'undefined' ){
+            data.state = $.extend(true, data.field);
+        }
+          
+        if (typeof data['state'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
+            var parent = data._getParentObject(notation).replace(/\.field\./g, '.state.');
+            eval("if( (typeof " + parent + "!== 'undefined')) data.state." + notation + "=" + JSON.stringify(value) + ";");
+        } else {
+            data['state'][notation] = value;
+        }
+    }
+    
+    /**
+     * return state for a model field value eg.
+     * {result: false, msg : "email ist nicht gültig"}
+     **/
+    data.getState = function(notation){
+        try {
+            if (typeof data['state'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
+                return eval("(typeof data.state." + notation + "!== 'undefined' ) ? data.state." + notation + ": undefined;");
+            } else {
+                return data['state'][notation];
+            }
+        } catch (err) {
+            return undefined;
+        }
+    }
+    
     /**
      * eval is better for this, js supports no byref arguments
      * @param {type} variable
@@ -700,7 +759,7 @@ var k_structure = {
         
         var $globalScope = this;
         
-        model = $.extend(model, child.model);
+        cls.model = model = $.extend(model, child.model);
         
         /**
          * log debug messages
@@ -764,7 +823,7 @@ var k_structure = {
                 return child.pre_trigger.call(this, e);
             return true;
         };
-
+    
         /*
          * gets executed after an event is triggered
          * check if model has changed
@@ -776,17 +835,38 @@ var k_structure = {
                 cls.debug('changed', result, model.field[$(this).getName()], $(this).getName());
                 
                 cls.recognizeChange.setup.call(this);
-                
+          
                 model.updateValue.call(this, result, model.field[$(this).getName()]);
-                
+              
                 cls.model2View.call($(this));
-                 
+             
             }
 
             if (typeof child.post_trigger !== "undefined")
                 return child.post_trigger.call(this, e, child);
             return true;
         };
+        
+        /**
+         * validate field by setting its state
+         * return value if valid, otherwise return undefined so value does not go into model, if used as return value from interaction
+         **/
+        cls.validate = function(name, value, type) {
+            if (typeof child.validator !== "undefined" && typeof child.validator[type] === "function") { 
+                var validateResult = child.validator[type](value);
+                
+                validateResult.value = value;
+                
+                model.setState(name, validateResult);
+              
+                return validateResult.result ? value : undefined;
+            }else{
+                throw {
+                   message : "Validator of type " + type + "does not exist.",
+                   name : "ValidationException"
+                }; 
+            } 
+        }
         
         /*
          * gets executed after a change on dom objects
@@ -833,13 +913,13 @@ var k_structure = {
             var fieldN = $scope.getName(),
                 viewName = dom.getView($scope),
                 DecoValPrimitive = scopeModelField;
-                
-            if (!cls.preRenderView($scope, scopeModelField)) {
+                 
+            if (!cls.preRenderView($scope, scopeModelField) ) { // on off option
                 return undefined;
             }
 
             if (viewName) {
-                DecoValPrimitive = cls.view.views[viewName].call(cls.view, scopeModelField, fieldN, $scope);
+                DecoValPrimitive = cls.view.views[viewName].call(cls, scopeModelField, fieldN, $scope);
             }
             return DecoValPrimitive;
         };
@@ -1056,12 +1136,23 @@ var k_structure = {
                             cls.updateHtmlList($scope, scopeModelField, change);// why trigger update list?
                             
                         } else { // not a list
-    
-                            if (cced !== scopeModelField) { // cached value of field != model.field value
-                                decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
-                                _set.call($scope, decoratedFieldValue); // bind html
-                                $scope.data('cvalue', scopeModelField); // set cached value for dom element
+     
+                               var validateResult = model.getState($scope.getName());
+                            if(typeof validateResult.view === 'undefined' || validateResult.view !== dom.getView($scope) ){
+                                 if (cced !== scopeModelField) { // cached value of field != model.field value
+                                    decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
+                                    _set.call($scope, decoratedFieldValue); // bind html
+                                    $scope.data('cvalue', scopeModelField); // set cached value for dom element
+                                }
+                            }else{
+                                    var template = cls.view.views[validateResult.view].call(cls, scopeModelField, $scope.getName());
+                                   
+                                    $scope = $($globalScope.find(dom.getValidatorSelector($scope.getName(), validateResult.view)));
+                                    _set.call($scope, template);
+                                    $scope.data('cvalue', scopeModelField); // set cached value for dom element
+                          
                             }
+                            
                         }
                     }
     

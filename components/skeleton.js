@@ -1,6 +1,6 @@
 var prefix = 'data';
 
-var k_docapi = {
+var k_docapi = { 
     'Controller': {
         'this.interactions': {
             'dom-attribute name': {
@@ -83,6 +83,9 @@ var k_structure = {
             },
             'sync': function () {
             }
+        },
+        'state' : {
+           /* 'forename' :{result : false, msg : "not valid", value : "45345"} */
         }
     },
     'viewFilter' : {},

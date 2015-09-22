@@ -31,6 +31,50 @@ var k_data = (function ($) {
             }
         }
     };
+    
+    /**
+     * set state of a model field value and represent it in the state object eg.
+     * {result: false, msg : "email ist nicht gültig"};
+     **/
+    data.setState = function(notation, value){
+         
+        //check if valid
+        
+        if(typeof value.result === 'undefined') {
+            throw  {
+               message : "A state has to contain a field 'result' of type boolean",
+               name : "ValidationException"
+            };
+        }
+          
+        if (typeof data['state'] === 'undefined' ){
+            data.state = $.extend(true, data.field);
+        }
+          
+        if (typeof data['state'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
+            var parent = data._getParentObject(notation).replace(/\.field\./g, '.state.');
+            eval("if( (typeof " + parent + "!== 'undefined')) data.state." + notation + "=" + JSON.stringify(value) + ";");
+        } else {
+            data['state'][notation] = value;
+        }
+    }
+    
+    /**
+     * return state for a model field value eg.
+     * {result: false, msg : "email ist nicht gültig"}
+     **/
+    data.getState = function(notation){
+        try {
+            if (typeof data['state'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
+                return eval("(typeof data.state." + notation + "!== 'undefined' ) ? data.state." + notation + ": undefined;");
+            } else {
+                return data['state'][notation];
+            }
+        } catch (err) {
+            return undefined;
+        }
+    }
+    
     /**
      * eval is better for this, js supports no byref arguments
      * @param {type} variable

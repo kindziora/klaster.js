@@ -249,19 +249,19 @@ var k_dom =(function ($, api) {
             $scope.text(decorated);
         }
     };
-    
+     
     /**
      *
      * @param {type} $scope
      * @param {type} decorated
      * @returns {undefined}
      */
-    dom.setHtmlValue = function ($scope, decorated) {
+    dom.setHtmlValue = function (decorated) {
 
       if (typeof decorated === 'undefined')
         decorated = '';
         
-        $($scope).html(decorated);
+        $(this).html(decorated);
         
     };
 
@@ -285,6 +285,18 @@ var k_dom =(function ($, api) {
             name = name.replace(/\[/g, '\[').replace(/\]/g, '\]');
              
         return '[data-name="' + name + '"],[name="' + name + '"]';
+    };
+    
+    /**
+     * get jquery selector for element name
+     * @param name
+     * @param escapeit
+     * @returns {string}
+     */
+    dom.getValidatorSelector = function (name, viewname) { 
+            name = name.replace(/\[/g, '\[').replace(/\]/g, '\]');
+            viewname = viewname.replace(/\[/g, '\[').replace(/\]/g, '\]');
+        return '[data-name="' + name + '"][data-view="' + viewname + '"], [name="' + name + '"][data-view="' + viewname + '"]';
     };
     
     /**

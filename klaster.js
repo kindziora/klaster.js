@@ -17,7 +17,7 @@
         
         var $globalScope = this;
         
-        model = $.extend(model, child.model);
+        cls.model = model = $.extend(model, child.model);
         
         /**
          * log debug messages
@@ -81,7 +81,7 @@
                 return child.pre_trigger.call(this, e);
             return true;
         };
-
+    
         /*
          * gets executed after an event is triggered
          * check if model has changed
@@ -93,17 +93,38 @@
                 cls.debug('changed', result, model.field[$(this).getName()], $(this).getName());
                 
                 cls.recognizeChange.setup.call(this);
-                
+          
                 model.updateValue.call(this, result, model.field[$(this).getName()]);
-                
+              
                 cls.model2View.call($(this));
-                 
+             
             }
 
             if (typeof child.post_trigger !== "undefined")
                 return child.post_trigger.call(this, e, child);
             return true;
         };
+        
+        /**
+         * validate field by setting its state
+         * return value if valid, otherwise return undefined so value does not go into model, if used as return value from interaction
+         **/
+        cls.validate = function(name, value, type) {
+            if (typeof child.validator !== "undefined" && typeof child.validator[type] === "function") { 
+                var validateResult = child.validator[type](value);
+                
+                validateResult.value = value;
+                
+                model.setState(name, validateResult);
+              
+                return validateResult.result ? value : undefined;
+            }else{
+                throw {
+                   message : "Validator of type " + type + "does not exist.",
+                   name : "ValidationException"
+                }; 
+            } 
+        }
         
         /*
          * gets executed after a change on dom objects
@@ -150,13 +171,13 @@
             var fieldN = $scope.getName(),
                 viewName = dom.getView($scope),
                 DecoValPrimitive = scopeModelField;
-                
-            if (!cls.preRenderView($scope, scopeModelField)) {
+                 
+            if (!cls.preRenderView($scope, scopeModelField) ) { // on off option
                 return undefined;
             }
 
             if (viewName) {
-                DecoValPrimitive = cls.view.views[viewName].call(cls.view, scopeModelField, fieldN, $scope);
+                DecoValPrimitive = cls.view.views[viewName].call(cls, scopeModelField, fieldN, $scope);
             }
             return DecoValPrimitive;
         };
@@ -373,12 +394,23 @@
                             cls.updateHtmlList($scope, scopeModelField, change);// why trigger update list?
                             
                         } else { // not a list
-    
-                            if (cced !== scopeModelField) { // cached value of field != model.field value
-                                decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
-                                _set.call($scope, decoratedFieldValue); // bind html
-                                $scope.data('cvalue', scopeModelField); // set cached value for dom element
+     
+                               var validateResult = model.getState($scope.getName());
+                            if(typeof validateResult.view === 'undefined' || validateResult.view !== dom.getView($scope) ){
+                                 if (cced !== scopeModelField) { // cached value of field != model.field value
+                                    decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
+                                    _set.call($scope, decoratedFieldValue); // bind html
+                                    $scope.data('cvalue', scopeModelField); // set cached value for dom element
+                                }
+                            }else{
+                                    var template = cls.view.views[validateResult.view].call(cls, scopeModelField, $scope.getName());
+                                   
+                                    $scope = $($globalScope.find(dom.getValidatorSelector($scope.getName(), validateResult.view)));
+                                    _set.call($scope, template);
+                                    $scope.data('cvalue', scopeModelField); // set cached value for dom element
+                          
                             }
+                            
                         }
                     }
     
