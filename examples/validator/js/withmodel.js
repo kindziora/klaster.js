@@ -8,14 +8,22 @@ var interface = function() {
     //this.delay = 1000; //try it, to commit x milliseconds after last change
     intfc.delay= 1000;
     this.interactions = {
-        'todo': {
-            'keyup': function(e) {
-                if (e.which === 13) {
-                    intfc.model.field.todos.push({name: $(this).val(), completed: false});
-                    $(this).val('');
-                }
+        "user['email']": {
+           'keyup' : function(e, cls) { 
+               return cls.validate($(this).getName(), $(this).val(), 'email');
             }
-        },
+        }
+    };
+    
+    this.validator = {
+        /**
+         * validate email string
+         **/
+        'email' : function(value) {
+            var re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            
+            return {result: !(value == '' || !re.test(value)), msg : "email ist nicht gültig", view : "validInfo"};
+        }
     };
     
     this.model = {
@@ -32,25 +40,28 @@ var interface = function() {
                 console.log(JSON.stringify(this.field));
             }
         }
-
     };
     
     this.view = {
         views: {
-            length: function(todos, notation, $scope) {
-                
-                return todos.filter(function() {
-                    return true;
-                }).length;
+            'validInfo': function(data, notation, $scope) {
+                var validationResult = this.model.getState(notation);
+                if(validationResult.result){
+                    return '<div class="alert alert-dismissible alert-success"><strong>Oh yeah!</strong> valid</div>';
+                }else{
+                    return '<div class="alert alert-dismissible alert-danger"><strong>Oh snap!</strong> ' + validationResult.msg + ' . </div>';
+                }
                 
             },
-            email: function(emails, notation, $scope) {
+            email: function(emails, notation, $scope) { 
+                
                 var mails = emails.split(',');
                 var html = "";
                 for(var i in mails) {
                     html += '<p>' + mails[i] + '</p>'
                 } 
                 return html;
+ 
             }
         }
     };

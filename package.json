@@ -1,0 +1,19 @@
+{
+  "name": "klaster.js",
+  "version": "0.9.1",
+  "description": "jQuery component",
+  "keywords": [
+    "javascript",
+    "mvc",
+    "pattern",
+    "scopes",
+    "two way databinding",
+    "experimental"
+  ],
+  "main": "./klaster.js",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-closure-compiler": "0.0.21",
+    "grunt-contrib-concat": "^0.5.1"
+  }
+}
