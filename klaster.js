@@ -358,13 +358,18 @@
                     match = model._getParentObject(match, '');
     
                     var findNotation = dom.getSelector(match, true);
-    
-                    var $myPEl = $globalScope.find(findNotation);
-                    if (match !== "" && (dom.getFieldView(match) || (typeof $myPEl !== 'undefined' && $myPEl.attr(api.view.attr)))) {
+                    var $myPEl = $scope.parents(findNotation);
+                    
+                    var viewName = $myPEl.attr(api.view.attr);
+                    var viewMethod = cls.view.views[viewName];
+                    
+                    
+                    if (match !== "" && (dom.getFieldView(match) || (typeof $myPEl !== 'undefined' && typeof viewMethod !== 'undefined'))) {
                         ready();
                         $myPEl.each(local.eachViewRepresentation($myPEl.length, change, true, ready));
                         break;
                     }
+                    
                 }
             };
     
