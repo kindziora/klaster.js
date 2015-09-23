@@ -30,11 +30,7 @@ server to client 2 way databinding via nodejs
 
 ##Examples
 
-gallery (100%)
-list (100%)
-spa (50%)
-todoMVC (60%)
-twig example (100%)
+try them
 
 ##Work in progress
 

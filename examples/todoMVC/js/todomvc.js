@@ -8,6 +8,16 @@
 var interface = function() {
     var intfc = this;
     this.interactions = { 
+         'check': {
+            'click': function(e, ui) {
+                var $todo = $(this).parent().parent(), val = $(this).getValue();
+                $todo.removeClass('completed');
+                if (val) {
+                    $todo.addClass('completed');
+                }
+                return val;
+            }
+        },
         'toggle': {
             'click': function(e, ui) {
                 $('.selected').removeClass('selected');
@@ -84,7 +94,7 @@ var interface = function() {
         views: {
             'todos[*]': function(value, index) {
                 return  '<div class="view">' +
-                        '<input class="toggle" type="checkbox" name="todosCompleted" data-name="' + index + '.completed" data-on="click" ' + ((value.completed) ? 'checked="' + value.completed + '"' : '') + ' />'
+                        '<input class="toggle" type="checkbox" name="todosCompleted" data-name="' + index + '.completed" data-on="click->check" ' + ((value.completed) ? 'checked="' + value.completed + '"' : '') + ' />'
                         + '<label data-on="dblclick->todo.name" data-name="' + index + '.name">' + value.name + "</label>"
                         + "<button class='destroy' data-name='todo.delete' data-on='click' data-omit='true' data-value='" + value.name + "'></button>"
                         + "</div>";
