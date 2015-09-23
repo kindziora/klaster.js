@@ -315,8 +315,6 @@
             var error = model.getState($scope.getName());
             var cced = $scope.data('cvalue');
             if((typeof error === 'undefined' || error.result) || (typeof error !== 'undefined' && dom.getView($scope) !== error.view)){ // kein fehler aufgetreten
-                console.log("vergleich ", cced, scopeModelField);
-                
                 if (cced !== scopeModelField) { // cached value of field != model.field value
                    var decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
                     _set.call($scope, decoratedFieldValue); // bind html
