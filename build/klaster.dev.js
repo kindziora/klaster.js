@@ -175,13 +175,15 @@ var k_structure = {
             return undefined;
         }
 
-        if (typeof multiple === 'undefined' || !multiple
-            && typeof dom.multipleValues[this.attr('type')] !== 'function'
-            && !this.attr(api.multiple.attr)) {
+        if (typeof dom.multipleValues[this.attr('type')] !== 'function'
+            || this.attr(api.multiple.attr) === "false") {
             return value.call(this);
-        } else {
+        } 
+        
+        if(multiple || this.attr(api.multiple.attr) === "true"
+        || typeof dom.multipleValues[this.attr('type')] === 'function'){
             /* if multiple is active return values */
-            return getValues(this.attr('type'));
+            return getValues.call(this, this.attr('type'));
         }
 
     }
@@ -505,6 +507,25 @@ var k_structure = {
         }
     }
     
+     /**
+     * eval is better for this, js supports no byref arguments
+     * @param {type} variable
+     * @param {type} level
+     * @param {type} index
+     * @returns {@exp;data@pro;model@call;getValue}
+     */
+    data.getOld = function (notation) {
+        try {
+            if (typeof data['_modelprechangeReal'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
+                return eval("(typeof data._modelprechangeReal." + notation + "!== 'undefined' ) ? data._modelprechangeReal." + notation + ": undefined;");
+            } else {
+                return data['_modelprechangeReal'][notation];
+            }
+        } catch (err) {
+            return undefined;
+        }
+    };
+    
     /**
      * eval is better for this, js supports no byref arguments
      * @param {type} variable
@@ -666,7 +687,7 @@ var k_structure = {
         if (Object.prototype.toString.call(o1) == "[object Array]") {
             var o1l = getUndefinedLength(o1), o2l = getUndefinedLength(o2);
             if (o1l != o2l) {
-                // return [["", "length", o1l, o2l]]; // different length
+                 return [["", "length", o1l, o2l]]; // different length
             }
             var diff = [];
             for (var i = 0; i < o1.length; i++) {
@@ -832,7 +853,7 @@ var k_structure = {
             
             if ((result != model.get($(this).getName())) || model.changed($(this).getName())) {
                 
-                cls.debug('changed', result, model.field[$(this).getName()], $(this).getName());
+                cls.debug('changed', result, model.getOld($(this).getName()), $(this).getName());
                 
                 cls.recognizeChange.setup.call(this);
           
@@ -1055,21 +1076,17 @@ var k_structure = {
         cls.updateHtmlElement = function($scope, scopeModelField, changed){
             
             var error = model.getState($scope.getName());
-            var cced = $scope.data('cvalue');
+            var cced = model.getOld($scope.getName());
             if((typeof error === 'undefined' || error.result) || (typeof error !== 'undefined' && dom.getView($scope) !== error.view)){ // kein fehler aufgetreten
-                console.log("vergleich ", cced, scopeModelField);
-                
                 if (cced !== scopeModelField) { // cached value of field != model.field value
                    var decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
-                    _set.call($scope, decoratedFieldValue); // bind html
-                    $scope.data('cvalue', typeof scopeModelField === 'undefined' ? false: scopeModelField); // set cached value for dom element
+                    _set.call($scope, decoratedFieldValue); // bind html 
                 }
             }else{ // field view was defined i a validator is it gets rendered also if value is not in model and by that equal to undefined
                 var template = cls.view.views[error.view].call(cls, scopeModelField, $scope.getName());
                
                 $field = $($globalScope.find(dom.getValidatorSelector($scope.getName(), error.view)));
-                _set.call($field, template);
-                $field.data('cvalue', typeof scopeModelField === 'undefined' ? false: scopeModelField); // set cached value for dom element
+                _set.call($field, template); 
             }
         };
         

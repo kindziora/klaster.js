@@ -66,13 +66,15 @@ var k_dom =(function ($, api) {
             return undefined;
         }
 
-        if (typeof multiple === 'undefined' || !multiple
-            && typeof dom.multipleValues[this.attr('type')] !== 'function'
-            && !this.attr(api.multiple.attr)) {
+        if (typeof dom.multipleValues[this.attr('type')] !== 'function'
+            || this.attr(api.multiple.attr) === "false") {
             return value.call(this);
-        } else {
+        } 
+        
+        if(multiple || this.attr(api.multiple.attr) === "true"
+        || typeof dom.multipleValues[this.attr('type')] === 'function'){
             /* if multiple is active return values */
-            return getValues(this.attr('type'));
+            return getValues.call(this, this.attr('type'));
         }
 
     }

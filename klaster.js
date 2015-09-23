@@ -90,7 +90,7 @@
             
             if ((result != model.get($(this).getName())) || model.changed($(this).getName())) {
                 
-                cls.debug('changed', result, model.field[$(this).getName()], $(this).getName());
+                cls.debug('changed', result, model.getOld($(this).getName()), $(this).getName());
                 
                 cls.recognizeChange.setup.call(this);
           
@@ -313,19 +313,17 @@
         cls.updateHtmlElement = function($scope, scopeModelField, changed){
             
             var error = model.getState($scope.getName());
-            var cced = $scope.data('cvalue');
+            var cced = model.getOld($scope.getName());
             if((typeof error === 'undefined' || error.result) || (typeof error !== 'undefined' && dom.getView($scope) !== error.view)){ // kein fehler aufgetreten
                 if (cced !== scopeModelField) { // cached value of field != model.field value
                    var decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
-                    _set.call($scope, decoratedFieldValue); // bind html
-                    $scope.data('cvalue', typeof scopeModelField === 'undefined' ? false: scopeModelField); // set cached value for dom element
+                    _set.call($scope, decoratedFieldValue); // bind html 
                 }
             }else{ // field view was defined i a validator is it gets rendered also if value is not in model and by that equal to undefined
                 var template = cls.view.views[error.view].call(cls, scopeModelField, $scope.getName());
                
                 $field = $($globalScope.find(dom.getValidatorSelector($scope.getName(), error.view)));
-                _set.call($field, template);
-                $field.data('cvalue', typeof scopeModelField === 'undefined' ? false: scopeModelField); // set cached value for dom element
+                _set.call($field, template); 
             }
         };
         

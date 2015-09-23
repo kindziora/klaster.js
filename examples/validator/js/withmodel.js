@@ -11,7 +11,7 @@ var interface = function() {
     this.interactions = {
         "user['email']": {
            'keyup' : function(e, cls) { 
-               return cls.validate($(this).getName(), $(this).val(), 'email');
+               return undefined;
             }
         }
     };

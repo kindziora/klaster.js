@@ -7,7 +7,7 @@
  */
 var interface = function() {
     var intfc = this;
-    this.interactions = {
+    this.interactions = { 
         'toggle': {
             'click': function(e, ui) {
                 $('.selected').removeClass('selected');
@@ -15,18 +15,19 @@ var interface = function() {
                 $('#todo-list').attr('data-filter', $(this).attr('data-value'));
             }
         },
-        'todo': {
-            'keyup': function(e) {
+        'todos': {
+            'keyup': function(e, kl) {
                 if (e.which === 13 && $(this).val() !== '') {
-                    intfc.model.field.todos.push({name: $(this).val(), completed: false});
+                    kl.model.field.todos.push({name: $(this).val(), completed: false});
                     $(this).val('');
                 }
+                return kl.model.field.todos;
             }
         },
         'todo.delete': {
-            'click': function(e) {
+            'click': function(e, kl) {
                 var todoname = $(this).parent().parent().getName();
-                intfc.model._delete(todoname);
+                kl.model._delete(todoname);
             }
         },
         'todo.name': {
@@ -61,6 +62,13 @@ var interface = function() {
             'todos': [
                 {name: 'checkout klaster.js', completed: false}
             ]
+        },
+        'event' :{
+            'sync' : function(){
+                
+                console.log(this.field);
+            }
+            
         }
     };
 
@@ -76,7 +84,7 @@ var interface = function() {
         views: {
             'todos[*]': function(value, index) {
                 return  '<div class="view">' +
-                        '<input class="toggle" type="checkbox" name="todosCompleted" data-name="' + index + '.completed" data-multiple="false" data-on="click" ' + ((value.completed) ? 'checked="' + value.completed + '"' : '') + ' />'
+                        '<input class="toggle" type="checkbox" name="todosCompleted" data-name="' + index + '.completed" data-on="click" ' + ((value.completed) ? 'checked="' + value.completed + '"' : '') + ' />'
                         + '<label data-on="dblclick->todo.name" data-name="' + index + '.name">' + value.name + "</label>"
                         + "<button class='destroy' data-name='todo.delete' data-on='click' data-omit='true' data-value='" + value.name + "'></button>"
                         + "</div>";

@@ -75,6 +75,25 @@ var k_data = (function ($) {
         }
     }
     
+     /**
+     * eval is better for this, js supports no byref arguments
+     * @param {type} variable
+     * @param {type} level
+     * @param {type} index
+     * @returns {@exp;data@pro;model@call;getValue}
+     */
+    data.getOld = function (notation) {
+        try {
+            if (typeof data['_modelprechangeReal'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
+                return eval("(typeof data._modelprechangeReal." + notation + "!== 'undefined' ) ? data._modelprechangeReal." + notation + ": undefined;");
+            } else {
+                return data['_modelprechangeReal'][notation];
+            }
+        } catch (err) {
+            return undefined;
+        }
+    };
+    
     /**
      * eval is better for this, js supports no byref arguments
      * @param {type} variable
@@ -236,7 +255,7 @@ var k_data = (function ($) {
         if (Object.prototype.toString.call(o1) == "[object Array]") {
             var o1l = getUndefinedLength(o1), o2l = getUndefinedLength(o2);
             if (o1l != o2l) {
-                // return [["", "length", o1l, o2l]]; // different length
+                 return [["", "length", o1l, o2l]]; // different length
             }
             var diff = [];
             for (var i = 0; i < o1.length; i++) {
