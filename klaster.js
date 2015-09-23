@@ -307,6 +307,30 @@
 
         };
         
+        /**
+         * update html element if changed || validation error view
+         **/
+        cls.updateHtmlElement = function($scope, scopeModelField, changed){
+            
+            var error = model.getState($scope.getName());
+            var cced = $scope.data('cvalue');
+            if((typeof error === 'undefined' || error.result) || (typeof error !== 'undefined' && dom.getView($scope) !== error.view)){ // kein fehler aufgetreten
+                console.log("vergleich ", cced, scopeModelField);
+                
+                if (cced !== scopeModelField) { // cached value of field != model.field value
+                   var decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
+                    _set.call($scope, decoratedFieldValue); // bind html
+                    $scope.data('cvalue', typeof scopeModelField === 'undefined' ? false: scopeModelField); // set cached value for dom element
+                }
+            }else{ // field view was defined i a validator is it gets rendered also if value is not in model and by that equal to undefined
+                var template = cls.view.views[error.view].call(cls, scopeModelField, $scope.getName());
+               
+                $field = $($globalScope.find(dom.getValidatorSelector($scope.getName(), error.view)));
+                _set.call($field, template);
+                $field.data('cvalue', typeof scopeModelField === 'undefined' ? false: scopeModelField); // set cached value for dom element
+            }
+        };
+        
          //from server to model
         cls.server2Model = function (data) {
             //model.set.call(data.field, data.value);
@@ -381,9 +405,7 @@
                         foundRepresentation = false;
                         iteration(scopeModelField);
                         return;
-                    }
-    
-                    var cced = $scope.data('cvalue');
+                    } 
     
                     if (dom.isPrimitiveValue($scope)) { //if dom view element is of type primitive
                         decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
@@ -401,26 +423,10 @@
                             cls.updateHtmlList($scope, scopeModelField, change);// why trigger update list?
                             
                         } else { // not a list
-     
-                               var validateResult = model.getState($scope.getName());
-                            if(typeof validateResult === 'undefined' || validateResult.view !== dom.getView($scope) ){
-                                 if (cced !== scopeModelField) { // cached value of field != model.field value
-                                    decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
-                                    _set.call($scope, decoratedFieldValue); // bind html
-                                    $scope.data('cvalue', scopeModelField); // set cached value for dom element
-                                }
-                            }else{
-                                var template = cls.view.views[validateResult.view].call(cls, scopeModelField, $scope.getName());
-                               
-                                $scope = $($globalScope.find(dom.getValidatorSelector($scope.getName(), validateResult.view)));
-                                _set.call($scope, template);
-                                $scope.data('cvalue', scopeModelField); // set cached value for dom element
-                      
-                            }
-                            
+                            cls.updateHtmlElement($scope, scopeModelField, change);
                         }
                     }
-    
+                    
                     iteration(decoratedFieldValue);
     
                 }
