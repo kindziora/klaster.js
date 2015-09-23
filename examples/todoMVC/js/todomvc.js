@@ -97,4 +97,4 @@ var interface = function() {
     };
 };
 
-$('#todoapp').klaster_(new interface());
+$('#todoapp').klaster(new interface());

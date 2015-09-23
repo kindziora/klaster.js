@@ -100,4 +100,4 @@ var interface = function() {
 
 var myinterface = new interface();
 
-$('#todoapp').klaster_(myinterface);
+$('#todoapp').klaster(myinterface);

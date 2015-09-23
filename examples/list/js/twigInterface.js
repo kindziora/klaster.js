@@ -138,6 +138,6 @@ var twigInterface = function (model) {
 
 $.get('example.json').done(function (model) {
     var mytodos = new twigInterface(model);
-    $('#todoapp').klaster_(mytodos);
+    $('#todoapp').klaster(mytodos);
 });
  

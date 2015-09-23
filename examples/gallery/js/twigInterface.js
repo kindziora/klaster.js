@@ -149,7 +149,7 @@ var cb = function (cachedViews) {
     model.results = [];
     var mytodos = new twigInterface(model, cachedViews, isdev);
 
-    $('#todoapp').klaster_(mytodos);
+    $('#todoapp').klaster(mytodos);
     mytodos.model.event.sync.call(mytodos.model);
 
 };

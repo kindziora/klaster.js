@@ -6,7 +6,7 @@
 var interface = function(socket) {
     var intfc = this;
     //try it, to commit x milliseconds after last change
-    intfc.delay= 100;
+    intfc.delay = 100;
     
     this.interactions = {
         "user['email']": {
@@ -55,7 +55,7 @@ var interface = function(socket) {
                     return '<div class="alert alert-dismissible alert-success"><strong>Oh yeah!</strong> valid</div>';
                 }else{
                     return '<div class="alert alert-dismissible alert-danger"><strong>Oh snap!</strong> ' + validationResult.msg + ' . </div>';
-                } 
+                }
             },
             email: function(emails, notation, $scope) { 
                 
@@ -73,7 +73,7 @@ var interface = function(socket) {
     /**
      * 
      **/
-    this.server = function( ){ 
+    this.server = function( ){
         socket.on('modelUpdate', intfc.server2Model); // expects {value: {}, field : 'user.name'}
     };
     

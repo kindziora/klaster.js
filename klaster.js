@@ -403,7 +403,7 @@
                         } else { // not a list
      
                                var validateResult = model.getState($scope.getName());
-                            if(typeof validateResult.view === 'undefined' || validateResult.view !== dom.getView($scope) ){
+                            if(typeof validateResult === 'undefined' || validateResult.view !== dom.getView($scope) ){
                                  if (cced !== scopeModelField) { // cached value of field != model.field value
                                     decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
                                     _set.call($scope, decoratedFieldValue); // bind html

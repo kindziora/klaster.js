@@ -1048,6 +1048,13 @@ var k_structure = {
             decision(change); //make decision what to update on list
 
         };
+        
+         //from server to model
+        cls.server2Model = function (data) {
+            //model.set.call(data.field, data.value);
+            var $field = $(dom.getSelector(data.field));
+            cls.post_trigger.call($field, e, data.value);
+        };
 
         //from view to model
         cls.view2Model = function ($where) {
@@ -1138,19 +1145,19 @@ var k_structure = {
                         } else { // not a list
      
                                var validateResult = model.getState($scope.getName());
-                            if(typeof validateResult.view === 'undefined' || validateResult.view !== dom.getView($scope) ){
+                            if(typeof validateResult === 'undefined' || validateResult.view !== dom.getView($scope) ){
                                  if (cced !== scopeModelField) { // cached value of field != model.field value
                                     decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
                                     _set.call($scope, decoratedFieldValue); // bind html
                                     $scope.data('cvalue', scopeModelField); // set cached value for dom element
                                 }
                             }else{
-                                    var template = cls.view.views[validateResult.view].call(cls, scopeModelField, $scope.getName());
-                                   
-                                    $scope = $($globalScope.find(dom.getValidatorSelector($scope.getName(), validateResult.view)));
-                                    _set.call($scope, template);
-                                    $scope.data('cvalue', scopeModelField); // set cached value for dom element
-                          
+                                var template = cls.view.views[validateResult.view].call(cls, scopeModelField, $scope.getName());
+                               
+                                $scope = $($globalScope.find(dom.getValidatorSelector($scope.getName(), validateResult.view)));
+                                _set.call($scope, template);
+                                $scope.data('cvalue', scopeModelField); // set cached value for dom element
+                      
                             }
                             
                         }

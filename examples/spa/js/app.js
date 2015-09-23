@@ -4,13 +4,13 @@
  */
 var myspapp = function() {
     
-    //init app klaster_ that controlls basic app
+    //init app klaster that controlls basic app
     
     //show page by url route
     
     //load js interface files
     
-    //apply interfaces // klaster_
+    //apply interfaces // klaster
     
 };
 
