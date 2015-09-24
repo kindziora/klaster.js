@@ -363,7 +363,9 @@
                     var viewName = $myPEl.attr(api.view.attr);
                     var viewMethod = cls.view.views[viewName];
                     
-                    
+                    /**
+                     * improve performance here!!!
+                     **/
                     if (match !== "" && (dom.getFieldView(match) || (typeof $myPEl !== 'undefined' && typeof viewMethod !== 'undefined'))) {
                         ready();
                         $myPEl.each(local.eachViewRepresentation($myPEl.length, change, true, ready));
