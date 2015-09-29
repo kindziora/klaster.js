@@ -113,17 +113,17 @@ var k_dom =(function ($, api) {
      *
      * @type {{checked: Function, checkbox: Function, radio: Function, data-multiple: Function}}
      */
-    dom.multipleValues = {
-        "checked": function ($el, $elements) {
+       dom.multipleValues = {
+        "checked": function ($el, $elements, single) {
 
-            if ($el.attr(api.multiple.attr) === 'false' || $('[' + $el.nameAttr() + '="' + $el.getName() + '"]').length === 1)
+            if ($el.attr(api.multiple.attr) === 'false'|| single || $('[' + $el.nameAttr() + '="' + $el.getName() + '"]').length === 1)
                 return $el.is(':checked');
             var values = [],
-                value = undefined;
+                val = undefined;
             $elements.each(function () {
-                value = dom.value.call($(this));
-                if (typeof value !== 'undefined') {
-                    values.push(value);
+                val = value.call($(this));
+                if (typeof val !== 'undefined') {
+                    values.push(val);
                 }
             });
             return values;
@@ -132,7 +132,7 @@ var k_dom =(function ($, api) {
             return dom.multipleValues.checked(this, $('[' + this.nameAttr() + '="' + this.getName() + '"]:checked'));
         },
         "radio": function () {
-            return dom.multipleValues.checkbox;
+            return dom.multipleValues.checked(this, $('[' + this.nameAttr() + '="' + this.getName() + '"]:checked'), true);
         },
         "data-multiple": function () {
             return dom.multipleValues.checked(this, $('[' + this.nameAttr() + '="' + this.getName() + '"][data-checked="true"]'));
