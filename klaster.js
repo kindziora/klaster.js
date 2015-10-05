@@ -87,21 +87,21 @@
          * check if model has changed
          */
         cls.post_trigger = function (e, result) {
-            
-            if ((result != model.get($(this).getName())) || model.changed($(this).getName())) {
-                
-                cls.debug('changed', result, model.getOld($(this).getName()), $(this).getName());
-                
-                cls.recognizeChange.setup.call(this);
-          
-                model.updateValue.call(this, result, model.field[$(this).getName()]);
-              
-                cls.model2View.call($(this));
-             
-            }
 
             if (typeof child.post_trigger !== "undefined")
-                return child.post_trigger.call(this, e, child);
+                child.post_trigger.call(this, e, child);
+
+            if ((result != model.get($(this).getName())) || model.changed($(this).getName())) {
+
+                cls.debug('changed', result, model.getOld($(this).getName()), $(this).getName());
+
+                cls.recognizeChange.setup.call(this);
+
+                model.updateValue.call(this, result, model.field[$(this).getName()]);
+
+                cls.model2View.call($(this));
+
+            }
             return true;
         };
         
