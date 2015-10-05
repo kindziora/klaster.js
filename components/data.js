@@ -129,7 +129,7 @@ var k_data = (function ($) {
         if (!notation)
             return parent;
         if (notation.indexOf(']') > notation.indexOf('.')) {
-            parent = ns + notation.replace(notation.match(/\[(.*?)\]/gi).pop(), '');
+            parent = ns + notation.replace(notation.match(/\[(.*?)\]/gi).pop(), '!').split('!')[0];
         } else {
             var p = notation.split('.');
             p.pop();
