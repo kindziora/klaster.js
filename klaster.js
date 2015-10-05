@@ -402,7 +402,12 @@
                             }
                         }
                     }
-     
+                    
+                    if ($scope.attr('type') === "radio") {
+                        foundRepresentation = false;
+                        iteration(scopeModelField);
+                        return;
+                    }
     
                     if (dom.isPrimitiveValue($scope)) { //if dom view element is of type primitive
                         decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
