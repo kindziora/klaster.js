@@ -21,7 +21,7 @@ var k_data = (function ($) {
                     base = [];
                 }
 
-                if (typeof data['field'][key] !== 'string') {
+                if (typeof data['field'][key] !== 'string' && typeof data['field'][key] !== 'number') {
                     data._modelprechangeReal[key] = $.extend(true, base, data['field'][key]);
                 } else {
                     data._modelprechangeReal[key] = data['field'][key];
