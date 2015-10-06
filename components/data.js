@@ -138,14 +138,14 @@ var k_data = (function ($) {
         return parent;
     };
 
-   data._delete = data.delete = function (notation) {
+    data._delete = data.delete = function (notation) {
         if (typeof data['field'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
             try {
-                // var parent = data._getParentObject(notation);
-
                 eval("if(typeof data['field']." + notation + "!== 'undefined' ) delete data['field']." + notation + ";");
+                var parent = data._getParentObject(notation);
+                eval("if(Object.prototype.toString.call(" + parent + ") === '[object Array]' ) " + parent + ".length--;");
             } catch (err) {
-                data.debug(err);
+                console.log(err);
             }
         } else {
             delete data['field'][notation];
