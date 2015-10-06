@@ -138,7 +138,7 @@ var k_data = (function ($) {
         return parent;
     };
 
-    data._delete = function (notation) {
+   data._delete = data.delete = function (notation) {
         if (typeof data['field'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
             try {
                 // var parent = data._getParentObject(notation);
