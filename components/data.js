@@ -142,13 +142,20 @@ var k_data = (function ($) {
         if (typeof data['field'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
             try {
                 var parent = data._getParentObject(notation);
-                eval(
+                 eval(
                     "if(Object.prototype.toString.call(" + parent + ") === '[object Array]' ){" +
                     "" + parent + ".splice(" + parent + ".indexOf(data['field']." + notation + "),1);" +
                     "} else {" +
                         "if(typeof data['field']." + notation + "!== 'undefined')" +
                             " delete data['field']." + notation + ";" +
                     "}");
+                /**
+                 * to keep indexes
+
+                eval("if(typeof data['field']." + notation + "!== 'undefined' ){ delete data['field']." + notation + ";" +
+                    "if(Object.prototype.toString.call(" + parent + ") === '[object Array]' ) " + parent + ".length--;" +
+                    "}");
+                 */
             } catch (err) {
                 console.log(err);
             }
