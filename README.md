@@ -8,29 +8,14 @@ It aims on rich frontend experiences and simplicity.
   1. progressive functionality and complexity
   2. easy to work with
   3. easy debugging
- 
-##current state
-
-html -> model without any additional markup
-
-interface-model-view
-
-better 2 way data binding
-
-filter in templates
-
-foreach in templates
-
-omit toggle
 
 ##coming features
 
 server to client 2 way databinding via nodejs
 
-
 ##Examples
 
-try them
+see repo
 
 ##Work in progress
 
@@ -39,16 +24,13 @@ unit test and integration test for the framework and apps
 
 ##klaster.js framework code structure
 
-
-klaster.js
-bundling functionality by using following components
+klaster.js --bundling functionality by using components
 
 dom --dom related methods and code
 data --model and data related handling
 structure --contains class scheme
 
 ##klaster.js minimal app 
-
 
 ###html
 
@@ -83,16 +65,19 @@ structure --contains class scheme
 ```
 
 So what does this code?
-If you provide some data to the form the sync function gets called.
+The form will be bond to a data model.
 So if the state of the form does change you could send the json to a backend.
 
-##klaster.js app start using features  
+##klaster.js app todo example 
+using:
+-filter
+-data model
+-views
 
 ###html
 
-
 ```HTML
-<form id="jobform">
+<form id="jobform" data-defaultvalues="model">
   <h2>list</h2>
    <input type="checkbox" name="onlycompleted" data-on="change" /> only completed todos
   <ul data-name="todos" data-view="foreach->todo" data-filter="this.completed">
