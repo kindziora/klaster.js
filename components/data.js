@@ -14,7 +14,7 @@ var k_data = (function ($) {
         data._modelprechangeReal = {};
         data._modelpresize = 0;
         for (var key in data['field']) {
-            if (data.has(data['field'], key)) {
+            if (data.has(data['field'], key) && data['field'][key] !== null) {
                 data._modelprechange[key] = data['field'][key].toString();
                 var base = {};
                 if (Object.prototype.toString.call(data['field'][key]) === "[object Array]") {
