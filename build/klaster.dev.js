@@ -222,17 +222,17 @@ var k_structure = {
      *
      * @type {{checked: Function, checkbox: Function, radio: Function, data-multiple: Function}}
      */
-    dom.multipleValues = {
-        "checked": function ($el, $elements) {
+       dom.multipleValues = {
+        "checked": function ($el, $elements, single) {
 
-            if ($el.attr(api.multiple.attr) === 'false' || $('[' + $el.nameAttr() + '="' + $el.getName() + '"]').length === 1)
+            if ($el.attr(api.multiple.attr) === 'false'|| single || $('[' + $el.nameAttr() + '="' + $el.getName() + '"]').length === 1)
                 return $el.is(':checked');
             var values = [],
-                value = undefined;
+                val = undefined;
             $elements.each(function () {
-                value = dom.value.call($(this));
-                if (typeof value !== 'undefined') {
-                    values.push(value);
+                val = value.call($(this));
+                if (typeof val !== 'undefined') {
+                    values.push(val);
                 }
             });
             return values;
@@ -241,7 +241,7 @@ var k_structure = {
             return dom.multipleValues.checked(this, $('[' + this.nameAttr() + '="' + this.getName() + '"]:checked'));
         },
         "radio": function () {
-            return dom.multipleValues.checkbox;
+            return dom.multipleValues.checked(this, $('[' + this.nameAttr() + '="' + this.getName() + '"]:checked'), true);
         },
         "data-multiple": function () {
             return dom.multipleValues.checked(this, $('[' + this.nameAttr() + '="' + this.getName() + '"][data-checked="true"]'));
@@ -430,7 +430,8 @@ var k_structure = {
     $.fn.getXPath = dom.getXPath;
 
     return dom;
-}(jQuery, k_docapi));;var k_data = (function ($) {
+}(jQuery, k_docapi));
+;var k_data = (function ($) {
     var data = {
         'field' : {}
     };
@@ -446,14 +447,14 @@ var k_structure = {
         data._modelprechangeReal = {};
         data._modelpresize = 0;
         for (var key in data['field']) {
-            if (data.has(data['field'], key)) {
+            if (data.has(data['field'], key) && data['field'][key] !== null  && typeof data['field'][key] !== 'undefined') {
                 data._modelprechange[key] = data['field'][key].toString();
                 var base = {};
                 if (Object.prototype.toString.call(data['field'][key]) === "[object Array]") {
                     base = [];
                 }
 
-                if (typeof data['field'][key] !== 'string') {
+                if (typeof data['field'][key] !== 'string' && typeof data['field'][key] !== 'number') {
                     data._modelprechangeReal[key] = $.extend(true, base, data['field'][key]);
                 } else {
                     data._modelprechangeReal[key] = data['field'][key];
@@ -561,7 +562,7 @@ var k_structure = {
         if (!notation)
             return parent;
         if (notation.indexOf(']') > notation.indexOf('.')) {
-            parent = ns + notation.replace(notation.match(/\[(.*?)\]/gi).pop(), '');
+            parent = ns + notation.replace(notation.match(/\[(.*?)\]/gi).pop(), '!').split('!')[0];
         } else {
             var p = notation.split('.');
             p.pop();
@@ -570,19 +571,32 @@ var k_structure = {
         return parent;
     };
 
-    data._delete = function (notation) {
+    data._delete = data.delete = function (notation) {
         if (typeof data['field'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
             try {
-                // var parent = data._getParentObject(notation);
+                var parent = data._getParentObject(notation);
+                 eval(
+                    "if(Object.prototype.toString.call(" + parent + ") === '[object Array]' ){" +
+                    "" + parent + ".splice(" + parent + ".indexOf(data['field']." + notation + "),1);" +
+                    "} else {" +
+                        "if(typeof data['field']." + notation + "!== 'undefined')" +
+                            " delete data['field']." + notation + ";" +
+                    "}");
+                /**
+                 * to keep indexes
 
-                eval("if(typeof data['field']." + notation + "!== 'undefined' ) delete data['field']." + notation + ";");
+                eval("if(typeof data['field']." + notation + "!== 'undefined' ){ delete data['field']." + notation + ";" +
+                    "if(Object.prototype.toString.call(" + parent + ") === '[object Array]' ) " + parent + ".length--;" +
+                    "}");
+                 */
             } catch (err) {
-                data.debug(err);
+                console.log(err);
             }
         } else {
             delete data['field'][notation];
         }
     };
+
 
 
     /**
@@ -677,7 +691,7 @@ var k_structure = {
             return undefined; // both null
         }
 
-        function getUndefinedLength(arr) {
+       function getUndefinedLength(arr) {
             return arr.filter(function () {
                 return true;
             }).length;
@@ -761,7 +775,8 @@ var k_structure = {
         return data.diffObjects(data._modelprechangeReal, data.field);
     };
     return data;
-}(jQuery));;/**
+}(jQuery));
+;/**
  * klaster is a jquery filter plugin for extended filters by dom rules and javascript based on filter classes
  * @author Alexander Kindziora 2015
  *
@@ -849,22 +864,21 @@ var k_structure = {
          * gets executed after an event is triggered
          * check if model has changed
          */
-        cls.post_trigger = function (e, result) {
-            
+       cls.post_trigger = function (e, result) { 
             if ((result != model.get($(this).getName())) || model.changed($(this).getName())) {
-                
-                cls.debug('changed', result, model.getOld($(this).getName()), $(this).getName());
-                
-                cls.recognizeChange.setup.call(this);
-          
-                model.updateValue.call(this, result, model.field[$(this).getName()]);
-              
-                cls.model2View.call($(this));
-             
-            }
 
-            if (typeof child.post_trigger !== "undefined")
-                return child.post_trigger.call(this, e, child);
+                cls.debug('changed', result, model.getOld($(this).getName()), $(this).getName());
+
+                cls.recognizeChange.setup.call(this);
+
+                model.updateValue.call(this, result, model.field[$(this).getName()]);
+
+                if (typeof child.post_trigger !== "undefined")
+                    child.post_trigger.call(this, e, child);
+
+                cls.model2View.call($(this));
+
+            }
             return true;
         };
         
@@ -1126,7 +1140,9 @@ var k_structure = {
                     var viewName = $myPEl.attr(api.view.attr);
                     var viewMethod = cls.view.views[viewName];
                     
-                    
+                    /**
+                     * improve performance here!!!
+                     **/
                     if (match !== "" && (dom.getFieldView(match) || (typeof $myPEl !== 'undefined' && typeof viewMethod !== 'undefined'))) {
                         ready();
                         $myPEl.each(local.eachViewRepresentation($myPEl.length, change, true, ready));
@@ -1164,12 +1180,12 @@ var k_structure = {
                             }
                         }
                     }
-    
-                    if (!dom.hasView($scope)) {
+                    
+                    if ($scope.attr('type') === "radio") {
                         foundRepresentation = false;
                         iteration(scopeModelField);
                         return;
-                    } 
+                    }
     
                     if (dom.isPrimitiveValue($scope)) { //if dom view element is of type primitive
                         decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
