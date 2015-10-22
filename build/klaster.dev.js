@@ -1366,15 +1366,15 @@ var k_structure = {
                     method = events[name][event];
                     var result = true;
                     if (false !== cls.pre_trigger.call(me, e)) {
-                        if (typeof child.interactions[name] !== 'undefined' &&
-                            typeof child.interactions[name][method] !== 'undefined') {
-                            result = child.interactions[name][method].call(me, e, cls, args);
+                        if (typeof cls.interactions[name] !== 'undefined' &&
+                            typeof cls.interactions[name][method] !== 'undefined') {
+                            result = cls.interactions[name][method].call(me, e, cls, args);
                             if ($(me).attr(api.omit.attr) === "true") {
                                 result = $(me).getValue();
                             }
-                        } else if (typeof child.interactions[method] !== 'undefined' &&
-                            typeof child.interactions[method][event] !== 'undefined') {
-                            result = child.interactions[method][event].call(me, e, cls, args);
+                        } else if (typeof cls.interactions[method] !== 'undefined' &&
+                            typeof cls.interactions[method][event] !== 'undefined') {
+                            result = cls.interactions[method][event].call(me, e, cls, args);
                             if ($(me).attr(api.omit.attr) === "true") {
                                 result = $(me).getValue();
                             }
