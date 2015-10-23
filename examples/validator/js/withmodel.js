@@ -22,8 +22,12 @@ var interface = function() {
          **/
         'email' : function(value) {
             var re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-            
-            return {result: !(value == '' || !re.test(value)), msg : "email ist nicht gültig", view : "validInfo"};
+            var isValid = !(value == '' || !re.test(value));
+            return {
+                result: isValid,
+                msg : "email ist nicht gültig",
+                view : "validInfo"
+            };
         }
     };
     

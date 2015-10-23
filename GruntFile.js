@@ -5,7 +5,8 @@ module.exports = function (grunt) {
         pkg: grunt.file.readJSON('package.json'),
         concat: {
             options: {
-                separator: ';'
+                separator: ';',
+                banner: '/*! <%= pkg.name %> Version: <%= pkg.version %> <%= grunt.template.today("dd-mm-yyyy HH:MM:ss") %> */\n'
             },
             dist: {
                 src: ['components/skeleton.js', 'components/dom.js', 'components/data.js','klaster.js'],

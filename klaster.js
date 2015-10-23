@@ -342,6 +342,7 @@
         
         cls.model2View = function () {
             var local = {}; 
+            var $triggerSrc = $(this);
             
             /**
              * executed after processing all name element dom representations
@@ -388,9 +389,14 @@
                     
                     // check how to treat this field
                     var $scope = $(this), fieldN = $scope.getName();
+                    
+                    if($triggerSrc.get(0) === $scope.get(0)){
+                        return;
+                    } 
+                    
                     var scopeModelField = model.get(fieldN);
                     var decoratedFieldValue;
-    
+                    
                     function iteration(decoratedFieldValue) {
                         $scope.data('value', decoratedFieldValue);
                         cnt--;
@@ -403,11 +409,11 @@
                         }
                     }
                     
-                    if ($scope.attr('type') === "radio") {
+                   /* if ($scope.attr('type') === "radio") {
                         foundRepresentation = false;
                         iteration(scopeModelField);
                         return;
-                    }
+                    }*/
     
                     if (dom.isPrimitiveValue($scope)) { //if dom view element is of type primitive
                         decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
