@@ -6,7 +6,7 @@ It aims on rich frontend experiences and simplicity.
 ##goals
 
   1. progressive functionality and complexity
-  2. easy to work with
+  2. fast & easy to work with
   3. easy debugging
 
 ##coming features
