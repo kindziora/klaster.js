@@ -110,7 +110,7 @@
          **/
         cls.validate = function(name, value, type) {
             if (typeof child.validator !== "undefined" && typeof child.validator[type] === "function") { 
-                var validateResult = child.validator[type](value);
+                var validateResult = child.validator[type](value, name);
                 
                 validateResult.value = value;
                 
