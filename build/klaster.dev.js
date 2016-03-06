@@ -1,4 +1,4 @@
-/*! klaster.js Version: 0.9.1 23-10-2015 16:12:09 */
+/*! klaster.js Version: 0.9.1 06-03-2016 20:56:12 */
 var prefix = 'data';
 
 var k_docapi = { 
@@ -889,7 +889,7 @@ var k_structure = {
          **/
         cls.validate = function(name, value, type) {
             if (typeof child.validator !== "undefined" && typeof child.validator[type] === "function") { 
-                var validateResult = child.validator[type](value);
+                var validateResult = child.validator[type].call(model, value, name);
                 
                 validateResult.value = value;
                 
@@ -1330,11 +1330,11 @@ var k_structure = {
             return mio;
         }();
  
-        /**
+       /**
          *dispatch events for dom element
          */
         cls.dispatchEvents = function () {
-            var events = $(this).attr(api.on.attr).split(','), i = 0, event = "", FinalEvents = {}, parts = "";
+            var events = ($(this).attr(api.on.attr) ||'').split(','), i = 0, event = "", FinalEvents = {}, parts = "";
             for (i in events) {
                 event = $.trim(events[i]);
                 parts = event.split('->');
@@ -1396,20 +1396,29 @@ var k_structure = {
             };
             //filter.fields = filter.$el.find('[name],[data-name]'),
             filter.events = filter.$el.find('[' + api.on.attr + ']');
+            
             var InitValue = '';
-            $(filter.events).each(function () {
+            
+            function bindevents() {
                 name = $(this).getName();
-                events[name] = cls.dispatchEvents.call(this);
-                for (event in events[name]) {
-                    cls.debug('name:' + name + ', event:' + event);
-                    $(this).off(event);
-                    $(this).on(event, factory(this, event));
-                    if ($el.attr('data-defaultvalues') !== 'model' && !$el.parents('[data-defaultvalues="model"]').get(0)) {
-                        InitValue = $(this).getValue();
-                        model.updateValue.call(this, InitValue);
-                    }
-                }
-            });
+                if(name){
+                    events[name] = cls.dispatchEvents.call(this);
+                    for (event in events[name]) {
+                        cls.debug('name:' + name + ', event:' + event);
+                        $(this).off(event);
+                        $(this).on(event, factory(this, event));
+                        if ($el.attr('data-defaultvalues') !== 'model' && !$el.parents('[data-defaultvalues="model"]').get(0)) {
+                            InitValue = $(this).getValue();
+                            model.updateValue.call(this, InitValue);
+                        }
+                    } 
+                } 
+            }
+            
+            $(filter.events).each(bindevents);
+            
+            bindevents.call(filter.$el);
+            
             if ($el.attr('data-defaultvalues') === 'model') {
                 cls.model2View.call($el);
             }
