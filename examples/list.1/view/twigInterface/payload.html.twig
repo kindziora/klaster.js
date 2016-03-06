@@ -1,0 +1,22 @@
+<tr> 
+    <th class="span2">Name</th>
+    <th class="span2">Address</th>
+    <th class="span2">City</th>
+    <th class="span2">Suchlink</th>
+    <th class="span2">Stars</th>
+    <th class="span2">Aktion</th>
+</tr>
+<tr class="alert alert-info"> 
+    <td>{{payload.name}}</td>
+    <td>{{payload.address}}</td>
+    <td>{{payload.city}}</td>
+    <td class="span2"><a href="https://www.google.com/search?q={{payload.name}} {{payload.address}} {{payload.city}}&ie=utf-8&oe=utf-8" target="_blank"><i class="icon-search"></i></a></td>
+    <td>
+        {% for star in 1..payload.stars %} 
+            <i class="icon-star"></i>
+        {% endfor %}
+    </td>
+    <td>
+
+    </td>
+</tr>

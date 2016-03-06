@@ -1,0 +1,15 @@
+<tr data-name="potentialMatches[{{index}}]">
+    <td class="span2">{{potentialMatch.basicInfo.name| highlight(payload.name)}}</td>
+    <td class="span2">{{potentialMatch.basicInfo.address.street | highlight(payload.address)}} {{potentialMatch.basicInfo.address.streetNumber | highlight(payload.address)}}</td>
+    <td class="span2">{{potentialMatch.basicInfo.address.city}}</td>
+    <td class="span2"><a href="https://www.google.com/search?q={{potentialMatch.basicInfo.name |encodeURIComponent}} {{potentialMatch.basicInfo.address.street | encodeURIComponent}}&ie=utf-8&oe=utf-8" target="_blank"><i class="icon-search"></i></a></td>
+    <td class="span2">
+        {% for star in 1..potentialMatch.stars %} 
+            <i class="icon-star"></i>
+        {% endfor %}
+    </td>
+    <td class="span2"> 
+        <button data-name="match" data-on="click" data-value="{{potentialMatch.id}}:match" 
+                class="btn {% if payload.match and payload.match.action.data == potentialMatch.id %} btn-success {%else%}btn-default {% endif%} ">passt</button>
+    </td>
+</tr>

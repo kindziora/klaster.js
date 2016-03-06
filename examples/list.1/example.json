@@ -1,0 +1,208 @@
+[
+    {
+        "queueItem": {
+            "id": "54be597b67cd771134ff6153"
+        },
+        "payload": {
+            "id": "275510",
+            "otaName": "amoma",
+            "name": "Al Sole",
+            "address": "VIA LEGA NAZIONALE, 49 - Folgaria",
+            "latitude": 45.9251379,
+            "longitude": 11.2123753,
+            "stars": 3
+        },
+        "potentialMatches": [
+            {
+                "id": "533206d32b02004d02b30ab0",
+                "basicInfo": {
+                    "name": "Albergo al Sole",
+                    "address": {
+                        "street": "Via Lega Nazionale",
+                        "streetNumber": "49"
+                    },
+                    "point": {
+                        "type": "Point",
+                        "coordinates": [
+                            11.2141394,
+                            45.9253359
+                        ]
+                    }
+                },
+                "stars": 3
+            },
+            {
+                "id": "533210c72b0200bf03b47277",
+                "basicInfo": {
+                    "name": "Alle Due Spade",
+                    "address": {
+                        "street": "",
+                        "streetNumber": ""
+                    },
+                    "point": {
+                        "type": "Point",
+                        "coordinates": [
+                            11.212886273861,
+                            45.925389941203
+                        ]
+                    }
+                },
+                "stars": 3
+            }
+        ]
+    },
+    {
+        "queueItem": {
+            "id": "54be597c67cd771134ff6154"
+        },
+        "payload": {
+            "id": "275526",
+            "otaName": "amoma",
+            "name": "Best Western Ascot",
+            "address": "308-318 GREAT EASTERN HIGHWAY - Perth",
+            "latitude": -31.9337,
+            "longitude": 115.9373,
+            "stars": 4
+        },
+        "potentialMatches": [
+            {
+                "id": "5332155d2b0200bc03b58ba3",
+                "basicInfo": {
+                    "name": "Best Western Plus Ascot Serviced Apartments",
+                    "address": {
+                        "street": "Great Eastern Highway",
+                        "streetNumber": "308-318"
+                    },
+                    "point": {
+                        "type": "Point",
+                        "coordinates": [
+                            115.9376684,
+                            -31.9339958
+                        ]
+                    }
+                },
+                "stars": 2
+            }
+        ]
+    },
+    {
+        "queueItem": {
+            "id": "54be597c67cd771134ff6158"
+        },
+        "payload": {
+            "id": "275548",
+            "otaName": "amoma",
+            "name": "Ramada Inn Metrocenter",
+            "address": "12021 N 28TH DRIVE - Phoenix",
+            "latitude": 33.59590269,
+            "longitude": -112.1181062,
+            "stars": 3
+        },
+        "potentialMatches": [
+            {
+                "id": "533205f02b02009102b2dc1b",
+                "basicInfo": {
+                    "name": "Holiday Inn North Phoenix",
+                    "address": {
+                        "street": "North 28th Drive",
+                        "streetNumber": "12027"
+                    },
+                    "point": {
+                        "type": "Point",
+                        "coordinates": [
+                            -112.11942404231,
+                            33.5958196801
+                        ]
+                    }
+                },
+                "stars": 3
+            }
+        ]
+    },
+    {
+        "queueItem": {
+            "id": "54be597d67cd771134ff615c"
+        },
+        "payload": {
+            "id": "275554",
+            "otaName": "amoma",
+            "name": "Baltimore North Pikesville Hil",
+            "address": "1726 REISTERSTOWN ROAD - Pikesville",
+            "latitude": 39.382979,
+            "longitude": -76.73195,
+            "stars": 4
+        },
+        "potentialMatches": [
+            {
+                "id": "5332052d2b02004d02b2ace2",
+                "basicInfo": {
+                    "name": "DoubleTree by Hilton Baltimore North - Pikesville ",
+                    "address": {
+                        "street": "Reisterstown Road",
+                        "streetNumber": "1726"
+                    },
+                    "point": {
+                        "type": "Point",
+                        "coordinates": [
+                            -76.732301727189,
+                            39.382890085228
+                        ]
+                    }
+                },
+                "stars": 3
+            },
+            {
+                "id": "533205082b0200b602b29bb0",
+                "basicInfo": {
+                    "name": "Ramada Baltimore West",
+                    "address": {
+                        "street": "Reisterstown Road",
+                        "streetNumber": "1721"
+                    },
+                    "point": {
+                        "type": "Point",
+                        "coordinates": [
+                            -76.7315904,
+                            39.3834322
+                        ]
+                    }
+                },
+                "stars": 2
+            }
+        ]
+    },
+    {
+        "queueItem": {
+            "id": "54be597e67cd771134ff6160"
+        },
+        "payload": {
+            "id": "275598",
+            "otaName": "amoma",
+            "name": "Palacio De Moratalla",
+            "address": "C/ TOMAS CONDE 10 - Hornachuelos",
+            "latitude": 37.878368,
+            "longitude": -4.782109,
+            "stars": 5
+        },
+        "potentialMatches": [
+            {
+                "id": "5331fc662b02002802b197dd",
+                "basicInfo": {
+                    "name": "Casas de la Juderia",
+                    "address": {
+                        "street": "C/ Tomas Conde",
+                        "streetNumber": "10"
+                    },
+                    "point": {
+                        "type": "Point",
+                        "coordinates": [
+                            -4.7820849716663,
+                            37.878428218196
+                        ]
+                    }
+                },
+                "stars": 4
+            }
+        ]
+    }
+]
