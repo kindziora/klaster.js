@@ -1,4 +1,4 @@
 ##Description
 
-Simple form binded to a model, view rendering.
-Validation for form fields.
+Simple form binded to a model, with view rendering.
+Validation for form.

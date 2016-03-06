@@ -1,3 +1,3 @@
 ##Description
 
-Simple form binded to a model, view rendering.
+Simple data binding and form change handling.
