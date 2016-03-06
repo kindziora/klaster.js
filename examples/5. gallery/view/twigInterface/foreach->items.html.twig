@@ -1,0 +1,49 @@
+<div class="thumbnail width5 {% if match | length > 0 %}markedOtherMatch{% endif %} 
+     {% if markedMatchOK | length > 0 %}markedMatchOK{% endif %}
+     {% if marked %}marked{% endif %}" 
+     data-name="items[{{index}}]"
+     data-view="foreach->items"
+     {% if match | length > 0 %} data-toggle="popover" 
+     data-animation="false" data-trigger="hover"
+     data-title="Woanders vielleicht besser?" {% endif %}>
+    <div class="cont">
+        <p> {{item.job_id}}</p>
+        <img class="galImg" src="{{item.image_url}}" alt="kein Bild" />
+        <div class="overlay span12 ">
+            <div class="row-fluid height5">
+                <a href="#img{{index}}" data-name="zoom" data-on="click"><div class="tleft span6">zoom</div></a>
+                <a data-name="mark" data-on="click->mark" data-index="{{index}}" target="_blank" ><div class="tright span6">X</div></a>
+            </div>
+            <div class="row-fluid height5">
+                <a href="#text{{index}}" data-name="zoom" data-on="click"> <div class="bleft span6">text</div></a>
+                <a href="https://www.google.com/search?q={{item.item_name |encodeURIComponent}}" target="_blank"><div class="bright span6">www</div></a>
+            </div>
+        </div>
+    </div>
+
+    <p class="name">{{item.item_name}}</p>
+    <div class="lightbox" data-name="bg" data-on="click" id="img{{index}}">
+        <div class="box">
+            <p class="title">{{item.item_name}}</p>
+            <i> {{item.item_external_category}}</i>
+            <div class="text">
+                <img data-src="{{item.image_url | bigImg}}" class="bigImg"> 
+                <p> {{item.item_description}}</p>
+            </div> 
+            <div class="clear"></div>
+        </div>
+    </div>
+
+    <div class="lightbox"  data-name="bg" data-on="click" id="text{{index}}">
+        <div class="box" >
+            <p class="title">{{item.item_name}}</p>
+            <i> {{item.item_external_category}}</i>
+            <div class="text">
+                {{item.item_description}}
+            </div> 
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div class="failed">X</div>
+    <div class="success" data-name="success" data-on="click->mark" data-index="{{index}}">&#10003;</div>
+</div>

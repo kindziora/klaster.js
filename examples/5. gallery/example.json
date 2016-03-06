@@ -1,0 +1,139 @@
+{
+    "job": {
+        "job_description": "Please decide whether the following item belongs to the given tag.",
+        "items": [
+            {
+                "job_id": "14371-1",
+                "item_id": 5283,
+                "item_name": "tempor esse amet Lorem adipisicing esse aliquip in proident pariatur exercitation nostrud",
+                "item_description": "labore tempor labore anim labore ex do reprehenderit fugiat ea ad qui occaecat occaecat incididunt pariatur reprehenderit sit culpa ex culpa sunt aute aute consequat aliquip labore Lorem excepteur consectetur esse voluptate veniam sit nisi excepteur aute laborum non in ut velit fugiat duis excepteur cupidatat laboris commodo aliqua officia",
+                "item_external_category": "[topCategory:Hartwaren|Sport|Sportschuhe|Sportschuhe|Sport Fashion Schuhe][brand:nike][gender:female][color:rosa][ean:886548232420]",
+                "item_brand_name": "ipsum ut nisi aliquip velit aliquip culpa est laborum sit magna pariatur",
+                "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Octopus_vulgaris2.jpg/300px-Octopus_vulgaris2.jpg",
+                "language": "de",
+                "tag_id": 1,
+                "tag_name": "Schuhe"
+            },
+            {
+                "job_id": "13294-1",
+                "item_id": 5843,
+                "item_name": "deserunt est ea eiusmod reprehenderit ad elit sint esse in do quis",
+                "item_description": "dolore elit eiusmod Lorem ipsum ea cillum occaecat adipisicing Lorem sunt anim ad incididunt voluptate excepteur veniam consequat commodo labore esse labore dolor esse amet do ex incididunt proident proident reprehenderit commodo nostrud ad elit occaecat consectetur ipsum officia id laboris nulla veniam sunt do in quis irure magna amet",
+                "item_external_category": "[topCategory:Hartwaren|Sport|Sportschuhe|Sportschuhe|Sport Fashion Schuhe][brand:nike][gender:female][color:rosa][ean:886548232420]",
+                "item_brand_name": "ipsum culpa cupidatat ex duis sunt dolore id exercitation mollit est enim",
+                "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Octopus_vulgaris2.jpg/300px-Octopus_vulgaris2.jpg",
+                "language": "de",
+                "tag_id": 1,
+                "tag_name": "Schuhe"
+            },
+            {
+                "job_id": "34704-1",
+                "item_id": 12474,
+                "item_name": "ullamco ea nulla elit fugiat amet veniam anim ipsum tempor quis officia",
+                "item_description": "consectetur fugiat velit non incididunt aute do exercitation fugiat irure incididunt mollit enim magna cillum minim minim occaecat do commodo tempor ea cillum laboris deserunt reprehenderit excepteur nisi consequat do aliquip enim consectetur consequat nisi dolore minim in cillum nostrud deserunt eiusmod duis aliquip aute Lorem non sit adipisicing est",
+                "item_external_category": "[topCategory:Hartwaren|Sport|Sportschuhe|Sportschuhe|Sport Fashion Schuhe][brand:nike][gender:female][color:rosa][ean:886548232420]",
+                "item_brand_name": "minim veniam aute sunt aliquip Lorem nisi eu consectetur ut ex tempor",
+                "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Octopus_vulgaris2.jpg/300px-Octopus_vulgaris2.jpg",
+                "language": "de",
+                "tag_id": 1,
+                "tag_name": "Schuhe"
+            },
+            {
+                "job_id": "23197-1",
+                "item_id": 25582,
+                "item_name": "elit nulla qui deserunt proident culpa quis pariatur in aute cupidatat elit",
+                "item_description": "ullamco aliqua minim ut exercitation consequat cupidatat exercitation anim amet occaecat anim minim excepteur excepteur eu quis sit dolor anim duis nostrud sit consequat esse ad labore minim eiusmod veniam exercitation dolor minim ad ex voluptate fugiat reprehenderit sunt pariatur laboris dolor sint culpa esse eiusmod exercitation duis ex velit",
+                "item_external_category": "[topCategory:Hartwaren|Sport|Sportschuhe|Sportschuhe|Sport Fashion Schuhe][brand:nike][gender:female][color:rosa][ean:886548232420]",
+                "item_brand_name": "consequat ex dolore enim Lorem nulla fugiat et aliqua nostrud nisi ex",
+                "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Octopus_vulgaris2.jpg/300px-Octopus_vulgaris2.jpg",
+                "language": "de",
+                "tag_id": 1,
+                "tag_name": "Schuhe"
+            },
+            {
+                "job_id": "14228-1",
+                "item_id": 41816,
+                "item_name": "sunt duis labore enim et dolor et aliqua pariatur adipisicing nostrud officia",
+                "item_description": "officia consequat sit excepteur culpa velit fugiat consectetur ipsum aliquip occaecat tempor exercitation aliqua pariatur ullamco consequat incididunt anim cillum est magna aliquip ex proident aliquip nostrud sunt pariatur ad nostrud reprehenderit consequat anim pariatur ipsum ipsum deserunt amet labore tempor culpa sunt adipisicing et amet nisi in exercitation cupidatat",
+                "item_external_category": "[topCategory:Hartwaren|Sport|Sportschuhe|Sportschuhe|Sport Fashion Schuhe][brand:nike][gender:female][color:rosa][ean:886548232420]",
+                "item_brand_name": "veniam aliquip nostrud et sit proident dolor laborum excepteur incididunt est amet",
+                "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Octopus_vulgaris2.jpg/300px-Octopus_vulgaris2.jpg",
+                "language": "de",
+                "tag_id": 1,
+                "tag_name": "Schuhe"
+            },
+            {
+                "job_id": "39306-1",
+                "item_id": 9156,
+                "item_name": "tempor fugiat sint laborum dolore elit dolor aute nisi anim ullamco Lorem",
+                "item_description": "aliquip cupidatat officia Lorem enim quis id laboris ea et sunt laborum duis aliquip anim nulla aliquip nulla aliqua fugiat id tempor sit minim excepteur aute nisi pariatur non enim est reprehenderit veniam eu consequat ipsum quis anim aliqua nostrud incididunt adipisicing sint culpa laborum pariatur magna esse dolore sit",
+                "item_external_category": "[topCategory:Hartwaren|Sport|Sportschuhe|Sportschuhe|Sport Fashion Schuhe][brand:nike][gender:female][color:rosa][ean:886548232420]",
+                "item_brand_name": "id commodo proident ullamco eiusmod nulla sint sit laborum veniam nisi eiusmod",
+                "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Octopus_vulgaris2.jpg/300px-Octopus_vulgaris2.jpg",
+                "language": "de",
+                "tag_id": 1,
+                "tag_name": "Schuhe"
+            },
+            {
+                "job_id": "10493-1",
+                "item_id": 40352,
+                "item_name": "sit nisi excepteur sunt Lorem ad minim quis do magna quis ut",
+                "item_description": "minim aliqua irure voluptate ut labore sint aute non esse dolore cillum laboris tempor duis et sunt quis tempor aliqua elit aliquip cillum ea nisi ea aute ut eu aute occaecat fugiat culpa qui occaecat proident do esse incididunt est qui nostrud nostrud occaecat occaecat commodo occaecat enim ullamco elit",
+                "item_external_category": "[topCategory:Hartwaren|Sport|Sportschuhe|Sportschuhe|Sport Fashion Schuhe][brand:nike][gender:female][color:rosa][ean:886548232420]",
+                "item_brand_name": "excepteur commodo laboris sunt ex anim dolor velit commodo esse aute nostrud",
+                "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Octopus_vulgaris2.jpg/300px-Octopus_vulgaris2.jpg",
+                "language": "de",
+                "tag_id": 1,
+                "tag_name": "Schuhe"
+            },
+            {
+                "job_id": "9628-1",
+                "item_id": 38481,
+                "item_name": "eu veniam amet nostrud incididunt minim labore ut incididunt ut sit voluptate",
+                "item_description": "minim do nulla dolor quis veniam amet fugiat nostrud id eiusmod fugiat velit amet aute in minim duis minim Lorem aute nisi qui sit non eiusmod ullamco ad ea duis ullamco laboris aliqua nulla sunt elit id enim ut voluptate aliqua sit pariatur occaecat do tempor occaecat aliqua commodo fugiat",
+                "item_external_category": "[topCategory:Hartwaren|Sport|Sportschuhe|Sportschuhe|Sport Fashion Schuhe][brand:nike][gender:female][color:rosa][ean:886548232420]",
+                "item_brand_name": "laboris ad cillum aliqua non dolor magna nostrud officia et cupidatat laborum",
+                "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Octopus_vulgaris2.jpg/300px-Octopus_vulgaris2.jpg",
+                "language": "de",
+                "tag_id": 1,
+                "tag_name": "Schuhe"
+            },
+            {
+                "job_id": "38591-1",
+                "item_id": 39218,
+                "item_name": "nulla Lorem duis occaecat culpa adipisicing anim consectetur non officia esse ut",
+                "item_description": "ad do do cillum amet fugiat do non commodo velit tempor irure veniam quis commodo dolore occaecat officia ullamco eu est veniam aliqua mollit id occaecat mollit velit laboris ut sint laborum laborum ut excepteur anim duis proident eu sit magna duis fugiat et consectetur magna ullamco aliqua sint eiusmod",
+                "item_external_category": "[topCategory:Hartwaren|Sport|Sportschuhe|Sportschuhe|Sport Fashion Schuhe][brand:nike][gender:female][color:rosa][ean:886548232420]",
+                "item_brand_name": "labore dolor Lorem adipisicing esse ullamco eiusmod magna incididunt do fugiat quis",
+                "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Octopus_vulgaris2.jpg/300px-Octopus_vulgaris2.jpg",
+                "language": "de",
+                "tag_id": 1,
+                "tag_name": "Schuhe"
+            },
+            {
+                "job_id": "21043-1",
+                "item_id": 35861,
+                "item_name": "sit pariatur laboris ea do ex incididunt tempor amet dolor tempor nisi",
+                "item_description": "laboris sint ut magna deserunt in Lorem ex ea enim nulla nisi ea magna quis consectetur esse consequat aliqua mollit non incididunt veniam consequat esse consectetur velit dolore eu adipisicing anim ea ea sit enim proident officia id tempor tempor cillum enim esse excepteur excepteur ex commodo adipisicing commodo cupidatat",
+                "item_external_category": "[topCategory:Hartwaren|Sport|Sportschuhe|Sportschuhe|Sport Fashion Schuhe][brand:nike][gender:female][color:rosa][ean:886548232420]",
+                "item_brand_name": "eu irure irure duis amet irure quis deserunt nisi labore sint nulla",
+                "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Octopus_vulgaris2.jpg/300px-Octopus_vulgaris2.jpg",
+                "language": "de",
+                "tag_id": 1,
+                "tag_name": "Schuhe"
+            },
+            {
+                "job_id": "13803-1",
+                "item_id": 503,
+                "item_name": "ipsum qui dolore tempor in nostrud laboris aute excepteur aliquip sunt esse",
+                "item_description": "sit ea minim enim id sit fugiat do id aliquip qui esse excepteur cillum adipisicing anim qui exercitation pariatur laboris ullamco aute occaecat quis labore nisi incididunt laboris elit ad est minim aliquip incididunt Lorem aliqua voluptate exercitation ad officia duis irure cillum enim sint pariatur quis cupidatat amet occaecat",
+                "item_external_category": "[topCategory:Hartwaren|Sport|Sportschuhe|Sportschuhe|Sport Fashion Schuhe][brand:nike][gender:female][color:rosa][ean:886548232420]",
+                "item_brand_name": "aliqua duis laborum ad sunt consequat exercitation sint velit anim sunt labore",
+                "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Octopus_vulgaris2.jpg/300px-Octopus_vulgaris2.jpg",
+                "language": "de",
+                "tag_id": 1,
+                "tag_name": "Schuhe"
+            }
+        ]
+    }
+}
