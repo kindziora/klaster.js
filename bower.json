@@ -7,7 +7,7 @@
         "kindziora@live.de"
     ],
     "description": "javascript UI framework, using mvc pattern, scopes and two way databinding",
-    "main": "klaster.js",
+    "main": "build/klaster.dev.js",
     "keywords": [
         "javascript",
         "mvc",
