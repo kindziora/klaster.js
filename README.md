@@ -148,3 +148,60 @@ var interface = function() {
 
 $('body').klaster(new interface());
 ```
+
+
+```html
+<form class="form-horizontal">
+  
+<fieldset>
+  <legend>example</legend>
+
+   <div class="form-group">
+    <label for="inputSearch" class="col-lg-2 control-label">Suche</label>
+    <div class="col-lg-10">
+      <input type="text" class="form-control" id="inputSearch" name="search" placeholder="feed me ..." data-on="keyup" />
+    </div>
+  </div>
+       
+  <div class="form-group">
+    <label for="inputEmail" class="col-lg-2 control-label">Emails</label>
+    <div class="col-lg-10">
+      <input type="text" class="form-control" id="inputEmail" data-name="user['email']" placeholder="dfsd@sd.de,dsds@dfd.de" data-on="keyup" />
+     
+     <div data-name="user['email']" data-view="validInfo">
+     </div>
+      
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label for="inputPassword" class="col-lg-2 control-label">Password</label>
+    <div class="col-lg-10">
+      <input type="password" class="form-control" id="inputPassword" placeholder="Password" data-name="user['password']" data-on="keyup" />
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" data-name="agb" data-on="change"> agb 
+        </label>
+      </div>
+    </div>
+  </div>
+  
+  <hr/>     
+  <div class="panel panel-danger">
+    <div class="panel-heading">
+      <h3 class="panel-title">Suche</h3>
+    </div>
+    <div class="panel-body" data-name="search"></div>
+  </div>
+  
+  <div class="panel panel-danger">
+    <div class="panel-heading">
+      <h3 class="panel-title">E-Mails</h3>
+    </div>
+    <div class="panel-body" data-name="user['email']" data-view="email"></div>
+  </div>
+
+</fieldset>
+
+</form>
+```
