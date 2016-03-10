@@ -153,7 +153,6 @@ $('body').klaster(new interface());
 
 ```html
 <form class="form-horizontal">
-  
   <fieldset>
     <legend>example</legend>
   
@@ -167,11 +166,8 @@ $('body').klaster(new interface());
     <div class="form-group">
       <label for="inputEmail" class="col-lg-2 control-label">Emails</label>
       <div class="col-lg-10">
-        <input type="text" class="form-control" id="inputEmail" data-name="user['email']" placeholder="dfsd@sd.de,dsds@dfd.de" data-on="keyup" />
-       
-       <div data-name="user['email']" data-view="validInfo">
-       </div>
-        
+      <input type="text" class="form-control" id="inputEmail" data-name="user['email']" placeholder="dfsd@sd.de,dsds@dfd.de" data-on="keyup" />
+       <div data-name="user['email']" data-view="validInfo"> </div>
       </div>
     </div>
     
@@ -201,8 +197,6 @@ $('body').klaster(new interface());
       </div>
       <div class="panel-body" data-name="user['email']" data-view="email"></div>
     </div>
-  
   </fieldset>
-
 </form>
 ```
