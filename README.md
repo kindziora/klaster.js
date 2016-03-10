@@ -70,8 +70,9 @@ So what does this code?
 The form will be bond to a data model.
 So if the state of the form does change you could send the json to a backend.
 
-##klaster.js app todo example 
+##klaster.js validation 
 using:
+
 -validators
 
 -data model
