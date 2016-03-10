@@ -1,4 +1,4 @@
-/*! klaster.js Version: 0.9.1 06-03-2016 20:56:12 */
+/*! klaster.js Version: 0.9.1 10-03-2016 10:53:29 */
 var prefix = 'data';
 
 var k_docapi = { 
@@ -911,6 +911,9 @@ var k_structure = {
         cls.changed = function () {
             if (typeof model.event !== "undefined" && typeof model.event.sync === "function") {
                 model.event.sync.call(model, this);
+            }
+            if (typeof child.sync !== "undefined" && typeof child.sync === "function") {
+                child.sync.call(model, this);
             }
             return true;
         };

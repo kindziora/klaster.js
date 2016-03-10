@@ -133,6 +133,9 @@
             if (typeof model.event !== "undefined" && typeof model.event.sync === "function") {
                 model.event.sync.call(model, this);
             }
+            if (typeof child.sync !== "undefined" && typeof child.sync === "function") {
+                child.sync.call(model, this);
+            }
             return true;
         };
         
