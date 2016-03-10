@@ -1,6 +1,6 @@
 ##Description
 
-javascript UI framework, using mvc pattern, scopes and two way databinding.
+progressive javascript UI framework, using mvc pattern, scopes and two way databinding.
 It aims on rich frontend experiences and simplicity.
 
 ##goals
