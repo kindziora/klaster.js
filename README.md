@@ -54,13 +54,9 @@ structure --contains class scheme
 
 ```javascript
 
- $('#jobform').klaster({
-     'model' : {
-        'event' : {
-          'sync' : function() {
-              console.log(JSON.stringify(this.field));
-        }
-     }
+ $('#jobform').klaster({ 
+  'sync' : function() {
+      console.log(JSON.stringify(this.field));
    }
  });
 
