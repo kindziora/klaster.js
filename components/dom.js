@@ -1,6 +1,11 @@
 var k_dom =(function ($, api) {
     api = api['dom-attributes'];
     var dom = {
+        
+        /**
+         * document.querySelector("#main ul:first-child") instead of jquery or even zepto
+         * /
+        
         /**
          * add filter expression
          * @returns {dom}
