@@ -18,7 +18,7 @@ var k_dom =(function ($, api) {
          * @returns {dom}
          */
         'getName': function () {
-            return this.getAttribute(this.nameAttr());
+            return this.getAttribute($(this).el('nameAttr'));
         },
         /**
          * get name attribute
@@ -98,15 +98,15 @@ var k_dom =(function ($, api) {
         if (this.getAttribute(api.omit.attr) === "true") {
             return undefined;
         }
-        var value = $(this).val() || $(this).text() || $(this).html();
+        var value = this.value || this.innerHTML;
         /**
          * @todo replace by native value functions 
          */
         
-        if (typeof value === 'undefined' && $(this).data('value')) {
-            value = $(this).data('value');
-        } else if (typeof $(this).data('value') === '' && $(this).attr(api.value.attr) !== "") {
-            value = $(this).attr(api.value.attr);
+        if (typeof value === 'undefined' && this.getAttribute('value')) {
+            value = this.getAttribute('value');
+        } else if (typeof this.getAttribute('value') === '' && this.getAttribute(api.value.attr) !== "") {
+            value = this.getAttribute(api.value.attr);
         }
         return value;
     }
@@ -118,26 +118,29 @@ var k_dom =(function ($, api) {
        dom.multipleValues = {
         "checked": function ($el, $elements, single) {
 
-            if ($el.attr(api.multiple.attr) === 'false'|| single || document.querySelector('[' + $el.nameAttr() + '="' + $el.getName() + '"]').length === 1)
-                return $el.is(':checked');
+            if ($el.getAttribute(api.multiple.attr) === 'false'|| single || document.querySelectorAll('[' + $($el).el('nameAttr') + '="' + $($el).el('getName') + '"]').length === 1)
+                return $el.checked;
+                
             var values = [],
-                val = undefined;
-            $elements.each(function () {
-                val = value.call($(this));
+            val = undefined;
+                
+            Array.prototype.forEach.call($elements, function(el, i){
+                val = value.call(el);
                 if (typeof val !== 'undefined') {
                     values.push(val);
                 }
             });
+                         
             return values;
         },
         "checkbox": function () {
-            return dom.multipleValues.checked(this, document.querySelector('[' + this.nameAttr() + '="' + this.getName() + '"]:checked'));
+            return dom.multipleValues.checked(this, document.querySelectorAll('[' + $(this).el('nameAttr') + '="' + $(this).el('getName') + '"]:checked'));
         },
         "radio": function () {
-            return dom.multipleValues.checked(this, document.querySelector('[' + this.nameAttr() + '="' + this.getName() + '"]:checked'), true);
+            return dom.multipleValues.checked(this, document.querySelectorAll('[' + $(this).el('nameAttr') + '="' +  $(this).el('getName') + '"]:checked'), true);
         },
         "data-multiple": function () {
-            return dom.multipleValues.checked(this, document.querySelector('[' + this.nameAttr() + '="' + this.getName() + '"][data-checked="true"]'));
+            return dom.multipleValues.checked(this, document.querySelectorAll('[' + $(this).el('nameAttr') + '="' +  $(this).el('getName') + '"][data-checked="true"]'));
         }
     };
 
@@ -171,7 +174,7 @@ var k_dom =(function ($, api) {
      * @returns {*}
      */
     dom.getView = function ($scope) {
-        return $scope.attr(api.view.attr) || dom.getFieldView($scope.getName(), true);
+        return $scope.getAttribute(api.view.attr) || dom.getFieldView($scope.getName(), true);
     };
 
     /**
@@ -287,7 +290,7 @@ var k_dom =(function ($, api) {
       if (typeof decorated === 'undefined')
         decorated = '';
         
-        $(this).html(decorated);
+        this.innerHTML = decorated;
         
     };
 
@@ -297,7 +300,7 @@ var k_dom =(function ($, api) {
      * @returns {*}
      */
     dom.hasView = function ($scope) {
-        return $scope.attr(api.view.attr) || dom.getFieldView($scope.getName(), true);
+        return $scope.getAttribute(api.view.attr) || dom.getFieldView($($scope).el('getName'), true);
     };
     
      /**
@@ -331,18 +334,27 @@ var k_dom =(function ($, api) {
      * @returns {*|boolean}
      */
     dom.isHtmlList = function ($scope) {
-        return $scope.attr(api.view.attr) && $scope.attr(api.view.attr).indexOf(api.view.value.definition.iterate) !== -1;
+        return $scope.getAttribute(api.view.attr) && $scope.getAttribute(api.view.attr).indexOf(api.view.value.definition.iterate) !== -1;
     };
+    /**
+     * create dom el from string
+     **/
+    dom.parseHTML = function (html) {
+        var t = document.createElement('template');
+        t.innerHTML = html;
+        return t.content.cloneNode(true);
+    }
+
     
 
-    $.fn.addFilter = dom.addFilter;
-    $.fn.getValues = getValues;
-    $.fn.getValue = getValue;
-    $.fn.setValue = dom.setValue;
-    $.fn.getName = dom.getName;
-    $.fn.nameAttr = dom.nameAttr;
-    $.fn.toggleOmit = dom.toggleOmit;
-    $.fn.getXPath = dom.getXPath;
+    $.addFilter = dom.addFilter;
+    $.getValues = getValues;
+    $.getValue = getValue;
+    $.setValue = dom.setValue;
+    $.getName = dom.getName;
+    $.nameAttr = dom.nameAttr;
+    $.toggleOmit = dom.toggleOmit;
+    $.getXPath = dom.getXPath;
 
     return dom;
-}(jQuery, k_docapi));
+}(k_polyfill, k_docapi));

@@ -173,9 +173,9 @@ var k_data = (function ($) {
      */
     data.updateValue = function (value, old) {
         if (typeof value !== 'undefined') { 
-            data.set($(this).getName(), value);
+            data.set(this.getAttribute('name') || this.getAttribute('data-name'), value);
         } else {
-            data._delete($(this).getName()); 
+            data._delete(this.getAttribute('name') || this.getAttribute('data-name')); 
         }
     };
 
@@ -342,4 +342,4 @@ var k_data = (function ($) {
         return data.diffObjects(data._modelprechangeReal, data.field);
     };
     return data;
-}(jQuery));
+}(k_polyfill));
