@@ -281,7 +281,7 @@
                         myChangedField = model.get(_notation), //get field that has changed
                         index = /\[(.*?)\]/gi.exec(_notation)[1]; //get index of item that has chnaged
     
-                    $child = $scope.find(dom.getSelector(_notation, true)); //find listItem that has changed
+                    $child = $scope.querySelector(dom.getSelector(_notation, true)); //find listItem that has changed
     
                     if (typeof myChangedField !== 'undefined' && cls.preRenderView($scope, field[index])) {
                         $html = $(cls.view.views[viewName].call(cls.view, field[index], index, $scope)); // render subitem
@@ -324,7 +324,7 @@
             }else{ // field view was defined i a validator is it gets rendered also if value is not in model and by that equal to undefined
                 var template = cls.view.views[error.view].call(cls, scopeModelField, $scope.getName());
                
-                $field = $($globalScope.find(dom.getValidatorSelector($scope.getName(), error.view)));
+                $field = $($globalScope.querySelector(dom.getValidatorSelector($scope.getName(), error.view)));
                 _set.call($field, template); 
             }
         };
@@ -332,7 +332,7 @@
          //from server to model
         cls.server2Model = function (data) {
             //model.set.call(data.field, data.value);
-            var $field = $(dom.getSelector(data.field));
+            var $field = document.querySelector(dom.getSelector(data.field));
             cls.post_trigger.call($field, e, data.value);
         };
 
@@ -467,9 +467,9 @@
                 
                 var selector = dom.getSelector(fieldNotation, true);
                 
-                var tryDot = $globalScope.find(selector);
+                var tryDot = $globalScope.querySelectorAll(selector);
                 
-                var match = tryDot.length > 0 ? tryDot : $globalScope.find(dom.getSelector(fieldNotationBrackets, true));
+                var match = tryDot.length > 0 ? tryDot : $globalScope.querySelectorAll(dom.getSelector(fieldNotationBrackets, true));
                 
                 var cnt = match.length;
                 if (cnt === 0) {
@@ -489,7 +489,7 @@
     
                 var addrN;
     
-                $globalScope.find('[data-filter]').each(function () {
+                $globalScope.querySelectorAll('[data-filter]').each(function () {
                     if (cls.viewFilter[$(this).getXPath()] !== $(this).attr('data-filter')) { // filter for this view has changed
                         changes.push([$(this).getName(), 'view-filter', cls.viewFilter[$(this).getXPath()], $(this).attr('data-filter')]);
                     }
@@ -619,7 +619,7 @@
                 };
             };
             //filter.fields = filter.$el.find('[name],[data-name]'),
-            filter.events = filter.$el.find('[' + api.on.attr + ']');
+            filter.events = filter.$el.querySelectorAll('[' + api.on.attr + ']');
             
             var InitValue = '';
             
