@@ -46,7 +46,7 @@
          * return true means render element, false remove it if existent in dom
          **/
         cls.preRenderView = function ($field, item) {
-            if (typeof model.get($($field).el('getName') === 'undefined')
+            if (typeof model.get($($field).el('getName')) === 'undefined')
                 return false;
                 
             if (!$field.getAttribute('data-filter'))
@@ -520,7 +520,7 @@
                                 changeCb.call(model, model.get(name), changes, 'controller');
                             }
                         }
-                    }($els)); 
+                    }($els))); 
                     
                 }
             };

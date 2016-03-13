@@ -1,4 +1,4 @@
-/*! klaster.js Version: 0.9.1 13-03-2016 21:26:22 */
+/*! klaster.js Version: 0.9.1 13-03-2016 21:52:44 */
 var prefix = 'data';
 
 var k_docapi = { 
@@ -109,39 +109,40 @@ var k_structure = {
         'debug': true
     }
 };var k_polyfill = function(el) {
-    
-    var self = this;
-    
-    this.el = function() {
+     var me = {};
+   me.el = function() {
         var args = []; 
         for (var i = 1; i < arguments.length; i++) args.push(arguments[i]);
-        return self[arguments[0]].apply(el, args);
+        return k_polyfill.fn[arguments[0]].apply(el, args);
     };
-    
-    this.extend = function(out) {
-      out = out || {};
-    
-      for (var i = 1; i < arguments.length; i++) {
-        var obj = arguments[i];
-    
-        if (!obj)
-          continue;
-    
-        for (var key in obj) {
-          if (obj.hasOwnProperty(key)) {
-            if (typeof obj[key] === 'object')
-              out[key] = self.extend(out[key], obj[key]);
-            else
-              out[key] = obj[key];
-          }
+      
+ 
+    return me;
+};
+
+  k_polyfill.extend = function(out) {
+    out = out || {};
+  
+    for (var i = 1; i < arguments.length; i++) {
+      var obj = arguments[i];
+  
+      if (!obj)
+        continue;
+  
+      for (var key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          if (typeof obj[key] === 'object')
+            out[key] = k_polyfill.extend(out[key], obj[key]);
+          else
+            out[key] = obj[key];
         }
       }
-    
-      return out;
-    }; 
-    
-    return el;
-};;var k_dom =(function ($, api) {
+    }
+  
+    return out;
+  }; 
+  
+k_polyfill.fn = {};;var k_dom =(function ($, api) {
     api = api['dom-attributes'];
     var dom = {
         
@@ -490,14 +491,14 @@ var k_structure = {
 
     
 
-    $.addFilter = dom.addFilter;
-    $.getValues = getValues;
-    $.getValue = getValue;
-    $.setValue = dom.setValue;
-    $.getName = dom.getName;
-    $.nameAttr = dom.nameAttr;
-    $.toggleOmit = dom.toggleOmit;
-    $.getXPath = dom.getXPath;
+    $.fn.addFilter = dom.addFilter;
+    $.fn.getValues = getValues;
+    $.fn.getValue = getValue;
+    $.fn.setValue = dom.setValue;
+    $.fn.getName = dom.getName;
+    $.fn.nameAttr = dom.nameAttr;
+    $.fn.toggleOmit = dom.toggleOmit;
+    $.fn.getXPath = dom.getXPath;
 
     return dom;
 }(k_polyfill, k_docapi));
@@ -894,7 +895,7 @@ var k_structure = {
          * return true means render element, false remove it if existent in dom
          **/
         cls.preRenderView = function ($field, item) {
-            if (typeof model.get($($field).el('getName') === 'undefined')
+            if (typeof model.get($($field).el('getName')) === 'undefined')
                 return false;
                 
             if (!$field.getAttribute('data-filter'))
@@ -1368,7 +1369,7 @@ var k_structure = {
                                 changeCb.call(model, model.get(name), changes, 'controller');
                             }
                         }
-                    }($els)); 
+                    }($els))); 
                     
                 }
             };

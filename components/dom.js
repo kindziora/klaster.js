@@ -347,14 +347,14 @@ var k_dom =(function ($, api) {
 
     
 
-    $.addFilter = dom.addFilter;
-    $.getValues = getValues;
-    $.getValue = getValue;
-    $.setValue = dom.setValue;
-    $.getName = dom.getName;
-    $.nameAttr = dom.nameAttr;
-    $.toggleOmit = dom.toggleOmit;
-    $.getXPath = dom.getXPath;
+    $.fn.addFilter = dom.addFilter;
+    $.fn.getValues = getValues;
+    $.fn.getValue = getValue;
+    $.fn.setValue = dom.setValue;
+    $.fn.getName = dom.getName;
+    $.fn.nameAttr = dom.nameAttr;
+    $.fn.toggleOmit = dom.toggleOmit;
+    $.fn.getXPath = dom.getXPath;
 
     return dom;
 }(k_polyfill, k_docapi));

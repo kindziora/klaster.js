@@ -85,8 +85,8 @@
     <script src="../../build/klaster.dev.js"></script>
      
     <script>
-      
-      $('.container').klaster({
+
+     k_polyfill(document.querySelector('.container')).el('klaster', {
         delay : 2000, //delay to call sync
         model : {
           event : {
