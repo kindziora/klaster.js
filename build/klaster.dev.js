@@ -1,4 +1,4 @@
-/*! klaster.js Version: 0.9.1 13-03-2016 21:52:44 */
+/*! klaster.js Version: 0.9.1 14-03-2016 18:38:26 */
 var prefix = 'data';
 
 var k_docapi = { 
@@ -108,41 +108,7 @@ var k_structure = {
     'config': {
         'debug': true
     }
-};var k_polyfill = function(el) {
-     var me = {};
-   me.el = function() {
-        var args = []; 
-        for (var i = 1; i < arguments.length; i++) args.push(arguments[i]);
-        return k_polyfill.fn[arguments[0]].apply(el, args);
-    };
-      
- 
-    return me;
-};
-
-  k_polyfill.extend = function(out) {
-    out = out || {};
-  
-    for (var i = 1; i < arguments.length; i++) {
-      var obj = arguments[i];
-  
-      if (!obj)
-        continue;
-  
-      for (var key in obj) {
-        if (obj.hasOwnProperty(key)) {
-          if (typeof obj[key] === 'object')
-            out[key] = k_polyfill.extend(out[key], obj[key]);
-          else
-            out[key] = obj[key];
-        }
-      }
-    }
-  
-    return out;
-  }; 
-  
-k_polyfill.fn = {};;var k_dom =(function ($, api) {
+};var k_dom =(function (api) {
     api = api['dom-attributes'];
     var dom = {
         
@@ -161,30 +127,31 @@ k_polyfill.fn = {};;var k_dom =(function ($, api) {
          * get element name
          * @returns {dom}
          */
-        'getName': function () {
-            return this.getAttribute($(this).el('nameAttr'));
+        'getName': function ($el) {
+            if($el.nodeType !== 3)
+                return $el.getAttribute(dom.nameAttr($el));
         },
         /**
          * get name attribute
          * @returns {dom}
          */
-        'nameAttr': function () {
-            return this.getAttribute(api.name.attr) ? api.name.attr : 'name';
+        'nameAttr': function ($el) {
+            return $el.getAttribute(api.name.attr) ? api.name.attr : 'name';
         },
         /**
          * toggle element from dom and model
          * @returns {dom}
          */
-        'toggleOmit': function () {
-            this.setAttribute(api.omit.attr, !(this.getAttribute(api.omit.attr) ? (this.getAttribute(api.omit.attr).toLowerCase() === "true") : false));
-            return this;
+        'toggleOmit': function ($el) {
+            $el.setAttribute(api.omit.attr, !($el.getAttribute(api.omit.attr) ? ($el.getAttribute(api.omit.attr).toLowerCase() === "true") : false));
+            return $el;
         }, 
         /**
          * get xpath of dom element, hopfully unique
          * @returns {*}
          */
-        'getXPath': function () {
-            var el = this;
+        'getXPath': function ($el) {
+            var el = $el;
             if (typeof el === "string") return document.evaluate(el, document, null, 0, null)
             if (!el || el.nodeType != 1) return ''
             if (el.id) return "//*[@id='" + el.id + "']"
@@ -200,23 +167,23 @@ k_polyfill.fn = {};;var k_dom =(function ($, api) {
      * @param {type} multiple
      * @return {type} value
      */
-    function getValue(multiple) {
+    function getValue(multiple, $el) {
         /**
          * return undefined if this element will be omitted
          */
-        if (dom.getParents(this, '[' + api.omit.attr + '="true"]') || this.getAttribute(api.omit.attr) === "true") {
+        if (dom.getParents($el, '[' + api.omit.attr + '="true"]') || $el.getAttribute(api.omit.attr) === "true") {
             return undefined;
         }
 
-        if (typeof dom.multipleValues[this.getAttribute('type')] !== 'function'
-            || this.getAttribute(api.multiple.attr) === "false") {
-            return value.call(this);
+        if (typeof dom.multipleValues[$el.getAttribute('type')] !== 'function'
+            || $el.getAttribute(api.multiple.attr) === "false") {
+            return value.call($el);
         } 
         
-        if(multiple || this.getAttribute(api.multiple.attr) === "true"
-        || typeof dom.multipleValues[this.getAttribute('type')] === 'function'){
+        if(multiple || $el.getAttribute(api.multiple.attr) === "true"
+        || typeof dom.multipleValues[$el.getAttribute('type')] === 'function'){
             /* if multiple is active return values */
-            return getValues.call(this, this.getAttribute('type'));
+            return getValues.call($el, $el.getAttribute('type'));
         }
 
     }
@@ -226,12 +193,12 @@ k_polyfill.fn = {};;var k_dom =(function ($, api) {
      * @param type
      * @returns {*}
      */
-    function getValues(type) {
+    function getValues(type, $el) {
         if (typeof dom.multipleValues[type] === 'undefined'
-            && this.getAttribute(api.multiple.attr)) {
+            && $el.getAttribute(api.multiple.attr)) {
             type = api.multiple.attr;
         }
-        return dom.multipleValues[type].call(this);
+        return dom.multipleValues[type].call($el);
     }
 
     /**
@@ -262,7 +229,7 @@ k_polyfill.fn = {};;var k_dom =(function ($, api) {
        dom.multipleValues = {
         "checked": function ($el, $elements, single) {
 
-            if ($el.getAttribute(api.multiple.attr) === 'false'|| single || document.querySelectorAll('[' + $($el).el('nameAttr') + '="' + $($el).el('getName') + '"]').length === 1)
+            if ($el.getAttribute(api.multiple.attr) === 'false'|| single || document.querySelectorAll('[' + $($el).el('nameAttr') + '="' + dom.getName($el) + '"]').length === 1)
                 return $el.checked;
                 
             var values = [],
@@ -278,13 +245,13 @@ k_polyfill.fn = {};;var k_dom =(function ($, api) {
             return values;
         },
         "checkbox": function () {
-            return dom.multipleValues.checked(this, document.querySelectorAll('[' + $(this).el('nameAttr') + '="' + $(this).el('getName') + '"]:checked'));
+            return dom.multipleValues.checked(this, document.querySelectorAll('[' + dom.nameAttr($el) + '="' + dom.getName($el) + '"]:checked'));
         },
         "radio": function () {
-            return dom.multipleValues.checked(this, document.querySelectorAll('[' + $(this).el('nameAttr') + '="' +  $(this).el('getName') + '"]:checked'), true);
+            return dom.multipleValues.checked(this, document.querySelectorAll('[' + dom.nameAttr($el) + '="' +  dom.getName($el) + '"]:checked'), true);
         },
         "data-multiple": function () {
-            return dom.multipleValues.checked(this, document.querySelectorAll('[' + $(this).el('nameAttr') + '="' +  $(this).el('getName') + '"][data-checked="true"]'));
+            return dom.multipleValues.checked(this, document.querySelectorAll('[' + dom.nameAttr($el) + '="' +  dom.getName($el) + '"][data-checked="true"]'));
         }
     };
 
@@ -318,7 +285,7 @@ k_polyfill.fn = {};;var k_dom =(function ($, api) {
      * @returns {*}
      */
     dom.getView = function ($scope) {
-        return $scope.getAttribute(api.view.attr) || dom.getFieldView($scope.getName(), true);
+        return $scope.getAttribute(api.view.attr) || dom.getFieldView(dom.getName($scope), true);
     };
 
     /**
@@ -444,7 +411,7 @@ k_polyfill.fn = {};;var k_dom =(function ($, api) {
      * @returns {*}
      */
     dom.hasView = function ($scope) {
-        return $scope.getAttribute(api.view.attr) || dom.getFieldView($($scope).el('getName'), true);
+        return $scope.getAttribute(api.view.attr) || dom.getFieldView(dom.getName($scope), true);
     };
     
      /**
@@ -488,20 +455,35 @@ k_polyfill.fn = {};;var k_dom =(function ($, api) {
         t.innerHTML = html;
         return t.content.cloneNode(true);
     }
-
-    
-
-    $.fn.addFilter = dom.addFilter;
-    $.fn.getValues = getValues;
-    $.fn.getValue = getValue;
-    $.fn.setValue = dom.setValue;
-    $.fn.getName = dom.getName;
-    $.fn.nameAttr = dom.nameAttr;
-    $.fn.toggleOmit = dom.toggleOmit;
-    $.fn.getXPath = dom.getXPath;
-
+ 
+    dom.getValues = getValues;
+    dom.getValue = getValue;
+ 
+   
+    dom.extend = function(out) {
+        out = out || {};
+      
+        for (var i = 1; i < arguments.length; i++) {
+          var obj = arguments[i];
+      
+          if (!obj)
+            continue;
+      
+          for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+              if (typeof obj[key] === 'object')
+                out[key] = dom.extend(out[key], obj[key]);
+              else
+                out[key] = obj[key];
+            }
+          }
+        }
+      
+      return out;
+    }; 
+ 
     return dom;
-}(k_polyfill, k_docapi));
+}(k_docapi));
 ;var k_data = (function ($) {
     var data = {
         'field' : {}
@@ -846,27 +828,31 @@ k_polyfill.fn = {};;var k_dom =(function ($, api) {
         return data.diffObjects(data._modelprechangeReal, data.field);
     };
     return data;
-}(k_polyfill));
+}(k_dom));
 ;/**
  * klaster is a jquery filter plugin for extended filters by dom rules and javascript based on filter classes
  * @author Alexander Kindziora 2015
  *
  */
 
-(function ($, structure, docapi, dom, model) {
+(function (structure, docapi, dom, model) {
     //"use strict";
 
     var me = {};
     var api = docapi['dom-attributes'];
-     
-    $.fn.klaster = function (child) {
-        var cls = $.extend(structure, child);
+    
+    window.$k = function(selector) { 
+        return klaster.bind(document.querySelector(selector));
+    };
+    
+    function klaster(child) {
+        var cls = dom.extend(structure, child);
         
         dom.child = cls;
         
         var $globalScope = this;
         
-        cls.model = model = $.extend(model, child.model);
+        cls.model = model = dom.extend(model, child.model);
         
         /**
          * log debug messages
@@ -886,7 +872,7 @@ k_polyfill.fn = {};;var k_dom =(function ($, api) {
          */
         cls.updateViewFilter = function () {
             Array.prototype.forEach.call($globalScope.querySelectorAll('[data-filter]'), function(el, i){
-             cls.viewFilter[$(el).el('getXPath')] = el.getAttribute('data-filter');
+             cls.viewFilter[dom.getXPath(el)] = el.getAttribute('data-filter');
             });
         };
  
@@ -895,7 +881,7 @@ k_polyfill.fn = {};;var k_dom =(function ($, api) {
          * return true means render element, false remove it if existent in dom
          **/
         cls.preRenderView = function ($field, item) {
-            if (typeof model.get($($field).el('getName')) === 'undefined')
+            if (typeof model.get(dom.getName($field)) === 'undefined')
                 return false;
                 
             if (!$field.getAttribute('data-filter'))
@@ -912,7 +898,7 @@ k_polyfill.fn = {};;var k_dom =(function ($, api) {
             var funcName = dom.getView($field);
 
             if (typeof cls.view.event !== "undefined" && typeof cls.view.event.postRenderView !== 'undefined' && typeof cls.view.event.postRenderView[funcName] === 'function') {
-                cls.view.event.postRenderView[funcName].call(model, $field, model.get($($field).el('getName')));
+                cls.view.event.postRenderView[funcName].call(model, $field, model.get(dom.getName($field)));
             }
 
         };
@@ -935,9 +921,11 @@ k_polyfill.fn = {};;var k_dom =(function ($, api) {
          * gets executed after an event is triggered
          * check if model has changed
          */
-       cls.post_trigger = function (e, result) { 
-            var name = $(this).el('getName');
-            if ((result != model.get(name)) || model.changed(name)) {
+       cls.post_trigger = function (e, result) {
+            var name = dom.getName(this);
+            var modelState =  model.get(name);
+     
+            if ((result != modelState) || model.changed(name)) {
 
                 cls.debug('changed', result, model.getOld(name), name);
 
@@ -948,7 +936,7 @@ k_polyfill.fn = {};;var k_dom =(function ($, api) {
                 if (typeof child.post_trigger !== "undefined")
                     child.post_trigger.call(this, e, child);
 
-                cls.model2View.call($(this));
+                cls.model2View.call(this);
 
             }
             return true;
@@ -1009,7 +997,9 @@ k_polyfill.fn = {};;var k_dom =(function ($, api) {
          */
         function _set($html) {
             dom.setHtmlValue.call(this, $html);
-            cls.bind(this);
+            if($html.nodeType !== 3)
+                cls.bind(this);
+            
             cls.postRenderView(this);
         }
 
@@ -1020,7 +1010,7 @@ k_polyfill.fn = {};;var k_dom =(function ($, api) {
          * @returns {*}
          */
         cls.getDecoValPrimitive = function ($scope, scopeModelField) {
-            var fieldN = $($scope).el('getName'),
+            var fieldN = dom.getName($scope),
                 viewName = dom.getView($scope),
                 DecoValPrimitive = scopeModelField;
                  
@@ -1052,12 +1042,12 @@ k_polyfill.fn = {};;var k_dom =(function ($, api) {
 
                 var m_index = 0;
                 for (index in field) { //iterate over all items in array 
-                    var name = $($scope).el('getName'),
+                    var name = dom.getName($scope),
                     $child = $scope.querySelector('[data-name="' + name + '\[' + index + '\]"]'); //get child by name
 
                     if (cls.preRenderView($scope, field[index])) { //check filters or other stuff that could avoid rendering that item
                         
-                        $html = $(cls.view.views[viewName].call(cls.view, field[index], index, $scope)); //render view
+                        $html = dom.parseHTML(cls.view.views[viewName].call(cls.view, field[index], index, $scope)); //render view
 
                         var $close = $scope.querySelector('[data-name="' + name + '\[' + m_index + '\]"]');
 
@@ -1066,7 +1056,7 @@ k_polyfill.fn = {};;var k_dom =(function ($, api) {
                         } else if ($close) {
                             $html.insertAfter($close); //insert after the last added 
                         } else {
-                            $scope.append($html); //just append at the end
+                            $scope.appendChild($html); //just append at the end
                         } 
                         
                         cls.bind($html); //bind to app to new html               
@@ -1086,15 +1076,20 @@ k_polyfill.fn = {};;var k_dom =(function ($, api) {
             function killListElement() {
                 
                 Array.prototype.forEach.call($scope.childNodes, function(el, i){
-                    var Elname = $(el).el('getName');
-                    var name = /\[(.*?)\]/gi.exec(Elname)[1];
+                    var Elname = dom.getName(el);
+                    if(typeof Elname === 'undefined') {
+                         el.parentNode.removeChild(el);
+                    }else{
+                        var name = /\[(.*?)\]/gi.exec(Elname)[1];
 
-                    if (!model.get(Elname)
-                        || typeof field[name] === 'undefined'
-                        || !cls.preRenderView($scope, field[name])) {
-
-                        this.parentNode.removeChild(this);
+                        if (!model.get(Elname)
+                            || typeof field[name] === 'undefined'
+                            || !cls.preRenderView($scope, field[name])) {
+    
+                            el.parentNode.removeChild(el);
+                        }
                     }
+                    
                 });
              
             }
@@ -1161,7 +1156,7 @@ k_polyfill.fn = {};;var k_dom =(function ($, api) {
          **/
         cls.updateHtmlElement = function($scope, scopeModelField, changed){
             
-            var name = $($scope).el('getName');
+            var name = dom.getName($scope);
             var error = model.getState(name);
             var cced = model.getOld(name);
             if((typeof error === 'undefined' || error.result) || (typeof error !== 'undefined' && dom.getView($scope) !== error.view)){ // kein fehler aufgetreten
@@ -1172,8 +1167,8 @@ k_polyfill.fn = {};;var k_dom =(function ($, api) {
             }else{ // field view was defined i a validator is it gets rendered also if value is not in model and by that equal to undefined
                 var template = cls.view.views[error.view].call(cls, scopeModelField, name);
                
-                $field = $globalScope.querySelector(dom.getValidatorSelector(name, error.view));
-                _set.call($field, template); 
+                var $field = $globalScope.querySelector(dom.getValidatorSelector(name, error.view));
+                _set.call($field, template);
             }
         };
         
@@ -1239,7 +1234,7 @@ k_polyfill.fn = {};;var k_dom =(function ($, api) {
                 return function (el) {
                     
                     // check how to treat this field
-                    var $scope = el, fieldN = $(el).el('getName');
+                    var $scope = el, fieldN = dom.getName(el);
                     
                     if($triggerSrc === $scope){
                         return;
@@ -1273,7 +1268,7 @@ k_polyfill.fn = {};;var k_dom =(function ($, api) {
                         if (dom.isHtmlList($scope)) {
                             //render partial list of html elements
     
-                            if ($($scope).el('getName').indexOf('[') === -1) { // address no array element
+                            if (dom.getName($scope).indexOf('[') === -1) { // address no array element
                                 change[1] = 'view-filter';// why view filter?
                                 change[2] = 2;
                                 change[3] = 1;
@@ -1337,8 +1332,8 @@ k_polyfill.fn = {};;var k_dom =(function ($, api) {
                 var addrN;
  
                 Array.prototype.forEach.call($globalScope.querySelectorAll('[data-filter]'), function (el) { 
-                    if (cls.viewFilter[$(el).el('getXPath')] !== el.getAttribute('data-filter')) { // filter for this view has changed
-                        changes.push([$(el).el('getName'), 'view-filter', cls.viewFilter[$(el).el('getXPath')], el.getAttribute('data-filter')]);
+                    if (cls.viewFilter[dom.getXPath(el)] !== el.getAttribute('data-filter')) { // filter for this view has changed
+                        changes.push([dom.getName(el), 'view-filter', cls.viewFilter[dom.getXPath(el)], el.getAttribute('data-filter')]);
                     }
                 });
     
@@ -1350,7 +1345,7 @@ k_polyfill.fn = {};;var k_dom =(function ($, api) {
                     if (!$els)
                         continue;
                     
-                    name = $($els).el('getName');
+                    name = dom.getName($els[0]);
                     changes[addrN][0] = name;
     
                     cacheEls[name] = [$els, changes[addrN]];
@@ -1362,7 +1357,7 @@ k_polyfill.fn = {};;var k_dom =(function ($, api) {
                     var cnt = $els.length;
                     
                     Array.prototype.forEach.call($els, local.eachViewRepresentation(cnt, changes, true, function ($els) {
-                        var name = $($els).el('getName');
+                        var name = dom.getName($els[0]);
                         return function(el){
                             if (typeof model.event !== "undefined" && typeof model.event.postChange !== 'undefined' && typeof model.event.postChange[name] === 'function') {
                                 var changeCb = model.event.postChange[name];
@@ -1409,16 +1404,20 @@ k_polyfill.fn = {};;var k_dom =(function ($, api) {
          *dispatch events for dom element
          */
         cls.dispatchEvents = function () {
-            var events = (this.getAttribute(api.on.attr) ||'').split(','), i = 0, event = "", FinalEvents = {}, parts = "";
-            for (i in events) {
-                event = events[i].trim();
-                parts = event.split('->');
-                if (parts.length > 1) {
-                    FinalEvents[parts[0]] = parts[1];
-                } else {
-                    FinalEvents[parts[0]] = parts[0];
+            var FinalEvents = [];
+            if(this.getAttribute(api.on.attr)) {
+                 var events = (this.getAttribute(api.on.attr) ||'').split(','), i = 0, event = "", FinalEvents = {}, parts = "";
+                for (i in events) {
+                    event = events[i].trim();
+                    parts = event.split('->');
+                    if (parts.length > 1) {
+                        FinalEvents[parts[0]] = parts[1];
+                    } else {
+                        FinalEvents[parts[0]] = parts[0];
+                    }
                 }
             }
+           
             return FinalEvents;
         };
         /**
@@ -1444,7 +1443,7 @@ k_polyfill.fn = {};;var k_dom =(function ($, api) {
             /* variable injection via lambda function factory used in iteration */
             var factory = function (me, event) {
                 return function (e, args) {
-                    name = $(me).el('getName');
+                    name = dom.getName(me);
                     method = events[name][event];
                     var result = true;
                     if (false !== cls.pre_trigger.call(me, e)) {
@@ -1475,7 +1474,7 @@ k_polyfill.fn = {};;var k_dom =(function ($, api) {
             var InitValue = '';
             
             function bindevents(el) {
-                name = $(el).el('getName');
+                name = dom.getName(el);
                 if(name){
                     events[name] = cls.dispatchEvents.call(el);
                     for (event in events[name]) {
@@ -1514,4 +1513,4 @@ k_polyfill.fn = {};;var k_dom =(function ($, api) {
         cls.init();
 
     };
-})(k_polyfill, k_structure, k_docapi, k_dom, k_data);
+})(k_structure, k_docapi, k_dom, k_data);

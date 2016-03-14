@@ -104,8 +104,7 @@ var cb = function (cachedViews) {
     model.tag_name = model.items[0].tag_name;
     
     var mytodos = new twigInterface(model, cachedViews, isdev);
-
-    $('#todoapp').klaster(mytodos);
+    $k('#todoapp')(mytodos);
     mytodos.model.event.sync.call(mytodos.model);
 
 };

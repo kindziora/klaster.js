@@ -57,7 +57,8 @@
                           <div class="panel-heading">
                             <h3 class="panel-title">Suche</h3>
                           </div>
-                          <div class="panel-body" data-name="search"></div>
+                         <div style="display:none">
+                            <div class="panel-body" data-name="search"></div>
                         </div>
                         
                         <div class="panel panel-danger">
@@ -80,18 +81,15 @@
 
     </div> <!-- /container -->
 
-
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="../../build/klaster.dev.js"></script>
      
-    <script>
-
-     k_polyfill(document.querySelector('.container')).el('klaster', {
+    <script> 
+     $k('.container')({
         delay : 2000, //delay to call sync
         model : {
           event : {
-             sync: function(){
-              alert(JSON.stringify(this.field));
+             sync : function(){
+             // alert(JSON.stringify(this.field));
             }
           } 
         }

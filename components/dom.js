@@ -1,4 +1,4 @@
-var k_dom =(function ($, api) {
+var k_dom =(function (api) {
     api = api['dom-attributes'];
     var dom = {
         
@@ -17,30 +17,31 @@ var k_dom =(function ($, api) {
          * get element name
          * @returns {dom}
          */
-        'getName': function () {
-            return this.getAttribute($(this).el('nameAttr'));
+        'getName': function ($el) {
+            if($el.nodeType !== 3)
+                return $el.getAttribute(dom.nameAttr($el));
         },
         /**
          * get name attribute
          * @returns {dom}
          */
-        'nameAttr': function () {
-            return this.getAttribute(api.name.attr) ? api.name.attr : 'name';
+        'nameAttr': function ($el) {
+            return $el.getAttribute(api.name.attr) ? api.name.attr : 'name';
         },
         /**
          * toggle element from dom and model
          * @returns {dom}
          */
-        'toggleOmit': function () {
-            this.setAttribute(api.omit.attr, !(this.getAttribute(api.omit.attr) ? (this.getAttribute(api.omit.attr).toLowerCase() === "true") : false));
-            return this;
+        'toggleOmit': function ($el) {
+            $el.setAttribute(api.omit.attr, !($el.getAttribute(api.omit.attr) ? ($el.getAttribute(api.omit.attr).toLowerCase() === "true") : false));
+            return $el;
         }, 
         /**
          * get xpath of dom element, hopfully unique
          * @returns {*}
          */
-        'getXPath': function () {
-            var el = this;
+        'getXPath': function ($el) {
+            var el = $el;
             if (typeof el === "string") return document.evaluate(el, document, null, 0, null)
             if (!el || el.nodeType != 1) return ''
             if (el.id) return "//*[@id='" + el.id + "']"
@@ -56,23 +57,23 @@ var k_dom =(function ($, api) {
      * @param {type} multiple
      * @return {type} value
      */
-    function getValue(multiple) {
+    function getValue(multiple, $el) {
         /**
          * return undefined if this element will be omitted
          */
-        if (dom.getParents(this, '[' + api.omit.attr + '="true"]') || this.getAttribute(api.omit.attr) === "true") {
+        if (dom.getParents($el, '[' + api.omit.attr + '="true"]') || $el.getAttribute(api.omit.attr) === "true") {
             return undefined;
         }
 
-        if (typeof dom.multipleValues[this.getAttribute('type')] !== 'function'
-            || this.getAttribute(api.multiple.attr) === "false") {
-            return value.call(this);
+        if (typeof dom.multipleValues[$el.getAttribute('type')] !== 'function'
+            || $el.getAttribute(api.multiple.attr) === "false") {
+            return value.call($el);
         } 
         
-        if(multiple || this.getAttribute(api.multiple.attr) === "true"
-        || typeof dom.multipleValues[this.getAttribute('type')] === 'function'){
+        if(multiple || $el.getAttribute(api.multiple.attr) === "true"
+        || typeof dom.multipleValues[$el.getAttribute('type')] === 'function'){
             /* if multiple is active return values */
-            return getValues.call(this, this.getAttribute('type'));
+            return getValues.call($el, $el.getAttribute('type'));
         }
 
     }
@@ -82,12 +83,12 @@ var k_dom =(function ($, api) {
      * @param type
      * @returns {*}
      */
-    function getValues(type) {
+    function getValues(type, $el) {
         if (typeof dom.multipleValues[type] === 'undefined'
-            && this.getAttribute(api.multiple.attr)) {
+            && $el.getAttribute(api.multiple.attr)) {
             type = api.multiple.attr;
         }
-        return dom.multipleValues[type].call(this);
+        return dom.multipleValues[type].call($el);
     }
 
     /**
@@ -118,7 +119,7 @@ var k_dom =(function ($, api) {
        dom.multipleValues = {
         "checked": function ($el, $elements, single) {
 
-            if ($el.getAttribute(api.multiple.attr) === 'false'|| single || document.querySelectorAll('[' + $($el).el('nameAttr') + '="' + $($el).el('getName') + '"]').length === 1)
+            if ($el.getAttribute(api.multiple.attr) === 'false'|| single || document.querySelectorAll('[' + $($el).el('nameAttr') + '="' + dom.getName($el) + '"]').length === 1)
                 return $el.checked;
                 
             var values = [],
@@ -134,13 +135,13 @@ var k_dom =(function ($, api) {
             return values;
         },
         "checkbox": function () {
-            return dom.multipleValues.checked(this, document.querySelectorAll('[' + $(this).el('nameAttr') + '="' + $(this).el('getName') + '"]:checked'));
+            return dom.multipleValues.checked(this, document.querySelectorAll('[' + dom.nameAttr($el) + '="' + dom.getName($el) + '"]:checked'));
         },
         "radio": function () {
-            return dom.multipleValues.checked(this, document.querySelectorAll('[' + $(this).el('nameAttr') + '="' +  $(this).el('getName') + '"]:checked'), true);
+            return dom.multipleValues.checked(this, document.querySelectorAll('[' + dom.nameAttr($el) + '="' +  dom.getName($el) + '"]:checked'), true);
         },
         "data-multiple": function () {
-            return dom.multipleValues.checked(this, document.querySelectorAll('[' + $(this).el('nameAttr') + '="' +  $(this).el('getName') + '"][data-checked="true"]'));
+            return dom.multipleValues.checked(this, document.querySelectorAll('[' + dom.nameAttr($el) + '="' +  dom.getName($el) + '"][data-checked="true"]'));
         }
     };
 
@@ -174,7 +175,7 @@ var k_dom =(function ($, api) {
      * @returns {*}
      */
     dom.getView = function ($scope) {
-        return $scope.getAttribute(api.view.attr) || dom.getFieldView($scope.getName(), true);
+        return $scope.getAttribute(api.view.attr) || dom.getFieldView(dom.getName($scope), true);
     };
 
     /**
@@ -300,7 +301,7 @@ var k_dom =(function ($, api) {
      * @returns {*}
      */
     dom.hasView = function ($scope) {
-        return $scope.getAttribute(api.view.attr) || dom.getFieldView($($scope).el('getName'), true);
+        return $scope.getAttribute(api.view.attr) || dom.getFieldView(dom.getName($scope), true);
     };
     
      /**
@@ -344,17 +345,32 @@ var k_dom =(function ($, api) {
         t.innerHTML = html;
         return t.content.cloneNode(true);
     }
-
-    
-
-    $.fn.addFilter = dom.addFilter;
-    $.fn.getValues = getValues;
-    $.fn.getValue = getValue;
-    $.fn.setValue = dom.setValue;
-    $.fn.getName = dom.getName;
-    $.fn.nameAttr = dom.nameAttr;
-    $.fn.toggleOmit = dom.toggleOmit;
-    $.fn.getXPath = dom.getXPath;
-
+ 
+    dom.getValues = getValues;
+    dom.getValue = getValue;
+ 
+   
+    dom.extend = function(out) {
+        out = out || {};
+      
+        for (var i = 1; i < arguments.length; i++) {
+          var obj = arguments[i];
+      
+          if (!obj)
+            continue;
+      
+          for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+              if (typeof obj[key] === 'object')
+                out[key] = dom.extend(out[key], obj[key]);
+              else
+                out[key] = obj[key];
+            }
+          }
+        }
+      
+      return out;
+    }; 
+ 
     return dom;
-}(k_polyfill, k_docapi));
+}(k_docapi));

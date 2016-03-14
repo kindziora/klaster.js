@@ -342,4 +342,4 @@ var k_data = (function ($) {
         return data.diffObjects(data._modelprechangeReal, data.field);
     };
     return data;
-}(k_polyfill));
+}(k_dom));
