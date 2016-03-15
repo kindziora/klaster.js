@@ -6,7 +6,7 @@
         "Alexander Kindziora",
         "kindziora@live.de"
     ],
-    "description": "javascript UI framework, using mvc pattern, scopes and two way databinding",
+    "description": "experimental javascript UI framework, using mvc pattern, scopes and two way databinding",
     "main": "build/klaster.dev.js",
     "keywords": [
         "javascript",
