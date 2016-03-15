@@ -221,9 +221,9 @@
                         var $close = $scope.querySelector('[data-name="' + name + '\[' + m_index + '\]"]');
 
                         if ($child) {
-                            $child.replaceWith($html); //if sub element exists, replace it
-                        } else if ($close) {
-                            $html.insertAfter($close); //insert after the last added 
+                            $child.parentNode.replaceChild($html, $child);
+                        } else if ($close) { 
+                            $close.parentNode.insertBefore($html, $close.nextSibling);
                         } else {
                             $scope.appendChild($html); //just append at the end
                         } 
@@ -299,7 +299,7 @@
                         $html = dom.parseHTML(cls.view.views[viewName].call(cls.view, field[index], index, $scope)); // render subitem
     
                         if ($child) {
-                            $child.parentNode.replaceChild($child, $html);
+                            $child.parentNode.replaceChild($html, $child);
                         }
                         
                         cls.bind($html);

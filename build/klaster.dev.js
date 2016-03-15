@@ -1,4 +1,4 @@
-/*! klaster.js Version: 0.9.1 14-03-2016 18:38:26 */
+/*! klaster.js Version: 0.9.1 15-03-2016 22:49:24 */
 var prefix = 'data';
 
 var k_docapi = { 
@@ -453,7 +453,7 @@ var k_structure = {
     dom.parseHTML = function (html) {
         var t = document.createElement('template');
         t.innerHTML = html;
-        return t.content.cloneNode(true);
+        return t.content.cloneNode(true).childNodes[0];
     }
  
     dom.getValues = getValues;
@@ -1052,9 +1052,9 @@ var k_structure = {
                         var $close = $scope.querySelector('[data-name="' + name + '\[' + m_index + '\]"]');
 
                         if ($child) {
-                            $child.replaceWith($html); //if sub element exists, replace it
-                        } else if ($close) {
-                            $html.insertAfter($close); //insert after the last added 
+                            $child.parentNode.replaceChild($html, $child);
+                        } else if ($close) { 
+                            $close.parentNode.insertBefore($html, $close.nextSibling);
                         } else {
                             $scope.appendChild($html); //just append at the end
                         } 
@@ -1130,7 +1130,7 @@ var k_structure = {
                         $html = dom.parseHTML(cls.view.views[viewName].call(cls.view, field[index], index, $scope)); // render subitem
     
                         if ($child) {
-                            $child.parentNode.replaceChild($child, $html);
+                            $child.parentNode.replaceChild($html, $child);
                         }
                         
                         cls.bind($html);

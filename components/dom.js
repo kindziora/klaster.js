@@ -343,7 +343,7 @@ var k_dom =(function (api) {
     dom.parseHTML = function (html) {
         var t = document.createElement('template');
         t.innerHTML = html;
-        return t.content.cloneNode(true);
+        return t.content.cloneNode(true).childNodes[0];
     }
  
     dom.getValues = getValues;

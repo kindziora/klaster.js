@@ -47,7 +47,7 @@ var twigInterface = function (model, cachedViews, isdev) {
     };
 
     this.view = {
-        templates_: isdev ? {} : cachedViews,
+        templates_: cachedViews,
         templates: isdev,
         viewpath: 'view/twigInterface/',
         fileextension: 'html.twig',
