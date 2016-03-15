@@ -24,13 +24,21 @@ unit test and integration test for the framework and apps
 
 ##klaster.js framework code structure
 
-klaster.js --bundling functionality by using components
+klaster.js 
 
-dom --dom related methods and code
+--bundling functionality by using components
 
-data --model and data related handling
+dom 
 
-structure --contains class scheme
+--dom related methods and code
+
+data 
+
+--model and data related handling
+
+structure 
+
+--contains class scheme
 
 ##klaster.js minimal app 
 
