@@ -52,28 +52,27 @@ var twigInterface = function (model, cachedViews, isdev, cache) {
         viewpath: 'view/twigInterface/',
         fileextension: 'html.twig',
         render: function (tplVars, tplName) {
-            if (twig) {
-                var key = tplName + JSON.stringify(tplVars);
-                var data = cache.get(key);
-                if(data){
-                    return data;
-                }else{
-                     var res = twig({
-                        data: intfc.view.templates_[tplName || arguments.callee.caller]
-                    });
-                    
-                    var result = res.render(tplVars);
-                    
-                    if (result) {
-                        cache.set(key, result, 60 * 10000);
-                        return result;
-                    } else {
-                        console.log('error TEMPLATE NICHT IN CACHED.json gefunden', arguments.callee.caller);
-                        return '<div></div>';
-                    }
+            
+            var key = tplName + JSON.stringify(tplVars);
+            var data = cache.get(key);
+            if(data){
+                return data.content;
+            }else{
+                 var res = twig({
+                    data: intfc.view.templates_[tplName || arguments.callee.caller]
+                });
                 
-                } 
-            }
+                var result = res.render(tplVars);
+                
+                if (result) {
+                    cache.set(key, result, 60 * 10000);
+                    return result;
+                } else {
+                    console.log('error TEMPLATE NICHT IN CACHED.json gefunden', arguments.callee.caller);
+                    return '<div></div>';
+                }
+            
+            } 
        },
        views: {
            "foreach->items": function (item, index) {
