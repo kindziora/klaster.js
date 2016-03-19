@@ -15,13 +15,13 @@
     };
     
     function klaster(child) {
-        var cls = dom.extend(structure, child);
+        var cls = model.extend(structure, child);
         
         dom.child = cls;
         
         var $globalScope = this;
         
-        cls.model = model = dom.extend(model, child.model);
+        cls.model = model = model.extend(model, child.model);
         
         /**
          * log debug messages
@@ -50,7 +50,8 @@
          * return true means render element, false remove it if existent in dom
          **/
         cls.preRenderView = function ($field, item) {
-            if (typeof model.get(dom.getName($field)) === 'undefined')
+            if (typeof model.get(dom.getName($field)) === 'undefined' ||
+                $field.getAttribute(api.view) === "_static" )
                 return false;
                 
             if (!$field.getAttribute('data-filter'))
@@ -648,8 +649,9 @@
                     events[name] = cls.dispatchEvents.call(el);
                     for (event in events[name]) {
                         cls.debug('name:' + name + ', event:' + event);
-                        el.removeEventListener(event);
-                        el.addEventListener(event, factory(el, event));
+                        var f = factory(el, event);
+                        el.removeEventListener(event, f);
+                        el.addEventListener(event, f);
                         if ($el.getAttribute('data-defaultvalues') !== 'model' && !dom.getParents($el, '[data-defaultvalues="model"]')) {
                             InitValue = el.value;
                             model.updateValue.call(el, InitValue);

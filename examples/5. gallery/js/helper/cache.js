@@ -1,17 +1,8 @@
-var cache = function() {
+var cache = new (function() {
   var store = window.localStorage;
   var ns = 'c_';
   
-      window.setInterval(function() {
-        for (var i = 0; i < localStorage.length; i++){
-            if(localStorage.key(i).indexOf('ns') !== -1) {
-                var k = localStorage.key(i);
-                this.checkTTL(localStorage.getItem(k), k);
-            }
-        }
-      }, 60000);
-      
-      function checkTTL(data, key) {
+      this.checkTTL = function(data, key) {
         var entry = JSON.parse(data); 
         var now = new Date().getTime();
         if( now > entry.ttl ){
@@ -42,7 +33,7 @@ var cache = function() {
         if (!data){
           return null;
         }
-        return checkTTL(data, ns + key);
+        return this.checkTTL(data, ns + key);
       };
       
       this.remove = function(key){
@@ -53,4 +44,4 @@ var cache = function() {
         store.clear();
       };
 
-};
+})();

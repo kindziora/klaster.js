@@ -3,6 +3,93 @@ var k_data = (function ($) {
         'field' : {}
     };
  
+  
+    
+    var hasOwn = Object.prototype.hasOwnProperty;
+    var toStr = Object.prototype.toString;
+    
+    var isArray = function isArray(arr) {
+    	if (typeof Array.isArray === 'function') {
+    		return Array.isArray(arr);
+    	}
+    
+    	return toStr.call(arr) === '[object Array]';
+    };
+    
+    var isPlainObject = function isPlainObject(obj) {
+    	if (!obj || toStr.call(obj) !== '[object Object]') {
+    		return false;
+    	}
+    
+    	var hasOwnConstructor = hasOwn.call(obj, 'constructor');
+    	var hasIsPrototypeOf = obj.constructor && obj.constructor.prototype && hasOwn.call(obj.constructor.prototype, 'isPrototypeOf');
+    	// Not own constructor property must be Object
+    	if (obj.constructor && !hasOwnConstructor && !hasIsPrototypeOf) {
+    		return false;
+    	}
+    
+    	// Own properties are enumerated firstly, so to speed up,
+    	// if last one is own, then all properties are own.
+    	var key;
+    	for (key in obj) { /**/ }
+    
+    	return typeof key === 'undefined' || hasOwn.call(obj, key);
+    };
+    
+   data.extend = function() {
+    	var options, name, src, copy, copyIsArray, clone;
+    	var target = arguments[0];
+    	var i = 1;
+    	var length = arguments.length;
+    	var deep = false;
+    
+    	// Handle a deep copy situation
+    	if (typeof target === 'boolean') {
+    		deep = target;
+    		target = arguments[1] || {};
+    		// skip the boolean and the target
+    		i = 2;
+    	} else if ((typeof target !== 'object' && typeof target !== 'function') || target == null) {
+    		target = {};
+    	}
+    
+    	for (; i < length; ++i) {
+    		options = arguments[i];
+    		// Only deal with non-null/undefined values
+    		if (options != null) {
+    			// Extend the base object
+    			for (name in options) {
+    				src = target[name];
+    				copy = options[name];
+    
+    				// Prevent never-ending loop
+    				if (target !== copy) {
+    					// Recurse if we're merging plain objects or arrays
+    					if (deep && copy && (isPlainObject(copy) || (copyIsArray = isArray(copy)))) {
+    						if (copyIsArray) {
+    							copyIsArray = false;
+    							clone = src && isArray(src) ? src : [];
+    						} else {
+    							clone = src && isPlainObject(src) ? src : {};
+    						}
+    
+    						// Never move original objects, clone them
+    						target[name] = data.extend(deep, clone, copy);
+    
+    					// Don't bring in undefined values
+    					} else if (typeof copy !== 'undefined') {
+    						target[name] = copy;
+    					}
+    				}
+    			}
+    		}
+    	}
+    
+    	// Return the modified object
+    	return target;
+    };
+     
+ 
     data.has = function (obj, key) {
         return hasOwnProperty.call(obj, key);
     };
@@ -15,14 +102,14 @@ var k_data = (function ($) {
         data._modelpresize = 0;
         for (var key in data['field']) {
             if (data.has(data['field'], key) && data['field'][key] !== null  && typeof data['field'][key] !== 'undefined') {
-                data._modelprechange[key] = data['field'][key].toString();
+                data._modelprechange[key] = data['field'][key]; // data['field'][key].toString()
                 var base = {};
                 if (Object.prototype.toString.call(data['field'][key]) === "[object Array]") {
                     base = [];
                 }
 
                 if (typeof data['field'][key] !== 'string' && typeof data['field'][key] !== 'number') {
-                    data._modelprechangeReal[key] = $.extend(true, base, data['field'][key]);
+                    data._modelprechangeReal[key] = data.extend(true, base, data['field'][key]);
                 } else {
                     data._modelprechangeReal[key] = data['field'][key];
                 }
@@ -48,7 +135,7 @@ var k_data = (function ($) {
         }
           
         if (typeof data['state'] === 'undefined' ){
-            data.state = $.extend(true, data.field);
+            data.state = data.extend(true, data.field);
         }
           
         if (typeof data['state'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
@@ -341,5 +428,6 @@ var k_data = (function ($) {
     data.getChangedModelFields = function () {
         return data.diffObjects(data._modelprechangeReal, data.field);
     };
+    
     return data;
 }(k_dom));

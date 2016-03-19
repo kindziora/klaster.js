@@ -1,4 +1,4 @@
-/*! klaster.js Version: 0.9.1 15-03-2016 22:49:24 */
+/*! klaster.js Version: 0.9.1 19-03-2016 10:20:50 */
 var prefix = 'data';
 
 var k_docapi = { 
@@ -209,17 +209,10 @@ var k_structure = {
         if (this.getAttribute(api.omit.attr) === "true") {
             return undefined;
         }
-        var value = this.value || this.innerHTML;
-        /**
-         * @todo replace by native value functions 
-         */
-        
-        if (typeof value === 'undefined' && this.getAttribute('value')) {
-            value = this.getAttribute('value');
-        } else if (typeof this.getAttribute('value') === '' && this.getAttribute(api.value.attr) !== "") {
-            value = this.getAttribute(api.value.attr);
-        }
-        return value;
+          
+        var valData = this.getAttribute(api.value.attr);
+          
+        return valData || this.value || this.innerHTML;
     }
 
     /**
@@ -444,7 +437,7 @@ var k_structure = {
      * @param $scope
      * @returns {*|boolean}
      */
-    dom.isHtmlList = function ($scope) {
+    dom.isHtmlList = function ($scope) {                    
         return $scope.getAttribute(api.view.attr) && $scope.getAttribute(api.view.attr).indexOf(api.view.value.definition.iterate) !== -1;
     };
     /**
@@ -458,36 +451,100 @@ var k_structure = {
  
     dom.getValues = getValues;
     dom.getValue = getValue;
- 
    
-    dom.extend = function(out) {
-        out = out || {};
-      
-        for (var i = 1; i < arguments.length; i++) {
-          var obj = arguments[i];
-      
-          if (!obj)
-            continue;
-      
-          for (var key in obj) {
-            if (obj.hasOwnProperty(key)) {
-              if (typeof obj[key] === 'object')
-                out[key] = dom.extend(out[key], obj[key]);
-              else
-                out[key] = obj[key];
-            }
-          }
-        }
-      
-      return out;
-    }; 
- 
     return dom;
 }(k_docapi));
 ;var k_data = (function ($) {
     var data = {
         'field' : {}
     };
+ 
+  
+    
+    var hasOwn = Object.prototype.hasOwnProperty;
+    var toStr = Object.prototype.toString;
+    
+    var isArray = function isArray(arr) {
+    	if (typeof Array.isArray === 'function') {
+    		return Array.isArray(arr);
+    	}
+    
+    	return toStr.call(arr) === '[object Array]';
+    };
+    
+    var isPlainObject = function isPlainObject(obj) {
+    	if (!obj || toStr.call(obj) !== '[object Object]') {
+    		return false;
+    	}
+    
+    	var hasOwnConstructor = hasOwn.call(obj, 'constructor');
+    	var hasIsPrototypeOf = obj.constructor && obj.constructor.prototype && hasOwn.call(obj.constructor.prototype, 'isPrototypeOf');
+    	// Not own constructor property must be Object
+    	if (obj.constructor && !hasOwnConstructor && !hasIsPrototypeOf) {
+    		return false;
+    	}
+    
+    	// Own properties are enumerated firstly, so to speed up,
+    	// if last one is own, then all properties are own.
+    	var key;
+    	for (key in obj) { /**/ }
+    
+    	return typeof key === 'undefined' || hasOwn.call(obj, key);
+    };
+    
+   data.extend = function() {
+    	var options, name, src, copy, copyIsArray, clone;
+    	var target = arguments[0];
+    	var i = 1;
+    	var length = arguments.length;
+    	var deep = false;
+    
+    	// Handle a deep copy situation
+    	if (typeof target === 'boolean') {
+    		deep = target;
+    		target = arguments[1] || {};
+    		// skip the boolean and the target
+    		i = 2;
+    	} else if ((typeof target !== 'object' && typeof target !== 'function') || target == null) {
+    		target = {};
+    	}
+    
+    	for (; i < length; ++i) {
+    		options = arguments[i];
+    		// Only deal with non-null/undefined values
+    		if (options != null) {
+    			// Extend the base object
+    			for (name in options) {
+    				src = target[name];
+    				copy = options[name];
+    
+    				// Prevent never-ending loop
+    				if (target !== copy) {
+    					// Recurse if we're merging plain objects or arrays
+    					if (deep && copy && (isPlainObject(copy) || (copyIsArray = isArray(copy)))) {
+    						if (copyIsArray) {
+    							copyIsArray = false;
+    							clone = src && isArray(src) ? src : [];
+    						} else {
+    							clone = src && isPlainObject(src) ? src : {};
+    						}
+    
+    						// Never move original objects, clone them
+    						target[name] = data.extend(deep, clone, copy);
+    
+    					// Don't bring in undefined values
+    					} else if (typeof copy !== 'undefined') {
+    						target[name] = copy;
+    					}
+    				}
+    			}
+    		}
+    	}
+    
+    	// Return the modified object
+    	return target;
+    };
+     
  
     data.has = function (obj, key) {
         return hasOwnProperty.call(obj, key);
@@ -501,14 +558,14 @@ var k_structure = {
         data._modelpresize = 0;
         for (var key in data['field']) {
             if (data.has(data['field'], key) && data['field'][key] !== null  && typeof data['field'][key] !== 'undefined') {
-                data._modelprechange[key] = data['field'][key].toString();
+                data._modelprechange[key] = data['field'][key]; // data['field'][key].toString()
                 var base = {};
                 if (Object.prototype.toString.call(data['field'][key]) === "[object Array]") {
                     base = [];
                 }
 
                 if (typeof data['field'][key] !== 'string' && typeof data['field'][key] !== 'number') {
-                    data._modelprechangeReal[key] = $.extend(true, base, data['field'][key]);
+                    data._modelprechangeReal[key] = data.extend(true, base, data['field'][key]);
                 } else {
                     data._modelprechangeReal[key] = data['field'][key];
                 }
@@ -534,7 +591,7 @@ var k_structure = {
         }
           
         if (typeof data['state'] === 'undefined' ){
-            data.state = $.extend(true, data.field);
+            data.state = data.extend(true, data.field);
         }
           
         if (typeof data['state'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
@@ -827,6 +884,7 @@ var k_structure = {
     data.getChangedModelFields = function () {
         return data.diffObjects(data._modelprechangeReal, data.field);
     };
+    
     return data;
 }(k_dom));
 ;/**
@@ -846,13 +904,13 @@ var k_structure = {
     };
     
     function klaster(child) {
-        var cls = dom.extend(structure, child);
+        var cls = model.extend(structure, child);
         
         dom.child = cls;
         
         var $globalScope = this;
         
-        cls.model = model = dom.extend(model, child.model);
+        cls.model = model = model.extend(model, child.model);
         
         /**
          * log debug messages
@@ -881,7 +939,8 @@ var k_structure = {
          * return true means render element, false remove it if existent in dom
          **/
         cls.preRenderView = function ($field, item) {
-            if (typeof model.get(dom.getName($field)) === 'undefined')
+            if (typeof model.get(dom.getName($field)) === 'undefined' ||
+                $field.getAttribute(api.view) === "_static" )
                 return false;
                 
             if (!$field.getAttribute('data-filter'))
@@ -1479,8 +1538,9 @@ var k_structure = {
                     events[name] = cls.dispatchEvents.call(el);
                     for (event in events[name]) {
                         cls.debug('name:' + name + ', event:' + event);
-                        el.removeEventListener(event);
-                        el.addEventListener(event, factory(el, event));
+                        var f = factory(el, event);
+                        el.removeEventListener(event, f);
+                        el.addEventListener(event, f);
                         if ($el.getAttribute('data-defaultvalues') !== 'model' && !dom.getParents($el, '[data-defaultvalues="model"]')) {
                             InitValue = el.value;
                             model.updateValue.call(el, InitValue);

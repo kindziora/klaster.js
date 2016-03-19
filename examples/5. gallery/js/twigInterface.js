@@ -27,12 +27,10 @@ var twigInterface = function (model, cachedViews, isdev, cache) {
         },
         'mark': {
             click: function (e, self) {
-                e.preventDefault();
-                var $p = $('[data-name="items[' + $(this).attr('data-index') + ']"]');
-                $p.toggleClass('marked');
-
-                intfc.model.field.items[parseInt($(this).attr('data-index'))].result = !$p.hasClass('marked');
+                e.preventDefault(); 
                 
+                var result = k_dom.getValue(false, this);
+                return result;
             }
         }
     };
@@ -110,7 +108,7 @@ var twigInterface = function (model, cachedViews, isdev, cache) {
 var cb = function (cachedViews) {
     model.tag_name = model.items[0].tag_name;
     
-    var mytodos = new twigInterface(model, cachedViews, isdev, cache());
+    var mytodos = new twigInterface(model, cachedViews, isdev, cache);
     $k('#todoapp')(mytodos);
     mytodos.model.event.sync.call(mytodos.model);
 };

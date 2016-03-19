@@ -12,7 +12,7 @@
         <div class="overlay span12 ">
             <div class="row-fluid height5">
                 <a href="#img{{index}}" data-name="zoom" data-on="click"><div class="tleft span6">zoom</div></a>
-                <a data-name="mark" data-on="click->mark" data-index="{{index}}" target="_blank" ><div class="tright span6">X</div></a>
+                <a data-name="items[{{index}}]['result']" data-on="click->mark" target="_blank" data-value="{{item.result}}" data-view="_static"><div class="tright span6">X</div></a>
             </div>
             <div class="row-fluid height5">
                 <a href="#text{{index}}" data-name="zoom" data-on="click"> <div class="bleft span6">text</div></a>
@@ -45,5 +45,5 @@
         </div>
     </div>
     <div class="failed">X</div>
-    <div class="success" data-name="success" data-on="click->mark" data-index="{{index}}">&#10003;</div>
+    <div class="success" data-name="items[{{index}}]['result']" data-on="click->mark" data-value="{{item.result}}" data-view="_static">&#10003;</div>
 </div>

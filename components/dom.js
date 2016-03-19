@@ -99,17 +99,10 @@ var k_dom =(function (api) {
         if (this.getAttribute(api.omit.attr) === "true") {
             return undefined;
         }
-        var value = this.value || this.innerHTML;
-        /**
-         * @todo replace by native value functions 
-         */
-        
-        if (typeof value === 'undefined' && this.getAttribute('value')) {
-            value = this.getAttribute('value');
-        } else if (typeof this.getAttribute('value') === '' && this.getAttribute(api.value.attr) !== "") {
-            value = this.getAttribute(api.value.attr);
-        }
-        return value;
+          
+        var valData = this.getAttribute(api.value.attr);
+          
+        return valData || this.value || this.innerHTML;
     }
 
     /**
@@ -334,7 +327,7 @@ var k_dom =(function (api) {
      * @param $scope
      * @returns {*|boolean}
      */
-    dom.isHtmlList = function ($scope) {
+    dom.isHtmlList = function ($scope) {                    
         return $scope.getAttribute(api.view.attr) && $scope.getAttribute(api.view.attr).indexOf(api.view.value.definition.iterate) !== -1;
     };
     /**
@@ -348,29 +341,6 @@ var k_dom =(function (api) {
  
     dom.getValues = getValues;
     dom.getValue = getValue;
- 
    
-    dom.extend = function(out) {
-        out = out || {};
-      
-        for (var i = 1; i < arguments.length; i++) {
-          var obj = arguments[i];
-      
-          if (!obj)
-            continue;
-      
-          for (var key in obj) {
-            if (obj.hasOwnProperty(key)) {
-              if (typeof obj[key] === 'object')
-                out[key] = dom.extend(out[key], obj[key]);
-              else
-                out[key] = obj[key];
-            }
-          }
-        }
-      
-      return out;
-    }; 
- 
     return dom;
 }(k_docapi));
