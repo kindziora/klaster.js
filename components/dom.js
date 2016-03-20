@@ -99,10 +99,7 @@ var k_dom =(function (api) {
         if (this.getAttribute(api.omit.attr) === "true") {
             return undefined;
         }
-          
-        var valData = this.getAttribute(api.value.attr);
-          
-        return valData || this.value || this.innerHTML;
+        return this.getAttribute(api.value.attr) || this.value || this.innerHTML;
     }
 
     /**
@@ -270,7 +267,11 @@ var k_dom =(function (api) {
      * @returns {undefined}
      */
     dom.setPrimitiveValue = function ($scope, decorated) {
-        $scope.value = decorated;
+        if($scope.getAttribute(api.value.attr) !== null) {
+            $scope.setAttribute(api.value.attr, decorated);
+        }else{
+            $scope.value = decorated;
+        } 
     };
      
     /**

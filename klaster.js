@@ -51,7 +51,7 @@
          **/
         cls.preRenderView = function ($field, item) {
             if (typeof model.get(dom.getName($field)) === 'undefined' ||
-                $field.getAttribute(api.view) === "_static" )
+                $field.getAttribute(api.view) === "__static" )
                 return false;
                 
             if (!$field.getAttribute('data-filter'))
@@ -405,13 +405,17 @@
                     
                     // check how to treat this field
                     var $scope = el, fieldN = dom.getName(el);
-                    
-                    if($triggerSrc === $scope){
-                        return;
-                    } 
-                    
+                    var v = $scope.getAttribute(api.view.attr);
                     var scopeModelField = model.get(fieldN);
                     var decoratedFieldValue;
+                    
+                    //$triggerSrc === $scope ||
+                    
+                    if( v === '__static'){
+                        dom.setPrimitiveValue($scope, scopeModelField);
+                        return;
+                    }
+                    
                     
                     function iteration(decoratedFieldValue) {
                         cnt--;
@@ -429,12 +433,12 @@
                         iteration(scopeModelField);
                         return;
                     }*/
-    
+                    
                     if (dom.isPrimitiveValue($scope)) { //if dom view element is of type primitive
                         decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
                         dom.setPrimitiveValue($scope, decoratedFieldValue);
                     } else { // field can contain html
-    
+     
                         if (dom.isHtmlList($scope)) {
                             //render partial list of html elements
     

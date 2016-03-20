@@ -1,4 +1,4 @@
-/*! klaster.js Version: 0.9.1 19-03-2016 10:20:50 */
+/*! klaster.js Version: 0.9.1 20-03-2016 14:08:59 */
 var prefix = 'data';
 
 var k_docapi = { 
@@ -209,10 +209,7 @@ var k_structure = {
         if (this.getAttribute(api.omit.attr) === "true") {
             return undefined;
         }
-          
-        var valData = this.getAttribute(api.value.attr);
-          
-        return valData || this.value || this.innerHTML;
+        return this.getAttribute(api.value.attr) || this.value || this.innerHTML;
     }
 
     /**
@@ -380,7 +377,11 @@ var k_structure = {
      * @returns {undefined}
      */
     dom.setPrimitiveValue = function ($scope, decorated) {
-        $scope.value = decorated;
+        if($scope.getAttribute(api.value.attr) !== null) {
+            $scope.setAttribute(api.value.attr, decorated);
+        }else{
+            $scope.value = decorated;
+        } 
     };
      
     /**
@@ -940,7 +941,7 @@ var k_structure = {
          **/
         cls.preRenderView = function ($field, item) {
             if (typeof model.get(dom.getName($field)) === 'undefined' ||
-                $field.getAttribute(api.view) === "_static" )
+                $field.getAttribute(api.view) === "__static" )
                 return false;
                 
             if (!$field.getAttribute('data-filter'))
@@ -1294,13 +1295,17 @@ var k_structure = {
                     
                     // check how to treat this field
                     var $scope = el, fieldN = dom.getName(el);
-                    
-                    if($triggerSrc === $scope){
-                        return;
-                    } 
-                    
+                    var v = $scope.getAttribute(api.view.attr);
                     var scopeModelField = model.get(fieldN);
                     var decoratedFieldValue;
+                    
+                    //$triggerSrc === $scope ||
+                    
+                    if( v === '__static'){
+                        dom.setPrimitiveValue($scope, scopeModelField);
+                        return;
+                    }
+                    
                     
                     function iteration(decoratedFieldValue) {
                         cnt--;
@@ -1318,12 +1323,12 @@ var k_structure = {
                         iteration(scopeModelField);
                         return;
                     }*/
-    
+                    
                     if (dom.isPrimitiveValue($scope)) { //if dom view element is of type primitive
                         decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
                         dom.setPrimitiveValue($scope, decoratedFieldValue);
                     } else { // field can contain html
-    
+     
                         if (dom.isHtmlList($scope)) {
                             //render partial list of html elements
     

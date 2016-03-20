@@ -27,10 +27,13 @@ var twigInterface = function (model, cachedViews, isdev, cache) {
         },
         'mark': {
             click: function (e, self) {
-                e.preventDefault(); 
+                e.preventDefault();
                 
-                var result = k_dom.getValue(false, this);
-                return result;
+                var modelValue = !self.model.get(k_dom.getName(this));
+               
+                k_dom.setPrimitiveValue(this, modelValue);
+                
+                return modelValue;
             }
         }
     };
@@ -52,7 +55,7 @@ var twigInterface = function (model, cachedViews, isdev, cache) {
         render: function (tplVars, tplName) {
             
             var key = tplName + JSON.stringify(tplVars);
-            var data = cache.get(key);
+            var data = false; //cache.get(key);
             if(data){
                 return data.content;
             }else{
