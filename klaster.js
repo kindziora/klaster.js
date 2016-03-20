@@ -649,6 +649,9 @@
             
             function bindevents(el) {
                 name = dom.getName(el);
+                
+                el = cls.applyMethods(el);
+                
                 if(name){
                     events[name] = cls.dispatchEvents.call(el);
                     for (event in events[name]) {
@@ -672,6 +675,25 @@
                 cls.model2View.call($el);
             }
             return filter;
+        };
+        
+        cls.applyMethods = function(el){
+        
+            el.getName = function(){ 
+                return dom.getName(this);
+            }.bind(el);
+            
+            el.getValue = function(from , multiple){
+                if(typeof from === 'undefined')
+                    from = 'dom'; 
+                return (from !== 'model') ? dom.getValue(this, multiple) : model.get(dom.getName(this));
+            }.bind(el); 
+            
+            el.setValue = function(primitiveValue){
+                dom.setPrimitiveValue(this, primitiveValue);
+            }.bind(el); 
+            
+            return el;
         };
 
         cls.init = function () {

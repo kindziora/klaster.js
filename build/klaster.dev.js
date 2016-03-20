@@ -1,4 +1,4 @@
-/*! klaster.js Version: 0.9.1 20-03-2016 14:08:59 */
+/*! klaster.js Version: 0.9.1 20-03-2016 14:56:57 */
 var prefix = 'data';
 
 var k_docapi = { 
@@ -167,7 +167,7 @@ var k_structure = {
      * @param {type} multiple
      * @return {type} value
      */
-    function getValue(multiple, $el) {
+    function getValue($el, multiple) {
         /**
          * return undefined if this element will be omitted
          */
@@ -452,7 +452,7 @@ var k_structure = {
  
     dom.getValues = getValues;
     dom.getValue = getValue;
-   
+    
     return dom;
 }(k_docapi));
 ;var k_data = (function ($) {
@@ -1539,6 +1539,9 @@ var k_structure = {
             
             function bindevents(el) {
                 name = dom.getName(el);
+                
+                el = cls.applyMethods(el);
+                
                 if(name){
                     events[name] = cls.dispatchEvents.call(el);
                     for (event in events[name]) {
@@ -1562,6 +1565,25 @@ var k_structure = {
                 cls.model2View.call($el);
             }
             return filter;
+        };
+        
+        cls.applyMethods = function(el){
+        
+            el.getName = function(){ 
+                return dom.getName(this);
+            }.bind(el);
+            
+            el.getValue = function(from , multiple){
+                if(typeof from === 'undefined')
+                    from = 'dom'; 
+                return (from !== 'model') ? dom.getValue(this, multiple) : model.get(dom.getName(this));
+            }.bind(el); 
+            
+            el.setValue = function(primitiveValue){
+                dom.setPrimitiveValue(this, primitiveValue);
+            }.bind(el); 
+            
+            return el;
         };
 
         cls.init = function () {

@@ -29,7 +29,7 @@ var twigInterface = function (model, cachedViews, isdev, cache) {
             click: function (e, self) {
                 e.preventDefault();
                 
-                var modelValue = !self.model.get(k_dom.getName(this));
+                var modelValue = !(this.getValue() === 'true');
                
                 k_dom.setPrimitiveValue(this, modelValue);
                 

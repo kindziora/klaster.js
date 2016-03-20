@@ -57,7 +57,7 @@ var k_dom =(function (api) {
      * @param {type} multiple
      * @return {type} value
      */
-    function getValue(multiple, $el) {
+    function getValue($el, multiple) {
         /**
          * return undefined if this element will be omitted
          */
@@ -342,6 +342,6 @@ var k_dom =(function (api) {
  
     dom.getValues = getValues;
     dom.getValue = getValue;
-   
+    
     return dom;
 }(k_docapi));
