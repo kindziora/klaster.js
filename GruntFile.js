@@ -15,7 +15,7 @@ module.exports = function (grunt) {
         },
         'closure-compiler': {
             frontend: {
-                closurePath: '/home/alex/Downloads/compiler-latest',
+                closurePath: './buildtools/google',
                 js: 'build/klaster.dev.js',
                 jsOutputFile: 'build/klaster.rl.js',
                 maxBuffer: 500,
@@ -30,6 +30,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-closure-compiler');
     grunt.loadNpmTasks('grunt-contrib-concat');
 
-    grunt.registerTask('default', ['concat']); // 'closure-compiler'
+    grunt.registerTask('default', ['concat', 'closure-compiler']); // 'closure-compiler'
 
 };
