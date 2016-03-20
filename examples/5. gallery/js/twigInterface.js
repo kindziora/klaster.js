@@ -28,12 +28,9 @@ var twigInterface = function (model, cachedViews, isdev, cache) {
         'mark': {
             click: function (e, self) {
                 e.preventDefault();
-                
-                var modelValue = !(this.getValue() === 'true');
-               
-                k_dom.setPrimitiveValue(this, modelValue);
-                
-                return modelValue;
+                var modelValue = !this.getValue('model'); //get invert value from model
+                this.getValue(modelValue); //set inverted value to dom
+                return modelValue; // return inverted value to model
             }
         }
     };
