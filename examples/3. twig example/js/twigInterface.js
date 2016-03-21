@@ -110,7 +110,7 @@ for (var v in mytodos.view.views) {
         return function(content) {
             mytodos.view.templates_[mytodos.view.views[v]] = content;
             if (length <= cnt) {
-                $('#todoapp').klaster(mytodos);
+                $k('#todoapp')(mytodos);
             }
             cnt++;
         };

@@ -9,13 +9,13 @@ module.exports = function (grunt) {
                 banner: '/*! <%= pkg.name %> Version: <%= pkg.version %> <%= grunt.template.today("dd-mm-yyyy HH:MM:ss") %> */\n'
             },
             dist: {
-                src: ['components/skeleton.js', 'components/dom.js', 'components/data.js','klaster.js'],
+                src: ['components/skeleton.js', 'components/dom.js', 'components/data.js', 'klaster.js'],
                 dest: 'build/klaster.dev.js'
             }
         },
         'closure-compiler': {
             frontend: {
-                closurePath: '/home/alex/Downloads/compiler-latest',
+                closurePath: './buildtools/google',
                 js: 'build/klaster.dev.js',
                 jsOutputFile: 'build/klaster.rl.js',
                 maxBuffer: 500,
@@ -30,6 +30,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-closure-compiler');
     grunt.loadNpmTasks('grunt-contrib-concat');
 
-    grunt.registerTask('default', ['concat']); // 'closure-compiler'
+    grunt.registerTask('default', ['concat', 'closure-compiler']); // 'closure-compiler'
 
 };

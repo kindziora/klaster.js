@@ -12,7 +12,8 @@
                 "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Octopus_vulgaris2.jpg/300px-Octopus_vulgaris2.jpg",
                 "language": "de",
                 "tag_id": 1,
-                "tag_name": "Schuhe"
+                "tag_name": "Schuhe",
+                "result" : true
             },
             {
                 "job_id": "13294-1",
@@ -24,7 +25,8 @@
                 "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Octopus_vulgaris2.jpg/300px-Octopus_vulgaris2.jpg",
                 "language": "de",
                 "tag_id": 1,
-                "tag_name": "Schuhe"
+                "tag_name": "Schuhe",
+                "result" : true
             },
             {
                 "job_id": "34704-1",
@@ -36,7 +38,8 @@
                 "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Octopus_vulgaris2.jpg/300px-Octopus_vulgaris2.jpg",
                 "language": "de",
                 "tag_id": 1,
-                "tag_name": "Schuhe"
+                "tag_name": "Schuhe",
+                "result" : true
             },
             {
                 "job_id": "23197-1",
@@ -48,7 +51,8 @@
                 "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Octopus_vulgaris2.jpg/300px-Octopus_vulgaris2.jpg",
                 "language": "de",
                 "tag_id": 1,
-                "tag_name": "Schuhe"
+                "tag_name": "Schuhe",
+                "result" : true
             },
             {
                 "job_id": "14228-1",
@@ -60,7 +64,8 @@
                 "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Octopus_vulgaris2.jpg/300px-Octopus_vulgaris2.jpg",
                 "language": "de",
                 "tag_id": 1,
-                "tag_name": "Schuhe"
+                "tag_name": "Schuhe",
+                "result" : true
             },
             {
                 "job_id": "39306-1",
@@ -72,7 +77,8 @@
                 "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Octopus_vulgaris2.jpg/300px-Octopus_vulgaris2.jpg",
                 "language": "de",
                 "tag_id": 1,
-                "tag_name": "Schuhe"
+                "tag_name": "Schuhe",
+                "result" : true
             },
             {
                 "job_id": "10493-1",
@@ -84,7 +90,8 @@
                 "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Octopus_vulgaris2.jpg/300px-Octopus_vulgaris2.jpg",
                 "language": "de",
                 "tag_id": 1,
-                "tag_name": "Schuhe"
+                "tag_name": "Schuhe",
+                "result" : true
             },
             {
                 "job_id": "9628-1",
@@ -96,7 +103,8 @@
                 "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Octopus_vulgaris2.jpg/300px-Octopus_vulgaris2.jpg",
                 "language": "de",
                 "tag_id": 1,
-                "tag_name": "Schuhe"
+                "tag_name": "Schuhe",
+                "result" : true
             },
             {
                 "job_id": "38591-1",
@@ -108,7 +116,8 @@
                 "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Octopus_vulgaris2.jpg/300px-Octopus_vulgaris2.jpg",
                 "language": "de",
                 "tag_id": 1,
-                "tag_name": "Schuhe"
+                "tag_name": "Schuhe",
+                "result" : true
             },
             {
                 "job_id": "21043-1",
@@ -120,7 +129,8 @@
                 "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Octopus_vulgaris2.jpg/300px-Octopus_vulgaris2.jpg",
                 "language": "de",
                 "tag_id": 1,
-                "tag_name": "Schuhe"
+                "tag_name": "Schuhe",
+                "result" : true
             },
             {
                 "job_id": "13803-1",
@@ -132,7 +142,8 @@
                 "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Octopus_vulgaris2.jpg/300px-Octopus_vulgaris2.jpg",
                 "language": "de",
                 "tag_id": 1,
-                "tag_name": "Schuhe"
+                "tag_name": "Schuhe",
+                "result" : true
             }
         ]
     }
