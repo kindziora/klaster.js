@@ -1,4 +1,4 @@
-/*! klaster.js Version: 0.9.1 20-03-2016 15:31:47 */
+/*! klaster.js Version: 0.9.1 21-03-2016 17:41:12 */
 var prefix = 'data';
 
 var k_docapi = { 
@@ -358,7 +358,7 @@ var k_structure = {
     }
     
     dom.is = function($scope, type) {
-        return $scope.tagName === type;
+        return $scope.tagName.toLowerCase() === type.toLowerCase();
     }
 
     /**
@@ -592,7 +592,7 @@ var k_structure = {
         }
           
         if (typeof data['state'] === 'undefined' ){
-            data.state = data.extend(true, data.field);
+            data.state = JSON.parse(JSON.stringify(data.field));
         }
           
         if (typeof data['state'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
@@ -1057,7 +1057,7 @@ var k_structure = {
          */
         function _set($html) {
             dom.setHtmlValue.call(this, $html);
-            if($html.nodeType !== 3)
+            if(typeof $html !== 'undefined' && $html.nodeType !== 3)
                 cls.bind(this);
             
             cls.postRenderView(this);
@@ -1299,14 +1299,17 @@ var k_structure = {
                     var scopeModelField = model.get(fieldN);
                     var decoratedFieldValue;
                     
-                    //$triggerSrc === $scope ||
+                     
                     
                     if( v === '__static'){
                         dom.setPrimitiveValue($scope, scopeModelField);
                         return;
                     }
                     
-                    
+                    if($triggerSrc === $scope){ 
+                        return;
+                    }
+                        
                     function iteration(decoratedFieldValue) {
                         cnt--;
                         if (cnt <= 0) {

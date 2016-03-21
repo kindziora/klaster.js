@@ -135,7 +135,7 @@ var k_data = (function ($) {
         }
           
         if (typeof data['state'] === 'undefined' ){
-            data.state = data.extend(true, data.field);
+            data.state = JSON.parse(JSON.stringify(data.field));
         }
           
         if (typeof data['state'][notation] === 'undefined' && notation.indexOf('[') !== -1) {

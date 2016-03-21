@@ -167,7 +167,7 @@
          */
         function _set($html) {
             dom.setHtmlValue.call(this, $html);
-            if($html.nodeType !== 3)
+            if(typeof $html !== 'undefined' && $html.nodeType !== 3)
                 cls.bind(this);
             
             cls.postRenderView(this);
@@ -409,14 +409,17 @@
                     var scopeModelField = model.get(fieldN);
                     var decoratedFieldValue;
                     
-                    //$triggerSrc === $scope ||
+                     
                     
                     if( v === '__static'){
                         dom.setPrimitiveValue($scope, scopeModelField);
                         return;
                     }
                     
-                    
+                    if($triggerSrc === $scope){ 
+                        return;
+                    }
+                        
                     function iteration(decoratedFieldValue) {
                         cnt--;
                         if (cnt <= 0) {

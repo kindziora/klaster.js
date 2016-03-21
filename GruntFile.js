@@ -30,6 +30,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-closure-compiler');
     grunt.loadNpmTasks('grunt-contrib-concat');
 
-    grunt.registerTask('default', ['concat', 'closure-compiler']); // 'closure-compiler'
+    grunt.registerTask('default', ['concat']); // 'closure-compiler'
 
 };
