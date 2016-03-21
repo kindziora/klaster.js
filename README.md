@@ -62,7 +62,7 @@ structure
 
 ```javascript
 
- $('#jobform').klaster({ 
+ $k('#jobform')({ 
   'sync' : function() {
       console.log(JSON.stringify(this.field));
    }
@@ -89,18 +89,21 @@ using:
 
 var interface = function() {
     var intfc = this;
-    intfc.delay= 100; //try it, to commit x milliseconds after last change
+    //try it, to commit x milliseconds after last change
+    intfc.delay= 0;
     
     this.interactions = {
         "user['email']": {
            'keyup' : function(e, cls) { 
-               return cls.validate($(this).getName(), $(this).val(), 'email');
+               return cls.validate(this.getName(), this.getValue(), 'email');
             }
         }
     };
     
     this.validator = {
-        /** validate email string **/
+        /**
+         * validate email string
+         **/
         'email' : function(value) {
             var re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
             var isValid = !(value == '' || !re.test(value));
@@ -139,18 +142,20 @@ var interface = function() {
                 } 
             },
             email: function(emails, notation, $scope) { 
+                
                 var mails = emails.split(',');
                 var html = "";
                 for(var i in mails) {
                     html += '<p>' + mails[i] + '</p>'
                 } 
                 return html;
+ 
             }
         }
     };
 };
 
-$('body').klaster(new interface());
+$k('body')(new interface());
 ```
 
 ###HTML
