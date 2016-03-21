@@ -4,20 +4,24 @@
  *
  */
 
-(function ($, structure, docapi, dom, model) {
+(function (structure, docapi, dom, model) {
     //"use strict";
 
     var me = {};
     var api = docapi['dom-attributes'];
-     
-    $.fn.klaster = function (child) {
-        var cls = $.extend(structure, child);
+    
+    window.$k = function(selector) { 
+        return klaster.bind(document.querySelector(selector));
+    };
+    
+    function klaster(child) {
+        var cls = model.extend(structure, child);
         
         dom.child = cls;
         
         var $globalScope = this;
         
-        cls.model = model = $.extend(model, child.model);
+        cls.model = model = model.extend(model, child.model);
         
         /**
          * log debug messages
@@ -36,8 +40,8 @@
          * restriction of content by filter criteria eg. data-filter="this.a !== 0"
          */
         cls.updateViewFilter = function () {
-            $globalScope.find('[data-filter]').each(function () {
-                cls.viewFilter[$(this).getXPath()] = $(this).attr('data-filter');
+            Array.prototype.forEach.call($globalScope.querySelectorAll('[data-filter]'), function(el, i){
+             cls.viewFilter[dom.getXPath(el)] = el.getAttribute('data-filter');
             });
         };
  
@@ -46,13 +50,14 @@
          * return true means render element, false remove it if existent in dom
          **/
         cls.preRenderView = function ($field, item) {
-            if (typeof model.get($field.getName()) === 'undefined')
+            if (typeof model.get(dom.getName($field)) === 'undefined' ||
+                $field.getAttribute(api.view) === "__static" )
                 return false;
                 
-            if (!$field.attr('data-filter'))
+            if (!$field.getAttribute('data-filter'))
                 return true;
             
-            return eval("(" + $field.attr('data-filter').replace(new RegExp("this", "gi"), 'child.filter') + ")"); // execute operation eg. data-filter="1 == this.amount" or this.checkRights()
+            return eval("(" + $field.getAttribute('data-filter').replace(new RegExp("this", "gi"), 'child.filter') + ")"); // execute operation eg. data-filter="1 == this.amount" or this.checkRights()
         };
         /**
          * 
@@ -63,7 +68,7 @@
             var funcName = dom.getView($field);
 
             if (typeof cls.view.event !== "undefined" && typeof cls.view.event.postRenderView !== 'undefined' && typeof cls.view.event.postRenderView[funcName] === 'function') {
-                cls.view.event.postRenderView[funcName].call(model, $field, model.get($field.getName()));
+                cls.view.event.postRenderView[funcName].call(model, $field, model.get(dom.getName($field)));
             }
 
         };
@@ -86,19 +91,22 @@
          * gets executed after an event is triggered
          * check if model has changed
          */
-       cls.post_trigger = function (e, result) { 
-            if ((result != model.get($(this).getName())) || model.changed($(this).getName())) {
+       cls.post_trigger = function (e, result) {
+            var name = dom.getName(this);
+            var modelState =  model.get(name);
+     
+            if ((result != modelState) || model.changed(name)) {
 
-                cls.debug('changed', result, model.getOld($(this).getName()), $(this).getName());
+                cls.debug('changed', result, model.getOld(name), name);
 
                 cls.recognizeChange.setup.call(this);
 
-                model.updateValue.call(this, result, model.field[$(this).getName()]);
+                model.updateValue.call(this, result, model.field[name]);
 
                 if (typeof child.post_trigger !== "undefined")
                     child.post_trigger.call(this, e, child);
 
-                cls.model2View.call($(this));
+                cls.model2View.call(this);
 
             }
             return true;
@@ -158,9 +166,11 @@
          * @param {type} $html
          */
         function _set($html) {
-            dom.setHtmlValue.call($(this), $html);
-            cls.bind($(this));
-            cls.postRenderView($(this));
+            dom.setHtmlValue.call(this, $html);
+            if($html.nodeType !== 3)
+                cls.bind(this);
+            
+            cls.postRenderView(this);
         }
 
         /**
@@ -170,7 +180,7 @@
          * @returns {*}
          */
         cls.getDecoValPrimitive = function ($scope, scopeModelField) {
-            var fieldN = $scope.getName(),
+            var fieldN = dom.getName($scope),
                 viewName = dom.getView($scope),
                 DecoValPrimitive = scopeModelField;
                  
@@ -202,33 +212,30 @@
 
                 var m_index = 0;
                 for (index in field) { //iterate over all items in array 
-
-                    $child = $scope.find('[data-name="' + $scope.getName() + '\[' + index + '\]"]'); //get child by name
+                    var name = dom.getName($scope),
+                    $child = $scope.querySelector('[data-name="' + name + '\[' + index + '\]"]'); //get child by name
 
                     if (cls.preRenderView($scope, field[index])) { //check filters or other stuff that could avoid rendering that item
                         
-                        $html = $(cls.view.views[viewName].call(cls.view, field[index], index, $scope)); //render view
+                        $html = dom.parseHTML(cls.view.views[viewName].call(cls.view, field[index], index, $scope)); //render view
 
-                        var $close = $scope.find('[data-name="' + $scope.getName() + '\[' + m_index + '\]"]');
+                        var $close = $scope.querySelector('[data-name="' + name + '\[' + m_index + '\]"]');
 
-                        if ($child.get(0)) {
-                            $child.replaceWith($html); //if sub element exists, replace it
-                        } else if ($close.get(0)) {
-                            $html.insertAfter($close); //insert after the last added 
+                        if ($child) {
+                            $child.parentNode.replaceChild($html, $child);
+                        } else if ($close) { 
+                            $close.parentNode.insertBefore($html, $close.nextSibling);
                         } else {
-                            $scope.append($html); //just append at the end
-                        }
-
-                        $html.data('value', field[index]); //apply private value to dom el
+                            $scope.appendChild($html); //just append at the end
+                        } 
                         
                         cls.bind($html); //bind to app to new html               
                         cls.postRenderView($html); //execute post render on added child
 
                     } else {
-                        $child.remove();
+                        $child.parentNode.removeChild($child);
                     }
-
-
+                    
                     m_index = index;
                 }
             }
@@ -237,18 +244,24 @@
              * remove dom representation of element inside list that does not exist in model
              */
             function killListElement() {
-                $scope.children().each(function () {
-                    var Elname = $(this).getName();
-                    var name = /\[(.*?)\]/gi.exec(Elname)[1];
+                
+                Array.prototype.forEach.call($scope.childNodes, function(el, i){
+                    var Elname = dom.getName(el);
+                    if(typeof Elname === 'undefined') {
+                         el.parentNode.removeChild(el);
+                    }else{
+                        var name = /\[(.*?)\]/gi.exec(Elname)[1];
 
-                    if (!model.get($(this).getName())
-                        || typeof field[name] === 'undefined'
-                        || !cls.preRenderView($scope, field[name])) {
-
-                        $(this).remove();
+                        if (!model.get(Elname)
+                            || typeof field[name] === 'undefined'
+                            || !cls.preRenderView($scope, field[name])) {
+    
+                            el.parentNode.removeChild(el);
+                        }
                     }
-
+                    
                 });
+             
             }
 
             /**
@@ -281,24 +294,23 @@
                         myChangedField = model.get(_notation), //get field that has changed
                         index = /\[(.*?)\]/gi.exec(_notation)[1]; //get index of item that has chnaged
     
-                    $child = $scope.find(dom.getSelector(_notation, true)); //find listItem that has changed
+                    $child = $scope.querySelector(dom.getSelector(_notation, true)); //find listItem that has changed
     
                     if (typeof myChangedField !== 'undefined' && cls.preRenderView($scope, field[index])) {
-                        $html = $(cls.view.views[viewName].call(cls.view, field[index], index, $scope)); // render subitem
+                        $html = dom.parseHTML(cls.view.views[viewName].call(cls.view, field[index], index, $scope)); // render subitem
     
-                        if ($child.get(0)) {
-                            $child.replaceWith($html);
+                        if ($child) {
+                            $child.parentNode.replaceChild($html, $child);
                         }
-    
-                        $html.data('value', field[index]);
+                        
                         cls.bind($html);
                         cls.postRenderView($html);
     
-                        if (!$child.get(0)) {
-                            $scope.append($html);
+                        if (!$child) {
+                            $scope.appendChild($html);
                         }
                     } else { // value changed to undefined or filter does remove element
-                        $child.remove(); // remove sub item
+                        $child.parentNode.removeChild($child); // remove sub item
                     }
     
                 }
@@ -314,38 +326,39 @@
          **/
         cls.updateHtmlElement = function($scope, scopeModelField, changed){
             
-            var error = model.getState($scope.getName());
-            var cced = model.getOld($scope.getName());
+            var name = dom.getName($scope);
+            var error = model.getState(name);
+            var cced = model.getOld(name);
             if((typeof error === 'undefined' || error.result) || (typeof error !== 'undefined' && dom.getView($scope) !== error.view)){ // kein fehler aufgetreten
                 if (cced !== scopeModelField) { // cached value of field != model.field value
                    var decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
                     _set.call($scope, decoratedFieldValue); // bind html 
                 }
             }else{ // field view was defined i a validator is it gets rendered also if value is not in model and by that equal to undefined
-                var template = cls.view.views[error.view].call(cls, scopeModelField, $scope.getName());
+                var template = cls.view.views[error.view].call(cls, scopeModelField, name);
                
-                $field = $($globalScope.find(dom.getValidatorSelector($scope.getName(), error.view)));
-                _set.call($field, template); 
+                var $field = $globalScope.querySelector(dom.getValidatorSelector(name, error.view));
+                _set.call($field, template);
             }
         };
         
          //from server to model
         cls.server2Model = function (data) {
             //model.set.call(data.field, data.value);
-            var $field = $(dom.getSelector(data.field));
+            var $field = $globalScope.querySelector(dom.getSelector(data.field));
             cls.post_trigger.call($field, e, data.value);
         };
 
         //from view to model
         cls.view2Model = function ($where) {
-            ($where.find(cls.filter.events) || $(cls.filter.events)).each(function () {
-                model.updateValue.call(this, $(this).getValue());
+            Array.prototype.forEach.call( ($where.querySelectorAll(cls.filter.events) || $globalScope.querySelectorAll(ls.filter.events)), function(el, i){
+                model.updateValue.call(el, this.value);
             });
         };
         
         cls.model2View = function () {
             var local = {}; 
-            var $triggerSrc = $(this);
+            var $triggerSrc = this;
             
             /**
              * executed after processing all name element dom representations
@@ -363,15 +376,15 @@
                     var findNotation = dom.getSelector(match, true);
                     var $myPEl = $scope.parents(findNotation);
                     
-                    var viewName = $myPEl.attr(api.view.attr);
+                    var viewName = $myPEl.getAttribute(api.view.attr);
                     var viewMethod = cls.view.views[viewName];
                     
                     /**
                      * improve performance here!!!
                      **/
                     if (match !== "" && (dom.getFieldView(match) || (typeof $myPEl !== 'undefined' && typeof viewMethod !== 'undefined'))) {
-                        ready();
-                        $myPEl.each(local.eachViewRepresentation($myPEl.length, change, true, ready));
+                        ready(); 
+                        Array.prototype.forEach.call($myPEl, local.eachViewRepresentation($myPEl.length, change, true, ready));
                         break;
                     }
                     
@@ -388,20 +401,23 @@
              * @returns {Function}
              */
             local.eachViewRepresentation = function (cnt, change, foundRepresentation, ready) {
-                return function () {
+                return function (el) {
                     
                     // check how to treat this field
-                    var $scope = $(this), fieldN = $scope.getName();
-                    
-                    if($triggerSrc.get(0) === $scope.get(0)){
-                        return;
-                    } 
-                    
+                    var $scope = el, fieldN = dom.getName(el);
+                    var v = $scope.getAttribute(api.view.attr);
                     var scopeModelField = model.get(fieldN);
                     var decoratedFieldValue;
                     
+                    //$triggerSrc === $scope ||
+                    
+                    if( v === '__static'){
+                        dom.setPrimitiveValue($scope, scopeModelField);
+                        return;
+                    }
+                    
+                    
                     function iteration(decoratedFieldValue) {
-                        $scope.data('value', decoratedFieldValue);
                         cnt--;
                         if (cnt <= 0) {
                             if (!foundRepresentation) {
@@ -417,16 +433,16 @@
                         iteration(scopeModelField);
                         return;
                     }*/
-    
+                    
                     if (dom.isPrimitiveValue($scope)) { //if dom view element is of type primitive
                         decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
                         dom.setPrimitiveValue($scope, decoratedFieldValue);
                     } else { // field can contain html
-    
+     
                         if (dom.isHtmlList($scope)) {
                             //render partial list of html elements
     
-                            if ($scope.getName().indexOf('[') === -1) { // address no array element
+                            if (dom.getName($scope).indexOf('[') === -1) { // address no array element
                                 change[1] = 'view-filter';// why view filter?
                                 change[2] = 2;
                                 change[3] = 1;
@@ -467,9 +483,9 @@
                 
                 var selector = dom.getSelector(fieldNotation, true);
                 
-                var tryDot = $globalScope.find(selector);
+                var tryDot = $globalScope.querySelectorAll(selector);
                 
-                var match = tryDot.length > 0 ? tryDot : $globalScope.find(dom.getSelector(fieldNotationBrackets, true));
+                var match = tryDot.length > 0 ? tryDot : $globalScope.querySelectorAll(dom.getSelector(fieldNotationBrackets, true));
                 
                 var cnt = match.length;
                 if (cnt === 0) {
@@ -488,23 +504,25 @@
             dom.updateAllViews = function (changes) {
     
                 var addrN;
-    
-                $globalScope.find('[data-filter]').each(function () {
-                    if (cls.viewFilter[$(this).getXPath()] !== $(this).attr('data-filter')) { // filter for this view has changed
-                        changes.push([$(this).getName(), 'view-filter', cls.viewFilter[$(this).getXPath()], $(this).attr('data-filter')]);
+ 
+                Array.prototype.forEach.call($globalScope.querySelectorAll('[data-filter]'), function (el) { 
+                    if (cls.viewFilter[dom.getXPath(el)] !== el.getAttribute('data-filter')) { // filter for this view has changed
+                        changes.push([dom.getName(el), 'view-filter', cls.viewFilter[dom.getXPath(el)], el.getAttribute('data-filter')]);
                     }
                 });
     
                 var cacheEls = {};
-    
+                var name = undefined;
                 for (addrN in changes) { //only this fields need to be refreshed
     
                     var $els = dom.findUntilParentExists(changes[addrN][0]);
                     if (!$els)
                         continue;
-                    changes[addrN][0] = $els.getName();
+                    
+                    name = dom.getName($els[0]);
+                    changes[addrN][0] = name;
     
-                    cacheEls[$els.getName()] = [$els, changes[addrN]];
+                    cacheEls[name] = [$els, changes[addrN]];
                 }
     
                 for (var el in cacheEls) {
@@ -512,14 +530,16 @@
     
                     var cnt = $els.length;
                     
-                    $els.each(local.eachViewRepresentation(cnt, changes, true, function ($els) {
-                        return function(){
-                            if (typeof model.event !== "undefined" && typeof model.event.postChange !== 'undefined' && typeof model.event.postChange[$els.getName()] === 'function') {
-                                var changeCb = model.event.postChange[$els.getName()];
-                                changeCb.call(model, model.get($els.getName()), changes, 'controller');
+                    Array.prototype.forEach.call($els, local.eachViewRepresentation(cnt, changes, true, function ($els) {
+                        var name = dom.getName($els[0]);
+                        return function(el){
+                            if (typeof model.event !== "undefined" && typeof model.event.postChange !== 'undefined' && typeof model.event.postChange[name] === 'function') {
+                                var changeCb = model.event.postChange[name];
+                                changeCb.call(model, model.get(name), changes, 'controller');
                             }
                         }
-                    }($els)));
+                    }($els))); 
+                    
                 }
             };
     
@@ -549,7 +569,7 @@
                 mio.cancel();
                 cls.timeoutID = window.setTimeout(function (msg) {
                     mio.changed(mes);
-                }, $(mes).attr(api.delay.attr) || cls.delay);
+                }, mes.getAttribute(api.delay.attr) || cls.delay);
             };
             return mio;
         }();
@@ -558,16 +578,20 @@
          *dispatch events for dom element
          */
         cls.dispatchEvents = function () {
-            var events = ($(this).attr(api.on.attr) ||'').split(','), i = 0, event = "", FinalEvents = {}, parts = "";
-            for (i in events) {
-                event = $.trim(events[i]);
-                parts = event.split('->');
-                if (parts.length > 1) {
-                    FinalEvents[parts[0]] = parts[1];
-                } else {
-                    FinalEvents[parts[0]] = parts[0];
+            var FinalEvents = [];
+            if(this.getAttribute(api.on.attr)) {
+                 var events = (this.getAttribute(api.on.attr) ||'').split(','), i = 0, event = "", FinalEvents = {}, parts = "";
+                for (i in events) {
+                    event = events[i].trim();
+                    parts = event.split('->');
+                    if (parts.length > 1) {
+                        FinalEvents[parts[0]] = parts[1];
+                    } else {
+                        FinalEvents[parts[0]] = parts[0];
+                    }
                 }
             }
+           
             return FinalEvents;
         };
         /**
@@ -593,25 +617,25 @@
             /* variable injection via lambda function factory used in iteration */
             var factory = function (me, event) {
                 return function (e, args) {
-                    name = $(me).getName();
+                    name = dom.getName(me);
                     method = events[name][event];
                     var result = true;
                     if (false !== cls.pre_trigger.call(me, e)) {
                         if (typeof cls.interactions[name] !== 'undefined' &&
                             typeof cls.interactions[name][method] !== 'undefined') {
                             result = cls.interactions[name][method].call(me, e, cls, args);
-                            if ($(me).attr(api.omit.attr) === "true") {
-                                result = $(me).getValue();
+                            if (me.getAttribute(api.omit.attr) === "true") {
+                                result = me.value;
                             }
                         } else if (typeof cls.interactions[method] !== 'undefined' &&
                             typeof cls.interactions[method][event] !== 'undefined') {
                             result = cls.interactions[method][event].call(me, e, cls, args);
-                            if ($(me).attr(api.omit.attr) === "true") {
-                                result = $(me).getValue();
+                            if (me.getAttribute(api.omit.attr) === "true") {
+                                result = me.value;
                             }
 
                         } else {
-                            result = $(me).getValue();
+                            result = me.value;
                         }
                         cls.post_trigger.call(me, e, result);
                     }
@@ -619,34 +643,57 @@
                 };
             };
             //filter.fields = filter.$el.find('[name],[data-name]'),
-            filter.events = filter.$el.find('[' + api.on.attr + ']');
+            filter.events = filter.$el.querySelectorAll('[' + api.on.attr + ']');
             
             var InitValue = '';
             
-            function bindevents() {
-                name = $(this).getName();
+            function bindevents(el) {
+                name = dom.getName(el);
+                
+                el = cls.applyMethods(el);
+                
                 if(name){
-                    events[name] = cls.dispatchEvents.call(this);
+                    events[name] = cls.dispatchEvents.call(el);
                     for (event in events[name]) {
                         cls.debug('name:' + name + ', event:' + event);
-                        $(this).off(event);
-                        $(this).on(event, factory(this, event));
-                        if ($el.attr('data-defaultvalues') !== 'model' && !$el.parents('[data-defaultvalues="model"]').get(0)) {
-                            InitValue = $(this).getValue();
-                            model.updateValue.call(this, InitValue);
+                        var f = factory(el, event);
+                        el.removeEventListener(event, f);
+                        el.addEventListener(event, f);
+                        if ($el.getAttribute('data-defaultvalues') !== 'model' && !dom.getParents($el, '[data-defaultvalues="model"]')) {
+                            InitValue = el.value;
+                            model.updateValue.call(el, InitValue);
                         }
                     } 
                 } 
             }
             
-            $(filter.events).each(bindevents);
+            Array.prototype.forEach.call(filter.events, bindevents);
+              
+            bindevents(filter.$el);
             
-            bindevents.call(filter.$el);
-            
-            if ($el.attr('data-defaultvalues') === 'model') {
+            if ($el.getAttribute('data-defaultvalues') === 'model') {
                 cls.model2View.call($el);
             }
             return filter;
+        };
+        
+        cls.applyMethods = function(el){
+        
+            el.getName = function(){ 
+                return dom.getName(this);
+            }.bind(el);
+            
+            el.getValue = function(from , multiple){
+                if(typeof from === 'undefined')
+                    from = 'dom'; 
+                return (from !== 'model') ? dom.getValue(this, multiple) : model.get(dom.getName(this));
+            }.bind(el); 
+            
+            el.setValue = function(primitiveValue){
+                dom.setPrimitiveValue(this, primitiveValue);
+            }.bind(el); 
+            
+            return el;
         };
 
         cls.init = function () {
@@ -660,25 +707,7 @@
             }
         }.bind(this);
 
-        if (cls.view.templates) {
-            // preloading alle templates, then init klaster interface
-            var length = Object.keys(cls.view.views).length, cnt = 1;
-            for (var v in cls.view.views) {
-                $.get((cls.view.viewpath) + v + '.' + cls.view.fileextension + '?v=' + ((cls.config.debug) ? Math.random() : '1')).always(function (v) {
-                    return function (content) {
-                        cls.view.templates_[cls.view.views[v]] = content;
-                        cls.view.templates_[v] = content;
-                        if (length <= cnt) {
-                            child.view.templates_ = cls.view.templates_;
-                            cls.init();
-                        }
-                        cnt++;
-                    };
-                }(v));
-            }
-        } else {
-            cls.init();
-        }
+        cls.init();
 
     };
-})(jQuery, k_structure, k_docapi, k_dom, k_data);
+})(k_structure, k_docapi, k_dom, k_data);

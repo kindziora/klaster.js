@@ -80,4 +80,4 @@ var interface = function(socket) {
     
 };
 
-$('body').klaster(new interface(io()));
+$k('body')(new interface(io()));

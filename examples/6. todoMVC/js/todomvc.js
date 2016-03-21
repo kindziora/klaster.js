@@ -115,4 +115,4 @@ var interface = function() {
     };
 };
 
-$('#todoapp').klaster(new interface());
+$k('#todoapp')(new interface());

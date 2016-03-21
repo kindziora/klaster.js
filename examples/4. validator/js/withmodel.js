@@ -69,8 +69,10 @@ var interface = function() {
             }
         }
     };
-    
-    
 };
 
+<<<<<<< HEAD
 $('body').klaster(new interface());
+=======
+$k('body')(new interface());
+>>>>>>> 9c827d23f2576915f72fe2c23ec9e8a17bf97c2e

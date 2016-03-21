@@ -55,9 +55,10 @@
                         <div class="panel panel-danger">
                           <div class="panel-heading">
                             <h3 class="panel-title">Suche</h3>
+ 
                           </div> 
                           <div class="panel-body" data-name="search"></div> 
-                        </div>
+                        </div> 
                         
                         <div class="panel panel-danger">
                           <div class="panel-heading">
@@ -79,18 +80,15 @@
 
     </div> <!-- /container -->
 
-
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="../../build/klaster.dev.js"></script>
      
-    <script>
-      
-      $('.container').klaster({
+    <script> 
+     $k('.container')({
         delay : 2000, //delay to call sync
         model : {
           event : {
-             sync: function(){
-              alert(JSON.stringify(this.field));
+             sync : function(){
+             // alert(JSON.stringify(this.field));
             }
           } 
         }

@@ -58,4 +58,4 @@ var interface = function() {
     
 };
 
-$('body').klaster(new interface());
+$k('body')(new interface());

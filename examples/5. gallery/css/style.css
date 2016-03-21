@@ -155,8 +155,8 @@ ul li img{
 .success{
     background-color:rgba(0, 255, 0, 0.4);
 }
-
-.marked .failed{
+  
+.failed[data-value="false"]{
     display:block;
 }
 
