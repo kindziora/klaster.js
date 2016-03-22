@@ -10,7 +10,7 @@
     "two way databinding",
     "experimental"
   ],
-  "main": "./klaster.js",
+  "main": "./build/klaster.dev.js",
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-closure-compiler": "0.0.21",
