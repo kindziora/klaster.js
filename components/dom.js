@@ -83,12 +83,12 @@ var k_dom =(function (api) {
      * @param type
      * @returns {*}
      */
-    function getValues(type, $el) {
+    function getValues(type) {
         if (typeof dom.multipleValues[type] === 'undefined'
-            && $el.getAttribute(api.multiple.attr)) {
+            && this.getAttribute(api.multiple.attr)) {
             type = api.multiple.attr;
         }
-        return dom.multipleValues[type].call($el);
+        return dom.multipleValues[type].call(this);
     }
 
     /**
