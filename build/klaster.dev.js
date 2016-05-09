@@ -1,4 +1,4 @@
-/*! klaster.js Version: 0.9.5 09-05-2016 15:22:43 */
+/*! klaster.js Version: 0.9.5 09-05-2016 16:11:08 */
 var prefix = 'data';
 
 var k_docapi = { 
@@ -1329,7 +1329,13 @@ var k_structure = {
                     
                     if (dom.isPrimitiveValue($scope)) { //if dom view element is of type primitive
                         decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
-                        dom.setPrimitiveValue($scope, decoratedFieldValue);
+                       
+                        if (dom.hasMultipleChoices($scope)) {
+                            dom.selectMultiple($scope, decoratedFieldValue);
+                        } else {
+                            dom.setPrimitiveValue($scope, decoratedFieldValue);
+                        }
+                        
                     } else { // field can contain html
      
                         if (dom.isHtmlList($scope)) {
