@@ -1,4 +1,4 @@
-/*! klaster.js Version: 0.9.5 09-05-2016 15:03:11 */
+/*! klaster.js Version: 0.9.5 09-05-2016 15:22:43 */
 var prefix = 'data';
 
 var k_docapi = { 
@@ -220,7 +220,7 @@ var k_structure = {
         "checked": function ($el, $elements, single) {
 
             if ($el.getAttribute(api.multiple.attr) === 'false'|| single || document.querySelectorAll('[' + $($el).el('nameAttr') + '="' + dom.getName($el) + '"]').length === 1)
-                return $el.checked;
+                return value.call($el);
                 
             var values = [],
             val = undefined;
