@@ -125,13 +125,13 @@ var k_dom =(function (api) {
             return values;
         },
         "checkbox": function () {
-            return dom.multipleValues.checked(this, document.querySelectorAll('[' + dom.nameAttr($el) + '="' + dom.getName($el) + '"]:checked'));
+            return dom.multipleValues.checked(this, document.querySelectorAll('[' + dom.nameAttr(this) + '="' + dom.getName(this) + '"]:checked'));
         },
         "radio": function () {
-            return dom.multipleValues.checked(this, document.querySelectorAll('[' + dom.nameAttr($el) + '="' +  dom.getName($el) + '"]:checked'), true);
+            return dom.multipleValues.checked(this, document.querySelectorAll('[' + dom.nameAttr(this) + '="' +  dom.getName(this) + '"]:checked'), true);
         },
         "data-multiple": function () {
-            return dom.multipleValues.checked(this, document.querySelectorAll('[' + dom.nameAttr($el) + '="' +  dom.getName($el) + '"][data-checked="true"]'));
+            return dom.multipleValues.checked(this, document.querySelectorAll('[' + dom.nameAttr(this) + '="' +  dom.getName(this) + '"][data-checked="true"]'));
         }
     };
 
