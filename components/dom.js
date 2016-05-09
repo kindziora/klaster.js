@@ -106,35 +106,58 @@ var k_dom =(function (api) {
      *
      * @type {{checked: Function, checkbox: Function, radio: Function, data-multiple: Function}}
      */
-       dom.multipleValues = {
+    dom.multipleValues = {
         "checked": function ($el, $elements, single) {
 
-            if ($el.getAttribute(api.multiple.attr) === 'false'|| single || document.querySelectorAll('[' + $($el).el('nameAttr') + '="' + dom.getName($el) + '"]').length === 1)
-                return value.call($el);
-                
+            if ($el.getAttribute(api.multiple.attr) === 'false' || single || document.querySelectorAll('[' + $($el).el('nameAttr') + '="' + dom.getName($el) + '"]').length === 1)
+                return $el.checked;
+
             var values = [],
-            val = undefined;
-                
-            Array.prototype.forEach.call($elements, function(el, i){
+                val = undefined;
+
+            Array.prototype.forEach.call($elements, function (el, i) {
                 val = value.call(el);
                 if (typeof val !== 'undefined') {
                     values.push(val);
                 }
             });
-                         
+
             return values;
         },
         "checkbox": function () {
             return dom.multipleValues.checked(this, document.querySelectorAll('[' + dom.nameAttr(this) + '="' + dom.getName(this) + '"]:checked'));
         },
         "radio": function () {
-            return dom.multipleValues.checked(this, document.querySelectorAll('[' + dom.nameAttr(this) + '="' +  dom.getName(this) + '"]:checked'), true);
+            return dom.multipleValues.checked(this, document.querySelectorAll('[' + dom.nameAttr(this) + '="' + dom.getName(this) + '"]:checked'), true);
         },
         "data-multiple": function () {
-            return dom.multipleValues.checked(this, document.querySelectorAll('[' + dom.nameAttr(this) + '="' +  dom.getName(this) + '"][data-checked="true"]'));
+            return dom.multipleValues.checked(this, document.querySelectorAll('[' + dom.nameAttr(this) + '="' + dom.getName(this) + '"][data-checked="true"]'));
         }
     };
 
+    dom.hasMultipleChoices = function ($scope) {
+
+        var multiTypes = ["radio", "checkbox"];
+
+        console.log(multiTypes, $scope.getAttribute('type'), multiTypes.indexOf($scope.getAttribute('type')));
+
+        return multiTypes.indexOf($scope.getAttribute('type')) > -1 || $scope.getAttribute('data-multiple') === "true";
+    };
+
+    dom.selectMultiple = function ($scope, values) {
+        if (typeof values !== 'undefined' && values !== null) {
+            var instances = document.querySelectorAll('[' + dom.nameAttr($scope) + '="' + dom.getName($scope) + '"]');
+
+            if( Object.prototype.toString.call( values ) !== '[object Array]' ) {
+                values = [values];
+            } 
+
+            Array.prototype.forEach.call(instances, function (el) {
+                el.checked = values.indexOf(value.call(el)) > -1;
+            });
+        }
+    };
+    
     dom.getHtml = function($scope) {
         return $scope.innerHTML;
     };
