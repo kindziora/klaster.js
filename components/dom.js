@@ -110,7 +110,7 @@ var k_dom =(function (api) {
         "checked": function ($el, $elements, single) {
 
             if ($el.getAttribute(api.multiple.attr) === 'false'|| single || document.querySelectorAll('[' + $($el).el('nameAttr') + '="' + dom.getName($el) + '"]').length === 1)
-                return $el.checked;
+                return value.call($el);
                 
             var values = [],
             val = undefined;
