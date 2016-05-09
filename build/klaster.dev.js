@@ -1,4 +1,4 @@
-/*! klaster.js Version: 0.9.1 09-05-2016 14:51:24 */
+/*! klaster.js Version: 0.9.5 09-05-2016 15:03:11 */
 var prefix = 'data';
 
 var k_docapi = { 
@@ -235,13 +235,13 @@ var k_structure = {
             return values;
         },
         "checkbox": function () {
-            return dom.multipleValues.checked(this, document.querySelectorAll('[' + dom.nameAttr($el) + '="' + dom.getName($el) + '"]:checked'));
+            return dom.multipleValues.checked(this, document.querySelectorAll('[' + dom.nameAttr(this) + '="' + dom.getName(this) + '"]:checked'));
         },
         "radio": function () {
-            return dom.multipleValues.checked(this, document.querySelectorAll('[' + dom.nameAttr($el) + '="' +  dom.getName($el) + '"]:checked'), true);
+            return dom.multipleValues.checked(this, document.querySelectorAll('[' + dom.nameAttr(this) + '="' +  dom.getName(this) + '"]:checked'), true);
         },
         "data-multiple": function () {
-            return dom.multipleValues.checked(this, document.querySelectorAll('[' + dom.nameAttr($el) + '="' +  dom.getName($el) + '"][data-checked="true"]'));
+            return dom.multipleValues.checked(this, document.querySelectorAll('[' + dom.nameAttr(this) + '="' +  dom.getName(this) + '"][data-checked="true"]'));
         }
     };
 
