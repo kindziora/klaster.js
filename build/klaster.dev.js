@@ -1,4 +1,4 @@
-/*! klaster.js Version: 0.9.5 09-05-2016 16:13:28 */
+/*! klaster.js Version: 0.9.5 10-05-2016 12:40:22 */
 var prefix = 'data';
 
 var k_docapi = { 
@@ -211,7 +211,9 @@ var k_structure = {
         }
         return this.getAttribute(api.value.attr) || this.value || this.innerHTML;
     }
-
+    
+    dom.value = value;
+    
     /**
      *
      * @type {{checked: Function, checkbox: Function, radio: Function, data-multiple: Function}}
@@ -1547,17 +1549,17 @@ var k_structure = {
                             typeof cls.interactions[name][method] !== 'undefined') {
                             result = cls.interactions[name][method].call(me, e, cls, args);
                             if (me.getAttribute(api.omit.attr) === "true") {
-                                result = me.value;
+                                result = dom.value.call(me);
                             }
                         } else if (typeof cls.interactions[method] !== 'undefined' &&
                             typeof cls.interactions[method][event] !== 'undefined') {
                             result = cls.interactions[method][event].call(me, e, cls, args);
                             if (me.getAttribute(api.omit.attr) === "true") {
-                                result = me.value;
+                                result = dom.value.call(me);
                             }
 
                         } else {
-                            result = me.value;
+                            result = dom.value.call(me);
                         }
                         cls.post_trigger.call(me, e, result);
                     }

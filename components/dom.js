@@ -101,7 +101,9 @@ var k_dom =(function (api) {
         }
         return this.getAttribute(api.value.attr) || this.value || this.innerHTML;
     }
-
+    
+    dom.value = value;
+    
     /**
      *
      * @type {{checked: Function, checkbox: Function, radio: Function, data-multiple: Function}}

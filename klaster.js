@@ -634,17 +634,17 @@
                             typeof cls.interactions[name][method] !== 'undefined') {
                             result = cls.interactions[name][method].call(me, e, cls, args);
                             if (me.getAttribute(api.omit.attr) === "true") {
-                                result = me.value;
+                                result = dom.value.call(me);
                             }
                         } else if (typeof cls.interactions[method] !== 'undefined' &&
                             typeof cls.interactions[method][event] !== 'undefined') {
                             result = cls.interactions[method][event].call(me, e, cls, args);
                             if (me.getAttribute(api.omit.attr) === "true") {
-                                result = me.value;
+                                result = dom.value.call(me);
                             }
 
                         } else {
-                            result = me.value;
+                            result = dom.value.call(me);
                         }
                         cls.post_trigger.call(me, e, result);
                     }
