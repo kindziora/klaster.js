@@ -295,7 +295,13 @@ var k_dom =(function (api) {
         if($scope.getAttribute(api.value.attr) !== null) {
             $scope.setAttribute(api.value.attr, decorated);
         }else{
-            $scope.value = decorated;
+            
+            if($scope.type ==="textarea"){
+                $scope.innerHTML = decorated;
+            }else{
+                $scope.value = decorated;
+            }
+            
         } 
     };
      

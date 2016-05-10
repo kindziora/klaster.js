@@ -352,7 +352,7 @@
         //from view to model
         cls.view2Model = function ($where) {
             Array.prototype.forEach.call( ($where.querySelectorAll(cls.filter.events) || $globalScope.querySelectorAll(cls.filter.events)), function(el, i){
-                model.updateValue.call(el, this.value);
+                model.updateValue.call(el, dom.value.call(el));
             });
         };
         
@@ -669,7 +669,7 @@
                         el.removeEventListener(event, f);
                         el.addEventListener(event, f);
                         if ($el.getAttribute('data-defaultvalues') !== 'model' && !dom.getParents($el, '[data-defaultvalues="model"]')) {
-                            InitValue = el.value;
+                            InitValue = dom.value.call(el);
                             model.updateValue.call(el, InitValue);
                         }
                     } 

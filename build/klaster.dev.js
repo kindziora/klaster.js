@@ -1,4 +1,4 @@
-/*! klaster.js Version: 0.9.5 10-05-2016 12:40:22 */
+/*! klaster.js Version: 0.9.5 10-05-2016 13:36:23 */
 var prefix = 'data';
 
 var k_docapi = { 
@@ -405,7 +405,13 @@ var k_structure = {
         if($scope.getAttribute(api.value.attr) !== null) {
             $scope.setAttribute(api.value.attr, decorated);
         }else{
-            $scope.value = decorated;
+            
+            if($scope.type ==="textarea"){
+                $scope.innerHTML = decorated;
+            }else{
+                $scope.value = decorated;
+            }
+            
         } 
     };
      
@@ -1267,7 +1273,7 @@ var k_structure = {
         //from view to model
         cls.view2Model = function ($where) {
             Array.prototype.forEach.call( ($where.querySelectorAll(cls.filter.events) || $globalScope.querySelectorAll(cls.filter.events)), function(el, i){
-                model.updateValue.call(el, this.value);
+                model.updateValue.call(el, dom.value.call(el));
             });
         };
         
@@ -1584,7 +1590,7 @@ var k_structure = {
                         el.removeEventListener(event, f);
                         el.addEventListener(event, f);
                         if ($el.getAttribute('data-defaultvalues') !== 'model' && !dom.getParents($el, '[data-defaultvalues="model"]')) {
-                            InitValue = el.value;
+                            InitValue = dom.value.call(el);
                             model.updateValue.call(el, InitValue);
                         }
                     } 
