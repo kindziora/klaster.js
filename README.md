@@ -21,24 +21,7 @@ see repo
 
 refactoring code
 unit test and integration test for the framework and apps
-
-##klaster.js framework code structure
-
-klaster.js 
-
---bundling functionality by using components
-
-dom 
-
---dom related methods and code
-
-data 
-
---model and data related handling
-
-structure 
-
---contains class scheme
+ 
 
 ##klaster.js minimal app 
 
