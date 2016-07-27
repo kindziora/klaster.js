@@ -155,7 +155,7 @@ var k_dom =(function (api) {
             } 
 
             Array.prototype.forEach.call(instances, function (el) {
-                el.checked = values.indexOf(value.call(el)) > -1;
+                el.checked = values[0];
             });
         }
     };
