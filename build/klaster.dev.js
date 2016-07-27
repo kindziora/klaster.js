@@ -1,4 +1,4 @@
-/*! klaster.js Version: 0.9.5 10-05-2016 13:36:23 */
+/*! klaster.js Version: 0.9.5 27-07-2016 09:47:36 */
 var prefix = 'data';
 
 var k_docapi = { 
@@ -265,7 +265,7 @@ var k_structure = {
             } 
 
             Array.prototype.forEach.call(instances, function (el) {
-                el.checked = values.indexOf(value.call(el)) > -1;
+                el.checked = values[0];
             });
         }
     };
