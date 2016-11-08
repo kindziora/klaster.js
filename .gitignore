@@ -1,6 +1,7 @@
 /nbproject/private/
 /node_modules/
 /bower_components/
+/examples/node_modules/
 /examples/gallery/node_modules/
 /examples/gallery/bower_components/
 /examples/list/bower_components/

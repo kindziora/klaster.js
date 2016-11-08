@@ -5,7 +5,6 @@
 // ${fileDirname}: the current opened file's dirname
 // ${fileExtname}: the current opened file's extension
 // ${cwd}: the current working directory of the spawned process
-
 // A task runner that calls the Typescript compiler (tsc) and
 // Compiles a HelloWorld.ts program
 /*{
@@ -27,7 +26,6 @@
 	// in the output.
 	"problemMatcher": "$tsc"
 }*/
-
 // A task runner that calls the Typescript compiler (tsc) and
 // compiles based on a tsconfig.json file that is present in
 // the root of the folder open in VSCode
@@ -52,27 +50,24 @@
 	"problemMatcher": "$tsc"
 }
 */
-
 // A task runner configuration for gulp. Gulp provides a less task
 // which compiles less to css.
-
 {
 	"version": "0.1.0",
 	"command": "grunt",
 	"isShellCommand": true,
 	"args": [
-        "--no-color"
-    ],
-    "tasks": [
-        {
-            "taskName": "default",
-            "args": [],
-            "isBuildCommand": true
-        }
-    ]
+		"--no-color"
+	],
+	"tasks": [
+		{
+			"taskName": "default",
+			"args": [],
+			"isBuildCommand": true,
+			"showOutput": "always" 
+		}
+	]
 }
-
-
 // Uncomment the following section to use jake to build a workspace
 // cloned from https://github.com/Microsoft/TypeScript.git
 /*
@@ -99,7 +94,6 @@
 	]
 }
 */
-
 // Uncomment the section below to use msbuild and generate problems
 // for csc, cpp, tsc and vb. The configuration assumes that msbuild
 // is available on the path and a solution file exists in the
@@ -126,7 +120,6 @@
 	]
 }
 */
-
 // Uncomment the following section to use msbuild which compiles Typescript
 // and less files.
 /*
@@ -186,4 +179,4 @@
 		}
 	}
 }
-*/
+*/ 

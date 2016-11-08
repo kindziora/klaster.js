@@ -1,0 +1,9 @@
+{
+  "name": "klaster.js-sample-testing",
+  "version": "0.0.1",
+  "description": "klaster.js sample testing",
+  "main": "./static.js",
+  "dependencies": {
+    "express": "latest"
+  }
+}
