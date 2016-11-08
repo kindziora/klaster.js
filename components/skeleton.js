@@ -79,10 +79,8 @@ var k_structure = {
     'model': {
         'field': {},
         'event': {
-            'postChange': function () {
-            },
-            'sync': function () {
-            }
+            'postChange': { 'fieldabc' : "function () {}"},
+            'sync': "function () {}"
         },
         'state' : {
            /* 'forename' :{result : false, msg : "not valid", value : "45345"} */

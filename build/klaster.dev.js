@@ -1,4 +1,4 @@
-/*! klaster.js Version: 0.9.5 08-11-2016 23:33:04 */
+/*! klaster.js Version: 0.9.5 08-11-2016 23:40:39 */
 var prefix = 'data';
 
 var k_docapi = { 
@@ -80,10 +80,8 @@ var k_structure = {
     'model': {
         'field': {},
         'event': {
-            'postChange': function () {
-            },
-            'sync': function () {
-            }
+            'postChange': { 'fieldabc' : "function () {}"},
+            'sync': "function () {}"
         },
         'state' : {
            /* 'forename' :{result : false, msg : "not valid", value : "45345"} */
