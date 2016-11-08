@@ -21,7 +21,7 @@ see repo
 
 refactoring code
 unit test and integration test for the framework and apps
- 
+next step skeleton generator from markup to code
 
 ##klaster.js minimal app 
 
