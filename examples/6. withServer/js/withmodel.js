@@ -3,30 +3,54 @@
  * klaster.js by Alexander Kindziora is a mvma (model-view-model-action) framework for user interfaces
  */
 
-var interface = function(socket) {
+var simplerXHR = function (method, url) {
+    var _xhr = new XMLHttpRequest();
+    _xhr.open(method, url);
+    _xhr.setup = function (cb) { // hacky? maybe
+        cb(_xhr);
+        return _xhr;
+    };
+    _xhr.done = function (cb) { // hacky? maybe
+        _xhr.onreadystatechange = function () {
+            if (_xhr.readyState === 4) {
+                cb(_xhr.responseText);
+            }
+        };
+        return _xhr;
+    };
+    return _xhr;
+};
+
+
+
+var interface = function () {
     var intfc = this;
     //try it, to commit x milliseconds after last change
-    intfc.delay = 100;
-    
+    intfc.delay = 0;
+
     this.interactions = {
         "user['email']": {
-           'keyup' : function(e, cls) { 
-               return cls.validate($(this).getName(), $(this).val(), 'email');
+            'keyup': function (e, cls) {
+                return cls.validate(this.getName(), this.getValue(), 'email');
             }
         }
     };
-    
+
     this.validator = {
         /**
          * validate email string
          **/
-        'email' : function(value) {
+        'email': function (value) {
             var re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-            
-            return {result: !(value == '' || !re.test(value)), msg : "email ist nicht gültig", view : "validInfo"};
+            var isValid = !(value == '' || !re.test(value));
+            return {
+                result: isValid,
+                msg: "email ist nicht gültig",
+                view: "validInfo"
+            };
         }
     };
-    
+
     this.model = {
         'field': {// here we declare model fields, with default values this is not strict default values are only used if we use directive: data-defaultvalues="client" on default we use server side default values because of the first page load
             'search': 'go for it...',
@@ -37,47 +61,48 @@ var interface = function(socket) {
             }
         },
         'event': {
-            'sync': function() { //after model fields have changed
-                console.log(JSON.stringify(this.field));
-                
-                
-                socket.emit('modelUpdate', this.field);
-                
+            'sync': function () { //after model fields have changed
+                var model = this; 
+                console.log(JSON.stringify(model.field));
+                simplerXHR("post", "/form")
+                .done(function (data) {
+                    console.log(data);
+
+                       
+
+                })
+                .setup(function (r) {
+                    r.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                })
+                .send(JSON.stringify(model.field));
+
             }
         }
     };
-    
+
     this.view = {
         views: {
-            'validInfo': function(data, notation, $scope) {
+            'validInfo': function (data, notation, $scope) {
                 var validationResult = this.model.getState(notation);
-                if(validationResult.result){
+                if (validationResult.result) {
                     return '<div class="alert alert-dismissible alert-success"><strong>Oh yeah!</strong> valid</div>';
-                }else{
+                } else {
                     return '<div class="alert alert-dismissible alert-danger"><strong>Oh snap!</strong> ' + validationResult.msg + ' . </div>';
                 }
             },
-            email: function(emails, notation, $scope) { 
-                
+            email: function (emails, notation, $scope) {
+
                 var mails = emails.split(',');
                 var html = "";
-                for(var i in mails) {
+                for (var i in mails) {
                     html += '<p>' + mails[i] + '</p>'
-                } 
+                }
                 return html;
- 
+
             }
         }
     };
-    
-    /**
-     * 
-     **/
-    this.server = function( ){
-        socket.on('modelUpdate', intfc.server2Model); // expects {value: {}, field : 'user.name'}
-    };
-    
-    
 };
 
-$k('body')(new interface(io()));
+$k('body')(new interface());
+

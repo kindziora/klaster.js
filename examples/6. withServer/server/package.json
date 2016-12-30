@@ -1,0 +1,10 @@
+{
+  "name": "klaster.js-sample-withServer",
+  "version": "0.0.1",
+  "description": "klaster.js sample testing withServer",
+  "main": "./server.js",
+  "dependencies": {
+    "express": "latest",
+    "body-parser" : "latest"
+  }
+}

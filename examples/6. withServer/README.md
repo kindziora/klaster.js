@@ -1,3 +1,4 @@
 ##Description
 
-Simple data binding and server sync handling.
+Simple form binded to a model, with view rendering.
+Validation for form.
