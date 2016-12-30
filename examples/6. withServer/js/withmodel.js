@@ -27,30 +27,7 @@ var interface = function () {
     var intfc = this;
     //try it, to commit x milliseconds after last change
     intfc.delay = 0;
-
-    this.interactions = {
-        "user['email']": {
-            'keyup': function (e, cls) {
-                return cls.validate(this.getName(), this.getValue(), 'email');
-            }
-        }
-    };
-
-    this.validator = {
-        /**
-         * validate email string
-         **/
-        'email': function (value) {
-            var re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-            var isValid = !(value == '' || !re.test(value));
-            return {
-                result: isValid,
-                msg: "email ist nicht gültig",
-                view: "validInfo"
-            };
-        }
-    };
-
+ 
     this.model = {
         'field': {// here we declare model fields, with default values this is not strict default values are only used if we use directive: data-defaultvalues="client" on default we use server side default values because of the first page load
             'search': 'go for it...',
@@ -63,13 +40,10 @@ var interface = function () {
         'event': {
             'sync': function () { //after model fields have changed
                 var model = this; 
-                console.log(JSON.stringify(model.field));
+        
                 simplerXHR("post", "/form")
                 .done(function (data) {
-                    console.log(data);
-
-                       
-
+                    model.setState("user['email']", JSON.parse(data)); 
                 })
                 .setup(function (r) {
                     r.setRequestHeader("Content-Type", "application/json;charset=UTF-8");

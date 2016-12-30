@@ -12,8 +12,6 @@ app.use('/build', express.static(__dirname + '/../../../build/'));
 
 app.post('/form', function (req, res) {
 
-    console.log(req.body);
-
     var value = req.body.user.email;
     var re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
     var isValid = !(value == '' || !re.test(value));
