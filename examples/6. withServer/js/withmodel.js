@@ -38,12 +38,12 @@ var interface = function () {
             }
         },
         'event': {
-            'sync': function () { //after model fields have changed
-                var model = this; 
-        
+            'sync': function ($el, cls) { //after model fields have changed
+               var model = this;
+            
                 simplerXHR("post", "/form")
                 .done(function (data) {
-                    model.setState("user['email']", JSON.parse(data)); 
+                    cls.validate("user['email']", $el, JSON.parse(data));
                 })
                 .setup(function (r) {
                     r.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
@@ -76,6 +76,7 @@ var interface = function () {
             }
         }
     };
+    return this;
 };
 
 $k('body')(new interface());

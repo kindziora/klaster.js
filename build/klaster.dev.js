@@ -1,4 +1,4 @@
-/*! klaster.js Version: 0.9.5 08-11-2016 23:40:39 */
+/*! klaster.js Version: 0.9.5 05-01-2017 00:55:44 */
 var prefix = 'data';
 
 var k_docapi = { 
@@ -1044,19 +1044,30 @@ var k_structure = {
          * return value if valid, otherwise return undefined so value does not go into model, if used as return value from interaction
          **/
         cls.validate = function (name, value, type) {
+
+            function validate(validateResult) {
+                validateResult.value = value;
+                model.setState(name, validateResult);
+                
+                if(typeof value.getName === "function")
+                    cls.model2View.call(value);
+                return validateResult.result ? value : undefined;
+            }
+
             if (typeof child.validator !== "undefined" && typeof child.validator[type] === "function") {
                 var validateResult = child.validator[type].call(model, value, name);
-
-                validateResult.value = value;
-
-                model.setState(name, validateResult);
-
-                return validateResult.result ? value : undefined;
+                return validate(validateResult);
             } else {
-                throw {
-                    message: "Validator of type " + type + "does not exist.",
-                    name: "ValidationException"
-                };
+
+                if (typeof type.result !== 'undefined') {
+                    return validate(type);
+                } else {
+                    throw {
+                        message: "Validator of type " + type + "does not exist.",
+                        name: "ValidationException"
+                    };
+                }
+
             }
         }
 
@@ -1066,10 +1077,10 @@ var k_structure = {
          */
         cls.changed = function () {
             if (typeof model.event !== "undefined" && typeof model.event.sync === "function") {
-                model.event.sync.call(model, this);
+                model.event.sync.call(model, this, cls);
             }
             if (typeof child.sync !== "undefined" && typeof child.sync === "function") {
-                child.sync.call(model, this);
+                child.sync.call(model, this, cls);
             }
             return true;
         };
