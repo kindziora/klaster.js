@@ -90,7 +90,6 @@ var k_structure = {
     'view': {
         'viewpath': 'view/', //if loading templates in realtime
         'fileextension': 'html.twig', //if loading templates in realtime
-        'templates': false, //check for loading templates in realtime
         'templates_': {}, // array of templates by name => html or other markup
         'render': function (tplVars, tplName) { // template render function ... here you can add template engine support for twig, etc.
         },

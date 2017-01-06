@@ -128,8 +128,8 @@
             function validate(validateResult) {
                 validateResult.value = value;
                 model.setState(name, validateResult);
-                
-                if(typeof value.getName === "function")
+
+                if (typeof value.getName === "function")
                     cls.model2View.call(value);
                 return validateResult.result ? value : undefined;
             }
@@ -743,8 +743,47 @@
             }
         }.bind(this);
 
-        cls.init();
+        cls.ajax = function (method, url) {
+            var _xhr = new XMLHttpRequest();
+            _xhr.open(method, url);
+            _xhr.setup = function (cb) { // hacky? maybe
+                cb(_xhr);
+                return _xhr;
+            }; 
+            _xhr.done = function (cb) { // hacky? maybe
+                _xhr.onreadystatechange = function () {
+                    if (_xhr.readyState === 4) {
+                        cb(_xhr.responseText);
+                    }
+                };
+                return _xhr;
+            };
+            return _xhr;
+        };
 
-        console.log(JSON.stringify(skeleton));
+        //INITIALIZATION/////IF WE ARE INSIDE A DEV ENV LOAD TEMPLATES BY AJAX/////////
+        if (cls.view.viewpath) {
+            // preloading alle templates, then init klaster interface
+            var length = Object.keys(cls.view.views).length, cnt = 1;
+            for (var v in cls.view.views) {
+
+                cls.ajax("get", (cls.view.viewpath) + v + '.' + cls.view.fileextension + '?v=' + ((cls.config.debug) ? Math.random() : '1'))
+                .done(function (v) {
+                    return function (content) {
+                        cls.view.templates_[cls.view.views[v]] = content;
+                        cls.view.templates_[v] = content;
+                        if (length <= cnt) {
+                            child.view.templates_ = cls.view.templates_;
+                            cls.init();
+                        }
+                        cnt++;
+                    };
+                } (v)).send();
+            }
+        }else{
+            cls.init();
+        }
+
+
     };
 })(k_structure, k_docapi, k_dom, k_data);
