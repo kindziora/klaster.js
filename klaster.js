@@ -1,6 +1,5 @@
 /**
- * klaster is a jquery filter plugin for extended filters by dom rules and javascript based on filter classes
- * @author Alexander Kindziora 2015
+ * @author Alexander Kindziora 2017
  *
  */
 
