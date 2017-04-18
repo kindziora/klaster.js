@@ -1,4 +1,4 @@
-/*! klaster.js Version: 0.9.6 07-01-2017 00:43:47 */
+/*! klaster.js Version: 0.9.7 18-04-2017 12:50:10 */
 var prefix = 'data';
 
 var k_docapi = { 
@@ -219,7 +219,7 @@ var k_structure = {
     dom.multipleValues = {
         "checked": function ($el, $elements, single) {
 
-            if ($el.getAttribute(api.multiple.attr) === 'false' || single || document.querySelectorAll('[' + $($el).el('nameAttr') + '="' + dom.getName($el) + '"]').length === 1)
+            if ($el.getAttribute(api.multiple.attr) === 'false' || single || document.querySelectorAll('[' + dom.nameAttr($el) + '="' + dom.getName($el) + '"]').length === 1)
                 return $el.checked;
 
             var values = [],
@@ -918,8 +918,7 @@ var k_structure = {
     return data;
 }(k_dom));
 ;/**
- * klaster is a jquery filter plugin for extended filters by dom rules and javascript based on filter classes
- * @author Alexander Kindziora 2015
+ * @author Alexander Kindziora 2017
  *
  */
 

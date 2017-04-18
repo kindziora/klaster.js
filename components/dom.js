@@ -111,7 +111,7 @@ var k_dom =(function (api) {
     dom.multipleValues = {
         "checked": function ($el, $elements, single) {
 
-            if ($el.getAttribute(api.multiple.attr) === 'false' || single || document.querySelectorAll('[' + $($el).el('nameAttr') + '="' + dom.getName($el) + '"]').length === 1)
+            if ($el.getAttribute(api.multiple.attr) === 'false' || single || document.querySelectorAll('[' + dom.nameAttr($el) + '="' + dom.getName($el) + '"]').length === 1)
                 return $el.checked;
 
             var values = [],
