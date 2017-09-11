@@ -1,19 +1,19 @@
-##Description
+## Description
 
 progressive javascript UI framework, using mvc pattern, scopes and two way databinding.
 It aims on rich frontend experiences and simplicity.
 
-##goals
+## goals
 
   1. progressive functionality and complexity
   2. fast & easy to work with
   3. easy debugging
 
-##coming features
+## coming features
 
 server to client 2 way databinding via nodejs
 
-##Examples
+## Examples
 
 see repo
 
@@ -23,9 +23,9 @@ refactoring code
 unit test and integration test for the framework and apps
 next step skeleton generator from markup to code
 
-##klaster.js minimal app 
+## klaster.js minimal app 
 
-###html
+### html
 
 
 ```html 
@@ -41,7 +41,7 @@ next step skeleton generator from markup to code
  
 
 ```
-###javascript
+### javascript
 
 ```javascript
 
@@ -57,7 +57,7 @@ So what does this code?
 The form will be bond to a data model.
 So if the state of the form does change you could send the json to a backend.
 
-##klaster.js validation 
+## klaster.js validation 
 using:
 
 -validators
@@ -66,7 +66,7 @@ using:
 
 -views
 
-###javascript
+### javascript
 
 ```javascript
 
@@ -141,7 +141,7 @@ var interface = function() {
 $k('body')(new interface());
 ```
 
-###HTML
+### HTML
 
 ```html
 <form class="form-horizontal">
