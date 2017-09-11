@@ -15,12 +15,13 @@ server to client 2 way databinding via nodejs
 
 ## Examples
 
-see repo
+https://github.com/kindziora/klaster.js/tree/master/examples
 
 ##Work in progress
 
 refactoring code
 unit test and integration test for the framework and apps
+
 next step skeleton generator from markup to code
 
 ## klaster.js minimal app 
