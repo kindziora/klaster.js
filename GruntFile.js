@@ -9,7 +9,7 @@ module.exports = function (grunt) {
                 banner: '/*! <%= pkg.name %> Version: <%= pkg.version %> <%= grunt.template.today("dd-mm-yyyy HH:MM:ss") %> */\n'
             },
             dist: {
-                src: ['components/skeleton.js', 'components/dom.js', 'components/data.js', 'klaster.js'],
+                src: ['components/skeleton.js', 'components/dom.js', 'bower_components/fast-json-patch/dist/fast-json-patch.js', 'components/data.js', 'klaster.js'],
                 dest: 'build/klaster.dev.js'
             }
         },
