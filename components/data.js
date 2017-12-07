@@ -306,7 +306,7 @@ var k_data = (function ($) {
     };
 
     data.compareJsonPatch = function(a, b){
-        let diff = jsonpatch.compare(a, b);
+        let diff = jsonpatch.compare(a ||{}, b||{});
         let final = [];
 
         for(let i in diff) {

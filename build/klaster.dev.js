@@ -1,4 +1,4 @@
-/*! klaster.js Version: 0.9.7 07-12-2017 23:36:38 */
+/*! klaster.js Version: 0.9.7 08-12-2017 00:15:37 */
 var prefix = 'data';
 
 var k_docapi = { 
@@ -1772,7 +1772,7 @@ function shim (obj) {
     };
 
     data.compareJsonPatch = function(a, b){
-        let diff = jsonpatch.compare(a, b);
+        let diff = jsonpatch.compare(a ||{}, b||{});
         let final = [];
 
         for(let i in diff) {
