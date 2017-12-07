@@ -11,7 +11,14 @@ var interface = function() {
     this.interactions = {
         "user['email']": {
            'keyup' : function(e, cls) { 
-               return cls.validate(this.getName(), this.getValue(), 'email');
+               let mails = this.getValue().split(',');
+               let results = [];
+                for(let i in mails){
+                    let r = cls.validate(this.getName(), mails[i].trim(), 'email');
+                    if(r)
+                        results.push(r);
+                }
+               return results.length > 0 ? results : null;
             }
         }
     };
@@ -37,7 +44,7 @@ var interface = function() {
             user: {
                 'name': "sdsd0",
                 'age': 23567567,
-                'email': "sdffsdf@sd.de"
+                'email': ["sdffsdf@sd.de"]
             }
         },
         'event': {
@@ -57,15 +64,8 @@ var interface = function() {
                     return '<div class="alert alert-dismissible alert-danger"><strong>Oh snap!</strong> ' + validationResult.msg + ' . </div>';
                 } 
             },
-            email: function(emails, notation, $scope) { 
-                
-                var mails = emails.split(',');
-                var html = "";
-                for(var i in mails) {
-                    html += '<p>' + mails[i] + '</p>'
-                } 
-                return html;
- 
+            "foreach->email": function(emails, index, $scope) { 
+                return '<p data-name="user[\'email\'][' + index + ']">' + emails + '</p>';
             }
         }
     };

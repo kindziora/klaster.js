@@ -1,4 +1,4 @@
-/*! klaster.js Version: 0.9.7 07-12-2017 11:05:26 */
+/*! klaster.js Version: 0.9.7 07-12-2017 23:36:38 */
 var prefix = 'data';
 
 var k_docapi = { 
@@ -1767,6 +1767,7 @@ function shim (obj) {
     data.jsonPatchToObjectAccess = function(diff){
         let path = "[" + diff.path.substr(1).split('/').join("][") + "]";
         let normal = $.normalizeChangeResponse(path);
+        diff.op = diff.op == "replace"?"value":diff.op;
         return [path, diff.op, data.getOld(normal), diff.value];
     };
 
@@ -2099,8 +2100,9 @@ function shim (obj) {
 
                 if (change[1] === 'value') { // value of subelement has changed
                     var _notation = change[0],
-                        myChangedField = model.get(_notation), //get field that has changed
-                        index = /\[(.*?)\]/gi.exec(_notation)[1]; //get index of item that has chnaged
+                        myChangedField = model.get(_notation); //get field that has changed
+                        var index = /\[(.*?)\]/gi.exec(_notation)[1];
+                        index = typeof field[index] !== 'undefined'?index:field.indexOf(change[3]); //get index of item that has chnaged
 
                     $child = $scope.querySelector(dom.getSelector(_notation, true)); //find listItem that has changed
 

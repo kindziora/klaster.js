@@ -308,8 +308,9 @@
 
                 if (change[1] === 'value') { // value of subelement has changed
                     var _notation = change[0],
-                        myChangedField = model.get(_notation), //get field that has changed
-                        index = /\[(.*?)\]/gi.exec(_notation)[1]; //get index of item that has chnaged
+                        myChangedField = model.get(_notation); //get field that has changed
+                        var index = /\[(.*?)\]/gi.exec(_notation)[1];
+                        index = typeof field[index] !== 'undefined'?index:field.indexOf(change[3]); //get index of item that has chnaged
 
                     $child = $scope.querySelector(dom.getSelector(_notation, true)); //find listItem that has changed
 

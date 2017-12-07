@@ -301,6 +301,7 @@ var k_data = (function ($) {
     data.jsonPatchToObjectAccess = function(diff){
         let path = "[" + diff.path.substr(1).split('/').join("][") + "]";
         let normal = $.normalizeChangeResponse(path);
+        diff.op = diff.op == "replace"?"value":diff.op;
         return [path, diff.op, data.getOld(normal), diff.value];
     };
 
