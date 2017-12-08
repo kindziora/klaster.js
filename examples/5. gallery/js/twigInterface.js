@@ -10,6 +10,11 @@ var twigInterface = function (model, cachedViews, isdev, cache) {
     var intfc = this;
     
     this.interactions = {
+        items: {
+            change: function (e, self) {
+               return JSON.parse( this.getValue() );
+            }
+        },
         bg: {
             click: function (e, self) {
                 e.preventDefault();
@@ -39,7 +44,7 @@ var twigInterface = function (model, cachedViews, isdev, cache) {
         'field': model,
         event: { 
             sync: function () { 
-                $('.jsonResult').val(JSON.stringify(this.field.items)); 
+              //  $('.jsonResult').val(JSON.stringify(this.field.items)); 
             }
         }
     };
@@ -67,12 +72,15 @@ var twigInterface = function (model, cachedViews, isdev, cache) {
                     return result;
                 } else {
                     console.log('error TEMPLATE NICHT IN CACHED.json gefunden', arguments.callee.caller);
-                    return '<div></div>';
+                   
                 }
             
             } 
        },
        views: {
+            items: (items)=>
+             JSON.stringify(items), 
+
            "foreach->items": function (item, index) {
                console.log(item);
                 return intfc.view.render({
