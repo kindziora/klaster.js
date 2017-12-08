@@ -33,9 +33,7 @@ var twigInterface = function (model, cachedViews, isdev, cache) {
         'mark': {
             click: function (e, self) {
                 e.preventDefault();
-                var modelValue = !this.getValue('model'); //get invert value from model
-                this.getValue(modelValue); //set inverted value to dom
-                return modelValue; // return inverted value to model
+                return !this.getValue('model'); // return inverted value from Model to Model
             }
         }
     };
@@ -44,7 +42,8 @@ var twigInterface = function (model, cachedViews, isdev, cache) {
         'field': model,
         event: { 
             sync: function () { 
-              //  $('.jsonResult').val(JSON.stringify(this.field.items)); 
+                //$('.jsonResult').val(JSON.stringify(this.field.items)); 
+                console.log(this.field.items);
             }
         }
     };
@@ -72,9 +71,7 @@ var twigInterface = function (model, cachedViews, isdev, cache) {
                     return result;
                 } else {
                     console.log('error TEMPLATE NICHT IN CACHED.json gefunden', arguments.callee.caller);
-                   
                 }
-            
             } 
        },
        views: {

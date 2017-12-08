@@ -1,7 +1,7 @@
 {
   "name": "klaster.js",
-  "version": "0.9.7",
-  "description": "jQuery component",
+  "version": "0.9.8",
+  "description": "progressive javascript UI framework, easy to use scopes and two way databinding.",
   "keywords": [
     "javascript",
     "mvc",
@@ -14,9 +14,8 @@
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-closure-compiler": "0.0.21",
-    "grunt-contrib-concat": "^0.5.1"
-  },
-  "dependencies": {
-    "tsc": "^1.20150623.0"
+    "grunt-contrib-concat": "^0.5.1",
+    "nightmare": "latest",
+    "benchmark": "latest"
   }
 }
