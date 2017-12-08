@@ -1,4 +1,4 @@
-/*! klaster.js Version: 0.9.7 08-12-2017 00:15:37 */
+/*! klaster.js Version: 0.9.8 08-12-2017 18:14:33 */
 var prefix = 'data';
 
 var k_docapi = { 
@@ -2301,11 +2301,9 @@ function shim (obj) {
                 var fieldNotationBrackets = dom.normalizeChangeResponseBrackets(notation);
 
                 var selector = dom.getSelector(fieldNotation, true);
-
-                var tryDot = $globalScope.querySelectorAll(selector);
-
-                var match = tryDot.length > 0 ? tryDot : $globalScope.querySelectorAll(dom.getSelector(fieldNotationBrackets, true));
-
+                var brSelector = dom.getSelector(fieldNotationBrackets, true);
+                var match = $globalScope.querySelectorAll(selector + ',' + brSelector );
+                
                 var cnt = match.length;
                 if (cnt === 0) {
                     if (model._getParentObject(notation, '') === "")
