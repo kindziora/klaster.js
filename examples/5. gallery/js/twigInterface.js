@@ -9,6 +9,10 @@ var uiError;
 var twigInterface = function (model, cachedViews, isdev, cache) {
     var intfc = this;
     
+    this.config = {
+        debug: false
+    };
+
     this.interactions = {
         items: {
             change: function (e, self) {
@@ -50,7 +54,6 @@ var twigInterface = function (model, cachedViews, isdev, cache) {
 
     this.view = {
         templates_: cachedViews,
-        templates: isdev,
         viewpath: 'view/twigInterface/',
         fileextension: 'html.twig',
         render: function (tplVars, tplName) {
@@ -75,7 +78,7 @@ var twigInterface = function (model, cachedViews, isdev, cache) {
             } 
        },
        views: {
-            items: (items)=>
+            items: (items) =>
              JSON.stringify(items), 
 
            "foreach->items": function (item, index) {
@@ -115,7 +118,6 @@ var cb = function (cachedViews) {
     
     var mytodos = new twigInterface(model, cachedViews, isdev, cache);
     $k('#todoapp')(mytodos);
-    mytodos.model.event.sync.call(mytodos.model);
 };
 
 $.get(cachedUrl).done(cb);

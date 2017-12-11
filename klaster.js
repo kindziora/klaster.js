@@ -33,7 +33,7 @@
          * log debug messages
          */
         cls.debug = function () {
-            if (cls.config.debug) {
+            if (true) { //cls.config.debug
                 if (typeof arguments !== 'undefined') {
                     for (var msg in arguments) {
                         console.log(arguments[msg]);
@@ -291,7 +291,7 @@
                     addListElement();
                 }
 
-                if (change[1] === 'undefined') {
+                if (change[1] === 'add' || change[1] === 'undefined') {
                     addListElement();
                 }
 
@@ -501,24 +501,29 @@
              * @param {type} notation
              * @returns {Boolean}
              */
-            dom.findUntilParentExists = function (notation) {
-                if (notation === '')
-                    return false;
+            dom.findUntilParentExists = function (notation, matches) {
+                if (notation === '' )
+                    return matches;
+
+                if (!matches)
+                    matches = [];
+            
                 var fieldNotation = dom.normalizeChangeResponse(notation);
 
                 var fieldNotationBrackets = dom.normalizeChangeResponseBrackets(notation);
 
                 var selector = dom.getSelector(fieldNotation, true);
                 var brSelector = dom.getSelector(fieldNotationBrackets, true);
-                var match = $globalScope.querySelectorAll(selector + ',' + brSelector );
-                
+                var match =  [].concat.apply(matches, $globalScope.querySelectorAll(selector + ',' + brSelector ));
+               
                 var cnt = match.length;
                 if (cnt === 0) {
                     if (model._getParentObject(notation, '') === "")
-                        return false;
+                        return match;
+
                     return dom.findUntilParentExists(model._getParentObject(notation, ''));
                 } else {
-                    return match;
+                    return dom.findUntilParentExists(model._getParentObject(notation, ''), match);
                 }
             };
 
@@ -673,30 +678,29 @@
             var InitValue = '';
 
             function bindevents(el) {
-                name = dom.getName(el);
+                name = dom.getName(el) || dom.getXPath(el);
 
                 el = cls.applyMethods(el);
 
-                if (name) {
-                    events[name] = cls.dispatchEvents.call(el);
-                    for (event in events[name]) {
-                        cls.debug('name:' + name + ', event:' + event);
+                events[name] = cls.dispatchEvents.call(el);
+                for (event in events[name]) {
+                    cls.debug('name:' + name + ', event:' + event);
 
-                        if (cls.config.skeleton) {
-                            if (typeof skeleton['interactions'][name] === 'undefined')
-                                skeleton['interactions'][name] = {};
+                    if (cls.config.skeleton) {
+                        if (typeof skeleton['interactions'][name] === 'undefined')
+                            skeleton['interactions'][name] = {};
 
-                            skeleton['interactions'][name][event] = "function(e, self){}";
-                        }
-
-                        var f = factory(el, event);
-                        el.removeEventListener(event, f);
-                        el.addEventListener(event, f);
-                        if ($el.getAttribute('data-defaultvalues') !== 'model' && !dom.getParents($el, '[data-defaultvalues="model"]')) {
-                            InitValue = dom.value.call(el);
-                            model.updateValue.call(el, InitValue);
-                        }
+                        skeleton['interactions'][name][event] = "function(e, self){}";
                     }
+
+                    var f = factory(el, event);
+                    el.removeEventListener(event, f);
+                    el.addEventListener(event, f);
+                    if ($el.getAttribute('data-defaultvalues') !== 'model' && !dom.getParents($el, '[data-defaultvalues="model"]')) {
+                        InitValue = dom.value.call(el);
+                        model.updateValue.call(el, InitValue);
+                    }
+                
 
                 }
             }
@@ -733,11 +737,13 @@
         cls.init = function () {
 
             cls.filter = cls.bind(this);
-
+            cls.recognizeChange.setup.call(cls.filter.$el);
             if (typeof child.init !== "undefined") {
                 if (child.init(cls)) {
-                    cls.recognizeChange.setup();
+                    console.log("init success");
                 }
+            }else{
+                console.log("no init method found");
             }
         }.bind(this);
 
@@ -760,11 +766,10 @@
         };
 
         //INITIALIZATION/////IF WE ARE INSIDE A DEV ENV LOAD TEMPLATES BY AJAX/////////
-        if (cls.view.viewpath) {
+        if (cls.view.viewpath && !cls.view.templates_) {
             // preloading alle templates, then init klaster interface
             var length = Object.keys(cls.view.views).length, cnt = 1;
             for (var v in cls.view.views) {
-
                 cls.ajax("get", (cls.view.viewpath) + v + '.' + cls.view.fileextension + '?v=' + ((cls.config.debug) ? Math.random() : '1'))
                 .done(function (v) {
                     return function (content) {
@@ -778,7 +783,7 @@
                     };
                 } (v)).send();
             }
-        }else{
+        }else{ 
             cls.init();
         }
 
