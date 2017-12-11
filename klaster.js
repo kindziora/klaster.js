@@ -546,7 +546,7 @@
                 for (addrN in changes) { //only this fields need to be refreshed
 
                     var $els = dom.findUntilParentExists(changes[addrN][0]);
-                    if (!$els || $els.length == 0)
+                    if (!$els || $els.length === 0)
                         continue;
 
                     name = dom.getName($els[0]);
