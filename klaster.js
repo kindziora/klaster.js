@@ -653,19 +653,14 @@
                     if (false !== cls.pre_trigger.call(me, e)) {
                         if (typeof cls.interactions[name] !== 'undefined' &&
                             typeof cls.interactions[name][method] !== 'undefined') {
-                            result = cls.interactions[name][method].call(me, e, cls, args);
-                            if (me.getAttribute(api.omit.attr) === "true") {
-                                result = dom.value.call(me);
-                            }
-                        } else if (typeof cls.interactions[method] !== 'undefined' &&
-                            typeof cls.interactions[method][event] !== 'undefined') {
-                            result = cls.interactions[method][event].call(me, e, cls, args);
-                            if (me.getAttribute(api.omit.attr) === "true") {
-                                result = dom.value.call(me);
-                            }
 
+                            result = cls.interactions[name][method].call(me, e, cls, args);
+
+                            if (me.getAttribute(api.omit.attr) === "true") {
+                                result = dom.value.call(me);
+                            }
                         } else {
-                            result = dom.value.call(me);
+                            result = me.getValue();
                         }
                         cls.post_trigger.call(me, e, result);
                     }
@@ -701,7 +696,6 @@
                         model.updateValue.call(el, InitValue);
                     }
                 
-
                 }
             }
 

@@ -1,4 +1,4 @@
-/*! klaster.js Version: 0.9.8 11-12-2017 12:58:26 */
+/*! klaster.js Version: 0.9.8 11-12-2017 14:36:06 */
 var prefix = 'data';
 
 var k_docapi = { 
@@ -2445,19 +2445,14 @@ function shim (obj) {
                     if (false !== cls.pre_trigger.call(me, e)) {
                         if (typeof cls.interactions[name] !== 'undefined' &&
                             typeof cls.interactions[name][method] !== 'undefined') {
-                            result = cls.interactions[name][method].call(me, e, cls, args);
-                            if (me.getAttribute(api.omit.attr) === "true") {
-                                result = dom.value.call(me);
-                            }
-                        } else if (typeof cls.interactions[method] !== 'undefined' &&
-                            typeof cls.interactions[method][event] !== 'undefined') {
-                            result = cls.interactions[method][event].call(me, e, cls, args);
-                            if (me.getAttribute(api.omit.attr) === "true") {
-                                result = dom.value.call(me);
-                            }
 
+                            result = cls.interactions[name][method].call(me, e, cls, args);
+
+                            if (me.getAttribute(api.omit.attr) === "true") {
+                                result = dom.value.call(me);
+                            }
                         } else {
-                            result = dom.value.call(me);
+                            result = me.getValue();
                         }
                         cls.post_trigger.call(me, e, result);
                     }
@@ -2493,7 +2488,6 @@ function shim (obj) {
                         model.updateValue.call(el, InitValue);
                     }
                 
-
                 }
             }
 
