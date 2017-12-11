@@ -1,4 +1,4 @@
-/*! klaster.js Version: 0.9.8 11-12-2017 12:41:35 */
+/*! klaster.js Version: 0.9.8 11-12-2017 12:55:49 */
 var prefix = 'data';
 
 var k_docapi = { 
@@ -2338,7 +2338,7 @@ function shim (obj) {
                 for (addrN in changes) { //only this fields need to be refreshed
 
                     var $els = dom.findUntilParentExists(changes[addrN][0]);
-                    if (!$els)
+                    if (!$els || els.length == 0)
                         continue;
 
                     name = dom.getName($els[0]);
