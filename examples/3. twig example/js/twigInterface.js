@@ -106,6 +106,7 @@ var mytodos = new twigInterface();
 var length = Object.keys(mytodos.view.views).length, cnt = 1;
 
 for (var v in mytodos.view.views) {
+    if(v != "length")
     $.get('view/twigInterface/' + v + '.html.twig').always(function(v) { // preloading alle templates, then init klaster interface
         return function(content) {
             mytodos.view.templates_[mytodos.view.views[v]] = content;
