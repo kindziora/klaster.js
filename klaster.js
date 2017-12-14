@@ -369,7 +369,7 @@
 
         //from view to model
         cls.view2Model = function ($where) {
-            Array.prototype.forEach.call(($where.querySelectorAll(cls.filter.events) || $globalScope.querySelectorAll(cls.filter.events)), function (el, i) {
+            Array.prototype.forEach.call(cls.filter.events, function (el, i) {
                 model.updateValue.call(el, dom.value.call(el));
             });
         };
@@ -629,7 +629,7 @@
          */
         cls.dispatchFilter = function (byElement) {
             return {
-                'object': child,
+                'object': cls,
                 '$el': byElement
             };
         };
@@ -781,6 +781,6 @@
             cls.init();
         }
 
-
+        return cls;
     };
 })(k_structure, k_docapi, k_dom, k_data);

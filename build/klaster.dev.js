@@ -1,4 +1,4 @@
-/*! klaster.js Version: 0.9.8 11-12-2017 14:36:06 */
+/*! klaster.js Version: 0.9.8 13-12-2017 18:26:11 */
 var prefix = 'data';
 
 var k_docapi = { 
@@ -2161,7 +2161,7 @@ function shim (obj) {
 
         //from view to model
         cls.view2Model = function ($where) {
-            Array.prototype.forEach.call(($where.querySelectorAll(cls.filter.events) || $globalScope.querySelectorAll(cls.filter.events)), function (el, i) {
+            Array.prototype.forEach.call(cls.filter.events, function (el, i) {
                 model.updateValue.call(el, dom.value.call(el));
             });
         };
@@ -2421,7 +2421,7 @@ function shim (obj) {
          */
         cls.dispatchFilter = function (byElement) {
             return {
-                'object': child,
+                'object': cls,
                 '$el': byElement
             };
         };
@@ -2573,6 +2573,6 @@ function shim (obj) {
             cls.init();
         }
 
-
+        return cls;
     };
 })(k_structure, k_docapi, k_dom, k_data);
