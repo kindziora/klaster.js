@@ -37,7 +37,9 @@ var twigInterface = function (model, cachedViews, isdev, cache) {
         'mark': {
             click: function (e, self) {
                 e.preventDefault();
-                return !this.getValue('model'); // return inverted value from Model to Model
+                
+                let m = (this.getValue('model') == 'true' || this.getValue('model') === true)?true:false; 
+                return !m; // return inverted value from Model to Model
             }
         }
     };

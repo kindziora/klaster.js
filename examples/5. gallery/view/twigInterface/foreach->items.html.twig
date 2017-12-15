@@ -1,6 +1,6 @@
 <div class="thumbnail width5 {% if match | length > 0 %}markedOtherMatch{% endif %} 
      {% if markedMatchOK | length > 0 %}markedMatchOK{% endif %}
-     {% if marked %}marked{% endif %}" 
+     {% if marked %} {% endif %}" 
      data-name="items[{{index}}]"
      data-view="foreach->items"
      {% if match | length > 0 %} data-toggle="popover" 
@@ -45,5 +45,5 @@
         </div>
     </div>
     <div class="failed"  data-name="items[{{index}}]['result']" data-on="click->mark" data-value="{{item.result}}" data-view="__static">X</div>
-    <div class="success">&#10003;</div>
+
 </div>

@@ -178,10 +178,10 @@
         }.bind(cls);
 
         /**
-        * set html decorated content and bind methods
-        * this updates a partial area
-        * @param {type} $html
-        */
+         * set html decorated content and bind methods
+         * this updates a partial area
+         * @param {type} $html
+         */
         function _set($html) {
             dom.setHtmlValue.call(this, $html);
             if (typeof $html !== 'undefined' && $html.nodeType !== 3)
@@ -269,9 +269,9 @@
                     } else {
                         var name = /\[(.*?)\]/gi.exec(Elname)[1];
 
-                        if (!model.get(Elname)
-                            || typeof field[name] === 'undefined'
-                            || !cls.preRenderView($scope, field[name])) {
+                        if (!model.get(Elname) ||
+                            typeof field[name] === 'undefined' ||
+                            !cls.preRenderView($scope, field[name])) {
 
                             el.parentNode.removeChild(el);
                         }
@@ -305,17 +305,24 @@
                     }
                 }
 
-
                 if (change[1] === 'value') { // value of subelement has changed
                     var _notation = change[0],
+                        scopedField = field,
                         myChangedField = model.get(_notation); //get field that has changed
-                        var index = /\[(.*?)\]/gi.exec(_notation)[1];
-                        index = typeof field[index] !== 'undefined'?index:field.indexOf(change[3]); //get index of item that has chnaged
+                    var index = /\[(.*?)\]/gi.exec(_notation)[1];
+
+                    if (typeof field.indexOf !== 'undefined') { // array
+                        scopedField = typeof field[index] !== 'undefined' ?
+                            index :
+                            field.indexOf(change[3]); //get index of item that has chnaged
+                    } else { //object
+
+                    }
 
                     $child = $scope.querySelector(dom.getSelector(_notation, true)); //find listItem that has changed
 
-                    if (typeof myChangedField !== 'undefined' && cls.preRenderView($scope, field[index])) {
-                        $html = dom.parseHTML(cls.view.views[viewName].call(cls.view, field[index], index, $scope)); // render subitem
+                    if (typeof myChangedField !== 'undefined' && cls.preRenderView($scope, scopedField)) {
+                        $html = dom.parseHTML(cls.view.views[viewName].call(cls.view, scopedField, index, $scope)); // render subitem
 
                         if ($child) {
                             $child.parentNode.replaceChild($html, $child);
@@ -422,7 +429,8 @@
                 return function (el) {
 
                     // check how to treat this field
-                    var $scope = el, fieldN = dom.getName(el);
+                    var $scope = el,
+                        fieldN = dom.getName(el);
                     var v = $scope.getAttribute(api.view.attr);
                     var scopeModelField = model.get(fieldN);
                     var decoratedFieldValue;
@@ -469,12 +477,12 @@
                         if (dom.isHtmlList($scope)) {
                             //render partial list of html elements
 
-                            if (dom.getName($scope).indexOf('[') === -1) { // address no array element
-                                change[1] = 'view-filter';// why view filter?
+                          /*  if (dom.getName($scope).indexOf('[') === -1) { // address no array element
+                                change[1] = 'view-filter'; // why view filter?
                                 change[2] = 2;
                                 change[3] = 1;
-                            }
-                            cls.updateHtmlList($scope, scopeModelField, change);// why trigger update list?
+                            }*/
+                            cls.updateHtmlList($scope, scopeModelField, change); // why trigger update list?
 
                         } else { // not a list
                             cls.updateHtmlElement($scope, scopeModelField, change);
@@ -502,20 +510,22 @@
              * @returns {Boolean}
              */
             dom.findUntilParentExists = function (notation, matches) {
-                if (notation === '' )
+                if (notation === '')
                     return matches;
 
                 if (!matches)
                     matches = [];
-            
+
                 var fieldNotation = dom.normalizeChangeResponse(notation);
 
                 var fieldNotationBrackets = dom.normalizeChangeResponseBrackets(notation);
 
                 var selector = dom.getSelector(fieldNotation, true);
                 var brSelector = dom.getSelector(fieldNotationBrackets, true);
-                var match =  [].concat.apply(matches, $globalScope.querySelectorAll(selector + ',' + brSelector ));
-               
+                var match = []
+                .concat
+                .apply(matches, $globalScope.querySelectorAll(selector + ',' + brSelector));
+
                 var cnt = match.length;
                 if (cnt === 0) {
                     if (model._getParentObject(notation, '') === "")
@@ -544,8 +554,25 @@
                 var cacheEls = {};
                 var name = undefined;
                 for (addrN in changes) { //only this fields need to be refreshed
+                    
+                    var $els = (() => {
+                        let domAppearance = dom.findUntilParentExists(changes[addrN][0]);
+                      
+                        for(let i in domAppearance){
+                            for(let e in domAppearance){
+                                if(domAppearance[e].contains(domAppearance[i]) ){
+                                    var index = domAppearance.indexOf(e);
+                                    if (index > -1) {
+                                        domAppearance = domAppearance.splice(index, 1);
+                                    }
+                                    
+                                }
+                            }
+                        }
+                       
+                       return domAppearance;
+                    })();
 
-                    var $els = dom.findUntilParentExists(changes[addrN][0]);
                     if (!$els || $els.length === 0)
                         continue;
 
@@ -556,7 +583,8 @@
                 }
 
                 for (var el in cacheEls) {
-                    var $els = cacheEls[el][0], changes = cacheEls[el][1];
+                    var $els = cacheEls[el][0],
+                        changes = cacheEls[el][1];
 
                     var cnt = $els.length;
 
@@ -568,7 +596,7 @@
                                 changeCb.call(model, model.get(name), changes, 'controller');
                             }
                         }
-                    } ($els)));
+                    }($els)));
 
                 }
             };
@@ -602,15 +630,19 @@
                 }, mes.getAttribute(api.delay.attr) || cls.delay);
             };
             return mio;
-        } ();
+        }();
 
         /**
-          *dispatch events for dom element
-          */
+         *dispatch events for dom element
+         */
         cls.dispatchEvents = function () {
             var FinalEvents = [];
             if (this.getAttribute(api.on.attr)) {
-                var events = (this.getAttribute(api.on.attr) || '').split(','), i = 0, event = "", FinalEvents = {}, parts = "";
+                var events = (this.getAttribute(api.on.attr) || '').split(','),
+                    i = 0,
+                    event = "",
+                    FinalEvents = {},
+                    parts = "";
                 for (i in events) {
                     event = events[i].trim();
                     parts = event.split('->');
@@ -640,7 +672,10 @@
          */
         cls.bind = function (element) {
 
-            var events = {}, event = {}, name = "", method = "";
+            var events = {},
+                event = {},
+                name = "",
+                method = "";
             var filter, $el;
             filter = cls.dispatchFilter(element);
             $el = element;
@@ -656,6 +691,12 @@
 
                             result = cls.interactions[name][method].call(me, e, cls, args);
 
+                            if (me.getAttribute(api.omit.attr) === "true") {
+                                result = dom.value.call(me);
+                            }
+                        } else if(typeof cls.interactions[method] !== 'undefined' && typeof cls.interactions[method][event] !== 'undefined') {
+                            result = cls.interactions[method][event].call(me, e, cls, args);
+                            
                             if (me.getAttribute(api.omit.attr) === "true") {
                                 result = dom.value.call(me);
                             }
@@ -695,7 +736,7 @@
                         InitValue = dom.value.call(el);
                         model.updateValue.call(el, InitValue);
                     }
-                
+
                 }
             }
 
@@ -736,7 +777,7 @@
                 if (child.init(cls)) {
                     console.log("init success");
                 }
-            }else{
+            } else {
                 console.log("no init method found");
             }
         }.bind(this);
@@ -747,7 +788,7 @@
             _xhr.setup = function (cb) { // hacky? maybe
                 cb(_xhr);
                 return _xhr;
-            }; 
+            };
             _xhr.done = function (cb) { // hacky? maybe
                 _xhr.onreadystatechange = function () {
                     if (_xhr.readyState === 4) {
@@ -762,22 +803,23 @@
         //INITIALIZATION/////IF WE ARE INSIDE A DEV ENV LOAD TEMPLATES BY AJAX/////////
         if (cls.view.viewpath && !cls.view.templates_) {
             // preloading alle templates, then init klaster interface
-            var length = Object.keys(cls.view.views).length, cnt = 1;
+            var length = Object.keys(cls.view.views).length,
+                cnt = 1;
             for (var v in cls.view.views) {
                 cls.ajax("get", (cls.view.viewpath) + v + '.' + cls.view.fileextension + '?v=' + ((cls.config.debug) ? Math.random() : '1'))
-                .done(function (v) {
-                    return function (content) {
-                        cls.view.templates_[cls.view.views[v]] = content;
-                        cls.view.templates_[v] = content;
-                        if (length <= cnt) {
-                            child.view.templates_ = cls.view.templates_;
-                            cls.init();
-                        }
-                        cnt++;
-                    };
-                } (v)).send();
+                    .done(function (v) {
+                        return function (content) {
+                            cls.view.templates_[cls.view.views[v]] = content;
+                            cls.view.templates_[v] = content;
+                            if (length <= cnt) {
+                                child.view.templates_ = cls.view.templates_;
+                                cls.init();
+                            }
+                            cnt++;
+                        };
+                    }(v)).send();
             }
-        }else{ 
+        } else {
             cls.init();
         }
 

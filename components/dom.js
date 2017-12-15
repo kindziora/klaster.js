@@ -174,7 +174,7 @@ var k_dom =(function (api) {
 
     dom.getParents = function($scope, selector) {
          var foundElem;
-          while ($scope && $scope !== document) {
+          while ($scope && $scope.parentNode ) {
             foundElem = $scope.parentNode.querySelector(selector);
             if(foundElem) {
               return foundElem;
