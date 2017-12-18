@@ -557,20 +557,21 @@
                     
                     var $els = (() => {
                         let domAppearance = dom.findUntilParentExists(changes[addrN][0]);
-                      
+                        let filtered = [];
                         for(let i in domAppearance){
-                            for(let e in domAppearance){
-                                if(domAppearance[e].contains(domAppearance[i]) ){
-                                    var index = domAppearance.indexOf(e);
-                                    if (index > -1) {
-                                        domAppearance = domAppearance.splice(index, 1);
-                                    }
-                                    
+                            let kick = false;
+                            for(let e = 0; e < i; e++){
+                                if(domAppearance[i].contains(domAppearance[e]) ){ 
+                                    kick = true;
+                                    break;
                                 }
+                            }
+                            if(!kick){ 
+                                filtered.push(domAppearance[i]);
                             }
                         }
                        
-                       return domAppearance;
+                       return filtered;
                     })();
 
                     if (!$els || $els.length === 0)
