@@ -16,21 +16,25 @@ var twigInterface = function() {
             }
         },
         'todo': {
-            'keyup': function(e) {
+            'keyup': function(e, me) {
                 if (e.which === 13 && $(this).val() !== '') {
-                    intfc.model.field.todos.push({name: $(this).val(), completed: false});
+                    me.model.field.todos.push({name: $(this).val(), completed: false});
                     $(this).val('');
                 }
             }
         },
-        'todo.delete': {
-            'click': function(e) {
-                var todoname = $(this).parent().parent().getName();
-                intfc.model._delete(todoname);
+        'delete': {
+            'click': function(e, m) {
+                m.model._delete(this.getName());
+            }
+        },
+        'completed': {
+            'click': function(e, m) {
+                return !this.getValue('model');
             }
         },
         'todo.name': {
-            'dblclick': function(e) {
+            'dblclick': function(e, m) {
                 if ($(this).attr('contenteditable') == "true") {
                     $(this).attr('contenteditable', "false");
                 }
@@ -40,17 +44,17 @@ var twigInterface = function() {
             }
         },
         'clear-completed': {
-            'click': function(e) {
-                for (var item in intfc.model.field.todos) {
-                    if (intfc.model.field.todos[item].completed)
-                        delete intfc.model.field.todos[item];
+            'click': function(e, m) {
+                for (var item in m.model.field.todos) {
+                    if (m.model.field.todos[item].completed)
+                        delete m.model.field.todos[item];
                 }
             }
         },
         'toggle-all': {
-            'click': function(e) {
-                for (var item in intfc.model.field.todos) {
-                    intfc.model.field.todos[item].completed = $(this).is(':checked');
+            'click': function(e, m) {
+                for (var item in m.model.field.todos) {
+                    m.model.field.todos[item].completed = $(this).is(':checked');
                 }
             }
         }
@@ -61,6 +65,9 @@ var twigInterface = function() {
             'todos': [
                 {name: 'checkout klaster.js', completed: false}
             ]
+        },
+        event : {
+            sync : (e,s)=>console.log(s.model.field)
         }
     };
 
@@ -79,10 +86,7 @@ var twigInterface = function() {
                 data: intfc.view.templates_[tplName || arguments.callee.caller]
             }).render(tplVars);
         },
-        views: {
-            'todos[*]': function(value, index) {
-                return intfc.view.render({'value': value, 'index': index});
-            },
+        views: { 
             length: function(todos, notation, $scope) {
                 var length = todos.filter(function(item) {
                     return !item.completed;
@@ -92,9 +96,8 @@ var twigInterface = function() {
             "clearbutton": function(todos, notation, $scope) {
                 return intfc.view.render({'item': todos, 'index': notation});
             },
-            "foreach->todoliste2": function(todos, index, $field) {
-                var content = intfc.view.views['todos[*]'](todos[index], 'todos[' + index + ']');
-                return intfc.view.render({'content': content, 'index': index, 'todos': todos});
+            "foreach->todoliste2": function(todo, index, $field) {
+                return intfc.view.render({'index': index, 'todo': todo});
             }
         }
     };
@@ -106,7 +109,6 @@ var mytodos = new twigInterface();
 var length = Object.keys(mytodos.view.views).length, cnt = 1;
 
 for (var v in mytodos.view.views) {
-    if(v != "length")
     $.get('view/twigInterface/' + v + '.html.twig').always(function(v) { // preloading alle templates, then init klaster interface
         return function(content) {
             mytodos.view.templates_[mytodos.view.views[v]] = content;
