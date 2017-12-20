@@ -11,12 +11,12 @@ It aims on rich frontend experiences and simplicity.
 
 ## next
 
-*unit tests
-*babel or typescript conversion
-*performance benchmarks
-*nightmarejs ui tests
-*skeleton generator
-*going isomorphic with node.js
+1. unit tests
+2. babel or typescript conversion
+3. performance benchmarks
+4. nightmarejs ui tests
+5. skeleton generator
+6. going isomorphic with node.js
 
 
 ## Examples
