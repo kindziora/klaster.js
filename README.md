@@ -9,20 +9,19 @@ It aims on rich frontend experiences and simplicity.
   2. fast & easy to work with
   3. easy debugging
 
-## coming features
+## next
 
-server to client 2 way databinding via nodejs
+*unit tests
+*babel or typescript conversion
+*performance benchmarks
+*nightmarejs ui tests
+*skeleton generator
+*going isomorphic with node.js
+
 
 ## Examples
 
 https://github.com/kindziora/klaster.js/tree/master/examples
-
-##Work in progress
-
-refactoring code
-unit test and integration test for the framework and apps
-
-next step skeleton generator from markup to code
 
 ## klaster.js minimal app 
 
@@ -61,11 +60,11 @@ So if the state of the form does change you could send the json to a backend.
 ## klaster.js validation 
 using:
 
--validators
+*validators
 
--data model
+*data model
 
--views
+*views
 
 ### javascript
 
