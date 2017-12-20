@@ -250,7 +250,8 @@
                         cls.postRenderView($html); //execute post render on added child
 
                     } else {
-                        $child.parentNode.removeChild($child);
+                        if($child)
+                            $child.parentNode.removeChild($child);
                     }
 
                     m_index = index;

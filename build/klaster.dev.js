@@ -1,4 +1,4 @@
-/*! klaster.js Version: 0.9.8 18-12-2017 10:57:42 */
+/*! klaster.js Version: 0.9.8 20-12-2017 11:25:55 */
 var prefix = 'data';
 
 var k_docapi = { 
@@ -2042,7 +2042,8 @@ function shim (obj) {
                         cls.postRenderView($html); //execute post render on added child
 
                     } else {
-                        $child.parentNode.removeChild($child);
+                        if($child)
+                            $child.parentNode.removeChild($child);
                     }
 
                     m_index = index;
@@ -2361,7 +2362,6 @@ function shim (obj) {
                             if(!kick){ 
                                 filtered.push(domAppearance[i]);
                             }
-
                         }
                        
                        return filtered;
