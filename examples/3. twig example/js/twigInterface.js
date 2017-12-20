@@ -13,6 +13,7 @@ var twigInterface = function() {
                 $('.selected').removeClass('selected');
                 $(this).addClass('selected');
                 $('#todo-list').attr('data-filter', $(this).attr('data-value'));
+
             }
         },
         'todo': {
@@ -97,7 +98,10 @@ var twigInterface = function() {
                 return intfc.view.render({'item': todos, 'index': notation});
             },
             "foreach->todoliste2": function(todo, index, $field) {
-                return intfc.view.render({'index': index, 'todo': todo});
+                return intfc.view.render({'index': index, 'todo': todo}, "foreach->todoliste2");
+            },
+            "todo": function(todo, index, $field) {
+                return intfc.view.render({'index': index, 'todo': todo}, "foreach->todoliste2");
             }
         }
     };
@@ -112,6 +116,7 @@ for (var v in mytodos.view.views) {
     $.get('view/twigInterface/' + v + '.html.twig').always(function(v) { // preloading alle templates, then init klaster interface
         return function(content) {
             mytodos.view.templates_[mytodos.view.views[v]] = content;
+            mytodos.view.templates_[v] = content;
             if (length <= cnt) {
                 $k('#todoapp')(mytodos);
             }

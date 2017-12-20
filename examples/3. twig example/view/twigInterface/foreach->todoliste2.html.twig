@@ -1,4 +1,4 @@
-<li class="{% if todo.completed %} completed{% endif %}" data-name="todos[{{index}}]">
+<li class="{% if todo.completed %} completed{% endif %}" data-name="todos[{{index}}]" data-view="todo">
     <div class="view">
         <input class="toggle" type="checkbox" data-name="todos[{{index}}].completed" data-multiple="false" data-on="click->completed" {% if todo.completed %} checked="checked"{% endif %} />
         <label data-on="dblclick->todo.name" data-name="todos[{{index}}].name">{{todo.name}}</label>
