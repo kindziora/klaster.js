@@ -1,3 +1,5 @@
-##Description
+## Description
 
-Simple data binding and form change handling.
+this is an implementation of the famous TdodoMVC
+
+http://todomvc.com/
