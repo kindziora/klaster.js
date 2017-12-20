@@ -1,5 +1,5 @@
 ## Description
 
-this is an implementation of the famous TdodoMVC
+this is an implementation of the famous TodoMVC
 
 http://todomvc.com/
