@@ -60,11 +60,11 @@ So if the state of the form does change you could send the json to a backend.
 ## klaster.js validation 
 using:
 
-*validators
+* validators
+ 
+* data model
 
-*data model
-
-*views
+* views
 
 ### javascript
 
