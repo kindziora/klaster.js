@@ -1,6 +1,6 @@
-var prefix = 'data';
+const prefix = 'data';
 
-var k_docapi = { 
+const k_docapi = { 
     'Controller': {
         'this.interactions': {
             'dom-attribute name': {
@@ -13,45 +13,45 @@ var k_docapi = {
     },
     'dom-attributes': {
         'defaultvalues': {
-            'attr': prefix + '-defaultvalues',
+            'attr': `${prefix}-defaultvalues`,
             'value': 'String value:"client" or "server" that means our app uses the field.values frtom dom or model/javascript'
         },
         'name': {
-            'attr': prefix + '-name',
+            'attr': `${prefix}-name`,
             'value': 'String containing name of element, not unique'
         },
         'omit': {
-            'attr': prefix + '-omit',
+            'attr': `${prefix}-omit`,
             'value': 'String/that evaluates to boolean, whether ignoring the area for model representation data or not'
         },
         'filter': {
-            'attr': prefix + '-filter',
+            'attr': `${prefix}-filter`,
             'value': 'filter expression javascript is valid'
         },
         'value': {
-            'attr': prefix + '-value',
+            'attr': `${prefix}-value`,
             'value': 'String, containing the value of an element, can be plain or json'
         },
         'multiple': {
-            'attr': prefix + '-multiple',
+            'attr': `${prefix}-multiple`,
             'value': 'String/that evaluates to boolean, whether this element is part of multiple elements like checkbox',
             'children': {
                 'checked': {
-                    'attr': prefix + '-checked',
+                    'attr': `${prefix}-checked`,
                     'value': 'String/that evaluates to boolean, whether this element is will apear inside a list of multiple elements with similar data-name, like checkbox'
                 }
             }
         },
         'delay': {
-            'attr': prefix + '-delay',
+            'attr': `${prefix}-delay`,
             'value': 'number of miliseconds until sync'
         },
         'on': {
-            'attr': prefix + '-on',
+            'attr': `${prefix}-on`,
             'value': 'event that triggers matching action method, also alias is possible. eg. hover->klasterhover'
         },
         'view': {
-            'attr': prefix + '-view',
+            'attr': `${prefix}-view`,
             'value': {
                 'desc': 'defines which view function callback is executed for rendering output',
                 'params': {
@@ -66,12 +66,12 @@ var k_docapi = {
     }
 };
 
-var k_structure = {
+const k_structure = {
     'delay': 10,
     'api': k_docapi,
     'interactions': {
         'test': {
-            'click': function (e) {
+            'click'(e) {
 
             }
         }
@@ -91,10 +91,10 @@ var k_structure = {
         'viewpath': 'view/', //if loading templates in realtime
         'fileextension': 'html.twig', //if loading templates in realtime
         'templates_': {}, // array of templates by name => html or other markup
-        'render': function (tplVars, tplName) { // template render function ... here you can add template engine support for twig, etc.
+        'render'(tplVars, tplName) { // template render function ... here you can add template engine support for twig, etc.
         },
         'views': {
-            'test': function () {
+            'test'() {
 
             }
         }
@@ -105,4 +105,4 @@ var k_structure = {
         'debug': true,
         'skeleton' : true
     }
-}
+};

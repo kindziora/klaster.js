@@ -3,29 +3,27 @@
  *
  */
 
-(function (structure, docapi, dom, model) {
+(((structure, docapi, dom, model) => {
     //"use strict";
 
-    var me = {};
-    var api = docapi['dom-attributes'];
+    const me = {};
+    const api = docapi['dom-attributes'];
 
-    window.$k = function (selector) {
-        return klaster.bind(document.querySelector(selector));
-    };
+    window.$k = selector => klaster.bind(document.querySelector(selector));
 
     function klaster(child) {
 
-        var skeleton = {};
+        let skeleton = {};
         if (structure.config.skeleton) {
             skeleton = JSON.parse(JSON.stringify(structure));
             skeleton.api = null;
         }
 
-        var cls = model.extend(structure, child);
+        const cls = model.extend(structure, child);
 
         dom.child = cls;
 
-        var $globalScope = this;
+        const $globalScope = this;
 
         cls.model = model = model.extend(model, child.model);
 
@@ -35,7 +33,7 @@
         cls.debug = function () {
             if (true) { //cls.config.debug
                 if (typeof arguments !== 'undefined') {
-                    for (var msg in arguments) {
+                    for (const msg in arguments) {
                         console.log(arguments[msg]);
                     }
                 }
@@ -45,8 +43,8 @@
         /**
          * restriction of content by filter criteria eg. data-filter="this.a !== 0"
          */
-        cls.updateViewFilter = function () {
-            Array.prototype.forEach.call($globalScope.querySelectorAll('[data-filter]'), function (el, i) {
+        cls.updateViewFilter = () => {
+            Array.prototype.forEach.call($globalScope.querySelectorAll('[data-filter]'), (el, i) => {
                 cls.viewFilter[dom.getXPath(el)] = el.getAttribute('data-filter');
             });
         };
@@ -55,7 +53,7 @@
          * before a view gets rendered
          * return true means render element, false remove it if existent in dom
          **/
-        cls.preRenderView = function ($field, item) {
+        cls.preRenderView = ($field, item) => {
             if (typeof model.get(dom.getName($field)) === 'undefined' ||
                 $field.getAttribute(api.view) === "__static")
                 return false;
@@ -63,15 +61,15 @@
             if (!$field.getAttribute('data-filter'))
                 return true;
 
-            return eval("(" + $field.getAttribute('data-filter').replace(new RegExp("this", "gi"), 'child.filter') + ")"); // execute operation eg. data-filter="1 == this.amount" or this.checkRights()
+            return eval(`(${$field.getAttribute('data-filter').replace(new RegExp("this", "gi"), 'child.filter')})`); // execute operation eg. data-filter="1 == this.amount" or this.checkRights()
         };
         /**
          * 
          * after the rendering of a view 
          * trigger postRenderView view event, if existent
          **/
-        cls.postRenderView = function ($field) {
-            var funcName = dom.getView($field);
+        cls.postRenderView = $field => {
+            const funcName = dom.getView($field);
 
             if (typeof cls.view.event !== "undefined" && typeof cls.view.event.postRenderView !== 'undefined' && typeof cls.view.event.postRenderView[funcName] === 'function') {
                 cls.view.event.postRenderView[funcName].call(model, $field, model.get(dom.getName($field)));
@@ -83,7 +81,7 @@
          * gets executed before an event is triggered
          * set model state
          */
-        cls.pre_trigger = function (e) {
+        cls.pre_trigger = (e) => {
 
             cls.updateViewFilter();
             model._buildModelPreChangeObj();
@@ -97,9 +95,9 @@
          * gets executed after an event is triggered
          * check if model has changed
          */
-        cls.post_trigger = function (e, result) {
-            var name = dom.getName(this);
-            var modelState = model.get(name);
+        cls.post_trigger =(e, result) => {
+            const name = dom.getName(this);
+            const modelState = model.get(name);
 
             if ((result != modelState) || model.changed(name)) {
 
@@ -122,7 +120,7 @@
          * validate field by setting its state
          * return value if valid, otherwise return undefined so value does not go into model, if used as return value from interaction
          **/
-        cls.validate = function (name, value, type) {
+        cls.validate = (name, value, type) => {
 
             function validate(validateResult) {
                 validateResult.value = value;
@@ -134,7 +132,7 @@
             }
 
             if (typeof child.validator !== "undefined" && typeof child.validator[type] === "function") {
-                var validateResult = child.validator[type].call(model, value, name);
+                const validateResult = child.validator[type].call(model, value, name);
                 return validate(validateResult);
             } else {
 
@@ -142,7 +140,7 @@
                     return validate(type);
                 } else {
                     throw {
-                        message: "Validator of type " + type + "does not exist.",
+                        message: `Validator of type ${type}does not exist.`,
                         name: "ValidationException"
                     };
                 }
@@ -196,10 +194,10 @@
          * @param scopeModelField
          * @returns {*}
          */
-        cls.getDecoValPrimitive = function ($scope, scopeModelField) {
-            var fieldN = dom.getName($scope),
-                viewName = dom.getView($scope),
-                DecoValPrimitive = scopeModelField;
+        cls.getDecoValPrimitive = ($scope, scopeModelField) => {
+            const fieldN = dom.getName($scope);
+            const viewName = dom.getView($scope);
+            let DecoValPrimitive = scopeModelField;
 
             if (!cls.preRenderView($scope, scopeModelField)) { // on off option
                 return undefined;
@@ -217,9 +215,11 @@
          * @param field
          * @param change
          */
-        cls.updateHtmlList = function ($scope, field, change) {
-            var $child, index, $html;
-            var viewName = dom.getView($scope);
+        cls.updateHtmlList = ($scope, field, change) => {
+            let $child;
+            let index;
+            let $html;
+            const viewName = dom.getView($scope);
 
             /**
              * differential function to add elements to a list of dom elements
@@ -227,16 +227,18 @@
              */
             function addListElement() {
 
-                var m_index = 0;
-                for (index in field) { //iterate over all items in array 
-                    var name = dom.getName($scope),
-                        $child = $scope.querySelector('[data-name="' + name + '\[' + index + '\]"]'); //get child by name
+                let m_index = 0;
+                for (index in field) {
+                    //iterate over all items in array 
+                    const name = dom.getName($scope); //get child by name
+
+                    const $child = $scope.querySelector(`[data-name="${name}\[${index}\]"]`);
 
                     if (cls.preRenderView($scope, field[index])) { //check filters or other stuff that could avoid rendering that item
 
                         $html = dom.parseHTML(cls.view.views[viewName].call(cls.view, field[index], index, $scope)); //render view
 
-                        var $close = $scope.querySelector('[data-name="' + name + '\[' + m_index + '\]"]');
+                        const $close = $scope.querySelector(`[data-name="${name}\[${m_index}\]"]`);
 
                         if ($child) {
                             $child.parentNode.replaceChild($html, $child);
@@ -263,12 +265,12 @@
              */
             function killListElement() {
 
-                Array.prototype.forEach.call($scope.childNodes, function (el, i) {
-                    var Elname = dom.getName(el);
+                Array.prototype.forEach.call($scope.childNodes, (el, i) => {
+                    const Elname = dom.getName(el);
                     if (typeof Elname === 'undefined') {
                         el.parentNode.removeChild(el);
                     } else {
-                        var name = /\[(.*?)\]/gi.exec(Elname)[1];
+                        const name = /\[(.*?)\]/gi.exec(Elname)[1];
 
                         if (!model.get(Elname) ||
                             typeof field[name] === 'undefined' ||
@@ -306,11 +308,13 @@
                     }
                 }
 
-                if (change[1] === 'value') { // value of subelement has changed
-                    var _notation = change[0],
-                        scopedField = field,
-                        myChangedField = model.get(_notation); //get field that has changed
-                    var index = /\[(.*?)\]/gi.exec(_notation)[1];
+                if (change[1] === 'value') {
+                    // value of subelement has changed
+                    const _notation = change[0]; //get field that has changed
+
+                    let scopedField = field;
+                    const myChangedField = model.get(_notation);
+                    const index = /\[(.*?)\]/gi.exec(_notation)[1];
 
                     if (typeof field.indexOf !== 'undefined') { // array
                         scopedField = typeof field[index] !== 'undefined' ?
@@ -338,53 +342,51 @@
                     } else { // value changed to undefined or filter does remove element
                         $child.parentNode.removeChild($child); // remove sub item
                     }
-
                 }
 
             }
 
             decision(change); //make decision what to update on list
-
         };
 
         /**
          * update html element if changed || validation error view
          **/
-        cls.updateHtmlElement = function ($scope, scopeModelField, changed) {
+        cls.updateHtmlElement = ($scope, scopeModelField, changed) => {
 
-            var name = dom.getName($scope);
-            var error = model.getState(name);
-            var cced = model.getOld(name);
+            const name = dom.getName($scope);
+            const error = model.getState(name);
+            const cced = model.getOld(name);
             if ((typeof error === 'undefined' || error.result) || (typeof error !== 'undefined' && dom.getView($scope) !== error.view)) { // kein fehler aufgetreten
                 if (cced !== scopeModelField) { // cached value of field != model.field value
-                    var decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
+                    const decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
                     _set.call($scope, decoratedFieldValue); // bind html 
                 }
             } else { // field view was defined i a validator is it gets rendered also if value is not in model and by that equal to undefined
-                var template = cls.view.views[error.view].call(cls, scopeModelField, name);
+                const template = cls.view.views[error.view].call(cls, scopeModelField, name);
 
-                var $field = $globalScope.querySelector(dom.getValidatorSelector(name, error.view));
+                const $field = $globalScope.querySelector(dom.getValidatorSelector(name, error.view));
                 _set.call($field, template);
             }
         };
 
         //from server to model
-        cls.server2Model = function (data) {
+        cls.server2Model = data => {
             //model.set.call(data.field, data.value);
-            var $field = $globalScope.querySelector(dom.getSelector(data.field));
+            const $field = $globalScope.querySelector(dom.getSelector(data.field));
             cls.post_trigger.call($field, e, data.value);
         };
 
         //from view to model
-        cls.view2Model = function ($where) {
-            Array.prototype.forEach.call(cls.filter.events, function (el, i) {
+        cls.view2Model = $where => {
+            Array.prototype.forEach.call(cls.filter.events, (el, i) => {
                 model.updateValue.call(el, dom.value.call(el));
             });
         };
 
         cls.model2View = function () {
-            var local = {};
-            var $triggerSrc = this;
+            const local = {};
+            const $triggerSrc = this;
 
             /**
              * executed after processing all name element dom representations
@@ -392,18 +394,18 @@
              * @param change
              * @param ready
              */
-            local.finalIteratedAllViewEl = function ($scope, change, ready) {
+            local.finalIteratedAllViewEl = ($scope, change, ready) => {
                 // and no view to display the change so try to display change with parent node
-                var field_notation = dom.normalizeChangeResponse(change[0]);
-                var match = field_notation;
+                const field_notation = dom.normalizeChangeResponse(change[0]);
+                let match = field_notation;
                 while (match !== '') {
                     match = model._getParentObject(match, '');
 
-                    var findNotation = dom.getSelector(match, true);
-                    var $myPEl = $scope.parents(findNotation);
+                    const findNotation = dom.getSelector(match, true);
+                    const $myPEl = $scope.parents(findNotation);
 
-                    var viewName = $myPEl.getAttribute(api.view.attr);
-                    var viewMethod = cls.view.views[viewName];
+                    const viewName = $myPEl.getAttribute(api.view.attr);
+                    const viewMethod = cls.view.views[viewName];
 
                     /**
                      * improve performance here!!!
@@ -426,73 +428,70 @@
              * @param ready
              * @returns {Function}
              */
-            local.eachViewRepresentation = function (cnt, change, foundRepresentation, ready) {
-                return function (el) {
+            local.eachViewRepresentation = (cnt, change, foundRepresentation, ready) => el => {
+                // check how to treat this field
+                const $scope = el;
 
-                    // check how to treat this field
-                    var $scope = el,
-                        fieldN = dom.getName(el);
-                    var v = $scope.getAttribute(api.view.attr);
-                    var scopeModelField = model.get(fieldN);
-                    var decoratedFieldValue;
-
+                const fieldN = dom.getName(el);
+                const v = $scope.getAttribute(api.view.attr);
+                const scopeModelField = model.get(fieldN);
+                let decoratedFieldValue;
 
 
-                    if (v === '__static') {
-                        dom.setPrimitiveValue($scope, scopeModelField);
-                        return;
-                    }
 
-                    if ($triggerSrc === $scope) {
-                        return;
-                    }
-
-                    function iteration(decoratedFieldValue) {
-                        cnt--;
-                        if (cnt <= 0) {
-                            if (!foundRepresentation) {
-                                local.finalIteratedAllViewEl($scope, change, ready);
-                            } else {
-                                ready();
-                            }
-                        }
-                    }
-
-                    /* if ($scope.attr('type') === "radio") {
-                         foundRepresentation = false;
-                         iteration(scopeModelField);
-                         return;
-                     }*/
-
-                    if (dom.isPrimitiveValue($scope)) { //if dom view element is of type primitive
-                        decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
-
-                        if (dom.hasMultipleChoices($scope)) {
-                            dom.selectMultiple($scope, decoratedFieldValue);
-                        } else {
-                            dom.setPrimitiveValue($scope, decoratedFieldValue);
-                        }
-
-                    } else { // field can contain html
-
-                        if (dom.isHtmlList($scope)) {
-                            //render partial list of html elements
-
-                          /*  if (dom.getName($scope).indexOf('[') === -1) { // address no array element
-                                change[1] = 'view-filter'; // why view filter?
-                                change[2] = 2;
-                                change[3] = 1;
-                            }*/
-                            cls.updateHtmlList($scope, scopeModelField, change); // why trigger update list?
-
-                        } else { // not a list
-                            cls.updateHtmlElement($scope, scopeModelField, change);
-                        }
-                    }
-
-                    iteration(decoratedFieldValue);
-
+                if (v === '__static') {
+                    dom.setPrimitiveValue($scope, scopeModelField);
+                    return;
                 }
+
+                if ($triggerSrc === $scope) {
+                    return;
+                }
+
+                function iteration(decoratedFieldValue) {
+                    cnt--;
+                    if (cnt <= 0) {
+                        if (!foundRepresentation) {
+                            local.finalIteratedAllViewEl($scope, change, ready);
+                        } else {
+                            ready();
+                        }
+                    }
+                }
+
+                /* if ($scope.attr('type') === "radio") {
+                     foundRepresentation = false;
+                     iteration(scopeModelField);
+                     return;
+                 }*/
+
+                if (dom.isPrimitiveValue($scope)) { //if dom view element is of type primitive
+                    decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
+
+                    if (dom.hasMultipleChoices($scope)) {
+                        dom.selectMultiple($scope, decoratedFieldValue);
+                    } else {
+                        dom.setPrimitiveValue($scope, decoratedFieldValue);
+                    }
+
+                } else { // field can contain html
+
+                    if (dom.isHtmlList($scope)) {
+                        //render partial list of html elements
+
+                      /*  if (dom.getName($scope).indexOf('[') === -1) { // address no array element
+                            change[1] = 'view-filter'; // why view filter?
+                            change[2] = 2;
+                            change[3] = 1;
+                        }*/
+                        cls.updateHtmlList($scope, scopeModelField, change); // why trigger update list?
+
+                    } else { // not a list
+                        cls.updateHtmlElement($scope, scopeModelField, change);
+                    }
+                }
+
+                iteration(decoratedFieldValue);
             };
 
             /**
@@ -510,24 +509,24 @@
              * @param {type} notation
              * @returns {Boolean}
              */
-            dom.findUntilParentExists = function (notation, matches) {
+            dom.findUntilParentExists = (notation, matches) => {
                 if (notation === '')
                     return matches;
 
                 if (!matches)
                     matches = [];
 
-                var fieldNotation = dom.normalizeChangeResponse(notation);
+                const fieldNotation = dom.normalizeChangeResponse(notation);
 
-                var fieldNotationBrackets = dom.normalizeChangeResponseBrackets(notation);
+                const fieldNotationBrackets = dom.normalizeChangeResponseBrackets(notation);
 
-                var selector = dom.getSelector(fieldNotation, true);
-                var brSelector = dom.getSelector(fieldNotationBrackets, true);
-                var match = []
+                const selector = dom.getSelector(fieldNotation, true);
+                const brSelector = dom.getSelector(fieldNotationBrackets, true);
+                const match = []
                 .concat
-                .apply(matches, $globalScope.querySelectorAll(selector + ',' + brSelector));
+                .apply(matches, $globalScope.querySelectorAll(`${selector},${brSelector}`));
 
-                var cnt = match.length;
+                const cnt = match.length;
                 if (cnt === 0) {
                     if (model._getParentObject(notation, '') === "")
                         return match;
@@ -542,18 +541,18 @@
              * render all view areas that need to be rendered
              * @param changes
              */
-            dom.updateAllViews = function (changes) {
+            dom.updateAllViews = changes => {
 
-                var addrN;
+                let addrN;
 
-                Array.prototype.forEach.call($globalScope.querySelectorAll('[data-filter]'), function (el) {
+                Array.prototype.forEach.call($globalScope.querySelectorAll('[data-filter]'), el => {
                     if (cls.viewFilter[dom.getXPath(el)] !== el.getAttribute('data-filter')) { // filter for this view has changed
                         changes.push([dom.getName(el), 'view-filter', cls.viewFilter[dom.getXPath(el)], el.getAttribute('data-filter')]);
                     }
                 });
 
-                var cacheEls = {};
-                var name = undefined;
+                const cacheEls = {};
+                let name = undefined;
                 for (addrN in changes) { //only this fields need to be refreshed
                     
                     var $els = (() => {
@@ -584,22 +583,21 @@
                     cacheEls[name] = [$els, changes[addrN]];
                 }
 
-                for (var el in cacheEls) {
-                    var $els = cacheEls[el][0],
-                        changes = cacheEls[el][1];
+                for (const el in cacheEls) {
+                    var $els = cacheEls[el][0];
+                    var changes = cacheEls[el][1];
 
-                    var cnt = $els.length;
+                    const cnt = $els.length;
 
-                    Array.prototype.forEach.call($els, local.eachViewRepresentation(cnt, changes, true, function ($els) {
-                        var name = dom.getName($els[0]);
-                        return function (el) {
+                    Array.prototype.forEach.call($els, local.eachViewRepresentation(cnt, changes, true, ($els => {
+                        const name = dom.getName($els[0]);
+                        return el => {
                             if (typeof model.event !== "undefined" && typeof model.event.postChange !== 'undefined' && typeof model.event.postChange[name] === 'function') {
-                                var changeCb = model.event.postChange[name];
+                                const changeCb = model.event.postChange[name];
                                 changeCb.call(model, model.get(name), changes, 'controller');
                             }
                         }
-                    }($els)));
-
+                    })($els)));
                 }
             };
 
@@ -612,27 +610,27 @@
          *@description one common callback for changed is an ajax call with all values to a REST backend to update data
          *
          */
-        cls.recognizeChange = function () {
-            var mio = {};
-            mio.changed = function (el) {
+        cls.recognizeChange = (() => {
+            const mio = {};
+            mio.changed = el => {
                 cls.changed.call(el);
                 delete cls.timeoutID;
             };
-            mio.cancel = function () {
+            mio.cancel = () => {
                 if (typeof cls.timeoutID === "number") {
                     window.clearTimeout(cls.timeoutID);
                     delete cls.timeoutID;
                 }
             };
             mio.setup = function () {
-                var mes = this;
+                const mes = this;
                 mio.cancel();
-                cls.timeoutID = window.setTimeout(function (msg) {
+                cls.timeoutID = window.setTimeout(msg => {
                     mio.changed(mes);
                 }, mes.getAttribute(api.delay.attr) || cls.delay);
             };
             return mio;
-        }();
+        })();
 
         /**
          *dispatch events for dom element
@@ -640,11 +638,11 @@
         cls.dispatchEvents = function () {
             var FinalEvents = [];
             if (this.getAttribute(api.on.attr)) {
-                var events = (this.getAttribute(api.on.attr) || '').split(','),
-                    i = 0,
-                    event = "",
-                    FinalEvents = {},
-                    parts = "";
+                const events = (this.getAttribute(api.on.attr) || '').split(',');
+                let i = 0;
+                let event = "";
+                const FinalEvents = {};
+                let parts = "";
                 for (i in events) {
                     event = events[i].trim();
                     parts = event.split('->');
@@ -661,59 +659,55 @@
         /**
          * find all filters and init there configs
          */
-        cls.dispatchFilter = function (byElement) {
-            return {
-                'object': cls,
-                '$el': byElement
-            };
-        };
+        cls.dispatchFilter = byElement => ({
+            'object': cls,
+            '$el': byElement
+        });
 
         /**
          * @todo rethink is this the best way to bind the methods?
          * bind dom to matching methods
          */
-        cls.bind = function (element) {
-
-            var events = {},
-                event = {},
-                name = "",
-                method = "";
-            var filter, $el;
+        cls.bind = element => {
+            const events = {};
+            let event = {};
+            let name = "";
+            let method = "";
+            let filter;
+            let $el;
             filter = cls.dispatchFilter(element);
             $el = element;
             /* variable injection via lambda function factory used in iteration */
-            var factory = function (me, event) {
-                return function (e, args) {
-                    name = dom.getName(me);
-                    method = events[name][event];
-                    var result = true;
-                    if (false !== cls.pre_trigger.call(me, e)) {
-                        if (typeof cls.interactions[name] !== 'undefined' &&
-                            typeof cls.interactions[name][method] !== 'undefined') {
+            const factory = (me, event) => (e, args) => {
+                name = dom.getName(me);
+                method = events[name][event];
+                let result = true;
+                if (false !== cls.pre_trigger.call(me, e)) {
+                    if (typeof cls.interactions[name] !== 'undefined' &&
+                        typeof cls.interactions[name][method] !== 'undefined') {
 
-                            result = cls.interactions[name][method].call(me, e, cls, args);
+                        result = cls.interactions[name][method].call(me, e, cls, args);
 
-                            if (me.getAttribute(api.omit.attr) === "true") {
-                                result = dom.value.call(me);
-                            }
-                        } else if(typeof cls.interactions[method] !== 'undefined' && typeof cls.interactions[method][event] !== 'undefined') {
-                            result = cls.interactions[method][event].call(me, e, cls, args);
-                            
-                            if (me.getAttribute(api.omit.attr) === "true") {
-                                result = dom.value.call(me);
-                            }
-                        } else {
-                            result = me.getValue();
+                        if (me.getAttribute(api.omit.attr) === "true") {
+                            result = dom.value.call(me);
                         }
-                        cls.post_trigger.call(me, e, result);
+                    } else if(typeof cls.interactions[method] !== 'undefined' && typeof cls.interactions[method][event] !== 'undefined') {
+                        result = cls.interactions[method][event].call(me, e, cls, args);
+                        
+                        if (me.getAttribute(api.omit.attr) === "true") {
+                            result = dom.value.call(me);
+                        }
+                    } else {
+                        result = me.getValue();
                     }
+                    cls.post_trigger.call(me, e, result);
+                }
 
-                };
             };
             //filter.fields = filter.$el.find('[name],[data-name]'),
-            filter.events = filter.$el.querySelectorAll('[' + api.on.attr + ']');
+            filter.events = filter.$el.querySelectorAll(`[${api.on.attr}]`);
 
-            var InitValue = '';
+            let InitValue = '';
 
             function bindevents(el) {
                 name = dom.getName(el) || dom.getXPath(el);
@@ -722,7 +716,7 @@
 
                 events[name] = cls.dispatchEvents.call(el);
                 for (event in events[name]) {
-                    cls.debug('name:' + name + ', event:' + event);
+                    cls.debug(`name:${name}, event:${event}`);
 
                     if (cls.config.skeleton) {
                         if (typeof skeleton['interactions'][name] === 'undefined')
@@ -731,7 +725,7 @@
                         skeleton['interactions'][name][event] = "function(e, self){}";
                     }
 
-                    var f = factory(el, event);
+                    const f = factory(el, event);
                     el.removeEventListener(event, f);
                     el.addEventListener(event, f);
                     if ($el.getAttribute('data-defaultvalues') !== 'model' && !dom.getParents($el, '[data-defaultvalues="model"]')) {
@@ -752,7 +746,7 @@
             return filter;
         };
 
-        cls.applyMethods = function (el) {
+        cls.applyMethods = el => {
 
             el.getName = function () {
                 return dom.getName(this);
@@ -771,7 +765,7 @@
             return el;
         };
 
-        cls.init = function () {
+        cls.init = () => {
 
             cls.filter = cls.bind(this);
             cls.recognizeChange.setup.call(cls.filter.$el);
@@ -782,17 +776,17 @@
             } else {
                 console.log("no init method found");
             }
-        }.bind(this);
+        };
 
-        cls.ajax = function (method, url) {
-            var _xhr = new XMLHttpRequest();
+        cls.ajax = (method, url) => {
+            const _xhr = new XMLHttpRequest();
             _xhr.open(method, url);
-            _xhr.setup = function (cb) { // hacky? maybe
+            _xhr.setup = cb => { // hacky? maybe
                 cb(_xhr);
                 return _xhr;
             };
-            _xhr.done = function (cb) { // hacky? maybe
-                _xhr.onreadystatechange = function () {
+            _xhr.done = cb => { // hacky? maybe
+                _xhr.onreadystatechange = () => {
                     if (_xhr.readyState === 4) {
                         cb(_xhr.responseText);
                     }
@@ -805,21 +799,20 @@
         //INITIALIZATION/////IF WE ARE INSIDE A DEV ENV LOAD TEMPLATES BY AJAX/////////
         if (cls.view.viewpath && !cls.view.templates_) {
             // preloading alle templates, then init klaster interface
-            var length = Object.keys(cls.view.views).length,
-                cnt = 1;
-            for (var v in cls.view.views) {
-                cls.ajax("get", (cls.view.viewpath) + v + '.' + cls.view.fileextension + '?v=' + ((cls.config.debug) ? Math.random() : '1'))
-                    .done(function (v) {
-                        return function (content) {
-                            cls.view.templates_[cls.view.views[v]] = content;
-                            cls.view.templates_[v] = content;
-                            if (length <= cnt) {
-                                child.view.templates_ = cls.view.templates_;
-                                cls.init();
-                            }
-                            cnt++;
-                        };
-                    }(v)).send();
+            const length = Object.keys(cls.view.views).length;
+
+            let cnt = 1;
+            for (const v in cls.view.views) {
+                cls.ajax("get", `${(cls.view.viewpath) + v}.${cls.view.fileextension}?v=${(cls.config.debug) ? Math.random() : '1'}`)
+                    .done((v => content => {
+                    cls.view.templates_[cls.view.views[v]] = content;
+                    cls.view.templates_[v] = content;
+                    if (length <= cnt) {
+                        child.view.templates_ = cls.view.templates_;
+                        cls.init();
+                    }
+                    cnt++;
+                })(v)).send();
             }
         } else {
             cls.init();
@@ -827,4 +820,4 @@
 
         return cls;
     };
-})(k_structure, k_docapi, k_dom, k_data);
+}))(k_structure, k_docapi, k_dom, k_data);

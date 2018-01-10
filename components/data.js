@@ -1,14 +1,14 @@
-var k_data = (function ($) {
-    var data = {
+const k_data = (($ => {
+    const data = {
         'field' : {}
     };
  
   
     
-    var hasOwn = Object.prototype.hasOwnProperty;
-    var toStr = Object.prototype.toString;
+    const hasOwn = Object.prototype.hasOwnProperty;
+    const toStr = Object.prototype.toString;
     
-    var isArray = function isArray(arr) {
+    const isArray = function isArray(arr) {
     	if (typeof Array.isArray === 'function') {
     		return Array.isArray(arr);
     	}
@@ -16,13 +16,13 @@ var k_data = (function ($) {
     	return toStr.call(arr) === '[object Array]';
     };
     
-    var isPlainObject = function isPlainObject(obj) {
+    const isPlainObject = function isPlainObject(obj) {
     	if (!obj || toStr.call(obj) !== '[object Object]') {
     		return false;
     	}
     
-    	var hasOwnConstructor = hasOwn.call(obj, 'constructor');
-    	var hasIsPrototypeOf = obj.constructor && obj.constructor.prototype && hasOwn.call(obj.constructor.prototype, 'isPrototypeOf');
+    	const hasOwnConstructor = hasOwn.call(obj, 'constructor');
+    	const hasIsPrototypeOf = obj.constructor && obj.constructor.prototype && hasOwn.call(obj.constructor.prototype, 'isPrototypeOf');
     	// Not own constructor property must be Object
     	if (obj.constructor && !hasOwnConstructor && !hasIsPrototypeOf) {
     		return false;
@@ -30,80 +30,83 @@ var k_data = (function ($) {
     
     	// Own properties are enumerated firstly, so to speed up,
     	// if last one is own, then all properties are own.
-    	var key;
+    	let key;
     	for (key in obj) { /**/ }
     
     	return typeof key === 'undefined' || hasOwn.call(obj, key);
     };
     
    data.extend = function() {
-    	var options, name, src, copy, copyIsArray, clone;
-    	var target = arguments[0];
-    	var i = 1;
-    	var length = arguments.length;
-    	var deep = false;
-    
-    	// Handle a deep copy situation
-    	if (typeof target === 'boolean') {
-    		deep = target;
-    		target = arguments[1] || {};
-    		// skip the boolean and the target
-    		i = 2;
-    	} else if ((typeof target !== 'object' && typeof target !== 'function') || target == null) {
-    		target = {};
-    	}
-    
-    	for (; i < length; ++i) {
-    		options = arguments[i];
-    		// Only deal with non-null/undefined values
-    		if (options != null) {
-    			// Extend the base object
-    			for (name in options) {
-    				src = target[name];
-    				copy = options[name];
-    
-    				// Prevent never-ending loop
-    				if (target !== copy) {
-    					// Recurse if we're merging plain objects or arrays
-    					if (deep && copy && (isPlainObject(copy) || (copyIsArray = isArray(copy)))) {
-    						if (copyIsArray) {
-    							copyIsArray = false;
-    							clone = src && isArray(src) ? src : [];
-    						} else {
-    							clone = src && isPlainObject(src) ? src : {};
-    						}
-    
-    						// Never move original objects, clone them
-    						target[name] = data.extend(deep, clone, copy);
-    
-    					// Don't bring in undefined values
-    					} else if (typeof copy !== 'undefined') {
-    						target[name] = copy;
-    					}
-    				}
-    			}
-    		}
-    	}
-    
-    	// Return the modified object
-    	return target;
-    };
+       let options;
+       let name;
+       let src;
+       let copy;
+       let copyIsArray;
+       let clone;
+       let target = arguments[0];
+       let i = 1;
+       const length = arguments.length;
+       let deep = false;
+
+       // Handle a deep copy situation
+       if (typeof target === 'boolean') {
+           deep = target;
+           target = arguments[1] || {};
+           // skip the boolean and the target
+           i = 2;
+       } else if ((typeof target !== 'object' && typeof target !== 'function') || target == null) {
+           target = {};
+       }
+
+       for (; i < length; ++i) {
+           options = arguments[i];
+           // Only deal with non-null/undefined values
+           if (options != null) {
+               // Extend the base object
+               for (name in options) {
+                   src = target[name];
+                   copy = options[name];
+   
+                   // Prevent never-ending loop
+                   if (target !== copy) {
+                       // Recurse if we're merging plain objects or arrays
+                       if (deep && copy && (isPlainObject(copy) || (copyIsArray = isArray(copy)))) {
+                           if (copyIsArray) {
+                               copyIsArray = false;
+                               clone = src && isArray(src) ? src : [];
+                           } else {
+                               clone = src && isPlainObject(src) ? src : {};
+                           }
+   
+                           // Never move original objects, clone them
+                           target[name] = data.extend(deep, clone, copy);
+   
+                       // Don't bring in undefined values
+                       } else if (typeof copy !== 'undefined') {
+                           target[name] = copy;
+                       }
+                   }
+               }
+           }
+       }
+
+       // Return the modified object
+       return target;
+   };
      
  
-    data.has = function (obj, key) {
-        return hasOwnProperty.call(obj, key);
-    };
+    data.has = (obj, key) => hasOwnProperty.call(obj, key);
     /**
      *
      */
-    data._buildModelPreChangeObj = function () {
+    data._buildModelPreChangeObj = () => {
         data._modelprechange = {};
         data._modelprechangeReal = {};
         data._modelpresize = 0;
-        for (var key in data['field']) {
+        for (const key in data['field']) {
             if (data.has(data['field'], key) && data['field'][key] !== null  && typeof data['field'][key] !== 'undefined') {
                 data._modelprechange[key] = data['field'][key]; // data['field'][key].toString()
-                var base = {};
+                let base = {};
                 if (Object.prototype.toString.call(data['field'][key]) === "[object Array]") {
                     base = [];
                 }
@@ -123,7 +126,7 @@ var k_data = (function ($) {
      * set state of a model field value and represent it in the state object eg.
      * {result: false, msg : "email ist nicht gültig"};
      **/
-    data.setState = function(notation, value){
+    data.setState = (notation, value) => {
          
         //check if valid
         
@@ -138,9 +141,9 @@ var k_data = (function ($) {
             data.state = JSON.parse(JSON.stringify(data.field));
         }
           
-        if (typeof data['state'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
-            var parent = data._getParentObject(notation).replace(/\.field\./g, '.state.');
-            eval("if( (typeof " + parent + "!== 'undefined')) data.state." + notation + "=" + JSON.stringify(value) + ";");
+        if (typeof data['state'][notation] === 'undefined' && notation.includes('[')) {
+            const parent = data._getParentObject(notation).replace(/\.field\./g, '.state.');
+            eval(`if( (typeof ${parent}!== 'undefined')) data.state.${notation}=${JSON.stringify(value)};`);
         } else {
             data['state'][notation] = value;
         }
@@ -150,10 +153,10 @@ var k_data = (function ($) {
      * return state for a model field value eg.
      * {result: false, msg : "email ist nicht gültig"}
      **/
-    data.getState = function(notation){
+    data.getState = notation => {
         try {
-            if (typeof data['state'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
-                return eval("(typeof data.state." + notation + "!== 'undefined' ) ? data.state." + notation + ": undefined;");
+            if (typeof data['state'][notation] === 'undefined' && notation.includes('[')) {
+                return eval(`(typeof data.state.${notation}!== 'undefined' ) ? data.state.${notation}: undefined;`);
             } else {
                 return data['state'][notation];
             }
@@ -169,10 +172,10 @@ var k_data = (function ($) {
      * @param {type} index
      * @returns {@exp;data@pro;model@call;getValue}
      */
-    data.getOld = function (notation) {
+    data.getOld = notation => {
         try {
-            if (typeof data['_modelprechangeReal'][notation] === 'undefined' && (notation.indexOf('[') !== -1 ||  notation.indexOf('.') !== -1)) {
-                return eval("(typeof data._modelprechangeReal." + notation + "!== 'undefined' ) ? data._modelprechangeReal." + notation + ": undefined;");
+            if (typeof data['_modelprechangeReal'][notation] === 'undefined' && (notation.includes('[') ||  notation.includes('.'))) {
+                return eval(`(typeof data._modelprechangeReal.${notation}!== 'undefined' ) ? data._modelprechangeReal.${notation}: undefined;`);
             } else {
                 return data['_modelprechangeReal'][notation];
             }
@@ -188,10 +191,10 @@ var k_data = (function ($) {
      * @param {type} index
      * @returns {@exp;data@pro;model@call;getValue}
      */
-    data.get = function (notation) {
+    data.get = notation => {
         try {
-            if (typeof data['field'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
-                return eval("(typeof data.field." + notation + "!== 'undefined' ) ? data.field." + notation + ": undefined;");
+            if (typeof data['field'][notation] === 'undefined' && notation.includes('[')) {
+                return eval(`(typeof data.field.${notation}!== 'undefined' ) ? data.field.${notation}: undefined;`);
             } else {
                 return data['field'][notation];
             }
@@ -200,42 +203,37 @@ var k_data = (function ($) {
         }
     };
 
-    data.set = function (notation, value) {
-        if (typeof data['field'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
-            var parent = data._getParentObject(notation);
-            eval("if( (typeof " + parent + "!== 'undefined')) data.field." + notation + "=" + JSON.stringify(value) + ";");
+    data.set = (notation, value) => {
+        if (typeof data['field'][notation] === 'undefined' && notation.includes('[')) {
+            const parent = data._getParentObject(notation);
+            eval(`if( (typeof ${parent}!== 'undefined')) data.field.${notation}=${JSON.stringify(value)};`);
         } else {
             data['field'][notation] = value;
         }
     };
 
-    data._getParentObject = function (notation, ns) {
+    data._getParentObject = (notation, ns) => {
         if (typeof ns === 'undefined')
             ns = 'data.field.';
-        var parent = false;
+        let parent = false;
         if (!notation)
             return parent;
         if (notation.indexOf(']') > notation.indexOf('.')) {
             parent = ns + notation.replace(notation.match(/\[(.*?)\]/gi).pop(), '!').split('!')[0];
         } else {
-            var p = notation.split('.');
+            const p = notation.split('.');
             p.pop();
             parent = ns + p.join('.');
         }
         return parent;
     };
 
-    data._delete = data.delete = function (notation) {
-        if (typeof data['field'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
+    data._delete = data.delete = notation => {
+        if (typeof data['field'][notation] === 'undefined' && notation.includes('[')) {
             try {
-                var parent = data._getParentObject(notation);
+                const parent = data._getParentObject(notation);
                  eval(
-                    "if(Object.prototype.toString.call(" + parent + ") === '[object Array]' ){" +
-                    "" + parent + ".splice(" + parent + ".indexOf(data['field']." + notation + "),1);" +
-                    "} else {" +
-                        "if(typeof data['field']." + notation + "!== 'undefined')" +
-                            " delete data['field']." + notation + ";" +
-                    "}");
+                    `if(Object.prototype.toString.call(${parent}) === '[object Array]' ){${parent}.splice(${parent}.indexOf(data['field'].${notation}),1);} else {if(typeof data['field'].${notation}!== 'undefined') delete data['field'].${notation};}`);
                 /**
                  * to keep indexes
 
@@ -266,9 +264,9 @@ var k_data = (function ($) {
         }
     };
 
-    data.changed = function (field) {
+    data.changed = field => {
 
-        var compare = function (fieldName) {
+        const compare = fieldName => {
             if (typeof data._modelprechange[fieldName] === 'undefined') {
                 return true;
             } else {
@@ -281,8 +279,8 @@ var k_data = (function ($) {
 
             return compare(field);
         } else {
-            var modelsize = 0;
-            for (var key in data['field']) {
+            let modelsize = 0;
+            for (const key in data['field']) {
                 if (data.has(data['field'], key)) {
                     modelsize++;
                     if (compare(key))
@@ -298,14 +296,14 @@ var k_data = (function ($) {
         return false;
     };
 
-    data.jsonPatchToObjectAccess = function(diff){
-        let path = "[" + diff.path.substr(1).split('/').join("][") + "]";
+    data.jsonPatchToObjectAccess = diff => {
+        let path = `[${diff.path.substr(1).split('/').join("][")}]`;
         let normal = $.normalizeChangeResponse(path);
         diff.op = diff.op == "replace"?"value":diff.op;
         return [path, diff.op, data.getOld(normal), diff.value];
     };
 
-    data.compareJsonPatch = function(a, b){
+    data.compareJsonPatch = (a, b) => {
         let diff = jsonpatch.compare(a ||{}, b||{});
         let final = [];
 
@@ -323,4 +321,4 @@ var k_data = (function ($) {
          data.compareJsonPatch(data._modelprechangeReal, data.field);
     
     return data;
-}(k_dom));
+})(k_dom));

@@ -1,7 +1,7 @@
-/*! klaster.js Version: 0.9.8 20-12-2017 11:25:55 */
-var prefix = 'data';
+/*! klaster.js Version: 0.9.8 10-01-2018 12:43:39 */
+const prefix = 'data';
 
-var k_docapi = { 
+const k_docapi = { 
     'Controller': {
         'this.interactions': {
             'dom-attribute name': {
@@ -14,45 +14,45 @@ var k_docapi = {
     },
     'dom-attributes': {
         'defaultvalues': {
-            'attr': prefix + '-defaultvalues',
+            'attr': `${prefix}-defaultvalues`,
             'value': 'String value:"client" or "server" that means our app uses the field.values frtom dom or model/javascript'
         },
         'name': {
-            'attr': prefix + '-name',
+            'attr': `${prefix}-name`,
             'value': 'String containing name of element, not unique'
         },
         'omit': {
-            'attr': prefix + '-omit',
+            'attr': `${prefix}-omit`,
             'value': 'String/that evaluates to boolean, whether ignoring the area for model representation data or not'
         },
         'filter': {
-            'attr': prefix + '-filter',
+            'attr': `${prefix}-filter`,
             'value': 'filter expression javascript is valid'
         },
         'value': {
-            'attr': prefix + '-value',
+            'attr': `${prefix}-value`,
             'value': 'String, containing the value of an element, can be plain or json'
         },
         'multiple': {
-            'attr': prefix + '-multiple',
+            'attr': `${prefix}-multiple`,
             'value': 'String/that evaluates to boolean, whether this element is part of multiple elements like checkbox',
             'children': {
                 'checked': {
-                    'attr': prefix + '-checked',
+                    'attr': `${prefix}-checked`,
                     'value': 'String/that evaluates to boolean, whether this element is will apear inside a list of multiple elements with similar data-name, like checkbox'
                 }
             }
         },
         'delay': {
-            'attr': prefix + '-delay',
+            'attr': `${prefix}-delay`,
             'value': 'number of miliseconds until sync'
         },
         'on': {
-            'attr': prefix + '-on',
+            'attr': `${prefix}-on`,
             'value': 'event that triggers matching action method, also alias is possible. eg. hover->klasterhover'
         },
         'view': {
-            'attr': prefix + '-view',
+            'attr': `${prefix}-view`,
             'value': {
                 'desc': 'defines which view function callback is executed for rendering output',
                 'params': {
@@ -67,12 +67,12 @@ var k_docapi = {
     }
 };
 
-var k_structure = {
+const k_structure = {
     'delay': 10,
     'api': k_docapi,
     'interactions': {
         'test': {
-            'click': function (e) {
+            'click'(e) {
 
             }
         }
@@ -92,10 +92,10 @@ var k_structure = {
         'viewpath': 'view/', //if loading templates in realtime
         'fileextension': 'html.twig', //if loading templates in realtime
         'templates_': {}, // array of templates by name => html or other markup
-        'render': function (tplVars, tplName) { // template render function ... here you can add template engine support for twig, etc.
+        'render'(tplVars, tplName) { // template render function ... here you can add template engine support for twig, etc.
         },
         'views': {
-            'test': function () {
+            'test'() {
 
             }
         }
@@ -106,9 +106,9 @@ var k_structure = {
         'debug': true,
         'skeleton' : true
     }
-};var k_dom =(function (api) {
+};;const k_dom =((api => {
     api = api['dom-attributes'];
-    var dom = {
+    const dom = {
         
         /**
          * document.querySelector("#main ul:first-child") instead of jquery or even zepto
@@ -118,14 +118,14 @@ var k_structure = {
          * add filter expression
          * @returns {dom}
          */
-        'addFilter': function (filter) {
+        'addFilter'(filter) {
             this.setAttribute(api.filter, filter);
         },
         /**
          * get element name
          * @returns {dom}
          */
-        'getName': function ($el) {
+        'getName'($el) {
             if($el.nodeType !== 3)
                 return $el.getAttribute(dom.nameAttr($el));
         },
@@ -133,14 +133,14 @@ var k_structure = {
          * get name attribute
          * @returns {dom}
          */
-        'nameAttr': function ($el) {
+        'nameAttr'($el) {
             return $el.getAttribute(api.name.attr) ? api.name.attr : 'name';
         },
         /**
          * toggle element from dom and model
          * @returns {dom}
          */
-        'toggleOmit': function ($el) {
+        'toggleOmit'($el) {
             $el.setAttribute(api.omit.attr, !($el.getAttribute(api.omit.attr) ? ($el.getAttribute(api.omit.attr).toLowerCase() === "true") : false));
             return $el;
         }, 
@@ -148,15 +148,13 @@ var k_structure = {
          * get xpath of dom element, hopfully unique
          * @returns {*}
          */
-        'getXPath': function ($el) {
-            var el = $el;
+        'getXPath'($el) {
+            const el = $el;
             if (typeof el === "string") return document.evaluate(el, document, null, 0, null)
             if (!el || el.nodeType != 1) return ''
-            if (el.id) return "//*[@id='" + el.id + "']"
-            var sames = [].filter.call(el.parentNode.children, function (x) {
-                return x.tagName == el.tagName
-            })
-            return dom.getXPath.call(el.parentNode) + '/' + el.tagName.toLowerCase() + (sames.length > 1 ? '[' + ([].indexOf.call(sames, el) + 1) + ']' : '')
+            if (el.id) return `//*[@id='${el.id}']`
+            const sames = [].filter.call(el.parentNode.children, x => x.tagName == el.tagName);
+            return `${dom.getXPath.call(el.parentNode)}/${el.tagName.toLowerCase()}${sames.length > 1 ? '[' + ([].indexOf.call(sames, el) + 1) + ']' : ''}`
         }
     };
 
@@ -169,7 +167,7 @@ var k_structure = {
         /**
          * return undefined if this element will be omitted
          */
-        if (dom.getParents($el, '[' + api.omit.attr + '="true"]') || $el.getAttribute(api.omit.attr) === "true") {
+        if (dom.getParents($el, `[${api.omit.attr}="true"]`) || $el.getAttribute(api.omit.attr) === "true") {
             return undefined;
         }
 
@@ -217,15 +215,14 @@ var k_structure = {
      * @type {{checked: Function, checkbox: Function, radio: Function, data-multiple: Function}}
      */
     dom.multipleValues = {
-        "checked": function ($el, $elements, single) {
-
-            if ($el.getAttribute(api.multiple.attr) === 'false' || single || document.querySelectorAll('[' + dom.nameAttr($el) + '="' + dom.getName($el) + '"]').length === 1)
+        "checked"($el, $elements, single) {
+            if ($el.getAttribute(api.multiple.attr) === 'false' || single || document.querySelectorAll(`[${dom.nameAttr($el)}="${dom.getName($el)}"]`).length === 1)
                 return $el.checked;
 
-            var values = [],
-                val = undefined;
+            const values = [];
+            let val = undefined;
 
-            Array.prototype.forEach.call($elements, function (el, i) {
+            Array.prototype.forEach.call($elements, (el, i) => {
                 val = value.call(el);
                 if (typeof val !== 'undefined') {
                     values.push(val);
@@ -234,54 +231,52 @@ var k_structure = {
 
             return values;
         },
-        "checkbox": function () {
-            return dom.multipleValues.checked(this, document.querySelectorAll('[' + dom.nameAttr(this) + '="' + dom.getName(this) + '"]:checked'));
+        "checkbox"() {
+            return dom.multipleValues.checked(this, document.querySelectorAll(`[${dom.nameAttr(this)}="${dom.getName(this)}"]:checked`));
         },
-        "radio": function () {
-            return dom.multipleValues.checked(this, document.querySelectorAll('[' + dom.nameAttr(this) + '="' + dom.getName(this) + '"]:checked'), true);
+        "radio"() {
+            return dom.multipleValues.checked(this, document.querySelectorAll(`[${dom.nameAttr(this)}="${dom.getName(this)}"]:checked`), true);
         },
-        "data-multiple": function () {
-            return dom.multipleValues.checked(this, document.querySelectorAll('[' + dom.nameAttr(this) + '="' + dom.getName(this) + '"][data-checked="true"]'));
+        "data-multiple"() {
+            return dom.multipleValues.checked(this, document.querySelectorAll(`[${dom.nameAttr(this)}="${dom.getName(this)}"][data-checked="true"]`));
         }
     };
 
-    dom.hasMultipleChoices = function ($scope) {
+    dom.hasMultipleChoices = $scope => {
 
-        var multiTypes = ["radio", "checkbox"];
+        const multiTypes = ["radio", "checkbox"];
 
         console.log(multiTypes, $scope.getAttribute('type'), multiTypes.indexOf($scope.getAttribute('type')));
 
-        return multiTypes.indexOf($scope.getAttribute('type')) > -1 || $scope.getAttribute('data-multiple') === "true";
+        return multiTypes.includes($scope.getAttribute('type')) || $scope.getAttribute('data-multiple') === "true";
     };
 
-    dom.selectMultiple = function ($scope, values) {
+    dom.selectMultiple = ($scope, values) => {
         if (typeof values !== 'undefined' && values !== null) {
-            var instances = document.querySelectorAll('[' + dom.nameAttr($scope) + '="' + dom.getName($scope) + '"]');
+            const instances = document.querySelectorAll(`[${dom.nameAttr($scope)}="${dom.getName($scope)}"]`);
 
             if( Object.prototype.toString.call( values ) !== '[object Array]' ) {
                 values = [values];
             } 
 
-            Array.prototype.forEach.call(instances, function (el) {
+            Array.prototype.forEach.call(instances, el => {
                 el.checked = values[0];
             });
         }
     };
     
-    dom.getHtml = function($scope) {
-        return $scope.innerHTML;
-    };
+    dom.getHtml = $scope => $scope.innerHTML;
     
     /**
      * setting the HTML
      */
-    dom.setHtml = function($scope, content) {
+    dom.setHtml = ($scope, content) => {
         $scope.innerHTML = content;
     };
      
 
-    dom.getParents = function($scope, selector) {
-         var foundElem;
+    dom.getParents = ($scope, selector) => {
+         let foundElem;
           while ($scope && $scope.parentNode ) {
             foundElem = $scope.parentNode.querySelector(selector);
             if(foundElem) {
@@ -297,9 +292,7 @@ var k_structure = {
      * @param $scope
      * @returns {*}
      */
-    dom.getView = function ($scope) {
-        return $scope.getAttribute(api.view.attr) || dom.getFieldView(dom.getName($scope), true);
-    };
+    dom.getView = $scope => $scope.getAttribute(api.view.attr) || dom.getFieldView(dom.getName($scope), true);
 
     /**
      * return view render method
@@ -307,26 +300,26 @@ var k_structure = {
      * @param {type} getname
      * @returns {cls.view@arr;views|String|Boolean}
      */
-    dom.getFieldView = function (fieldN, getname) {
-
+    dom.getFieldView = (fieldN, getname) => {
         if (typeof fieldN === 'undefined') {
             return false;
         }
 
-        var viewMethod = false, name = false;
+        let viewMethod = false;
+        let name = false;
         if (typeof dom.child.view.views[fieldN] === 'undefined') {
-            if (fieldN.indexOf('[') !== -1) {
-                var finestMatch = fieldN.match(/([a-z].*?\[\w.*\])/gi);
+            if (fieldN.includes('[')) {
+                let finestMatch = fieldN.match(/([a-z].*?\[\w.*\])/gi);
                 if (typeof finestMatch !== 'undefined' && finestMatch)
                     finestMatch = finestMatch.pop();
-                name = typeof dom.child.view.views[fieldN.split('[')[0] + '[*]'] !== 'undefined' ? finestMatch.split('[').pop() + '[*]' : fieldN;
-                viewMethod = typeof dom.child.view.views[fieldN.split('[')[0] + '[*]'] !== 'undefined' ? dom.child.view.views[finestMatch.split('[').pop() + '[*]'] : undefined;
+                name = typeof dom.child.view.views[`${fieldN.split('[')[0]}[*]`] !== 'undefined' ? `${finestMatch.split('[').pop()}[*]` : fieldN;
+                viewMethod = typeof dom.child.view.views[`${fieldN.split('[')[0]}[*]`] !== 'undefined' ? dom.child.view.views[`${finestMatch.split('[').pop()}[*]`] : undefined;
             }
         } else {
             viewMethod = dom.child.view.views[fieldN];
             name = fieldN;
         }
-        var result = (getname) ? name : viewMethod;
+        const result = (getname) ? name : viewMethod;
 
         return typeof dom.child.view.views[name] !== 'undefined' ? result : false;
     };
@@ -337,19 +330,19 @@ var k_structure = {
      * @param {type} change
      * @returns {undefined}
      */
-   dom.normalizeChangeResponse = function (change) {
+   dom.normalizeChangeResponse = change => {
 
         if (change.substr(0, 1) !== '[')
             return change;
 
         if (!change)
             return;
-        var match = (/\[(.*?)\]/).exec(change);
-        var fieldnamei = change;
+        let match = (/\[(.*?)\]/).exec(change);
+        let fieldnamei = change;
         if (match) {
             fieldnamei = change.replace(match[0], match[1]);
             while ((match = /\[([a-z].*?)\]/ig.exec(fieldnamei)) != null) {
-                fieldnamei = fieldnamei.replace(match[0], '.' + match[1]);
+                fieldnamei = fieldnamei.replace(match[0], `.${match[1]}`);
             }
         }
 
@@ -361,37 +354,33 @@ var k_structure = {
      * @param {type} change
      * @returns {undefined}
      */
-   dom.normalizeChangeResponseBrackets = function (change) {
+   dom.normalizeChangeResponseBrackets = change => {
 
         if (change.substr(0, 1) !== '[')
             return change;
 
         if (!change)
             return;
-        var match = (/\[(.*?)\]/).exec(change);
-        var fieldnamei = change;
+        let match = (/\[(.*?)\]/).exec(change);
+        let fieldnamei = change;
         if (match) {
             fieldnamei = change.replace(match[0], match[1]);
             while ((match = /\[([a-z].*?)\]/ig.exec(fieldnamei)) != null) {
-                fieldnamei = fieldnamei.replace(match[0], "['" + match[1] + "']");
+                fieldnamei = fieldnamei.replace(match[0], `['${match[1]}']`);
             }
         }
 
         return fieldnamei;//.replace(/\[/g, '\\[').replace(/\]/g, '\\]');
     }
     
-    dom.is = function($scope, type) {
-        return $scope.tagName.toLowerCase() === type.toLowerCase();
-    }
+    dom.is = ($scope, type) => $scope.tagName.toLowerCase() === type.toLowerCase()
 
     /**
      * no html decorated content
      * @param {type} $scope
      * @returns {unresolved}
      */
-    dom.isPrimitiveValue = function ($scope) {
-        return dom.is($scope, "input") || dom.is($scope, "select") || dom.is($scope, "textarea");
-    };
+    dom.isPrimitiveValue = $scope => dom.is($scope, "input") || dom.is($scope, "select") || dom.is($scope, "textarea");
 
     /**
      * no html decorated content
@@ -399,7 +388,7 @@ var k_structure = {
      * @param {type} decorated
      * @returns {undefined}
      */
-    dom.setPrimitiveValue = function ($scope, decorated) {
+    dom.setPrimitiveValue = ($scope, decorated) => {
         if($scope.getAttribute(api.value.attr) !== null) {
             $scope.setAttribute(api.value.attr, decorated);
         }else{
@@ -433,9 +422,7 @@ var k_structure = {
      * @param $scope
      * @returns {*}
      */
-    dom.hasView = function ($scope) {
-        return $scope.getAttribute(api.view.attr) || dom.getFieldView(dom.getName($scope), true);
-    };
+    dom.hasView = $scope => $scope.getAttribute(api.view.attr) || dom.getFieldView(dom.getName($scope), true);
     
      /**
      * get jquery selector for element name
@@ -443,11 +430,11 @@ var k_structure = {
      * @param escapeit
      * @returns {string}
      */
-    dom.getSelector = function (name, escapeit) {
+    dom.getSelector = (name, escapeit) => {
         if (escapeit)
             name = name.replace(/\[/g, '\[').replace(/\]/g, '\]');
              
-        return '[data-name="' + name + '"],[name="' + name + '"]';
+        return `[data-name="${name}"],[name="${name}"]`;
     };
     
     /**
@@ -456,10 +443,10 @@ var k_structure = {
      * @param escapeit
      * @returns {string}
      */
-    dom.getValidatorSelector = function (name, viewname) { 
+    dom.getValidatorSelector = (name, viewname) => { 
             name = name.replace(/\[/g, '\[').replace(/\]/g, '\]');
             viewname = viewname.replace(/\[/g, '\[').replace(/\]/g, '\]');
-        return '[data-name="' + name + '"][data-view="' + viewname + '"], [name="' + name + '"][data-view="' + viewname + '"]';
+        return `[data-name="${name}"][data-view="${viewname}"], [name="${name}"][data-view="${viewname}"]`;
     };
     
     /**
@@ -467,14 +454,12 @@ var k_structure = {
      * @param $scope
      * @returns {*|boolean}
      */
-    dom.isHtmlList = function ($scope) {                    
-        return $scope.getAttribute(api.view.attr) && $scope.getAttribute(api.view.attr).indexOf(api.view.value.definition.iterate) !== -1;
-    };
+    dom.isHtmlList = $scope => $scope.getAttribute(api.view.attr) && $scope.getAttribute(api.view.attr).includes(api.view.value.definition.iterate);
     /**
      * create dom el from string
      **/
-    dom.parseHTML = function (html) {
-        var t = document.createElement('template');
+    dom.parseHTML = html => {
+        const t = document.createElement('template');
         t.innerHTML = html;
         return t.content.cloneNode(true).childNodes[0];
     }
@@ -483,7 +468,7 @@ var k_structure = {
     dom.getValue = getValue;
     
     return dom;
-}(k_docapi));
+})(k_docapi));
 ;/*! fast-json-patch, version: 2.0.6 */
 var jsonpatch =
 /******/ (function(modules) { // webpackBootstrap
@@ -1464,17 +1449,17 @@ function shim (obj) {
 
 
 /***/ })
-/******/ ]);;var k_data = (function ($) {
-    var data = {
+/******/ ]);;const k_data = (($ => {
+    const data = {
         'field' : {}
     };
  
   
     
-    var hasOwn = Object.prototype.hasOwnProperty;
-    var toStr = Object.prototype.toString;
+    const hasOwn = Object.prototype.hasOwnProperty;
+    const toStr = Object.prototype.toString;
     
-    var isArray = function isArray(arr) {
+    const isArray = function isArray(arr) {
     	if (typeof Array.isArray === 'function') {
     		return Array.isArray(arr);
     	}
@@ -1482,13 +1467,13 @@ function shim (obj) {
     	return toStr.call(arr) === '[object Array]';
     };
     
-    var isPlainObject = function isPlainObject(obj) {
+    const isPlainObject = function isPlainObject(obj) {
     	if (!obj || toStr.call(obj) !== '[object Object]') {
     		return false;
     	}
     
-    	var hasOwnConstructor = hasOwn.call(obj, 'constructor');
-    	var hasIsPrototypeOf = obj.constructor && obj.constructor.prototype && hasOwn.call(obj.constructor.prototype, 'isPrototypeOf');
+    	const hasOwnConstructor = hasOwn.call(obj, 'constructor');
+    	const hasIsPrototypeOf = obj.constructor && obj.constructor.prototype && hasOwn.call(obj.constructor.prototype, 'isPrototypeOf');
     	// Not own constructor property must be Object
     	if (obj.constructor && !hasOwnConstructor && !hasIsPrototypeOf) {
     		return false;
@@ -1496,80 +1481,83 @@ function shim (obj) {
     
     	// Own properties are enumerated firstly, so to speed up,
     	// if last one is own, then all properties are own.
-    	var key;
+    	let key;
     	for (key in obj) { /**/ }
     
     	return typeof key === 'undefined' || hasOwn.call(obj, key);
     };
     
    data.extend = function() {
-    	var options, name, src, copy, copyIsArray, clone;
-    	var target = arguments[0];
-    	var i = 1;
-    	var length = arguments.length;
-    	var deep = false;
-    
-    	// Handle a deep copy situation
-    	if (typeof target === 'boolean') {
-    		deep = target;
-    		target = arguments[1] || {};
-    		// skip the boolean and the target
-    		i = 2;
-    	} else if ((typeof target !== 'object' && typeof target !== 'function') || target == null) {
-    		target = {};
-    	}
-    
-    	for (; i < length; ++i) {
-    		options = arguments[i];
-    		// Only deal with non-null/undefined values
-    		if (options != null) {
-    			// Extend the base object
-    			for (name in options) {
-    				src = target[name];
-    				copy = options[name];
-    
-    				// Prevent never-ending loop
-    				if (target !== copy) {
-    					// Recurse if we're merging plain objects or arrays
-    					if (deep && copy && (isPlainObject(copy) || (copyIsArray = isArray(copy)))) {
-    						if (copyIsArray) {
-    							copyIsArray = false;
-    							clone = src && isArray(src) ? src : [];
-    						} else {
-    							clone = src && isPlainObject(src) ? src : {};
-    						}
-    
-    						// Never move original objects, clone them
-    						target[name] = data.extend(deep, clone, copy);
-    
-    					// Don't bring in undefined values
-    					} else if (typeof copy !== 'undefined') {
-    						target[name] = copy;
-    					}
-    				}
-    			}
-    		}
-    	}
-    
-    	// Return the modified object
-    	return target;
-    };
+       let options;
+       let name;
+       let src;
+       let copy;
+       let copyIsArray;
+       let clone;
+       let target = arguments[0];
+       let i = 1;
+       const length = arguments.length;
+       let deep = false;
+
+       // Handle a deep copy situation
+       if (typeof target === 'boolean') {
+           deep = target;
+           target = arguments[1] || {};
+           // skip the boolean and the target
+           i = 2;
+       } else if ((typeof target !== 'object' && typeof target !== 'function') || target == null) {
+           target = {};
+       }
+
+       for (; i < length; ++i) {
+           options = arguments[i];
+           // Only deal with non-null/undefined values
+           if (options != null) {
+               // Extend the base object
+               for (name in options) {
+                   src = target[name];
+                   copy = options[name];
+   
+                   // Prevent never-ending loop
+                   if (target !== copy) {
+                       // Recurse if we're merging plain objects or arrays
+                       if (deep && copy && (isPlainObject(copy) || (copyIsArray = isArray(copy)))) {
+                           if (copyIsArray) {
+                               copyIsArray = false;
+                               clone = src && isArray(src) ? src : [];
+                           } else {
+                               clone = src && isPlainObject(src) ? src : {};
+                           }
+   
+                           // Never move original objects, clone them
+                           target[name] = data.extend(deep, clone, copy);
+   
+                       // Don't bring in undefined values
+                       } else if (typeof copy !== 'undefined') {
+                           target[name] = copy;
+                       }
+                   }
+               }
+           }
+       }
+
+       // Return the modified object
+       return target;
+   };
      
  
-    data.has = function (obj, key) {
-        return hasOwnProperty.call(obj, key);
-    };
+    data.has = (obj, key) => hasOwnProperty.call(obj, key);
     /**
      *
      */
-    data._buildModelPreChangeObj = function () {
+    data._buildModelPreChangeObj = () => {
         data._modelprechange = {};
         data._modelprechangeReal = {};
         data._modelpresize = 0;
-        for (var key in data['field']) {
+        for (const key in data['field']) {
             if (data.has(data['field'], key) && data['field'][key] !== null  && typeof data['field'][key] !== 'undefined') {
                 data._modelprechange[key] = data['field'][key]; // data['field'][key].toString()
-                var base = {};
+                let base = {};
                 if (Object.prototype.toString.call(data['field'][key]) === "[object Array]") {
                     base = [];
                 }
@@ -1589,7 +1577,7 @@ function shim (obj) {
      * set state of a model field value and represent it in the state object eg.
      * {result: false, msg : "email ist nicht gültig"};
      **/
-    data.setState = function(notation, value){
+    data.setState = (notation, value) => {
          
         //check if valid
         
@@ -1604,9 +1592,9 @@ function shim (obj) {
             data.state = JSON.parse(JSON.stringify(data.field));
         }
           
-        if (typeof data['state'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
-            var parent = data._getParentObject(notation).replace(/\.field\./g, '.state.');
-            eval("if( (typeof " + parent + "!== 'undefined')) data.state." + notation + "=" + JSON.stringify(value) + ";");
+        if (typeof data['state'][notation] === 'undefined' && notation.includes('[')) {
+            const parent = data._getParentObject(notation).replace(/\.field\./g, '.state.');
+            eval(`if( (typeof ${parent}!== 'undefined')) data.state.${notation}=${JSON.stringify(value)};`);
         } else {
             data['state'][notation] = value;
         }
@@ -1616,10 +1604,10 @@ function shim (obj) {
      * return state for a model field value eg.
      * {result: false, msg : "email ist nicht gültig"}
      **/
-    data.getState = function(notation){
+    data.getState = notation => {
         try {
-            if (typeof data['state'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
-                return eval("(typeof data.state." + notation + "!== 'undefined' ) ? data.state." + notation + ": undefined;");
+            if (typeof data['state'][notation] === 'undefined' && notation.includes('[')) {
+                return eval(`(typeof data.state.${notation}!== 'undefined' ) ? data.state.${notation}: undefined;`);
             } else {
                 return data['state'][notation];
             }
@@ -1635,10 +1623,10 @@ function shim (obj) {
      * @param {type} index
      * @returns {@exp;data@pro;model@call;getValue}
      */
-    data.getOld = function (notation) {
+    data.getOld = notation => {
         try {
-            if (typeof data['_modelprechangeReal'][notation] === 'undefined' && (notation.indexOf('[') !== -1 ||  notation.indexOf('.') !== -1)) {
-                return eval("(typeof data._modelprechangeReal." + notation + "!== 'undefined' ) ? data._modelprechangeReal." + notation + ": undefined;");
+            if (typeof data['_modelprechangeReal'][notation] === 'undefined' && (notation.includes('[') ||  notation.includes('.'))) {
+                return eval(`(typeof data._modelprechangeReal.${notation}!== 'undefined' ) ? data._modelprechangeReal.${notation}: undefined;`);
             } else {
                 return data['_modelprechangeReal'][notation];
             }
@@ -1654,10 +1642,10 @@ function shim (obj) {
      * @param {type} index
      * @returns {@exp;data@pro;model@call;getValue}
      */
-    data.get = function (notation) {
+    data.get = notation => {
         try {
-            if (typeof data['field'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
-                return eval("(typeof data.field." + notation + "!== 'undefined' ) ? data.field." + notation + ": undefined;");
+            if (typeof data['field'][notation] === 'undefined' && notation.includes('[')) {
+                return eval(`(typeof data.field.${notation}!== 'undefined' ) ? data.field.${notation}: undefined;`);
             } else {
                 return data['field'][notation];
             }
@@ -1666,42 +1654,37 @@ function shim (obj) {
         }
     };
 
-    data.set = function (notation, value) {
-        if (typeof data['field'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
-            var parent = data._getParentObject(notation);
-            eval("if( (typeof " + parent + "!== 'undefined')) data.field." + notation + "=" + JSON.stringify(value) + ";");
+    data.set = (notation, value) => {
+        if (typeof data['field'][notation] === 'undefined' && notation.includes('[')) {
+            const parent = data._getParentObject(notation);
+            eval(`if( (typeof ${parent}!== 'undefined')) data.field.${notation}=${JSON.stringify(value)};`);
         } else {
             data['field'][notation] = value;
         }
     };
 
-    data._getParentObject = function (notation, ns) {
+    data._getParentObject = (notation, ns) => {
         if (typeof ns === 'undefined')
             ns = 'data.field.';
-        var parent = false;
+        let parent = false;
         if (!notation)
             return parent;
         if (notation.indexOf(']') > notation.indexOf('.')) {
             parent = ns + notation.replace(notation.match(/\[(.*?)\]/gi).pop(), '!').split('!')[0];
         } else {
-            var p = notation.split('.');
+            const p = notation.split('.');
             p.pop();
             parent = ns + p.join('.');
         }
         return parent;
     };
 
-    data._delete = data.delete = function (notation) {
-        if (typeof data['field'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
+    data._delete = data.delete = notation => {
+        if (typeof data['field'][notation] === 'undefined' && notation.includes('[')) {
             try {
-                var parent = data._getParentObject(notation);
+                const parent = data._getParentObject(notation);
                  eval(
-                    "if(Object.prototype.toString.call(" + parent + ") === '[object Array]' ){" +
-                    "" + parent + ".splice(" + parent + ".indexOf(data['field']." + notation + "),1);" +
-                    "} else {" +
-                        "if(typeof data['field']." + notation + "!== 'undefined')" +
-                            " delete data['field']." + notation + ";" +
-                    "}");
+                    `if(Object.prototype.toString.call(${parent}) === '[object Array]' ){${parent}.splice(${parent}.indexOf(data['field'].${notation}),1);} else {if(typeof data['field'].${notation}!== 'undefined') delete data['field'].${notation};}`);
                 /**
                  * to keep indexes
 
@@ -1732,9 +1715,9 @@ function shim (obj) {
         }
     };
 
-    data.changed = function (field) {
+    data.changed = field => {
 
-        var compare = function (fieldName) {
+        const compare = fieldName => {
             if (typeof data._modelprechange[fieldName] === 'undefined') {
                 return true;
             } else {
@@ -1747,8 +1730,8 @@ function shim (obj) {
 
             return compare(field);
         } else {
-            var modelsize = 0;
-            for (var key in data['field']) {
+            let modelsize = 0;
+            for (const key in data['field']) {
                 if (data.has(data['field'], key)) {
                     modelsize++;
                     if (compare(key))
@@ -1764,14 +1747,14 @@ function shim (obj) {
         return false;
     };
 
-    data.jsonPatchToObjectAccess = function(diff){
-        let path = "[" + diff.path.substr(1).split('/').join("][") + "]";
+    data.jsonPatchToObjectAccess = diff => {
+        let path = `[${diff.path.substr(1).split('/').join("][")}]`;
         let normal = $.normalizeChangeResponse(path);
         diff.op = diff.op == "replace"?"value":diff.op;
         return [path, diff.op, data.getOld(normal), diff.value];
     };
 
-    data.compareJsonPatch = function(a, b){
+    data.compareJsonPatch = (a, b) => {
         let diff = jsonpatch.compare(a ||{}, b||{});
         let final = [];
 
@@ -1789,35 +1772,33 @@ function shim (obj) {
          data.compareJsonPatch(data._modelprechangeReal, data.field);
     
     return data;
-}(k_dom));
+})(k_dom));
 ;/**
  * @author Alexander Kindziora 2017
  *
  */
 
-(function (structure, docapi, dom, model) {
+(((structure, docapi, dom, model) => {
     //"use strict";
 
-    var me = {};
-    var api = docapi['dom-attributes'];
+    const me = {};
+    const api = docapi['dom-attributes'];
 
-    window.$k = function (selector) {
-        return klaster.bind(document.querySelector(selector));
-    };
+    window.$k = selector => klaster.bind(document.querySelector(selector));
 
     function klaster(child) {
 
-        var skeleton = {};
+        let skeleton = {};
         if (structure.config.skeleton) {
             skeleton = JSON.parse(JSON.stringify(structure));
             skeleton.api = null;
         }
 
-        var cls = model.extend(structure, child);
+        const cls = model.extend(structure, child);
 
         dom.child = cls;
 
-        var $globalScope = this;
+        const $globalScope = this;
 
         cls.model = model = model.extend(model, child.model);
 
@@ -1827,7 +1808,7 @@ function shim (obj) {
         cls.debug = function () {
             if (true) { //cls.config.debug
                 if (typeof arguments !== 'undefined') {
-                    for (var msg in arguments) {
+                    for (const msg in arguments) {
                         console.log(arguments[msg]);
                     }
                 }
@@ -1837,8 +1818,8 @@ function shim (obj) {
         /**
          * restriction of content by filter criteria eg. data-filter="this.a !== 0"
          */
-        cls.updateViewFilter = function () {
-            Array.prototype.forEach.call($globalScope.querySelectorAll('[data-filter]'), function (el, i) {
+        cls.updateViewFilter = () => {
+            Array.prototype.forEach.call($globalScope.querySelectorAll('[data-filter]'), (el, i) => {
                 cls.viewFilter[dom.getXPath(el)] = el.getAttribute('data-filter');
             });
         };
@@ -1847,7 +1828,7 @@ function shim (obj) {
          * before a view gets rendered
          * return true means render element, false remove it if existent in dom
          **/
-        cls.preRenderView = function ($field, item) {
+        cls.preRenderView = ($field, item) => {
             if (typeof model.get(dom.getName($field)) === 'undefined' ||
                 $field.getAttribute(api.view) === "__static")
                 return false;
@@ -1855,15 +1836,15 @@ function shim (obj) {
             if (!$field.getAttribute('data-filter'))
                 return true;
 
-            return eval("(" + $field.getAttribute('data-filter').replace(new RegExp("this", "gi"), 'child.filter') + ")"); // execute operation eg. data-filter="1 == this.amount" or this.checkRights()
+            return eval(`(${$field.getAttribute('data-filter').replace(new RegExp("this", "gi"), 'child.filter')})`); // execute operation eg. data-filter="1 == this.amount" or this.checkRights()
         };
         /**
          * 
          * after the rendering of a view 
          * trigger postRenderView view event, if existent
          **/
-        cls.postRenderView = function ($field) {
-            var funcName = dom.getView($field);
+        cls.postRenderView = $field => {
+            const funcName = dom.getView($field);
 
             if (typeof cls.view.event !== "undefined" && typeof cls.view.event.postRenderView !== 'undefined' && typeof cls.view.event.postRenderView[funcName] === 'function') {
                 cls.view.event.postRenderView[funcName].call(model, $field, model.get(dom.getName($field)));
@@ -1875,7 +1856,7 @@ function shim (obj) {
          * gets executed before an event is triggered
          * set model state
          */
-        cls.pre_trigger = function (e) {
+        cls.pre_trigger = (e) => {
 
             cls.updateViewFilter();
             model._buildModelPreChangeObj();
@@ -1889,9 +1870,9 @@ function shim (obj) {
          * gets executed after an event is triggered
          * check if model has changed
          */
-        cls.post_trigger = function (e, result) {
-            var name = dom.getName(this);
-            var modelState = model.get(name);
+        cls.post_trigger =(e, result) => {
+            const name = dom.getName(this);
+            const modelState = model.get(name);
 
             if ((result != modelState) || model.changed(name)) {
 
@@ -1914,7 +1895,7 @@ function shim (obj) {
          * validate field by setting its state
          * return value if valid, otherwise return undefined so value does not go into model, if used as return value from interaction
          **/
-        cls.validate = function (name, value, type) {
+        cls.validate = (name, value, type) => {
 
             function validate(validateResult) {
                 validateResult.value = value;
@@ -1926,7 +1907,7 @@ function shim (obj) {
             }
 
             if (typeof child.validator !== "undefined" && typeof child.validator[type] === "function") {
-                var validateResult = child.validator[type].call(model, value, name);
+                const validateResult = child.validator[type].call(model, value, name);
                 return validate(validateResult);
             } else {
 
@@ -1934,7 +1915,7 @@ function shim (obj) {
                     return validate(type);
                 } else {
                     throw {
-                        message: "Validator of type " + type + "does not exist.",
+                        message: `Validator of type ${type}does not exist.`,
                         name: "ValidationException"
                     };
                 }
@@ -1988,10 +1969,10 @@ function shim (obj) {
          * @param scopeModelField
          * @returns {*}
          */
-        cls.getDecoValPrimitive = function ($scope, scopeModelField) {
-            var fieldN = dom.getName($scope),
-                viewName = dom.getView($scope),
-                DecoValPrimitive = scopeModelField;
+        cls.getDecoValPrimitive = ($scope, scopeModelField) => {
+            const fieldN = dom.getName($scope);
+            const viewName = dom.getView($scope);
+            let DecoValPrimitive = scopeModelField;
 
             if (!cls.preRenderView($scope, scopeModelField)) { // on off option
                 return undefined;
@@ -2009,9 +1990,11 @@ function shim (obj) {
          * @param field
          * @param change
          */
-        cls.updateHtmlList = function ($scope, field, change) {
-            var $child, index, $html;
-            var viewName = dom.getView($scope);
+        cls.updateHtmlList = ($scope, field, change) => {
+            let $child;
+            let index;
+            let $html;
+            const viewName = dom.getView($scope);
 
             /**
              * differential function to add elements to a list of dom elements
@@ -2019,16 +2002,18 @@ function shim (obj) {
              */
             function addListElement() {
 
-                var m_index = 0;
-                for (index in field) { //iterate over all items in array 
-                    var name = dom.getName($scope),
-                        $child = $scope.querySelector('[data-name="' + name + '\[' + index + '\]"]'); //get child by name
+                let m_index = 0;
+                for (index in field) {
+                    //iterate over all items in array 
+                    const name = dom.getName($scope); //get child by name
+
+                    const $child = $scope.querySelector(`[data-name="${name}\[${index}\]"]`);
 
                     if (cls.preRenderView($scope, field[index])) { //check filters or other stuff that could avoid rendering that item
 
                         $html = dom.parseHTML(cls.view.views[viewName].call(cls.view, field[index], index, $scope)); //render view
 
-                        var $close = $scope.querySelector('[data-name="' + name + '\[' + m_index + '\]"]');
+                        const $close = $scope.querySelector(`[data-name="${name}\[${m_index}\]"]`);
 
                         if ($child) {
                             $child.parentNode.replaceChild($html, $child);
@@ -2055,12 +2040,12 @@ function shim (obj) {
              */
             function killListElement() {
 
-                Array.prototype.forEach.call($scope.childNodes, function (el, i) {
-                    var Elname = dom.getName(el);
+                Array.prototype.forEach.call($scope.childNodes, (el, i) => {
+                    const Elname = dom.getName(el);
                     if (typeof Elname === 'undefined') {
                         el.parentNode.removeChild(el);
                     } else {
-                        var name = /\[(.*?)\]/gi.exec(Elname)[1];
+                        const name = /\[(.*?)\]/gi.exec(Elname)[1];
 
                         if (!model.get(Elname) ||
                             typeof field[name] === 'undefined' ||
@@ -2098,11 +2083,13 @@ function shim (obj) {
                     }
                 }
 
-                if (change[1] === 'value') { // value of subelement has changed
-                    var _notation = change[0],
-                        scopedField = field,
-                        myChangedField = model.get(_notation); //get field that has changed
-                    var index = /\[(.*?)\]/gi.exec(_notation)[1];
+                if (change[1] === 'value') {
+                    // value of subelement has changed
+                    const _notation = change[0]; //get field that has changed
+
+                    let scopedField = field;
+                    const myChangedField = model.get(_notation);
+                    const index = /\[(.*?)\]/gi.exec(_notation)[1];
 
                     if (typeof field.indexOf !== 'undefined') { // array
                         scopedField = typeof field[index] !== 'undefined' ?
@@ -2130,53 +2117,51 @@ function shim (obj) {
                     } else { // value changed to undefined or filter does remove element
                         $child.parentNode.removeChild($child); // remove sub item
                     }
-
                 }
 
             }
 
             decision(change); //make decision what to update on list
-
         };
 
         /**
          * update html element if changed || validation error view
          **/
-        cls.updateHtmlElement = function ($scope, scopeModelField, changed) {
+        cls.updateHtmlElement = ($scope, scopeModelField, changed) => {
 
-            var name = dom.getName($scope);
-            var error = model.getState(name);
-            var cced = model.getOld(name);
+            const name = dom.getName($scope);
+            const error = model.getState(name);
+            const cced = model.getOld(name);
             if ((typeof error === 'undefined' || error.result) || (typeof error !== 'undefined' && dom.getView($scope) !== error.view)) { // kein fehler aufgetreten
                 if (cced !== scopeModelField) { // cached value of field != model.field value
-                    var decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
+                    const decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
                     _set.call($scope, decoratedFieldValue); // bind html 
                 }
             } else { // field view was defined i a validator is it gets rendered also if value is not in model and by that equal to undefined
-                var template = cls.view.views[error.view].call(cls, scopeModelField, name);
+                const template = cls.view.views[error.view].call(cls, scopeModelField, name);
 
-                var $field = $globalScope.querySelector(dom.getValidatorSelector(name, error.view));
+                const $field = $globalScope.querySelector(dom.getValidatorSelector(name, error.view));
                 _set.call($field, template);
             }
         };
 
         //from server to model
-        cls.server2Model = function (data) {
+        cls.server2Model = data => {
             //model.set.call(data.field, data.value);
-            var $field = $globalScope.querySelector(dom.getSelector(data.field));
+            const $field = $globalScope.querySelector(dom.getSelector(data.field));
             cls.post_trigger.call($field, e, data.value);
         };
 
         //from view to model
-        cls.view2Model = function ($where) {
-            Array.prototype.forEach.call(cls.filter.events, function (el, i) {
+        cls.view2Model = $where => {
+            Array.prototype.forEach.call(cls.filter.events, (el, i) => {
                 model.updateValue.call(el, dom.value.call(el));
             });
         };
 
         cls.model2View = function () {
-            var local = {};
-            var $triggerSrc = this;
+            const local = {};
+            const $triggerSrc = this;
 
             /**
              * executed after processing all name element dom representations
@@ -2184,18 +2169,18 @@ function shim (obj) {
              * @param change
              * @param ready
              */
-            local.finalIteratedAllViewEl = function ($scope, change, ready) {
+            local.finalIteratedAllViewEl = ($scope, change, ready) => {
                 // and no view to display the change so try to display change with parent node
-                var field_notation = dom.normalizeChangeResponse(change[0]);
-                var match = field_notation;
+                const field_notation = dom.normalizeChangeResponse(change[0]);
+                let match = field_notation;
                 while (match !== '') {
                     match = model._getParentObject(match, '');
 
-                    var findNotation = dom.getSelector(match, true);
-                    var $myPEl = $scope.parents(findNotation);
+                    const findNotation = dom.getSelector(match, true);
+                    const $myPEl = $scope.parents(findNotation);
 
-                    var viewName = $myPEl.getAttribute(api.view.attr);
-                    var viewMethod = cls.view.views[viewName];
+                    const viewName = $myPEl.getAttribute(api.view.attr);
+                    const viewMethod = cls.view.views[viewName];
 
                     /**
                      * improve performance here!!!
@@ -2218,73 +2203,70 @@ function shim (obj) {
              * @param ready
              * @returns {Function}
              */
-            local.eachViewRepresentation = function (cnt, change, foundRepresentation, ready) {
-                return function (el) {
+            local.eachViewRepresentation = (cnt, change, foundRepresentation, ready) => el => {
+                // check how to treat this field
+                const $scope = el;
 
-                    // check how to treat this field
-                    var $scope = el,
-                        fieldN = dom.getName(el);
-                    var v = $scope.getAttribute(api.view.attr);
-                    var scopeModelField = model.get(fieldN);
-                    var decoratedFieldValue;
-
+                const fieldN = dom.getName(el);
+                const v = $scope.getAttribute(api.view.attr);
+                const scopeModelField = model.get(fieldN);
+                let decoratedFieldValue;
 
 
-                    if (v === '__static') {
-                        dom.setPrimitiveValue($scope, scopeModelField);
-                        return;
-                    }
 
-                    if ($triggerSrc === $scope) {
-                        return;
-                    }
-
-                    function iteration(decoratedFieldValue) {
-                        cnt--;
-                        if (cnt <= 0) {
-                            if (!foundRepresentation) {
-                                local.finalIteratedAllViewEl($scope, change, ready);
-                            } else {
-                                ready();
-                            }
-                        }
-                    }
-
-                    /* if ($scope.attr('type') === "radio") {
-                         foundRepresentation = false;
-                         iteration(scopeModelField);
-                         return;
-                     }*/
-
-                    if (dom.isPrimitiveValue($scope)) { //if dom view element is of type primitive
-                        decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
-
-                        if (dom.hasMultipleChoices($scope)) {
-                            dom.selectMultiple($scope, decoratedFieldValue);
-                        } else {
-                            dom.setPrimitiveValue($scope, decoratedFieldValue);
-                        }
-
-                    } else { // field can contain html
-
-                        if (dom.isHtmlList($scope)) {
-                            //render partial list of html elements
-
-                          /*  if (dom.getName($scope).indexOf('[') === -1) { // address no array element
-                                change[1] = 'view-filter'; // why view filter?
-                                change[2] = 2;
-                                change[3] = 1;
-                            }*/
-                            cls.updateHtmlList($scope, scopeModelField, change); // why trigger update list?
-
-                        } else { // not a list
-                            cls.updateHtmlElement($scope, scopeModelField, change);
-                        }
-                    }
-
-                    iteration(decoratedFieldValue);
-
+                if (v === '__static') {
+                    dom.setPrimitiveValue($scope, scopeModelField);
+                    return;
                 }
+
+                if ($triggerSrc === $scope) {
+                    return;
+                }
+
+                function iteration(decoratedFieldValue) {
+                    cnt--;
+                    if (cnt <= 0) {
+                        if (!foundRepresentation) {
+                            local.finalIteratedAllViewEl($scope, change, ready);
+                        } else {
+                            ready();
+                        }
+                    }
+                }
+
+                /* if ($scope.attr('type') === "radio") {
+                     foundRepresentation = false;
+                     iteration(scopeModelField);
+                     return;
+                 }*/
+
+                if (dom.isPrimitiveValue($scope)) { //if dom view element is of type primitive
+                    decoratedFieldValue = cls.getDecoValPrimitive($scope, scopeModelField);
+
+                    if (dom.hasMultipleChoices($scope)) {
+                        dom.selectMultiple($scope, decoratedFieldValue);
+                    } else {
+                        dom.setPrimitiveValue($scope, decoratedFieldValue);
+                    }
+
+                } else { // field can contain html
+
+                    if (dom.isHtmlList($scope)) {
+                        //render partial list of html elements
+
+                      /*  if (dom.getName($scope).indexOf('[') === -1) { // address no array element
+                            change[1] = 'view-filter'; // why view filter?
+                            change[2] = 2;
+                            change[3] = 1;
+                        }*/
+                        cls.updateHtmlList($scope, scopeModelField, change); // why trigger update list?
+
+                    } else { // not a list
+                        cls.updateHtmlElement($scope, scopeModelField, change);
+                    }
+                }
+
+                iteration(decoratedFieldValue);
             };
 
             /**
@@ -2302,24 +2284,24 @@ function shim (obj) {
              * @param {type} notation
              * @returns {Boolean}
              */
-            dom.findUntilParentExists = function (notation, matches) {
+            dom.findUntilParentExists = (notation, matches) => {
                 if (notation === '')
                     return matches;
 
                 if (!matches)
                     matches = [];
 
-                var fieldNotation = dom.normalizeChangeResponse(notation);
+                const fieldNotation = dom.normalizeChangeResponse(notation);
 
-                var fieldNotationBrackets = dom.normalizeChangeResponseBrackets(notation);
+                const fieldNotationBrackets = dom.normalizeChangeResponseBrackets(notation);
 
-                var selector = dom.getSelector(fieldNotation, true);
-                var brSelector = dom.getSelector(fieldNotationBrackets, true);
-                var match = []
+                const selector = dom.getSelector(fieldNotation, true);
+                const brSelector = dom.getSelector(fieldNotationBrackets, true);
+                const match = []
                 .concat
-                .apply(matches, $globalScope.querySelectorAll(selector + ',' + brSelector));
+                .apply(matches, $globalScope.querySelectorAll(`${selector},${brSelector}`));
 
-                var cnt = match.length;
+                const cnt = match.length;
                 if (cnt === 0) {
                     if (model._getParentObject(notation, '') === "")
                         return match;
@@ -2334,18 +2316,18 @@ function shim (obj) {
              * render all view areas that need to be rendered
              * @param changes
              */
-            dom.updateAllViews = function (changes) {
+            dom.updateAllViews = changes => {
 
-                var addrN;
+                let addrN;
 
-                Array.prototype.forEach.call($globalScope.querySelectorAll('[data-filter]'), function (el) {
+                Array.prototype.forEach.call($globalScope.querySelectorAll('[data-filter]'), el => {
                     if (cls.viewFilter[dom.getXPath(el)] !== el.getAttribute('data-filter')) { // filter for this view has changed
                         changes.push([dom.getName(el), 'view-filter', cls.viewFilter[dom.getXPath(el)], el.getAttribute('data-filter')]);
                     }
                 });
 
-                var cacheEls = {};
-                var name = undefined;
+                const cacheEls = {};
+                let name = undefined;
                 for (addrN in changes) { //only this fields need to be refreshed
                     
                     var $els = (() => {
@@ -2376,22 +2358,21 @@ function shim (obj) {
                     cacheEls[name] = [$els, changes[addrN]];
                 }
 
-                for (var el in cacheEls) {
-                    var $els = cacheEls[el][0],
-                        changes = cacheEls[el][1];
+                for (const el in cacheEls) {
+                    var $els = cacheEls[el][0];
+                    var changes = cacheEls[el][1];
 
-                    var cnt = $els.length;
+                    const cnt = $els.length;
 
-                    Array.prototype.forEach.call($els, local.eachViewRepresentation(cnt, changes, true, function ($els) {
-                        var name = dom.getName($els[0]);
-                        return function (el) {
+                    Array.prototype.forEach.call($els, local.eachViewRepresentation(cnt, changes, true, ($els => {
+                        const name = dom.getName($els[0]);
+                        return el => {
                             if (typeof model.event !== "undefined" && typeof model.event.postChange !== 'undefined' && typeof model.event.postChange[name] === 'function') {
-                                var changeCb = model.event.postChange[name];
+                                const changeCb = model.event.postChange[name];
                                 changeCb.call(model, model.get(name), changes, 'controller');
                             }
                         }
-                    }($els)));
-
+                    })($els)));
                 }
             };
 
@@ -2404,27 +2385,27 @@ function shim (obj) {
          *@description one common callback for changed is an ajax call with all values to a REST backend to update data
          *
          */
-        cls.recognizeChange = function () {
-            var mio = {};
-            mio.changed = function (el) {
+        cls.recognizeChange = (() => {
+            const mio = {};
+            mio.changed = el => {
                 cls.changed.call(el);
                 delete cls.timeoutID;
             };
-            mio.cancel = function () {
+            mio.cancel = () => {
                 if (typeof cls.timeoutID === "number") {
                     window.clearTimeout(cls.timeoutID);
                     delete cls.timeoutID;
                 }
             };
             mio.setup = function () {
-                var mes = this;
+                const mes = this;
                 mio.cancel();
-                cls.timeoutID = window.setTimeout(function (msg) {
+                cls.timeoutID = window.setTimeout(msg => {
                     mio.changed(mes);
                 }, mes.getAttribute(api.delay.attr) || cls.delay);
             };
             return mio;
-        }();
+        })();
 
         /**
          *dispatch events for dom element
@@ -2432,11 +2413,11 @@ function shim (obj) {
         cls.dispatchEvents = function () {
             var FinalEvents = [];
             if (this.getAttribute(api.on.attr)) {
-                var events = (this.getAttribute(api.on.attr) || '').split(','),
-                    i = 0,
-                    event = "",
-                    FinalEvents = {},
-                    parts = "";
+                const events = (this.getAttribute(api.on.attr) || '').split(',');
+                let i = 0;
+                let event = "";
+                const FinalEvents = {};
+                let parts = "";
                 for (i in events) {
                     event = events[i].trim();
                     parts = event.split('->');
@@ -2453,59 +2434,55 @@ function shim (obj) {
         /**
          * find all filters and init there configs
          */
-        cls.dispatchFilter = function (byElement) {
-            return {
-                'object': cls,
-                '$el': byElement
-            };
-        };
+        cls.dispatchFilter = byElement => ({
+            'object': cls,
+            '$el': byElement
+        });
 
         /**
          * @todo rethink is this the best way to bind the methods?
          * bind dom to matching methods
          */
-        cls.bind = function (element) {
-
-            var events = {},
-                event = {},
-                name = "",
-                method = "";
-            var filter, $el;
+        cls.bind = element => {
+            const events = {};
+            let event = {};
+            let name = "";
+            let method = "";
+            let filter;
+            let $el;
             filter = cls.dispatchFilter(element);
             $el = element;
             /* variable injection via lambda function factory used in iteration */
-            var factory = function (me, event) {
-                return function (e, args) {
-                    name = dom.getName(me);
-                    method = events[name][event];
-                    var result = true;
-                    if (false !== cls.pre_trigger.call(me, e)) {
-                        if (typeof cls.interactions[name] !== 'undefined' &&
-                            typeof cls.interactions[name][method] !== 'undefined') {
+            const factory = (me, event) => (e, args) => {
+                name = dom.getName(me);
+                method = events[name][event];
+                let result = true;
+                if (false !== cls.pre_trigger.call(me, e)) {
+                    if (typeof cls.interactions[name] !== 'undefined' &&
+                        typeof cls.interactions[name][method] !== 'undefined') {
 
-                            result = cls.interactions[name][method].call(me, e, cls, args);
+                        result = cls.interactions[name][method].call(me, e, cls, args);
 
-                            if (me.getAttribute(api.omit.attr) === "true") {
-                                result = dom.value.call(me);
-                            }
-                        } else if(typeof cls.interactions[method] !== 'undefined' && typeof cls.interactions[method][event] !== 'undefined') {
-                            result = cls.interactions[method][event].call(me, e, cls, args);
-                            
-                            if (me.getAttribute(api.omit.attr) === "true") {
-                                result = dom.value.call(me);
-                            }
-                        } else {
-                            result = me.getValue();
+                        if (me.getAttribute(api.omit.attr) === "true") {
+                            result = dom.value.call(me);
                         }
-                        cls.post_trigger.call(me, e, result);
+                    } else if(typeof cls.interactions[method] !== 'undefined' && typeof cls.interactions[method][event] !== 'undefined') {
+                        result = cls.interactions[method][event].call(me, e, cls, args);
+                        
+                        if (me.getAttribute(api.omit.attr) === "true") {
+                            result = dom.value.call(me);
+                        }
+                    } else {
+                        result = me.getValue();
                     }
+                    cls.post_trigger.call(me, e, result);
+                }
 
-                };
             };
             //filter.fields = filter.$el.find('[name],[data-name]'),
-            filter.events = filter.$el.querySelectorAll('[' + api.on.attr + ']');
+            filter.events = filter.$el.querySelectorAll(`[${api.on.attr}]`);
 
-            var InitValue = '';
+            let InitValue = '';
 
             function bindevents(el) {
                 name = dom.getName(el) || dom.getXPath(el);
@@ -2514,7 +2491,7 @@ function shim (obj) {
 
                 events[name] = cls.dispatchEvents.call(el);
                 for (event in events[name]) {
-                    cls.debug('name:' + name + ', event:' + event);
+                    cls.debug(`name:${name}, event:${event}`);
 
                     if (cls.config.skeleton) {
                         if (typeof skeleton['interactions'][name] === 'undefined')
@@ -2523,7 +2500,7 @@ function shim (obj) {
                         skeleton['interactions'][name][event] = "function(e, self){}";
                     }
 
-                    var f = factory(el, event);
+                    const f = factory(el, event);
                     el.removeEventListener(event, f);
                     el.addEventListener(event, f);
                     if ($el.getAttribute('data-defaultvalues') !== 'model' && !dom.getParents($el, '[data-defaultvalues="model"]')) {
@@ -2544,7 +2521,7 @@ function shim (obj) {
             return filter;
         };
 
-        cls.applyMethods = function (el) {
+        cls.applyMethods = el => {
 
             el.getName = function () {
                 return dom.getName(this);
@@ -2563,7 +2540,7 @@ function shim (obj) {
             return el;
         };
 
-        cls.init = function () {
+        cls.init = () => {
 
             cls.filter = cls.bind(this);
             cls.recognizeChange.setup.call(cls.filter.$el);
@@ -2574,17 +2551,17 @@ function shim (obj) {
             } else {
                 console.log("no init method found");
             }
-        }.bind(this);
+        };
 
-        cls.ajax = function (method, url) {
-            var _xhr = new XMLHttpRequest();
+        cls.ajax = (method, url) => {
+            const _xhr = new XMLHttpRequest();
             _xhr.open(method, url);
-            _xhr.setup = function (cb) { // hacky? maybe
+            _xhr.setup = cb => { // hacky? maybe
                 cb(_xhr);
                 return _xhr;
             };
-            _xhr.done = function (cb) { // hacky? maybe
-                _xhr.onreadystatechange = function () {
+            _xhr.done = cb => { // hacky? maybe
+                _xhr.onreadystatechange = () => {
                     if (_xhr.readyState === 4) {
                         cb(_xhr.responseText);
                     }
@@ -2597,21 +2574,20 @@ function shim (obj) {
         //INITIALIZATION/////IF WE ARE INSIDE A DEV ENV LOAD TEMPLATES BY AJAX/////////
         if (cls.view.viewpath && !cls.view.templates_) {
             // preloading alle templates, then init klaster interface
-            var length = Object.keys(cls.view.views).length,
-                cnt = 1;
-            for (var v in cls.view.views) {
-                cls.ajax("get", (cls.view.viewpath) + v + '.' + cls.view.fileextension + '?v=' + ((cls.config.debug) ? Math.random() : '1'))
-                    .done(function (v) {
-                        return function (content) {
-                            cls.view.templates_[cls.view.views[v]] = content;
-                            cls.view.templates_[v] = content;
-                            if (length <= cnt) {
-                                child.view.templates_ = cls.view.templates_;
-                                cls.init();
-                            }
-                            cnt++;
-                        };
-                    }(v)).send();
+            const length = Object.keys(cls.view.views).length;
+
+            let cnt = 1;
+            for (const v in cls.view.views) {
+                cls.ajax("get", `${(cls.view.viewpath) + v}.${cls.view.fileextension}?v=${(cls.config.debug) ? Math.random() : '1'}`)
+                    .done((v => content => {
+                    cls.view.templates_[cls.view.views[v]] = content;
+                    cls.view.templates_[v] = content;
+                    if (length <= cnt) {
+                        child.view.templates_ = cls.view.templates_;
+                        cls.init();
+                    }
+                    cnt++;
+                })(v)).send();
             }
         } else {
             cls.init();
@@ -2619,4 +2595,4 @@ function shim (obj) {
 
         return cls;
     };
-})(k_structure, k_docapi, k_dom, k_data);
+}))(k_structure, k_docapi, k_dom, k_data);

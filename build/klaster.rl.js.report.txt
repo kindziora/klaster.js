@@ -1,32 +1,32 @@
-build/klaster.dev.js:393: WARNING - parameter $scope does not appear in dom.setHtmlValue's parameter list
+build/klaster.es5.dev.js:411: WARNING - parameter $scope does not appear in dom.setHtmlValue's parameter list
     dom.setHtmlValue = function (decorated) {
                        ^
 
-build/klaster.dev.js:430: WARNING - parameter escapeit does not appear in dom.getValidatorSelector's parameter list
-    dom.getValidatorSelector = function (name, viewname) { 
+build/klaster.es5.dev.js:445: WARNING - parameter escapeit does not appear in dom.getValidatorSelector's parameter list
+    dom.getValidatorSelector = function (name, viewname) {
                                ^
 
-build/klaster.dev.js:629: WARNING - parameter index does not appear in data.getOld's parameter list
+build/klaster.es5.dev.js:1609: WARNING - parameter index does not appear in data.getOld's parameter list
     data.getOld = function (notation) {
                   ^
 
-build/klaster.dev.js:629: WARNING - parameter level does not appear in data.getOld's parameter list
+build/klaster.es5.dev.js:1609: WARNING - parameter level does not appear in data.getOld's parameter list
     data.getOld = function (notation) {
                   ^
 
-build/klaster.dev.js:629: WARNING - parameter variable does not appear in data.getOld's parameter list
+build/klaster.es5.dev.js:1609: WARNING - parameter variable does not appear in data.getOld's parameter list
     data.getOld = function (notation) {
                   ^
 
-build/klaster.dev.js:648: WARNING - parameter index does not appear in data.get's parameter list
+build/klaster.es5.dev.js:1628: WARNING - parameter index does not appear in data.get's parameter list
     data.get = function (notation) {
                ^
 
-build/klaster.dev.js:648: WARNING - parameter level does not appear in data.get's parameter list
+build/klaster.es5.dev.js:1628: WARNING - parameter level does not appear in data.get's parameter list
     data.get = function (notation) {
                ^
 
-build/klaster.dev.js:648: WARNING - parameter variable does not appear in data.get's parameter list
+build/klaster.es5.dev.js:1628: WARNING - parameter variable does not appear in data.get's parameter list
     data.get = function (notation) {
                ^
 
