@@ -1,4 +1,4 @@
-/*! klaster.js Version: 0.9.8 01-02-2018 16:13:51 */
+/*! klaster.js Version: 0.9.8 01-02-2018 16:15:28 */
 var prefix = 'data';
 
 var k_docapi = { 
@@ -2320,7 +2320,7 @@ function shim (obj) {
                         myChangedField = model.get(_notation); //get field that has changed
 
                     var index = /\[(.*?)\]/gi.exec(_notation);
-                    index = typeof index[1]? index[1] : 0;
+                    index = typeof index !== 'undefined' ? index[1] : 0;
                     if (typeof field.indexOf !== 'undefined') { // array
                         scopedField = typeof field[index] !== 'undefined' ?
                             index :
