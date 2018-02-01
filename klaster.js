@@ -310,8 +310,9 @@
                     var _notation = change[0],
                         scopedField = field,
                         myChangedField = model.get(_notation); //get field that has changed
-                    var index = /\[(.*?)\]/gi.exec(_notation)[1];
 
+                    var index = /\[(.*?)\]/gi.exec(_notation);
+                    index = typeof index[1]? index[1] : 0;
                     if (typeof field.indexOf !== 'undefined') { // array
                         scopedField = typeof field[index] !== 'undefined' ?
                             index :
