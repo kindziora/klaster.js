@@ -25,6 +25,6 @@
         "tests"
     ],
     "dependencies": {
-        "fast-json-patch" : "latest"
+        "fast-json-patch" : "https://github.com/kindziora/JSON-Patch.git#circularJson"
     }
 }
