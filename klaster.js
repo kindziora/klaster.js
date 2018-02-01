@@ -312,8 +312,9 @@
                         myChangedField = model.get(_notation); //get field that has changed
 
                     var index = /\[(.*?)\]/gi.exec(_notation);
-                    index = index !== null && typeof index.length !== 'undefined' ? index[1] : 0;
-                    if (typeof field.indexOf !== 'undefined') { // array
+                    index = index !== null && typeof index.length !== 'undefined' ? index[1] : false;
+                    
+                    if (index && typeof field.indexOf !== 'undefined') { // array
                         scopedField = typeof field[index] !== 'undefined' ?
                             index :
                             field.indexOf(change[3]); //get index of item that has chnaged
