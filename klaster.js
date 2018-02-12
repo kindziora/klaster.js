@@ -101,7 +101,7 @@
             var name = dom.getName(this);
             var modelState = model.get(name);
 
-            if ((result != modelState) || model.changed(name)) {
+            if ((CircularJSON.stringify(result) != CircularJSON.stringify(modelState)) || model.changed(name)) {
 
                 cls.debug('changed', result, model.getOld(name), name);
 
