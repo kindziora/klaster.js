@@ -15,7 +15,8 @@
     "grunt": "^0.4.5",
     "grunt-closure-compiler": "0.0.21",
     "grunt-contrib-concat": "^0.5.1",
-    "benchmark": "latest"
+    "benchmark": "latest",
+    "circular-json": "^0.5.1"
   },
   "dependencies": {
     "nightmare": "latest",

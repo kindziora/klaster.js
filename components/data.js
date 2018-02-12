@@ -140,7 +140,7 @@ var k_data = (function ($) {
           
         if (typeof data['state'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
             var parent = data._getParentObject(notation).replace(/\.field\./g, '.state.');
-            eval("if( (typeof " + parent + "!== 'undefined')) data.state." + notation + "=" + JSON.stringify(value) + ";");
+            eval("if( (typeof " + parent + "!== 'undefined')) data.state." + notation + "=" + CircularJSON.stringify(value) + ";");
         } else {
             data['state'][notation] = value;
         }
