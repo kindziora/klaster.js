@@ -135,7 +135,7 @@ var k_data = (function ($) {
         }
           
         if (typeof data['state'] === 'undefined' ){
-            data.state = JSON.parse(JSON.stringify(data.field));
+            data.state = JSON.parse(CircularJSON.stringify(data.field));
         }
           
         if (typeof data['state'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
@@ -203,7 +203,7 @@ var k_data = (function ($) {
     data.set = function (notation, value) {
         if (typeof data['field'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
             var parent = data._getParentObject(notation);
-            eval("if( (typeof " + parent + "!== 'undefined')) data.field." + notation + "=" + JSON.stringify(value) + ";");
+            eval("if( (typeof " + parent + "!== 'undefined')) data.field." + notation + "=" + CircularJSON.stringify(value) + ";");
         } else {
             data['field'][notation] = value;
         }
