@@ -1,4 +1,4 @@
-/*! klaster.js Version: 0.9.8 12-02-2018 13:57:43 */
+/*! klaster.js Version: 0.9.8 12-02-2018 13:59:08 */
 var prefix = 'data';
 
 var k_docapi = { 
@@ -103,8 +103,7 @@ var k_structure = {
     'filter': {
     },
     'config': {
-        'debug': true,
-        'skeleton' : true
+        'debug': true
     }
 };var k_dom =(function (api) {
     api = api['dom-attributes'];
