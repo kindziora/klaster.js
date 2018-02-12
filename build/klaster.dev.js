@@ -1,4 +1,4 @@
-/*! klaster.js Version: 0.9.8 12-02-2018 15:54:32 */
+/*! klaster.js Version: 0.9.8 12-02-2018 15:56:33 */
 var prefix = 'data';
 
 var k_docapi = { 
