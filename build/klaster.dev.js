@@ -1,4 +1,4 @@
-/*! klaster.js Version: 0.9.8 12-02-2018 15:56:33 */
+/*! klaster.js Version: 0.9.8 12-02-2018 16:02:11 */
 var prefix = 'data';
 
 var k_docapi = { 
@@ -2743,7 +2743,7 @@ function shim (obj) {
                     var f = factory(el, event);
                     el.removeEventListener(event, f);
                     el.addEventListener(event, f);
-                    let InitValue = dom.value.call($el.getName());
+                    let InitValue = dom.value.call(el.getName());
                     let modelValue = model.get();
                     if ($el.getAttribute('data-defaultvalues') === 'form' 
                     || (!dom.getParents($el, '[data-defaultvalues="model"]' && !modelValue && modelValue != false))
