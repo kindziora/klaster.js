@@ -736,7 +736,7 @@
                     var f = factory(el, event);
                     el.removeEventListener(event, f);
                     el.addEventListener(event, f);
-                    if ($el.getAttribute('data-defaultvalues') !== 'model' && !dom.getParents($el, '[data-defaultvalues="model"]')) {
+                    if ($el.getAttribute('data-defaultvalues') === 'form' || !dom.getParents($el, '[data-defaultvalues="model"]')) {
                         InitValue = dom.value.call(el);
                         model.updateValue.call(el, InitValue);
                     }
