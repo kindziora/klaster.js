@@ -102,7 +102,6 @@ var k_structure = {
     'filter': {
     },
     'config': {
-        'debug': true,
-        'skeleton' : true
+        'debug': true
     }
 }
