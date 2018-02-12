@@ -739,7 +739,7 @@
                    
                     let modelValue = model.get(el.getName());
                     if ($el.getAttribute('data-defaultvalues') === 'form' 
-                    || (!dom.getParents($el, '[data-defaultvalues="model"]' && !modelValue && modelValue != false))
+                    || (!dom.getParents($el, '[data-defaultvalues="model"]' && !modelValue))
                 ) {
                         let InitValue = dom.value.call(el.getName());
                         model.updateValue.call(el, InitValue);
