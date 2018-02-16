@@ -445,7 +445,7 @@
                         return;
                     }
 
-                    if ($triggerSrc === $scope) {
+                    if ($triggerSrc === $scope && dom.isPrimitiveValue($scope)) {
                         return;
                     }
 
