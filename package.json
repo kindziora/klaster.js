@@ -16,10 +16,7 @@
     "grunt-closure-compiler": "0.0.21",
     "grunt-contrib-concat": "^0.5.1",
     "benchmark": "latest",
-    "circular-json": "^0.5.1"
-  },
-  "dependencies": {
-    "nightmare": "latest",
-    "commander": "^2.12.2"
-  }
+    "circular-json": "^0.5.1",
+    "nightmare": "latest"
+  } 
 }

@@ -669,7 +669,7 @@
                 '$el': byElement
             };
         };
-
+        cls._cached_methods = {};
         /**
          * @todo rethink is this the best way to bind the methods?
          * bind dom to matching methods
@@ -683,9 +683,19 @@
             var filter, $el;
             filter = cls.dispatchFilter(element);
             $el = element;
+
+            
+
             /* variable injection via lambda function factory used in iteration */
             var factory = function (me, event) {
-                return function (e, args) {
+                name = dom.getName(me);
+                method = events[name][event];
+                let key = name + "_" + method;
+
+                if(typeof cls._cached_methods[key] !== 'undefined') 
+                    return cls._cached_methods[key];
+
+                cls._cached_methods[key] = function (e, args) {
                     name = dom.getName(me);
                     method = events[name][event];
                     var result = true;
@@ -711,11 +721,11 @@
                     }
 
                 };
+
+                return cls._cached_methods[key];
             };
             //filter.fields = filter.$el.find('[name],[data-name]'),
             filter.events = filter.$el.querySelectorAll('[' + api.on.attr + ']');
-
-         
 
             function bindevents(el) {
                 name = dom.getName(el) || dom.getXPath(el);
