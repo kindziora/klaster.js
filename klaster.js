@@ -536,8 +536,7 @@
 
                     return dom.findUntilParentExists(model._getParentObject(notation, ''));
                 } else {
-                    return match;
-                   // return dom.findUntilParentExists(model._getParentObject(notation, ''), match);
+                    return dom.findUntilParentExists(model._getParentObject(notation, ''), match);
                 }
             };
 

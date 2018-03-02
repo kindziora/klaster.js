@@ -216,7 +216,9 @@ var k_data = (function ($) {
         if (!notation)
             return parent;
         if (notation.indexOf(']') > notation.indexOf('.')) {
-            parent = ns + notation.replace(notation.match(/\[(.*?)\]/gi).pop(), '!').split('!')[0];
+            let e = notation.match(/\[(.*?)\]/gi); 
+            e.pop(); 
+            parent = ns + e.join("");
         } else {
             var p = notation.split('.');
             p.pop();
