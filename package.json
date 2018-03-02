@@ -18,5 +18,5 @@
     "benchmark": "latest",
     "circular-json": "^0.5.1",
     "nightmare": "latest"
-  } 
+  }
 }
