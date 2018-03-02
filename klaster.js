@@ -9,6 +9,8 @@
     var me = {};
     var api = docapi['dom-attributes'];
 
+    if(typeof window ==="undefined")window = global;
+
     window.$k = function (selector) {
         return klaster.bind(document.querySelector(selector));
     };
@@ -841,4 +843,4 @@
 
         return cls;
     };
-})(k_structure, k_docapi, k_dom, k_data);
+})(_nsKlaster.k_structure, _nsKlaster.k_docapi, _nsKlaster.k_dom, _nsKlaster.k_data);

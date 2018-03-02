@@ -1,6 +1,6 @@
 var prefix = 'data';
-
-var k_docapi = { 
+var _nsKlaster = {};
+_nsKlaster.k_docapi = { 
     'Controller': {
         'this.interactions': {
             'dom-attribute name': {
@@ -66,9 +66,9 @@ var k_docapi = {
     }
 };
 
-var k_structure = {
+_nsKlaster.k_structure = {
     'delay': 10,
-    'api': k_docapi,
+    'api': _nsKlaster.k_docapi,
     'interactions': {
         'test': {
             'click': function (e) {

@@ -10,13 +10,17 @@
     "two way databinding",
     "experimental"
   ],
+  "scripts": {
+    "test": "jasmine"
+  },
   "main": "./build/klaster.dev.js",
   "devDependencies": {
+    "benchmark": "latest",
+    "circular-json": "^0.5.1",
     "grunt": "^0.4.5",
     "grunt-closure-compiler": "0.0.21",
     "grunt-contrib-concat": "^0.5.1",
-    "benchmark": "latest",
-    "circular-json": "^0.5.1",
-    "nightmare": "latest"
+    "jasmine": "^3.1.0",
+    "nightmare": "^3.0.0"
   }
 }

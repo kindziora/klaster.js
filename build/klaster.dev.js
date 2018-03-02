@@ -1,9 +1,9 @@
-/*! klaster.js Version: 0.9.8 02-03-2018 10:53:11 */
+/*! klaster.js Version: 0.9.8 02-03-2018 14:02:48 */
 /*! (C) WebReflection Mit Style License */
 var CircularJSON=function(JSON,RegExp){var specialChar="~",safeSpecialChar="\\x"+("0"+specialChar.charCodeAt(0).toString(16)).slice(-2),escapedSafeSpecialChar="\\"+safeSpecialChar,specialCharRG=new RegExp(safeSpecialChar,"g"),safeSpecialCharRG=new RegExp(escapedSafeSpecialChar,"g"),safeStartWithSpecialCharRG=new RegExp("(?:^|([^\\\\]))"+escapedSafeSpecialChar),indexOf=[].indexOf||function(v){for(var i=this.length;i--&&this[i]!==v;);return i},$String=String;function generateReplacer(value,replacer,resolve){var inspect=!!replacer,path=[],all=[value],seen=[value],mapp=[resolve?specialChar:"[Circular]"],last=value,lvl=1,i,fn;if(inspect){fn=typeof replacer==="object"?function(key,value){return key!==""&&replacer.indexOf(key)<0?void 0:value}:replacer}return function(key,value){if(inspect)value=fn.call(this,key,value);if(key!==""){if(last!==this){i=lvl-indexOf.call(all,this)-1;lvl-=i;all.splice(lvl,all.length);path.splice(lvl-1,path.length);last=this}if(typeof value==="object"&&value){if(indexOf.call(all,value)<0){all.push(last=value)}lvl=all.length;i=indexOf.call(seen,value);if(i<0){i=seen.push(value)-1;if(resolve){path.push((""+key).replace(specialCharRG,safeSpecialChar));mapp[i]=specialChar+path.join(specialChar)}else{mapp[i]=mapp[0]}}else{value=mapp[i]}}else{if(typeof value==="string"&&resolve){value=value.replace(safeSpecialChar,escapedSafeSpecialChar).replace(specialChar,safeSpecialChar)}}}return value}}function retrieveFromPath(current,keys){for(var i=0,length=keys.length;i<length;current=current[keys[i++].replace(safeSpecialCharRG,specialChar)]);return current}function generateReviver(reviver){return function(key,value){var isString=typeof value==="string";if(isString&&value.charAt(0)===specialChar){return new $String(value.slice(1))}if(key==="")value=regenerate(value,value,{});if(isString)value=value.replace(safeStartWithSpecialCharRG,"$1"+specialChar).replace(escapedSafeSpecialChar,safeSpecialChar);return reviver?reviver.call(this,key,value):value}}function regenerateArray(root,current,retrieve){for(var i=0,length=current.length;i<length;i++){current[i]=regenerate(root,current[i],retrieve)}return current}function regenerateObject(root,current,retrieve){for(var key in current){if(current.hasOwnProperty(key)){current[key]=regenerate(root,current[key],retrieve)}}return current}function regenerate(root,current,retrieve){return current instanceof Array?regenerateArray(root,current,retrieve):current instanceof $String?current.length?retrieve.hasOwnProperty(current)?retrieve[current]:retrieve[current]=retrieveFromPath(root,current.split(specialChar)):root:current instanceof Object?regenerateObject(root,current,retrieve):current}var CircularJSON={stringify:function stringify(value,replacer,space,doNotResolve){return CircularJSON.parser.stringify(value,generateReplacer(value,replacer,!doNotResolve),space)},parse:function parse(text,reviver){return CircularJSON.parser.parse(text,generateReviver(reviver))},parser:JSON};return CircularJSON}(JSON,RegExp);
 ;var prefix = 'data';
-
-var k_docapi = { 
+var _nsKlaster = {};
+_nsKlaster.k_docapi = { 
     'Controller': {
         'this.interactions': {
             'dom-attribute name': {
@@ -69,9 +69,9 @@ var k_docapi = {
     }
 };
 
-var k_structure = {
+_nsKlaster.k_structure = {
     'delay': 10,
-    'api': k_docapi,
+    'api': _nsKlaster.k_docapi,
     'interactions': {
         'test': {
             'click': function (e) {
@@ -107,7 +107,7 @@ var k_structure = {
     'config': {
         'debug': true
     }
-};var k_dom =(function (api) {
+};_nsKlaster.k_dom =(function (api) {
     api = api['dom-attributes'];
     var dom = {
         
@@ -484,7 +484,7 @@ var k_structure = {
     dom.getValue = getValue;
     
     return dom;
-}(k_docapi));
+}(_nsKlaster.k_docapi));
 ;/*! fast-json-patch, version: 2.0.6 */
 var jsonpatch =
 /******/ (function(modules) { // webpackBootstrap
@@ -1681,7 +1681,7 @@ function shim (obj) {
 
 
 /***/ })
-/******/ ]);;var k_data = (function ($) {
+/******/ ]);;_nsKlaster.k_data = (function ($) {
     var data = {
         'field' : {}
     };
@@ -1898,15 +1898,10 @@ function shim (obj) {
         var parent = false;
         if (!notation)
             return parent;
-        if (notation.indexOf(']') > notation.indexOf('.')) {
-            let e = notation.match(/\[(.*?)\]/gi); 
-            e.pop(); 
-            parent = ns + e.join("");
-        } else {
-            var p = notation.split('.');
-            p.pop();
-            parent = ns + p.join('.');
-        }
+        let e = notation.match(/[\W]?(\w+)]?/gi); 
+        e.pop(); 
+        parent = ns + e.join("");
+       
         return parent;
     };
 
@@ -2008,8 +2003,10 @@ function shim (obj) {
          data.compareJsonPatch(data._modelprechangeReal, data.field);
     
     return data;
-}(k_dom));
-;/**
+}(_nsKlaster.k_dom));
+
+if(typeof module !=="undefined")
+    module.exports = _nsKlaster.k_data;;/**
  * @author Alexander Kindziora 2017
  *
  */
@@ -2019,6 +2016,8 @@ function shim (obj) {
 
     var me = {};
     var api = docapi['dom-attributes'];
+
+    if(typeof window ==="undefined")window = global;
 
     window.$k = function (selector) {
         return klaster.bind(document.querySelector(selector));
@@ -2852,4 +2851,4 @@ function shim (obj) {
 
         return cls;
     };
-})(k_structure, k_docapi, k_dom, k_data);
+})(_nsKlaster.k_structure, _nsKlaster.k_docapi, _nsKlaster.k_dom, _nsKlaster.k_data);

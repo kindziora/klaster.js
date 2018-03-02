@@ -1,4 +1,4 @@
-var k_data = (function ($) {
+_nsKlaster.k_data = (function ($) {
     var data = {
         'field' : {}
     };
@@ -215,15 +215,10 @@ var k_data = (function ($) {
         var parent = false;
         if (!notation)
             return parent;
-        if (notation.indexOf(']') > notation.indexOf('.')) {
-            let e = notation.match(/\[(.*?)\]/gi); 
-            e.pop(); 
-            parent = ns + e.join("");
-        } else {
-            var p = notation.split('.');
-            p.pop();
-            parent = ns + p.join('.');
-        }
+        let e = notation.match(/[\W]?(\w+)]?/gi); 
+        e.pop(); 
+        parent = ns + e.join("");
+       
         return parent;
     };
 
@@ -325,4 +320,7 @@ var k_data = (function ($) {
          data.compareJsonPatch(data._modelprechangeReal, data.field);
     
     return data;
-}(k_dom));
+}(_nsKlaster.k_dom));
+
+if(typeof module !=="undefined")
+    module.exports = _nsKlaster.k_data;
