@@ -215,9 +215,11 @@ _nsKlaster.k_data = (function ($) {
         var parent = false;
         if (!notation)
             return parent;
+
         let e = notation.match(/[\W]?(\w+)]?/gi); 
         e.pop(); 
-        parent = ns + e.join("");
+        if(e.join("").trim() !=="")
+            parent = ns + e.join("");
        
         return parent;
     };
