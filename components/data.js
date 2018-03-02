@@ -323,6 +323,3 @@ _nsKlaster.k_data = (function ($) {
     
     return data;
 }(_nsKlaster.k_dom));
-
-if(typeof module !=="undefined")
-    module.exports = _nsKlaster.k_data;

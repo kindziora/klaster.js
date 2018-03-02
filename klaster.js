@@ -843,4 +843,7 @@
 
         return cls;
     };
+    if(typeof module !=="undefined")
+        module.exports = {klaster: klaster, components : arguments};
 })(_nsKlaster.k_structure, _nsKlaster.k_docapi, _nsKlaster.k_dom, _nsKlaster.k_data);
+

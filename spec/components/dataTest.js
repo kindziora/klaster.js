@@ -1,8 +1,10 @@
-describe("test", function() {
+describe("test klaster.js", function() {
 
-  var data = require('../../build/klaster.dev.js');
+  var compiled = require('../../build/klaster.dev.js');
  
 
+let [api, structure, dom, data] = compiled.components;
+let klaster = compiled.klaster;
 
   it("get parent element from array or dotnotation", function() {
      
@@ -17,7 +19,33 @@ describe("test", function() {
     for(let i in expectations) { 
       expect(data._getParentObject(i, "")).toEqual(expectations[i]);
     }
-  
+
   });
- 
+
+
+  it("points to brackets in array notation", function() {
+    
+    let expectations = {
+      "fields.plainmoves" :  "fields[plainmoves]"
+    };
+    
+    for(let i in expectations) { 
+      expect(dom.normalizeChangeResponse(i)).toEqual(expectations[i]);
+    }
+
+  });
+
+  it("brackets to escaped brackets in array notation", function() {
+    let expectations = {
+      "fields[plainmoves]" :  "fields['plainmoves']"
+    };
+    
+    for(let i in expectations) {
+      expect(dom.normalizeChangeResponseBrackets(i)).toEqual(expectations[i]);
+    }
+   
+  });
+  
+
+  
 });

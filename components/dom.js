@@ -230,12 +230,12 @@ _nsKlaster.k_dom =(function (api) {
      * @returns {undefined}
      */
    dom.normalizeChangeResponse = function (change) {
-
+        if (!change)
+            return;
+    
         if (change.substr(0, 1) !== '[')
             return change;
 
-        if (!change)
-            return;
         var match = (/\[(.*?)\]/).exec(change);
         var fieldnamei = change;
         if (match) {
@@ -255,11 +255,12 @@ _nsKlaster.k_dom =(function (api) {
      */
    dom.normalizeChangeResponseBrackets = function (change) {
 
-        if (change.substr(0, 1) !== '[')
+    if (!change)
+    return;
+    
+    if (change.substr(0, 1) !== '[')
             return change;
 
-        if (!change)
-            return;
         var match = (/\[(.*?)\]/).exec(change);
         var fieldnamei = change;
         if (match) {
