@@ -212,7 +212,7 @@ _nsKlaster.k_data = (function ($) {
     data._getParentObject = function (notation, ns) {
         if (typeof ns === 'undefined')
             ns = 'data.field.';
-        var parent = false;
+        var parent = "";
         if (!notation)
             return parent;
 
@@ -223,6 +223,7 @@ _nsKlaster.k_data = (function ($) {
        
         return parent;
     };
+ 
 
     data._delete = data.delete = function (notation) {
         if (typeof data['field'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
