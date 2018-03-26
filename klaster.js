@@ -694,7 +694,7 @@
             var factory = function (me, event) {
                 name = dom.getName(me);
                 method = events[name][event];
-                let key = name + "_" + method + "_" + me.setAttribute("data-id");
+                let key = name + "_" + method + "_" + me.getAttribute("data-id");
 
                 if(typeof cls._cached_methods[key] !== 'undefined') 
                     return cls._cached_methods[key];
