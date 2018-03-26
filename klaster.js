@@ -31,6 +31,8 @@
 
         cls.model = model = model.extend(model, child.model);
 
+        cls.ObjIndex = 0;
+
         /**
          * log debug messages
          */
@@ -692,7 +694,7 @@
             var factory = function (me, event) {
                 name = dom.getName(me);
                 method = events[name][event];
-                let key = name + "_" + method + "_" + dom.getXPath(me);
+                let key = name + "_" + method + "_" + me.setAttribute("data-id");
 
                 if(typeof cls._cached_methods[key] !== 'undefined') 
                     return cls._cached_methods[key];
@@ -733,6 +735,8 @@
                 name = dom.getName(el) || dom.getXPath(el);
 
                 el = cls.applyMethods(el);
+
+                el.setAttribute("data-id", name + "_" + (++cls.ObjIndex));
 
                 events[name] = cls.dispatchEvents.call(el);
                 for (event in events[name]) {
