@@ -692,7 +692,7 @@
             var factory = function (me, event) {
                 name = dom.getName(me);
                 method = events[name][event];
-                let key = name + "_" + method;
+                let key = name + "_" + method + "_" + dom.getXPath(el);
 
                 if(typeof cls._cached_methods[key] !== 'undefined') 
                     return cls._cached_methods[key];
