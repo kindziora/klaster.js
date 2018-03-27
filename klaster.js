@@ -99,7 +99,7 @@
 
         cls.handleChangeFromModel = function (notation, value) {
             var $field = $globalScope.querySelector(dom.getSelector(notation));
-            cls.post_trigger.call($field, e, value);
+            cls.post_trigger.call($field, undefined, value);
         };
 
         /*
