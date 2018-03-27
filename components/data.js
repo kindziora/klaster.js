@@ -206,10 +206,7 @@ _nsKlaster.k_data = (function ($) {
             window.eval.call(window,"((value, data) =>  (typeof " + parent + "!== 'undefined')? data.field." + notation + "=value:null)")(value, data);
         } else {
             data['field'][notation] = value;
-        }
-        if(typeof data.klaster !== "undefined") {
-            data.klaster.handleChangeFromModel(notation, value);
-        }
+        } 
     };
 
     data._getParentObject = function (notation, ns) {
@@ -252,9 +249,7 @@ _nsKlaster.k_data = (function ($) {
         } else {
             delete data['field'][notation];
         }
-        if(typeof data.klaster !== "undefined") {
-            data.klaster.handleChangeFromModel(notation, undefined);
-        }
+       
     };
 
 

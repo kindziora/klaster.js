@@ -97,11 +97,11 @@
             return true;
         };
 
-        cls.handleChangeFromModel = function (notation, value) {
+        cls.set = function (notation, value) {
             var $field = $globalScope.querySelector(dom.getSelector(notation));
             cls.post_trigger.call($field, undefined, value);
         };
-
+  
         /*
          * gets executed after an event is triggered
          * check if model has changed
