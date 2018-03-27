@@ -26,7 +26,7 @@
         var cls = model.extend(structure, child);
 
         dom.child = cls;
-
+        model.klaster = cls;
         var $globalScope = this;
 
         cls.model = model = model.extend(model, child.model);
