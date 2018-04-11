@@ -1,0 +1,24 @@
+{
+  "name": "klaster.js",
+  "version": "0.9.8",
+  "description": "progressive javascript UI framework, easy to use scopes and two way databinding.",
+  "keywords": [
+    "javascript",
+    "mvc",
+    "pattern",
+    "scopes",
+    "two way databinding",
+    "experimental"
+  ],
+  "main": "./build/klaster.dev.js",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-closure-compiler": "0.0.21",
+    "grunt-contrib-concat": "^0.5.1",
+    "benchmark": "latest"
+  },
+  "dependencies": {
+    "nightmare": "latest",
+    "commander": "^2.12.2"
+  }
+}
