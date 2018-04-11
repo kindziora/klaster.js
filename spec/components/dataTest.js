@@ -30,7 +30,7 @@ let klaster = compiled.klaster;
       "fields.plainmoves" :  "fields[plainmoves]"
     };
     
-    for(let i in expectations) { 
+    for(let i in expectations) {  
       expect(dom.normalizeChangeResponse(i)).toEqual(expectations[i]);
     }
 
@@ -46,7 +46,7 @@ let klaster = compiled.klaster;
     }
    
   });
-  
-*/
+  */
+
   
 });
