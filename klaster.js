@@ -741,7 +741,8 @@
 
                 el = cls.applyMethods(el);
 
-                el.setAttribute("data-id", name + "_" + (++cls.ObjIndex));
+                if(el.getAttribute("data-id") === "")
+                    el.setAttribute("data-id", name + "_" + (++cls.ObjIndex));
 
                 events[name] = cls.dispatchEvents.call(el);
                 for (event in events[name]) {
