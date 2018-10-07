@@ -202,7 +202,7 @@ _nsKlaster.k_data = (function ($) {
 
     data.set = function (notation, value) {
         if (typeof data['field'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
-            var parent = data._getParentObject(notation);
+            var parent = $.normalizeChangeResponse(data._getParentObject(notation));
             window.eval.call(window,"((value, data) =>  (typeof " + parent + "!== 'undefined')? data.field." + notation + "=value:null)")(value, data);
         } else {
             data['field'][notation] = value;
