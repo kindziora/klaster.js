@@ -223,7 +223,7 @@ _nsKlaster.k_data = (function ($) {
         if(e.join("").trim() !=="")
             parent = ns + e.join("");
        
-        return parent;
+        return parent.replace(/\[([a-z])\]/ig, "['$1']");
     };
  
 
