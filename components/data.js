@@ -216,6 +216,8 @@ _nsKlaster.k_data = (function ($) {
         if (!notation)
             return parent;
 
+        notation = notation.replace(/'/g, '');
+
         let e = notation.match(/[\W]?(\w+)]?/gi); 
         e.pop(); 
         if(e.join("").trim() !=="")
