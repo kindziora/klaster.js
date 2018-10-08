@@ -216,14 +216,23 @@ _nsKlaster.k_data = (function ($) {
         if (!notation)
             return parent;
 
-        notation = notation.replace(/'/g, '');
+        let replaced = notation.replace(/'/g, ''), r = false;
+
+        if(replaced.length < notation.length){
+            notation = replaced;
+            r = true;
+        }
 
         let e = notation.match(/[\W]?(\w+)]?/gi); 
         e.pop(); 
         if(e.join("").trim() !=="")
             parent = ns + e.join("");
        
-        return parent.replace(/\[([a-z])\]/ig, "['$1']");
+        if(r) {
+            parent = parent.replace(/\[([a-z]\w+)\]/ig, "['$1']");
+        }
+
+        return parent;
     };
  
 
