@@ -1,4 +1,4 @@
-_nsKlaster.k_data = (function ($) {
+function dataKlaster($) {
     var data = {
         'field' : {}
     };
@@ -335,4 +335,5 @@ _nsKlaster.k_data = (function ($) {
          data.compareJsonPatch(data._modelprechangeReal, data.field);
     
     return data;
-}(_nsKlaster.k_dom));
+};
+_nsKlaster.k_data = dataKlaster(_nsKlaster.k_dom);

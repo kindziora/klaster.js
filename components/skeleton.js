@@ -104,4 +104,4 @@ _nsKlaster.k_structure = {
     'config': {
         'debug': true
     }
-}
+};

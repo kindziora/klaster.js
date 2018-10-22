@@ -1,4 +1,4 @@
-_nsKlaster.k_dom =(function (api) {
+function domKlaster(api) {
     api = api['dom-attributes'];
     var dom = {
         
@@ -376,4 +376,6 @@ _nsKlaster.k_dom =(function (api) {
     dom.getValue = getValue;
     
     return dom;
-}(_nsKlaster.k_docapi));
+};
+
+_nsKlaster.k_dom = domKlaster(_nsKlaster.k_docapi);

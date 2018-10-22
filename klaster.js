@@ -3,30 +3,37 @@
  *
  */
 
-(function (structure, docapi, dom, model) {
+(function (structure, docapi) {
     //"use strict";
 
     var me = {};
     var api = docapi['dom-attributes'];
-
+    kui = {};
+    let uicnt = 0;
     if(typeof window ==="undefined")window = global;
 
     window.$k = function (selector) {
-        return klaster.bind(document.querySelector(selector));
+        let el = document.querySelector(selector);
+        el.uselector = selector + (++uicnt);
+        return klaster.bind(el);
     };
 
     function klaster(child) {
-
+        
         var skeleton = {};
         if (structure.config.skeleton) {
             skeleton = JSON.parse(JSON.stringify(structure));
             skeleton.api = null;
         }
 
-        var cls = model.extend(structure, child);
+        let dom = new domKlaster(docapi);
+        let model = new dataKlaster(dom);
+
+        let cls = kui[this.uselector] = model.extend(JSON.parse(JSON.stringify(structure)), child);
 
         dom.child = cls;
         model.klaster = cls;
+
         var $globalScope = this;
 
         cls.model = model = model.extend(model, child.model);
@@ -685,22 +692,19 @@
          */
         cls.bind = function (element) {
 
-            var events = {},
+            let events = {},
                 event = {},
                 name = "",
                 method = "";
-            var filter, $el;
+            let filter, $el;
             filter = cls.dispatchFilter(element);
             $el = element;
 
-            
-
             /* variable injection via lambda function factory used in iteration */
-            var factory = function (me, event) {
+            let factory = function (me, event, cls) {
                 name = dom.getName(me);
                 method = events[name][event];
                 let key = name + "_" + method + "_" + me.getAttribute("data-id");
-
                 if(typeof cls._cached_methods[key] !== 'undefined') 
                     return cls._cached_methods[key];
 
@@ -755,10 +759,10 @@
                         skeleton['interactions'][name][event] = "function(e, self){}";
                     }
 
-                    var f = factory(el, event);
-                    el.removeEventListener(event, f);
-                    el.addEventListener(event, f);
-                   
+                    let fc = factory(el, event, cls);
+                    el.removeEventListener(event, fc);
+                    el.addEventListener(event, fc);
+                 //  console.log(fc, el, event, cls);
                     let modelValue = model.get(el.getName());
                     if ($el.getAttribute('data-defaultvalues') === 'form' || (!modelValue && dom.isPrimitiveValue(el))){
                         let InitValue = dom.value.call(el);
@@ -855,5 +859,5 @@
     };
     if(typeof module !=="undefined")
         module.exports = {klaster: klaster, components : arguments};
-})(_nsKlaster.k_structure, _nsKlaster.k_docapi, _nsKlaster.k_dom, _nsKlaster.k_data);
+})(_nsKlaster.k_structure, _nsKlaster.k_docapi);
 
