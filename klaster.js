@@ -810,6 +810,11 @@
                     console.log("init success");
                 }
             } else {
+                window.setTimeout(function() {
+                    if (typeof cls.mounted !== "undefined") 
+                        cls.mounted();
+                },100);
+              
                 console.log("no init method found");
             }
         }.bind(this);
