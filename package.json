@@ -16,11 +16,12 @@
   "main": "./build/klaster.dev.js",
   "devDependencies": {
     "benchmark": "latest",
-    "circular-json": "^0.5.1",
-    "grunt": "^0.4.5",
-    "grunt-closure-compiler": "0.0.21",
-    "grunt-contrib-concat": "^0.5.1",
-    "jasmine": "^3.1.0",
-    "nightmare": "^3.0.0"
+    "circular-json": "latest",
+    "fast-json-patch": "git+https://github.com/kindziora/JSON-Patch.git#circularJson",
+    "grunt": "latest",
+    "grunt-closure-compiler": "latest",
+    "grunt-contrib-concat": "latest",
+    "jasmine": "latest",
+    "nightmare": "latest"
   }
 }

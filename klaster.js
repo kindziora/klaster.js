@@ -863,6 +863,6 @@
         return cls;
     };
     if(typeof module !=="undefined")
-        module.exports = {klaster: klaster, components : arguments};
+        module.exports = {klaster: klaster, components : _nsKlaster};
 })(_nsKlaster.k_structure, _nsKlaster.k_docapi);
 
