@@ -706,9 +706,10 @@
                 method = events[name][event];
                 let key = name + "_" + method + "_" + me.getAttribute("data-id");
                 if(typeof cls._cached_methods[key] !== 'undefined') 
-                    return cls._cached_methods[key];
+                    return cls._cached_methods[key].bind(me);
 
                 cls._cached_methods[key] = function (e, args) {
+                    let me = this;
                     name = dom.getName(me);
                     method = events[name][event];
                     var result = true;
@@ -733,7 +734,7 @@
                         cls.post_trigger.call(me, e, result);
                     }
 
-                };
+                }.bind(me);
 
                 return cls._cached_methods[key];
             };
