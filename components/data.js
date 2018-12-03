@@ -108,7 +108,7 @@ function dataKlaster($) {
                     base = [];
                 }
 
-                if (typeof data['field'][key] !== 'string' && typeof data['field'][key] !== 'number') {
+                if (typeof data['field'][key] !== 'string' && typeof data['field'][key] !== 'number' && typeof data['field'][key] !== 'boolean') {
                     data._modelprechangeReal[key] = data.extend(true, base, data['field'][key]);
                 } else {
                     data._modelprechangeReal[key] = data['field'][key];

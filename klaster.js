@@ -67,10 +67,6 @@
          * return true means render element, false remove it if existent in dom
          **/
         cls.preRenderView = function ($field, item) {
-
-            if (!$field.getAttribute('data-filter'))
-            return true;
-
             if (typeof model.get(dom.getName($field)) === 'undefined' ||
                 $field.getAttribute(api.view) === "__static")
                 return false;
@@ -110,7 +106,12 @@
 
         cls.set = function (notation, value) {
             var $field = $globalScope.querySelector(dom.getSelector(notation));
-            cls.post_trigger.call($field, undefined, value);
+            if($field){
+                cls.pre_trigger.call($field, undefined);
+                cls.post_trigger.call($field, undefined, value);
+            }else{
+                model.set(notation, value);
+            }
         };
   
         /*
