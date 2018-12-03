@@ -67,6 +67,10 @@
          * return true means render element, false remove it if existent in dom
          **/
         cls.preRenderView = function ($field, item) {
+
+            if (!$field.getAttribute('data-filter'))
+            return true;
+
             if (typeof model.get(dom.getName($field)) === 'undefined' ||
                 $field.getAttribute(api.view) === "__static")
                 return false;
