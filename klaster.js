@@ -485,16 +485,22 @@
                         }
                     }
 
-                    let parentVariable = model.get(model._getParentObject(fieldN));
-                    if(change[1] === "remove" && Array.isArray( parentVariable )){
+                    let parentName = model._getParentObject(fieldN);
+                    let norm = dom.normalizeChangeResponse(parentName);
 
-                        if(el.parentNode.getAttribute('data-name') === model._getParentObject(fieldN)){
-                            $scope = el.parentNode;
-                            scopeModelField = parentVariable;
+                    if(norm) {
+                        norm = norm.replace('data.field.', '');
+                        let parentVariable = model.get(norm);
+
+                        if(change[1] === "remove" && Array.isArray( parentVariable )){
+
+                            if(el.parentNode.getAttribute('data-name') === norm){
+                                $scope = el.parentNode;
+                                scopeModelField = parentVariable;
+                            }
+
                         }
-
                     }
-
 
                     /* if ($scope.attr('type') === "radio") {
                          foundRepresentation = false;
