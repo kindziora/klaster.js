@@ -327,6 +327,10 @@
                     }
                 }
 
+                if (change[1] === 'remove') {
+                    killListElement();
+                }
+
                 if (change[1] === 'value') { // value of subelement has changed
                     var _notation = change[0],
                         scopedField = field,
@@ -480,6 +484,17 @@
                             }
                         }
                     }
+
+                    let parentVariable = model.get(model._getParentObject(fieldN));
+                    if(change[1] === "remove" && Array.isArray( parentVariable )){
+
+                        if(el.parentNode.getAttribute('data-name') === model._getParentObject(fieldN)){
+                            $scope = el.parentNode;
+                            scopeModelField = parentVariable;
+                        }
+
+                    }
+
 
                     /* if ($scope.attr('type') === "radio") {
                          foundRepresentation = false;
