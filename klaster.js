@@ -619,8 +619,16 @@
                        return filtered;
                     })();
 
-                    if (!$els || $els.length === 0)
+                    if (!$els || $els.length === 0){
+
+                        if(Object.prototype.toString.call(changes[addrN][3]) === '[object Object]'){
+
+                            let deep = model.compareJsonPatch({}, changes[addrN][3]);
+                            changes.push.apply(changes, deep);
+                        }
                         continue;
+                    }
+
 
                     name = dom.getName($els[0]);
                     changes[addrN][0] = name;
