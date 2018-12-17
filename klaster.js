@@ -598,8 +598,8 @@
 
                 var cacheEls = {};
                 var name = undefined;
-                for (addrN in changes) { //only this fields need to be refreshed
-                    
+
+                for (addrN = 0; addrN < changes.length; addrN++) { //only this fields need to be refreshed
                     var $els = (() => {
                         let domAppearance = dom.findUntilParentExists(changes[addrN][0]);
                         let filtered = [];
@@ -623,7 +623,8 @@
 
                         if(Object.prototype.toString.call(changes[addrN][3]) === '[object Object]'){
                             let deep = model.compareJsonPatch({}, changes[addrN][3]);
-                            for(let ee in deep){
+
+                            for (let ee in deep) {
                                 deep[ee][0] = changes[addrN][0] + deep[ee][0];
                             }
                             changes.push.apply(changes, deep);
