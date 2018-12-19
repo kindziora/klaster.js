@@ -168,7 +168,7 @@ function domKlaster(api) {
      * setting the HTML
      */
     dom.setHtml = function($scope, content) {
-        $scope.innerHTML = content;
+        $scope.innerHTML = content.trim();
     };
      
 
@@ -298,7 +298,7 @@ function domKlaster(api) {
         }else{
             
             if($scope.type ==="textarea"){
-                $scope.innerHTML = decorated;
+                $scope.innerHTML = decorated.trim();
             }else{
                 $scope.value = decorated;
             }
@@ -317,7 +317,7 @@ function domKlaster(api) {
       if (typeof decorated === 'undefined')
         decorated = '';
         
-        this.innerHTML = decorated;
+        this.innerHTML = decorated.trim();
         
     };
 
@@ -368,7 +368,7 @@ function domKlaster(api) {
      **/
     dom.parseHTML = function (html) {
         var t = document.createElement('template');
-        t.innerHTML = html;
+        t.innerHTML = html.trim();
         return t.content.cloneNode(true).childNodes[0];
     }
  
