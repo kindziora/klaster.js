@@ -295,14 +295,8 @@ function domKlaster(api) {
     dom.setPrimitiveValue = function ($scope, decorated) {
         if($scope.getAttribute(api.value.attr) !== null) {
             $scope.setAttribute(api.value.attr, decorated);
-        }else{
-            
-            if($scope.type ==="textarea"){
-                $scope.innerHTML = decorated.trim();
-            }else{
-                $scope.value = decorated;
-            }
-            
+        }else{ 
+            $scope.value = decorated; 
         } 
     };
      
@@ -317,7 +311,7 @@ function domKlaster(api) {
       if (typeof decorated === 'undefined')
         decorated = '';
         
-        this.innerHTML = decorated.trim();
+        this.innerHTML = decorated.toString().trim();
         
     };
 
