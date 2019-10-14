@@ -776,7 +776,7 @@
                 return cls._cached_methods[key];
             };
             //filter.fields = filter.$el.find('[name],[data-name]'),
-            filter.events = filter.$el.querySelectorAll('[' + api.on.attr + ']');
+            filter.events = filter.$el.querySelectorAll(':not([data-omit="true"]) [' + api.on.attr + ']');
 
             function bindevents(el) {
                 name = dom.getName(el) || dom.getXPath(el);

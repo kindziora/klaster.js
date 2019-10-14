@@ -20,6 +20,10 @@ _nsKlaster.k_docapi = {
             'attr': prefix + '-name',
             'value': 'String containing name of element, not unique'
         },
+        'scope': {
+            'attr': prefix + '-scope',
+            'value': 'String containing id of the scope, not unique'
+        },
         'omit': {
             'attr': prefix + '-omit',
             'value': 'String/that evaluates to boolean, whether ignoring the area for model representation data or not'
