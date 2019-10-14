@@ -569,7 +569,7 @@
                 var brSelector = dom.getSelector(fieldNotationBrackets, true);
                 var match = []
                 .concat
-                .apply(matches, $globalScope.querySelectorAll(selector + ',' + brSelector));
+                .apply(matches, $globalScope.querySelectorAll(':not([data-omit="true"]) ' + selector + ', :not([data-omit="true"]) ' + + brSelector));
 
                 var cnt = match.length;
                 if (cnt === 0) {
