@@ -57,7 +57,7 @@
          * restriction of content by filter criteria eg. data-filter="this.a !== 0"
          */
         cls.updateViewFilter = function () {
-            Array.prototype.forEach.call($globalScope.querySelectorAll('[data-filter]'), function (el, i) {
+            Array.prototype.forEach.call($globalScope.querySelectorAll(':not([data-omit="true"]) [data-filter]'), function (el, i) {
                 cls.viewFilter[dom.getXPath(el)] = el.getAttribute('data-filter');
             });
         };
@@ -590,7 +590,7 @@
 
                 var addrN;
 
-                Array.prototype.forEach.call($globalScope.querySelectorAll('[data-filter]'), function (el) {
+                Array.prototype.forEach.call($globalScope.querySelectorAll(':not([data-omit="true"]) [data-filter]'), function (el) {
                     if (cls.viewFilter[dom.getXPath(el)] !== el.getAttribute('data-filter')) { // filter for this view has changed
                         changes.push([dom.getName(el), 'view-filter', cls.viewFilter[dom.getXPath(el)], el.getAttribute('data-filter')]);
                     }
