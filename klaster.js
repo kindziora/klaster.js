@@ -53,11 +53,62 @@
             }
         };
 
+        cls.diffNodeLists = function(original, updated) {
+
+            // Create arrays from our two node lists.
+            var originalList = [].slice.call(original, 0),
+                updatedList = [].slice.call(updated, 0),
+        
+                // Collection for our updated nodes
+                updatedNodes = [],
+        
+                // Count to keep track of where we are looking at in the original DOM Tree
+                count = 0,
+        
+                // Loop Counter
+                i;
+        
+            // Go through all the nodes in our updated DOM Tree
+            for (i = 0; i < updatedList.length; i++) {
+        
+                // Check for a mismatch in values
+                if (updatedList[i] !== originalList[count]) {
+        
+                    // Check if the value ever exists in our updated list
+                    if (updatedList.indexOf(originalList[count]) !== -1) {
+                        updatedNodes.push(updatedList[i]);
+                    } else {
+                        updatedNodes.push(originalList[count]);
+                        count++;
+                        i--;
+                    }
+        
+                } else {
+                    // The value was found! Time to check the next ones.
+                    count++;           
+                }
+            }
+        
+            return updatedNodes;
+        };
+
+        cls._querySelectorAll = function($el, selectors) {
+            let evadeString = [], allString = [];
+            for(let i in selectors){
+                evadeString.push( '[data-omit="true"] ' + selectors[i]);
+                allString.push(selectors[i]);
+            }
+
+           let evade = $el.querySelectorAll(evadeString.join(',')); 
+           let all =   $el.querySelectorAll(allString.join(',')); 
+           return cls.diffNodeLists(all, evade);
+        };
+
         /**
          * restriction of content by filter criteria eg. data-filter="this.a !== 0"
          */
         cls.updateViewFilter = function () {
-            Array.prototype.forEach.call($globalScope.querySelectorAll('div:not([data-omit="true"]) > [data-filter]'), function (el, i) {
+            Array.prototype.forEach.call(cls._querySelectorAll($globalScope, ['[data-filter]']), function (el, i) {
                 cls.viewFilter[dom.getXPath(el)] = el.getAttribute('data-filter');
             });
         };
@@ -566,10 +617,11 @@
                 var fieldNotationBrackets = dom.normalizeChangeResponseBrackets(notation);
 
                 var selector = dom.getSelector(fieldNotation, true);
-                var brSelector = dom.getSelector(fieldNotationBrackets, true);
+                var brSelector = dom.getSelector(fieldNotationBrackets, true); 
+
                 var match = []
                 .concat
-                .apply(matches, $globalScope.querySelectorAll('div:not([data-omit="true"]) > ' + selector + ', div:not([data-omit="true"]) > ' + + brSelector));
+                .apply(matches, cls._querySelectorAll($globalScope, [selector, brSelector]) );
 
                 var cnt = match.length;
                 if (cnt === 0) {
@@ -590,7 +642,7 @@
 
                 var addrN;
 
-                Array.prototype.forEach.call($globalScope.querySelectorAll('div:not([data-omit="true"]) > [data-filter]'), function (el) {
+                Array.prototype.forEach.call(cls._querySelectorAll($globalScope, ['[data-filter]']), function (el) {
                     if (cls.viewFilter[dom.getXPath(el)] !== el.getAttribute('data-filter')) { // filter for this view has changed
                         changes.push([dom.getName(el), 'view-filter', cls.viewFilter[dom.getXPath(el)], el.getAttribute('data-filter')]);
                     }
@@ -776,8 +828,8 @@
                 return cls._cached_methods[key];
             };
             //filter.fields = filter.$el.find('[name],[data-name]'),
-            filter.events = filter.$el.querySelectorAll('div:not([data-omit="true"]) > [' + api.on.attr + ']');
-
+            filter.events = cls._querySelectorAll(filter.$el, ['[' + api.on.attr + ']']);
+            
             function bindevents(el) {
                 name = dom.getName(el) || dom.getXPath(el);
 

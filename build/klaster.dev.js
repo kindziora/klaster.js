@@ -1,4 +1,4 @@
-/*! klaster.js Version: 0.9.8 15-10-2019 08:05:13 */
+/*! klaster.js Version: 0.9.8 15-10-2019 09:09:49 */
 /*! (C) WebReflection Mit Style License */
 var CircularJSON=function(JSON,RegExp){var specialChar="~",safeSpecialChar="\\x"+("0"+specialChar.charCodeAt(0).toString(16)).slice(-2),escapedSafeSpecialChar="\\"+safeSpecialChar,specialCharRG=new RegExp(safeSpecialChar,"g"),safeSpecialCharRG=new RegExp(escapedSafeSpecialChar,"g"),safeStartWithSpecialCharRG=new RegExp("(?:^|([^\\\\]))"+escapedSafeSpecialChar),indexOf=[].indexOf||function(v){for(var i=this.length;i--&&this[i]!==v;);return i},$String=String;function generateReplacer(value,replacer,resolve){var doNotIgnore=false,inspect=!!replacer,path=[],all=[value],seen=[value],mapp=[resolve?specialChar:"[Circular]"],last=value,lvl=1,i,fn;if(inspect){fn=typeof replacer==="object"?function(key,value){return key!==""&&replacer.indexOf(key)<0?void 0:value}:replacer}return function(key,value){if(inspect)value=fn.call(this,key,value);if(doNotIgnore){if(last!==this){i=lvl-indexOf.call(all,this)-1;lvl-=i;all.splice(lvl,all.length);path.splice(lvl-1,path.length);last=this}if(typeof value==="object"&&value){if(indexOf.call(all,value)<0){all.push(last=value)}lvl=all.length;i=indexOf.call(seen,value);if(i<0){i=seen.push(value)-1;if(resolve){path.push((""+key).replace(specialCharRG,safeSpecialChar));mapp[i]=specialChar+path.join(specialChar)}else{mapp[i]=mapp[0]}}else{value=mapp[i]}}else{if(typeof value==="string"&&resolve){value=value.replace(safeSpecialChar,escapedSafeSpecialChar).replace(specialChar,safeSpecialChar)}}}else{doNotIgnore=true}return value}}function retrieveFromPath(current,keys){for(var i=0,length=keys.length;i<length;current=current[keys[i++].replace(safeSpecialCharRG,specialChar)]);return current}function generateReviver(reviver){return function(key,value){var isString=typeof value==="string";if(isString&&value.charAt(0)===specialChar){return new $String(value.slice(1))}if(key==="")value=regenerate(value,value,{});if(isString)value=value.replace(safeStartWithSpecialCharRG,"$1"+specialChar).replace(escapedSafeSpecialChar,safeSpecialChar);return reviver?reviver.call(this,key,value):value}}function regenerateArray(root,current,retrieve){for(var i=0,length=current.length;i<length;i++){current[i]=regenerate(root,current[i],retrieve)}return current}function regenerateObject(root,current,retrieve){for(var key in current){if(current.hasOwnProperty(key)){current[key]=regenerate(root,current[key],retrieve)}}return current}function regenerate(root,current,retrieve){return current instanceof Array?regenerateArray(root,current,retrieve):current instanceof $String?current.length?retrieve.hasOwnProperty(current)?retrieve[current]:retrieve[current]=retrieveFromPath(root,current.split(specialChar)):root:current instanceof Object?regenerateObject(root,current,retrieve):current}var CircularJSON={stringify:function stringify(value,replacer,space,doNotResolve){return CircularJSON.parser.stringify(value,generateReplacer(value,replacer,!doNotResolve),space)},parse:function parse(text,reviver){return CircularJSON.parser.parse(text,generateReviver(reviver))},parser:JSON};return CircularJSON}(JSON,RegExp);
 ;var prefix = 'data';
@@ -2076,11 +2076,62 @@ _nsKlaster.k_data = dataKlaster(_nsKlaster.k_dom);;/**
             }
         };
 
+        cls.diffNodeLists = function(original, updated) {
+
+            // Create arrays from our two node lists.
+            var originalList = [].slice.call(original, 0),
+                updatedList = [].slice.call(updated, 0),
+        
+                // Collection for our updated nodes
+                updatedNodes = [],
+        
+                // Count to keep track of where we are looking at in the original DOM Tree
+                count = 0,
+        
+                // Loop Counter
+                i;
+        
+            // Go through all the nodes in our updated DOM Tree
+            for (i = 0; i < updatedList.length; i++) {
+        
+                // Check for a mismatch in values
+                if (updatedList[i] !== originalList[count]) {
+        
+                    // Check if the value ever exists in our updated list
+                    if (updatedList.indexOf(originalList[count]) !== -1) {
+                        updatedNodes.push(updatedList[i]);
+                    } else {
+                        updatedNodes.push(originalList[count]);
+                        count++;
+                        i--;
+                    }
+        
+                } else {
+                    // The value was found! Time to check the next ones.
+                    count++;           
+                }
+            }
+        
+            return updatedNodes;
+        };
+
+        cls._querySelectorAll = function($el, selectors) {
+            let evadeString = [], allString = [];
+            for(let i in selectors){
+                evadeString.push( '[data-omit="true"] ' + selectors[i]);
+                allString.push(selectors[i]);
+            }
+
+           let evade = $el.querySelectorAll(evadeString.join(',')); 
+           let all =   $el.querySelectorAll(allString.join(',')); 
+           return cls.diffNodeLists(all, evade);
+        };
+
         /**
          * restriction of content by filter criteria eg. data-filter="this.a !== 0"
          */
         cls.updateViewFilter = function () {
-            Array.prototype.forEach.call($globalScope.querySelectorAll('div:not([data-omit="true"]) > [data-filter]'), function (el, i) {
+            Array.prototype.forEach.call(cls._querySelectorAll($globalScope, ['[data-filter]']), function (el, i) {
                 cls.viewFilter[dom.getXPath(el)] = el.getAttribute('data-filter');
             });
         };
@@ -2589,10 +2640,11 @@ _nsKlaster.k_data = dataKlaster(_nsKlaster.k_dom);;/**
                 var fieldNotationBrackets = dom.normalizeChangeResponseBrackets(notation);
 
                 var selector = dom.getSelector(fieldNotation, true);
-                var brSelector = dom.getSelector(fieldNotationBrackets, true);
+                var brSelector = dom.getSelector(fieldNotationBrackets, true); 
+
                 var match = []
                 .concat
-                .apply(matches, $globalScope.querySelectorAll('div:not([data-omit="true"]) > ' + selector + ', div:not([data-omit="true"]) > ' + + brSelector));
+                .apply(matches, cls._querySelectorAll($globalScope, [selector, brSelector]) );
 
                 var cnt = match.length;
                 if (cnt === 0) {
@@ -2613,7 +2665,7 @@ _nsKlaster.k_data = dataKlaster(_nsKlaster.k_dom);;/**
 
                 var addrN;
 
-                Array.prototype.forEach.call($globalScope.querySelectorAll('div:not([data-omit="true"]) > [data-filter]'), function (el) {
+                Array.prototype.forEach.call(cls._querySelectorAll($globalScope, ['[data-filter]']), function (el) {
                     if (cls.viewFilter[dom.getXPath(el)] !== el.getAttribute('data-filter')) { // filter for this view has changed
                         changes.push([dom.getName(el), 'view-filter', cls.viewFilter[dom.getXPath(el)], el.getAttribute('data-filter')]);
                     }
@@ -2799,8 +2851,8 @@ _nsKlaster.k_data = dataKlaster(_nsKlaster.k_dom);;/**
                 return cls._cached_methods[key];
             };
             //filter.fields = filter.$el.find('[name],[data-name]'),
-            filter.events = filter.$el.querySelectorAll('div:not([data-omit="true"]) > [' + api.on.attr + ']');
-
+            filter.events = cls._querySelectorAll(filter.$el, ['[' + api.on.attr + ']']);
+            
             function bindevents(el) {
                 name = dom.getName(el) || dom.getXPath(el);
 
