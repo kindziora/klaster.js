@@ -15,7 +15,6 @@
   },
   "main": "./build/klaster.dev.js",
   "devDependencies": {
-    "benchmark": "latest",
     "circular-json": "latest",
     "fast-json-patch": "git+https://github.com/kindziora/JSON-Patch.git#circularJson",
     "grunt": "^1.0.4",
