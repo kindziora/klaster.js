@@ -57,7 +57,7 @@
          * restriction of content by filter criteria eg. data-filter="this.a !== 0"
          */
         cls.updateViewFilter = function () {
-            Array.prototype.forEach.call($globalScope.querySelectorAll(':not([data-omit="true"]) [data-filter]'), function (el, i) {
+            Array.prototype.forEach.call($globalScope.querySelectorAll('div:not([data-omit="true"]) > [data-filter]'), function (el, i) {
                 cls.viewFilter[dom.getXPath(el)] = el.getAttribute('data-filter');
             });
         };
@@ -569,7 +569,7 @@
                 var brSelector = dom.getSelector(fieldNotationBrackets, true);
                 var match = []
                 .concat
-                .apply(matches, $globalScope.querySelectorAll(':not([data-omit="true"]) ' + selector + ', :not([data-omit="true"]) ' + + brSelector));
+                .apply(matches, $globalScope.querySelectorAll('div:not([data-omit="true"]) > ' + selector + ', div:not([data-omit="true"]) > ' + + brSelector));
 
                 var cnt = match.length;
                 if (cnt === 0) {
@@ -590,7 +590,7 @@
 
                 var addrN;
 
-                Array.prototype.forEach.call($globalScope.querySelectorAll(':not([data-omit="true"]) [data-filter]'), function (el) {
+                Array.prototype.forEach.call($globalScope.querySelectorAll('div:not([data-omit="true"]) > [data-filter]'), function (el) {
                     if (cls.viewFilter[dom.getXPath(el)] !== el.getAttribute('data-filter')) { // filter for this view has changed
                         changes.push([dom.getName(el), 'view-filter', cls.viewFilter[dom.getXPath(el)], el.getAttribute('data-filter')]);
                     }
@@ -776,7 +776,7 @@
                 return cls._cached_methods[key];
             };
             //filter.fields = filter.$el.find('[name],[data-name]'),
-            filter.events = filter.$el.querySelectorAll(':not([data-omit="true"]) [' + api.on.attr + ']');
+            filter.events = filter.$el.querySelectorAll('div:not([data-omit="true"]) > [' + api.on.attr + ']');
 
             function bindevents(el) {
                 name = dom.getName(el) || dom.getXPath(el);
