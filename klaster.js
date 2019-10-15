@@ -101,7 +101,7 @@
 
            let evade = $el.querySelectorAll(evadeString.join(',')); 
            let all =   $el.querySelectorAll(allString.join(',')); 
-           return cls.diffNodeLists(all, evade);
+           return cls.diffNodeLists(evade, all);
         };
 
         /**
