@@ -18,10 +18,10 @@
     "benchmark": "latest",
     "circular-json": "latest",
     "fast-json-patch": "git+https://github.com/kindziora/JSON-Patch.git#circularJson",
-    "grunt": "latest",
+    "grunt": "^1.0.4",
     "grunt-closure-compiler": "latest",
     "grunt-contrib-concat": "latest",
-    "jasmine": "latest",
-    "nightmare": "latest"
+    "jasmine": "^3.5.0",
+    "nightmare": "^3.0.2"
   }
 }
