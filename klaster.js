@@ -546,7 +546,7 @@
 
                         if(change[1] === "remove" && Array.isArray( parentVariable )){
 
-                            if(el.parentNode.getAttribute('data-name') === norm){
+                            if(el.parentNode && el.parentNode.getAttribute('data-name') === norm){
                                 $scope = el.parentNode;
                                 scopeModelField = parentVariable;
                             }
