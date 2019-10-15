@@ -95,8 +95,8 @@
         cls._querySelectorAll = function($el, selectors) {
             let evadeString = [], allString = [];
             for(let i in selectors){
-                evadeString.push( '[data-omit="true"] ' + selectors[i]);
-                allString.push(selectors[i]);
+                evadeString.push( ':scope [data-omit="true"] ' + selectors[i]);
+                allString.push(':scope ' + selectors[i]);
             }
 
            let evade = $el.querySelectorAll(evadeString.join(',')); 
