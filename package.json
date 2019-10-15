@@ -20,7 +20,6 @@
     "grunt": "^1.0.4",
     "grunt-closure-compiler": "latest",
     "grunt-contrib-concat": "latest",
-    "jasmine": "^3.5.0",
-    "nightmare": "^3.0.2"
+    "jasmine": "^3.5.0"
   }
 }
