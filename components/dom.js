@@ -175,7 +175,7 @@ function domKlaster(api) {
 
     dom.getParents = function($scope, selector) {
          var foundElem;
-          while ($scope && $scope.parentNode ) {
+          while ($scope && $scope.parentNode && $scope != dom.$globalScope) {
             foundElem = $scope.parentNode.querySelector(selector);
             if(foundElem) {
               return foundElem;

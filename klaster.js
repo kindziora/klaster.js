@@ -32,9 +32,10 @@
         let cls = kui[this.uselector] = model.extend(JSON.parse(JSON.stringify(structure)), child);
 
         dom.child = cls;
+        
         model.klaster = cls;
 
-        var $globalScope = this;
+        var $globalScope = dom.$globalScope = this;
 
         cls.model = model = model.extend(model, child.model);
 
