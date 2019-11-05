@@ -96,7 +96,7 @@
         cls._querySelectorAll = function($el, selectors) {
             let evadeString = [], allString = [];
             for(let i in selectors){
-                evadeString.push( ':scope [data-omit="true"] ' + selectors[i]);
+                evadeString.push( ':scope widget ' + selectors[i] + ', :scope [data-omit="true"] ' + selectors[i]);
                 allString.push(':scope ' + selectors[i]);
             }
 
