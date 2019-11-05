@@ -57,8 +57,8 @@
         cls.diffNodeLists = function(original, updated) {
 
             // Create arrays from our two node lists.
-            var originalList = [].slice.call(original, 0),
-                updatedList = [].slice.call(updated, 0),
+            var originalList = original.length> updated.length ?[].slice.call(updated, 0): [].slice.call(original, 0),
+                updatedList = original.length> updated.length ?[].slice.call(updated, 0):  [].slice.call(original, 0),
         
                 // Collection for our updated nodes
                 updatedNodes = [],
