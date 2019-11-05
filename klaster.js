@@ -73,10 +73,10 @@
             for (i = 0; i < updatedList.length; i++) {
         
                 // Check for a mismatch in values
-                if (updatedList[i] !== originalList[count]) {
+                if (typeof originalList[count] ==="undefined" || updatedList[i] !== originalList[count]) {
         
                     // Check if the value ever exists in our updated list
-                    if (updatedList.indexOf(originalList[count]) !== -1) {
+                    if (typeof originalList[count] ==="undefined"|| updatedList.indexOf(originalList[count]) !== -1) {
                         updatedNodes.push(updatedList[i]);
                     } else {
                         updatedNodes.push(originalList[count]);
