@@ -58,7 +58,7 @@
 
             // Create arrays from our two node lists.
             var originalList = original.length> updated.length ?[].slice.call(updated, 0): [].slice.call(original, 0),
-                updatedList = original.length> updated.length ?[].slice.call(updated, 0):  [].slice.call(original, 0),
+                updatedList = original.length> updated.length ?[].slice.call(original, 0):  [].slice.call(updated, 0),
         
                 // Collection for our updated nodes
                 updatedNodes = [],
