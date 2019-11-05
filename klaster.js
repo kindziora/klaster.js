@@ -519,6 +519,7 @@
 
                     if (v === '__static') {
                         dom.setPrimitiveValue($scope, scopeModelField);
+                        iteration(scopeModelField);
                         return;
                     }
 
