@@ -294,11 +294,13 @@ function domKlaster(api) {
      * @returns {undefined}
      */
     dom.setPrimitiveValue = function ($scope, decorated) {
-        if($scope.getAttribute(api.value.attr) !== null) {
-            $scope.setAttribute(api.value.attr, decorated);
-        }else{ 
-            $scope.value = decorated; 
-        } 
+        if(typeof decorated !=="undefined"){
+            if($scope.getAttribute(api.value.attr) !== null) {
+                $scope.setAttribute(api.value.attr, decorated);
+            }else{ 
+                $scope.value = decorated; 
+            } 
+        }
     };
      
     /**
