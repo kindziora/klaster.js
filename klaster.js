@@ -960,6 +960,7 @@
             cls.init();
         }
 
+        cls.dom = dom;
         return cls;
     };
     if (typeof module !== "undefined")
