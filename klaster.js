@@ -173,19 +173,19 @@
         cls.post_trigger = function (e, result) {
             var name = dom.getName(this);
             var modelState = model.get(name);
-
+            let changes = [];
             if ((CircularJSON.stringify(result) != CircularJSON.stringify(modelState)) || model.changed(name)) {
-
+                changes = model.getChangedModelFields();
                 cls.debug('changed', result, model.getOld(name), name);
 
-                cls.recognizeChange.setup.call(this, { old: model.getOld(name), new: result, notation: name });
+                cls.recognizeChange.setup.call(this, { all : changes, trigger : { old: model.getOld(name), new: result, notation: name } });
 
                 model.updateValue.call(this, result, model.field[name]);
 
                 if (typeof child.post_trigger !== "undefined")
                     child.post_trigger.call(this, e, child);
 
-                cls.model2View.call(this);
+                cls.model2View.call(this, changes);
 
             }
             return true;
@@ -202,7 +202,7 @@
                 model.setState(name, validateResult);
 
                 if (typeof value.getName === "function")
-                    cls.model2View.call(value);
+                    cls.model2View.call(value, model.getChangedModelFields());
                 return validateResult.result ? value : undefined;
             }
 
@@ -461,7 +461,7 @@
             });
         };
 
-        cls.model2View = function () {
+        cls.model2View = function (changedFields) {
             var local = {};
             var $triggerSrc = this;
 
@@ -712,7 +712,7 @@
                 }
             };
 
-            dom.updateAllViews(model.getChangedModelFields() || []);
+            dom.updateAllViews(changedFields || []);
 
         };
 
@@ -870,7 +870,7 @@
             bindevents(filter.$el);
 
             if ($el.getAttribute('data-defaultvalues') === 'model') {
-                cls.model2View.call($el);
+                cls.model2View.call($el, model.getChangedModelFields());
             }
             return filter;
         };
