@@ -184,7 +184,7 @@
                 changeReport = { all : changes, trigger : { old: old, new: result, notation: name } };
                 
                 if(typeof refChangeCallback ==="function"){
-                    refChangeCallback(this, changeReport);
+                    refChangeCallback.call(this, changeReport);
                 }
 
                 cls.recognizeChange.setup.call(this, changeReport);
