@@ -1,5 +1,5 @@
 /**
- * @author Alexander Kindziora 2017
+ * @author Alexander Kindziora 2019
  *
  */
 
@@ -18,7 +18,7 @@
         return klaster.bind(el);
     };
 
-    function klaster(child) {
+    function klaster(child, refChangeCallback) {
 
         var skeleton = {};
         if (structure.config.skeleton) {
@@ -181,8 +181,13 @@
                 model.updateValue.call(this, result, model.field[name]);
 
                 changes = model.getChangedModelFields();
+                changeReport = { all : changes, trigger : { old: old, new: result, notation: name } };
+                
+                if(typeof refChangeCallback ==="function"){
+                    refChangeCallback(this, changeReport);
+                }
 
-                cls.recognizeChange.setup.call(this, { all : changes, trigger : { old: old, new: result, notation: name } });
+                cls.recognizeChange.setup.call(this, changeReport);
 
                 if (typeof child.post_trigger !== "undefined")
                     child.post_trigger.call(this, e, child);
