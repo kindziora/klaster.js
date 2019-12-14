@@ -10,7 +10,7 @@
     var api = docapi['dom-attributes'];
     kui = {};
     let uicnt = 0;
-    if(typeof window ==="undefined")window = global;
+    if (typeof window === "undefined") window = global;
 
     window.$k = function (selector) {
         let el = document.querySelector(selector);
@@ -19,7 +19,7 @@
     };
 
     function klaster(child) {
-        
+
         var skeleton = {};
         if (structure.config.skeleton) {
             skeleton = JSON.parse(JSON.stringify(structure));
@@ -32,7 +32,7 @@
         let cls = kui[this.uselector] = model.extend(JSON.parse(JSON.stringify(structure)), child);
 
         dom.child = cls;
-        
+
         model.klaster = cls;
 
         var $globalScope = dom.$globalScope = this;
@@ -54,55 +54,55 @@
             }
         };
 
-        cls.diffNodeLists = function(original, updated) {
+        cls.diffNodeLists = function (original, updated) {
 
             // Create arrays from our two node lists.
-            var originalList = original.length> updated.length ?[].slice.call(updated, 0): [].slice.call(original, 0),
-                updatedList = original.length> updated.length ?[].slice.call(original, 0):  [].slice.call(updated, 0),
-        
+            var originalList = original.length > updated.length ? [].slice.call(updated, 0) : [].slice.call(original, 0),
+                updatedList = original.length > updated.length ? [].slice.call(original, 0) : [].slice.call(updated, 0),
+
                 // Collection for our updated nodes
                 updatedNodes = [],
-        
+
                 // Count to keep track of where we are looking at in the original DOM Tree
                 count = 0,
-        
+
                 // Loop Counter
                 i;
-        
+
             // Go through all the nodes in our updated DOM Tree
             for (i = 0; i < updatedList.length; i++) {
-        
+
                 // Check for a mismatch in values
-                if (typeof originalList[count] ==="undefined" || updatedList[i] !== originalList[count]) {
-        
+                if (typeof originalList[count] === "undefined" || updatedList[i] !== originalList[count]) {
+
                     // Check if the value ever exists in our updated list
-                    if (typeof originalList[count] ==="undefined"|| updatedList.indexOf(originalList[count]) !== -1) {
+                    if (typeof originalList[count] === "undefined" || updatedList.indexOf(originalList[count]) !== -1) {
                         updatedNodes.push(updatedList[i]);
                     } else {
                         updatedNodes.push(originalList[count]);
                         count++;
                         i--;
                     }
-        
+
                 } else {
                     // The value was found! Time to check the next ones.
-                    count++;           
+                    count++;
                 }
             }
-        
+
             return updatedNodes;
         };
 
-        cls._querySelectorAll = function($el, selectors) {
+        cls._querySelectorAll = function ($el, selectors) {
             let evadeString = [], allString = [];
-            for(let i in selectors){
-                evadeString.push( ':scope widget ' + selectors[i] + ', :scope [data-omit="true"] ' + selectors[i]);
+            for (let i in selectors) {
+                evadeString.push(':scope widget ' + selectors[i] + ', :scope [data-omit="true"] ' + selectors[i]);
                 allString.push(':scope ' + selectors[i]);
             }
 
-           let evade = $el.querySelectorAll(evadeString.join(',')); 
-           let all =   $el.querySelectorAll(allString.join(',')); 
-           return (evade.length === 0) ? all : cls.diffNodeLists(all, evade);
+            let evade = $el.querySelectorAll(evadeString.join(','));
+            let all = $el.querySelectorAll(allString.join(','));
+            return (evade.length === 0) ? all : cls.diffNodeLists(all, evade);
         };
 
         /**
@@ -158,14 +158,14 @@
 
         cls.set = function (notation, value) {
             var $field = $globalScope.querySelector(dom.getSelector(notation));
-            if($field){
+            if ($field) {
                 cls.pre_trigger.call($field, undefined);
                 cls.post_trigger.call($field, undefined, value);
-            }else{
+            } else {
                 model.set(notation, value);
             }
         };
-  
+
         /*
          * gets executed after an event is triggered
          * check if model has changed
@@ -178,7 +178,7 @@
 
                 cls.debug('changed', result, model.getOld(name), name);
 
-                cls.recognizeChange.setup.call(this);
+                cls.recognizeChange.setup.call(this, { old: model.getOld(name), new: result, notation: name });
 
                 model.updateValue.call(this, result, model.field[name]);
 
@@ -227,12 +227,12 @@
          * gets executed after a change on dom objects
          * "this" is the dom element responsible for the change
          */
-        cls.changed = function () {
+        cls.changed = function (changed) {
             if (typeof model.event !== "undefined" && typeof model.event.sync === "function") {
-                model.event.sync.call(model, this, cls);
+                model.event.sync.call(model, this, cls, changed);
             }
             if (typeof child.sync !== "undefined" && typeof child.sync === "function") {
-                child.sync.call(model, this, cls);
+                child.sync.call(model, this, cls, changed);
             }
             return true;
         };
@@ -323,7 +323,7 @@
                         cls.postRenderView($html); //execute post render on added child
 
                     } else {
-                        if($child)
+                        if ($child)
                             $child.parentNode.removeChild($child);
                     }
 
@@ -390,7 +390,7 @@
 
                     var index = /\[(.*?)\]/gi.exec(_notation);
                     index = index !== null && typeof index.length !== 'undefined' ? index[1] : false;
-                    
+
                     if (index && typeof field.indexOf !== 'undefined') { // array
                         scopedField = typeof field[index] !== 'undefined' ?
                             index :
@@ -541,13 +541,13 @@
                     let parentName = model._getParentObject(fieldN);
                     let norm = dom.normalizeChangeResponse(parentName);
 
-                    if(norm) {
+                    if (norm) {
                         norm = norm.replace('data.field.', '');
                         let parentVariable = model.get(norm);
 
-                        if(change[1] === "remove" && Array.isArray( parentVariable )){
+                        if (change[1] === "remove" && Array.isArray(parentVariable)) {
 
-                            if(el.parentNode && el.parentNode.getAttribute('data-name') === norm){
+                            if (el.parentNode && el.parentNode.getAttribute('data-name') === norm) {
                                 $scope = el.parentNode;
                                 scopeModelField = parentVariable;
                             }
@@ -575,11 +575,11 @@
                         if (dom.isHtmlList($scope)) {
                             //render partial list of html elements
 
-                          /*  if (dom.getName($scope).indexOf('[') === -1) { // address no array element
-                                change[1] = 'view-filter'; // why view filter?
-                                change[2] = 2;
-                                change[3] = 1;
-                            }*/
+                            /*  if (dom.getName($scope).indexOf('[') === -1) { // address no array element
+                                  change[1] = 'view-filter'; // why view filter?
+                                  change[2] = 2;
+                                  change[3] = 1;
+                              }*/
                             cls.updateHtmlList($scope, scopeModelField, change); // why trigger update list?
 
                         } else { // not a list
@@ -619,11 +619,11 @@
                 var fieldNotationBrackets = dom.normalizeChangeResponseBrackets(notation);
 
                 var selector = dom.getSelector(fieldNotation, true);
-                var brSelector = dom.getSelector(fieldNotationBrackets, true); 
+                var brSelector = dom.getSelector(fieldNotationBrackets, true);
 
                 var match = []
-                .concat
-                .apply(matches, cls._querySelectorAll($globalScope, [selector, brSelector]) );
+                    .concat
+                    .apply(matches, cls._querySelectorAll($globalScope, [selector, brSelector]));
 
                 var cnt = match.length;
                 if (cnt === 0) {
@@ -657,25 +657,25 @@
                     var $els = (() => {
                         let domAppearance = dom.findUntilParentExists(changes[addrN][0]);
                         let filtered = [];
-                        for(let i in domAppearance){
+                        for (let i in domAppearance) {
                             let kick = false;
-                            for(let e = 0; e < i; e++){
-                                if(domAppearance[i].contains(domAppearance[e]) ){ 
+                            for (let e = 0; e < i; e++) {
+                                if (domAppearance[i].contains(domAppearance[e])) {
                                     kick = true;
                                     break;
                                 }
                             }
-                            if(!kick){ 
+                            if (!kick) {
                                 filtered.push(domAppearance[i]);
                             }
                         }
-                       
-                       return filtered;
+
+                        return filtered;
                     })();
 
-                    if (!$els || $els.length === 0){
+                    if (!$els || $els.length === 0) {
 
-                        if(Object.prototype.toString.call(changes[addrN][3]) === '[object Object]'){
+                        if (Object.prototype.toString.call(changes[addrN][3]) === '[object Object]') {
                             let deep = model.compareJsonPatch({}, changes[addrN][3]);
 
                             for (let ee in deep) {
@@ -724,7 +724,7 @@
         cls.recognizeChange = function () {
             var mio = {};
             mio.changed = function (el) {
-                cls.changed.call(el);
+                cls.changed.call(el, mio.change);
                 delete cls.timeoutID;
             };
             mio.cancel = function () {
@@ -733,7 +733,8 @@
                     delete cls.timeoutID;
                 }
             };
-            mio.setup = function () {
+            mio.setup = function (change) {
+                mio.change = change;
                 var mes = this;
                 mio.cancel();
                 cls.timeoutID = window.setTimeout(function (msg) {
@@ -796,7 +797,7 @@
                 name = dom.getName(me);
                 method = events[name][event];
                 let key = name + "_" + method + "_" + me.getAttribute("data-id");
-                if(typeof cls._cached_methods[key] !== 'undefined') 
+                if (typeof cls._cached_methods[key] !== 'undefined')
                     return cls._cached_methods[key];
 
                 cls._cached_methods[key] = function (e, args) {
@@ -813,9 +814,9 @@
                             if (me.getAttribute(api.omit.attr) === "true") {
                                 result = dom.value.call(me);
                             }
-                        } else if(typeof cls.interactions[method] !== 'undefined' && typeof cls.interactions[method][event] !== 'undefined') {
+                        } else if (typeof cls.interactions[method] !== 'undefined' && typeof cls.interactions[method][event] !== 'undefined') {
                             result = cls.interactions[method][event].call(me, e, cls, args);
-                            
+
                             if (me.getAttribute(api.omit.attr) === "true") {
                                 result = dom.value.call(me);
                             }
@@ -831,13 +832,13 @@
             };
             //filter.fields = filter.$el.find('[name],[data-name]'),
             filter.events = cls._querySelectorAll(filter.$el, ['[' + api.on.attr + ']']);
-            
+
             function bindevents(el) {
                 name = dom.getName(el) || dom.getXPath(el);
 
                 el = cls.applyMethods(el);
 
-                if(el.getAttribute("data-id") === "")
+                if (el.getAttribute("data-id") === "")
                     el.setAttribute("data-id", name + "_" + (++cls.ObjIndex));
 
                 events[name] = cls.dispatchEvents.call(el);
@@ -854,9 +855,9 @@
                     let fc = factory(el, event, cls);
                     el.removeEventListener(event, fc);
                     el.addEventListener(event, fc);
-                 //  console.log(fc, el, event, cls);
+                    //  console.log(fc, el, event, cls);
                     let modelValue = model.get(el.getName());
-                    if ($el.getAttribute('data-defaultvalues') === 'form' || (!modelValue && dom.isPrimitiveValue(el))){
+                    if ($el.getAttribute('data-defaultvalues') === 'form' || (!modelValue && dom.isPrimitiveValue(el))) {
                         let InitValue = dom.value.call(el);
                         model.updateValue.call(el, InitValue);
                     }
@@ -902,11 +903,11 @@
                     console.log("init success");
                 }
             } else {
-                window.setTimeout(function() {
-                    if (typeof cls.mounted !== "undefined") 
+                window.setTimeout(function () {
+                    if (typeof cls.mounted !== "undefined")
                         cls.mounted();
-                },100);
-              
+                }, 100);
+
                 console.log("no init method found");
             }
         }.bind(this);
@@ -954,7 +955,7 @@
 
         return cls;
     };
-    if(typeof module !=="undefined")
-        module.exports = {klaster: klaster, components : _nsKlaster};
+    if (typeof module !== "undefined")
+        module.exports = { klaster: klaster, components: _nsKlaster };
 })(_nsKlaster.k_structure, _nsKlaster.k_docapi);
 
