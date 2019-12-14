@@ -175,12 +175,14 @@
             var modelState = model.get(name);
             let changes = [];
             if ((CircularJSON.stringify(result) != CircularJSON.stringify(modelState)) || model.changed(name)) {
-                changes = model.getChangedModelFields();
-                cls.debug('changed', result, model.getOld(name), name);
-
-                cls.recognizeChange.setup.call(this, { all : changes, trigger : { old: model.getOld(name), new: result, notation: name } });
-
+                let old = model.getOld(name);
+                cls.debug('changed', result, old, name);
+                
                 model.updateValue.call(this, result, model.field[name]);
+
+                changes = model.getChangedModelFields();
+
+                cls.recognizeChange.setup.call(this, { all : changes, trigger : { old: old, new: result, notation: name } });
 
                 if (typeof child.post_trigger !== "undefined")
                     child.post_trigger.call(this, e, child);
