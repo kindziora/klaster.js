@@ -182,10 +182,7 @@
 
                 changes = model.getChangedModelFields();
                 changeReport = { all : changes, trigger : { old: old, new: result, notation: name } };
-                
-                if(typeof refChangeCallback ==="function"){
-                    refChangeCallback.call(this, changeReport);
-                }
+                 
 
                 cls.recognizeChange.setup.call(this, changeReport);
 
@@ -193,7 +190,10 @@
                     child.post_trigger.call(this, e, child);
 
                 cls.model2View.call(this, changes);
-
+                
+                if(typeof refChangeCallback ==="function"){
+                    refChangeCallback.call(this, changeReport);
+                }
             }
             return true;
         };
