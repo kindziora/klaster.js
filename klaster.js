@@ -192,7 +192,7 @@
                 cls.model2View.call(this, changes);
                 
                 if(typeof refChangeCallback ==="function"){
-                    refChangeCallback.call(this, changeReport);
+                    refChangeCallback(changeReport, this);
                 }
             }
             return true;
