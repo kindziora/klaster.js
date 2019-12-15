@@ -168,8 +168,8 @@
                 if(changes.length > 0) {
                    let changeReport = { all : changes, trigger : { old: model.getOld(notation), new: value,notation :notation } };
                    
-                    cls.recognizeChange.setup.call({}, changeReport);
-                    
+                    cls.recognizeChange.setup.call($globalScope, changeReport);
+
                     if(typeof refChangeCallback ==="function"){
                         refChangeCallback(changeReport);
                     }
