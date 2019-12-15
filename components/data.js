@@ -205,7 +205,7 @@ function dataKlaster($) {
             var parent = $.normalizeChangeResponse(data._getParentObject(notation));
             window.eval.call(window,"((value, data) =>  (typeof " + parent + "!== 'undefined')? data.field." + notation + "=value:null)")(value, data);
         } else if (typeof data['field'][notation] === 'undefined' && notation.indexOf('.') !== -1) {
-            window.eval.call(window,"((value, data) =>  (typeof " + parent + "!== 'undefined')? data.field." + notation + "=value:null)")(value, data);
+            window.eval.call(window,"((value, data) =>  (typeof " + data._getParentObject(notation) + "!== 'undefined')? data.field." + notation + "=value:null)")(value, data);
         }else{
             data['field'][notation] = value;
         } 
