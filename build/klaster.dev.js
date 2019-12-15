@@ -1,4 +1,4 @@
-/*! klaster.js Version: 0.9.8 15-12-2019 15:27:41 */
+/*! klaster.js Version: 0.9.8 15-12-2019 19:50:47 */
 /*! (C) WebReflection Mit Style License */
 var CircularJSON=function(JSON,RegExp){var specialChar="~",safeSpecialChar="\\x"+("0"+specialChar.charCodeAt(0).toString(16)).slice(-2),escapedSafeSpecialChar="\\"+safeSpecialChar,specialCharRG=new RegExp(safeSpecialChar,"g"),safeSpecialCharRG=new RegExp(escapedSafeSpecialChar,"g"),safeStartWithSpecialCharRG=new RegExp("(?:^|([^\\\\]))"+escapedSafeSpecialChar),indexOf=[].indexOf||function(v){for(var i=this.length;i--&&this[i]!==v;);return i},$String=String;function generateReplacer(value,replacer,resolve){var doNotIgnore=false,inspect=!!replacer,path=[],all=[value],seen=[value],mapp=[resolve?specialChar:"[Circular]"],last=value,lvl=1,i,fn;if(inspect){fn=typeof replacer==="object"?function(key,value){return key!==""&&replacer.indexOf(key)<0?void 0:value}:replacer}return function(key,value){if(inspect)value=fn.call(this,key,value);if(doNotIgnore){if(last!==this){i=lvl-indexOf.call(all,this)-1;lvl-=i;all.splice(lvl,all.length);path.splice(lvl-1,path.length);last=this}if(typeof value==="object"&&value){if(indexOf.call(all,value)<0){all.push(last=value)}lvl=all.length;i=indexOf.call(seen,value);if(i<0){i=seen.push(value)-1;if(resolve){path.push((""+key).replace(specialCharRG,safeSpecialChar));mapp[i]=specialChar+path.join(specialChar)}else{mapp[i]=mapp[0]}}else{value=mapp[i]}}else{if(typeof value==="string"&&resolve){value=value.replace(safeSpecialChar,escapedSafeSpecialChar).replace(specialChar,safeSpecialChar)}}}else{doNotIgnore=true}return value}}function retrieveFromPath(current,keys){for(var i=0,length=keys.length;i<length;current=current[keys[i++].replace(safeSpecialCharRG,specialChar)]);return current}function generateReviver(reviver){return function(key,value){var isString=typeof value==="string";if(isString&&value.charAt(0)===specialChar){return new $String(value.slice(1))}if(key==="")value=regenerate(value,value,{});if(isString)value=value.replace(safeStartWithSpecialCharRG,"$1"+specialChar).replace(escapedSafeSpecialChar,safeSpecialChar);return reviver?reviver.call(this,key,value):value}}function regenerateArray(root,current,retrieve){for(var i=0,length=current.length;i<length;i++){current[i]=regenerate(root,current[i],retrieve)}return current}function regenerateObject(root,current,retrieve){for(var key in current){if(current.hasOwnProperty(key)){current[key]=regenerate(root,current[key],retrieve)}}return current}function regenerate(root,current,retrieve){return current instanceof Array?regenerateArray(root,current,retrieve):current instanceof $String?current.length?retrieve.hasOwnProperty(current)?retrieve[current]:retrieve[current]=retrieveFromPath(root,current.split(specialChar)):root:current instanceof Object?regenerateObject(root,current,retrieve):current}var CircularJSON={stringify:function stringify(value,replacer,space,doNotResolve){return CircularJSON.parser.stringify(value,generateReplacer(value,replacer,!doNotResolve),space)},parse:function parse(text,reviver){return CircularJSON.parser.parse(text,generateReviver(reviver))},parser:JSON};return CircularJSON}(JSON,RegExp);
 ;var prefix = 'data';
@@ -1687,96 +1687,96 @@ function shim (obj) {
 /***/ })
 /******/ ]);;function dataKlaster($) {
     var data = {
-        'field' : {}
+        'field': {}
     };
- 
-  
-    
+
+
+
     var hasOwn = Object.prototype.hasOwnProperty;
     var toStr = Object.prototype.toString;
-    
+
     var isArray = function isArray(arr) {
-    	if (typeof Array.isArray === 'function') {
-    		return Array.isArray(arr);
-    	}
-    
-    	return toStr.call(arr) === '[object Array]';
+        if (typeof Array.isArray === 'function') {
+            return Array.isArray(arr);
+        }
+
+        return toStr.call(arr) === '[object Array]';
     };
-    
+
     var isPlainObject = function isPlainObject(obj) {
-    	if (!obj || toStr.call(obj) !== '[object Object]') {
-    		return false;
-    	}
-    
-    	var hasOwnConstructor = hasOwn.call(obj, 'constructor');
-    	var hasIsPrototypeOf = obj.constructor && obj.constructor.prototype && hasOwn.call(obj.constructor.prototype, 'isPrototypeOf');
-    	// Not own constructor property must be Object
-    	if (obj.constructor && !hasOwnConstructor && !hasIsPrototypeOf) {
-    		return false;
-    	}
-    
-    	// Own properties are enumerated firstly, so to speed up,
-    	// if last one is own, then all properties are own.
-    	var key;
-    	for (key in obj) { /**/ }
-    
-    	return typeof key === 'undefined' || hasOwn.call(obj, key);
+        if (!obj || toStr.call(obj) !== '[object Object]') {
+            return false;
+        }
+
+        var hasOwnConstructor = hasOwn.call(obj, 'constructor');
+        var hasIsPrototypeOf = obj.constructor && obj.constructor.prototype && hasOwn.call(obj.constructor.prototype, 'isPrototypeOf');
+        // Not own constructor property must be Object
+        if (obj.constructor && !hasOwnConstructor && !hasIsPrototypeOf) {
+            return false;
+        }
+
+        // Own properties are enumerated firstly, so to speed up,
+        // if last one is own, then all properties are own.
+        var key;
+        for (key in obj) { /**/ }
+
+        return typeof key === 'undefined' || hasOwn.call(obj, key);
     };
-    
-   data.extend = function() {
-    	var options, name, src, copy, copyIsArray, clone;
-    	var target = arguments[0];
-    	var i = 1;
-    	var length = arguments.length;
-    	var deep = false;
-    
-    	// Handle a deep copy situation
-    	if (typeof target === 'boolean') {
-    		deep = target;
-    		target = arguments[1] || {};
-    		// skip the boolean and the target
-    		i = 2;
-    	} else if ((typeof target !== 'object' && typeof target !== 'function') || target == null) {
-    		target = {};
-    	}
-    
-    	for (; i < length; ++i) {
-    		options = arguments[i];
-    		// Only deal with non-null/undefined values
-    		if (options != null) {
-    			// Extend the base object
-    			for (name in options) {
-    				src = target[name];
-    				copy = options[name];
-    
-    				// Prevent never-ending loop
-    				if (target !== copy) {
-    					// Recurse if we're merging plain objects or arrays
-    					if (deep && copy && (isPlainObject(copy) || (copyIsArray = isArray(copy)))) {
-    						if (copyIsArray) {
-    							copyIsArray = false;
-    							clone = src && isArray(src) ? src : [];
-    						} else {
-    							clone = src && isPlainObject(src) ? src : {};
-    						}
-    
-    						// Never move original objects, clone them
-    						target[name] = data.extend(deep, clone, copy);
-    
-    					// Don't bring in undefined values
-    					} else if (typeof copy !== 'undefined') {
-    						target[name] = copy;
-    					}
-    				}
-    			}
-    		}
-    	}
-    
-    	// Return the modified object
-    	return target;
+
+    data.extend = function () {
+        var options, name, src, copy, copyIsArray, clone;
+        var target = arguments[0];
+        var i = 1;
+        var length = arguments.length;
+        var deep = false;
+
+        // Handle a deep copy situation
+        if (typeof target === 'boolean') {
+            deep = target;
+            target = arguments[1] || {};
+            // skip the boolean and the target
+            i = 2;
+        } else if ((typeof target !== 'object' && typeof target !== 'function') || target == null) {
+            target = {};
+        }
+
+        for (; i < length; ++i) {
+            options = arguments[i];
+            // Only deal with non-null/undefined values
+            if (options != null) {
+                // Extend the base object
+                for (name in options) {
+                    src = target[name];
+                    copy = options[name];
+
+                    // Prevent never-ending loop
+                    if (target !== copy) {
+                        // Recurse if we're merging plain objects or arrays
+                        if (deep && copy && (isPlainObject(copy) || (copyIsArray = isArray(copy)))) {
+                            if (copyIsArray) {
+                                copyIsArray = false;
+                                clone = src && isArray(src) ? src : [];
+                            } else {
+                                clone = src && isPlainObject(src) ? src : {};
+                            }
+
+                            // Never move original objects, clone them
+                            target[name] = data.extend(deep, clone, copy);
+
+                            // Don't bring in undefined values
+                        } else if (typeof copy !== 'undefined') {
+                            target[name] = copy;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Return the modified object
+        return target;
     };
-     
- 
+
+
     data.has = function (obj, key) {
         return hasOwnProperty.call(obj, key);
     };
@@ -1788,7 +1788,7 @@ function shim (obj) {
         data._modelprechangeReal = {};
         data._modelpresize = 0;
         for (var key in data['field']) {
-            if (data.has(data['field'], key) && data['field'][key] !== null  && typeof data['field'][key] !== 'undefined') {
+            if (data.has(data['field'], key) && data['field'][key] !== null && typeof data['field'][key] !== 'undefined') {
                 data._modelprechange[key] = data['field'][key]; // data['field'][key].toString()
                 var base = {};
                 if (Object.prototype.toString.call(data['field'][key]) === "[object Array]") {
@@ -1805,26 +1805,26 @@ function shim (obj) {
             }
         }
     };
-    
+
     /**
      * set state of a model field value and represent it in the state object eg.
      * {result: false, msg : "email ist nicht gültig"};
      **/
-    data.setState = function(notation, value){
-         
+    data.setState = function (notation, value) {
+
         //check if valid
-        
-        if(typeof value.result === 'undefined') {
-            throw  {
-               message : "A state has to contain a field 'result' of type boolean",
-               name : "ValidationException"
+
+        if (typeof value.result === 'undefined') {
+            throw {
+                message: "A state has to contain a field 'result' of type boolean",
+                name: "ValidationException"
             };
         }
-          
-        if (typeof data['state'] === 'undefined' ){
+
+        if (typeof data['state'] === 'undefined') {
             data.state = JSON.parse(CircularJSON.stringify(data.field));
         }
-          
+
         if (typeof data['state'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
             var parent = data._getParentObject(notation).replace(/\.field\./g, '.state.');
             eval("if( (typeof " + parent + "!== 'undefined')) data.state." + notation + "=" + CircularJSON.stringify(value) + ";");
@@ -1832,12 +1832,12 @@ function shim (obj) {
             data['state'][notation] = value;
         }
     }
-    
+
     /**
      * return state for a model field value eg.
      * {result: false, msg : "email ist nicht gültig"}
      **/
-    data.getState = function(notation){
+    data.getState = function (notation) {
         try {
             if (typeof data['state'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
                 return eval("(typeof data.state." + notation + "!== 'undefined' ) ? data.state." + notation + ": undefined;");
@@ -1848,17 +1848,17 @@ function shim (obj) {
             return undefined;
         }
     }
-    
-     /**
-     * eval is better for this, js supports no byref arguments
-     * @param {type} variable
-     * @param {type} level
-     * @param {type} index
-     * @returns {@exp;data@pro;model@call;getValue}
-     */
+
+    /**
+    * eval is better for this, js supports no byref arguments
+    * @param {type} variable
+    * @param {type} level
+    * @param {type} index
+    * @returns {@exp;data@pro;model@call;getValue}
+    */
     data.getOld = function (notation) {
         try {
-            if (typeof data['_modelprechangeReal'][notation] === 'undefined' && (notation.indexOf('[') !== -1 ||  notation.indexOf('.') !== -1)) {
+            if (typeof data['_modelprechangeReal'][notation] === 'undefined' && (notation.indexOf('[') !== -1 || notation.indexOf('.') !== -1)) {
                 return eval("(typeof data._modelprechangeReal." + notation + "!== 'undefined' ) ? data._modelprechangeReal." + notation + ": undefined;");
             } else {
                 return data['_modelprechangeReal'][notation];
@@ -1867,7 +1867,7 @@ function shim (obj) {
             return undefined;
         }
     };
-    
+
     /**
      * eval is better for this, js supports no byref arguments
      * @param {type} variable
@@ -1879,7 +1879,10 @@ function shim (obj) {
         try {
             if (typeof data['field'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
                 return eval("(typeof data.field." + notation + "!== 'undefined' ) ? data.field." + notation + ": undefined;");
-            } else {
+            } else if (typeof data['field'][notation] === 'undefined' && notation.indexOf('.') !== -1) {
+                return eval("(typeof data.field." + notation + "!== 'undefined' ) ? data.field." + notation + ": undefined;");
+            }
+            else {
                 return data['field'][notation];
             }
         } catch (err) {
@@ -1890,12 +1893,12 @@ function shim (obj) {
     data.set = function (notation, value) {
         if (typeof data['field'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
             var parent = $.normalizeChangeResponse(data._getParentObject(notation));
-            window.eval.call(window,"((value, data) =>  (typeof " + parent + "!== 'undefined')? data.field." + notation + "=value:null)")(value, data);
+            window.eval.call(window, "((value, data) =>  (typeof " + parent + "!== 'undefined')? data.field." + notation + "=value:null)")(value, data);
         } else if (typeof data['field'][notation] === 'undefined' && notation.indexOf('.') !== -1) {
-            window.eval.call(window,"((value, data) =>  (typeof " + data._getParentObject(notation) + "!== 'undefined')? data.field." + notation + "=value:null)")(value, data);
-        }else{
+            window.eval.call(window, "((value, data) =>  (typeof " + data._getParentObject(notation) + "!== 'undefined')? data.field." + notation + "=value:null)")(value, data);
+        } else {
             data['field'][notation] = value;
-        } 
+        }
     };
 
     data._getParentObject = function (notation, ns) {
@@ -1907,34 +1910,34 @@ function shim (obj) {
 
         let replaced = notation.replace(/'/g, ''), r = false;
 
-        if(replaced.length < notation.length){
+        if (replaced.length < notation.length) {
             notation = replaced;
             r = true;
         }
 
-        let e = notation.match(/[\W]?(\w+)]?/gi); 
-        e.pop(); 
-        if(e.join("").trim() !=="")
+        let e = notation.match(/[\W]?(\w+)]?/gi);
+        e.pop();
+        if (e.join("").trim() !== "")
             parent = ns + e.join("");
-       
-        if(r) {
+
+        if (r) {
             parent = parent.replace(/\[([a-z]\w+)\]/ig, "['$1']");
         }
 
         return parent;
     };
- 
+
 
     data._delete = data.delete = function (notation) {
         if (typeof data['field'][notation] === 'undefined' && notation.indexOf('[') !== -1) {
             try {
                 var parent = data._getParentObject(notation);
-                 eval(
+                eval(
                     "if(Object.prototype.toString.call(" + parent + ") === '[object Array]' ){" +
                     "" + parent + ".splice(" + parent + ".indexOf(data['field']." + notation + "),1);" +
                     "} else {" +
-                        "if(typeof data['field']." + notation + "!== 'undefined')" +
-                            " delete data['field']." + notation + ";" +
+                    "if(typeof data['field']." + notation + "!== 'undefined')" +
+                    " delete data['field']." + notation + ";" +
                     "}");
                 /**
                  * to keep indexes
@@ -1949,7 +1952,7 @@ function shim (obj) {
         } else {
             delete data['field'][notation];
         }
-       
+
     };
 
 
@@ -1960,10 +1963,10 @@ function shim (obj) {
      * @param {type} old
      */
     data.updateValue = function (value, old) {
-        if (typeof value !== 'undefined') { 
+        if (typeof value !== 'undefined') {
             data.set(this.getAttribute('name') || this.getAttribute('data-name'), value);
         } else {
-            data._delete(this.getAttribute('name') || this.getAttribute('data-name')); 
+            data._delete(this.getAttribute('name') || this.getAttribute('data-name'));
         }
     };
 
@@ -1999,18 +2002,18 @@ function shim (obj) {
         return false;
     };
 
-    data.jsonPatchToObjectAccess = function(diff){
+    data.jsonPatchToObjectAccess = function (diff) {
         let path = "[" + diff.path.substr(1).split('/').join("][") + "]";
         let normal = $.normalizeChangeResponse(path);
-        diff.op = diff.op == "replace"?"value":diff.op;
+        diff.op = diff.op == "replace" ? "value" : diff.op;
         return [path, diff.op, data.getOld(normal), diff.value];
     };
 
-    data.compareJsonPatch = function(a, b){
-        let diff = jsonpatch.compare(a ||{}, b||{});
+    data.compareJsonPatch = function (a, b) {
+        let diff = jsonpatch.compare(a || {}, b || {});
         let final = [];
 
-        for(let i in diff) {
+        for (let i in diff) {
             final.push(data.jsonPatchToObjectAccess(diff[i]));
         }
         return final;
@@ -2020,9 +2023,9 @@ function shim (obj) {
      *
      * @returns {Array}
      */
-    data.getChangedModelFields = () => 
-         data.compareJsonPatch(data._modelprechangeReal, data.field);
-    
+    data.getChangedModelFields = () =>
+        data.compareJsonPatch(data._modelprechangeReal, data.field);
+
     return data;
 };
 _nsKlaster.k_data = dataKlaster(_nsKlaster.k_dom);;/**
