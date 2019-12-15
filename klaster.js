@@ -156,13 +156,26 @@
             return true;
         };
 
-        cls.set = function (notation, value, $field) {
-            $field = $globalScope.querySelector(dom.getSelector(notation)) || $field;
+        cls.set = function (notation, value) {
+            $field = $globalScope.querySelector(dom.getSelector(notation));
             if ($field) {
                 cls.pre_trigger.call($field, undefined);
                 cls.post_trigger.call($field, undefined, value);
             } else {
                 model.set(notation, value);
+
+                changes = model.getChangedModelFields();
+                if(changes.length > 0) {
+                   let changeReport = { all : changes, trigger : { old: model.getOld(notation), new: value,notation :notation } };
+                   
+                    cls.recognizeChange.setup.call({}, changeReport);
+                    
+                    if(typeof refChangeCallback ==="function"){
+                        refChangeCallback(changeReport);
+                    }
+    
+                }
+                
             }
         };
 
@@ -182,8 +195,7 @@
 
                 changes = model.getChangedModelFields();
                 changeReport = { all : changes, trigger : { old: old, new: result, notation: name } };
-                 
-
+                
                 cls.recognizeChange.setup.call(this, changeReport);
 
                 if (typeof child.post_trigger !== "undefined")
