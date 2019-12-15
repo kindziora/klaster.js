@@ -162,6 +162,8 @@
                 cls.pre_trigger.call($field, undefined);
                 cls.post_trigger.call($field, undefined, value);
             } else {
+                model._buildModelPreChangeObj();
+
                 model.set(notation, value);
 
                 changes = model.getChangedModelFields();
