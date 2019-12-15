@@ -156,8 +156,8 @@
             return true;
         };
 
-        cls.set = function (notation, value) {
-            var $field = $globalScope.querySelector(dom.getSelector(notation));
+        cls.set = function (notation, value, $field) {
+            $field = $globalScope.querySelector(dom.getSelector(notation)) || $field;
             if ($field) {
                 cls.pre_trigger.call($field, undefined);
                 cls.post_trigger.call($field, undefined, value);
