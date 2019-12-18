@@ -436,7 +436,8 @@
                             $scope.appendChild($html);
                         }
                     } else { // value changed to undefined or filter does remove element
-                        $child.parentNode.removeChild($child); // remove sub item
+                        if ($child)
+                            $child.parentNode.removeChild($child); // remove sub item
                     }
 
                 }
